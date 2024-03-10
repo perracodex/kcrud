@@ -11,8 +11,11 @@ import io.mockk.mockk
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
 import kcrud.base.infrastructure.env.SessionContext
+import kcrud.base.infrastructure.utils.DateTimeUtils
 import kcrud.base.infrastructure.utils.KLocalDate
+import kcrud.base.infrastructure.utils.KLocalDateTime
 import kcrud.base.infrastructure.utils.TestUtils
+import kcrud.base.persistence.entities.Meta
 import kcrud.base.persistence.pagination.Page
 import kcrud.domain.contact.entities.ContactEntity
 import kcrud.domain.employee.entities.EmployeeEntity
@@ -46,18 +49,33 @@ class EmployeeEntityServiceTest : KoinComponent {
         MaritalStatus.entries.forEachIndexed { index, maritalStatus ->
             Honorific.entries.forEach { honorific ->
 
+                val currentDateTime: KLocalDateTime = DateTimeUtils.currentUTCDateTime()
+                val dob: KLocalDate = KLocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1 + index)
+                val firstName = "AnyName_$index"
+                val lastName = "AnySurname_$index"
                 val employeeId = UUID.randomUUID()
+
                 val mockEmployee = EmployeeEntity(
                     id = employeeId,
-                    firstName = "AnyName_$index",
-                    lastName = "AnySurname_$index",
-                    dob = KLocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1 + index),
+                    firstName = firstName,
+                    lastName = lastName,
+                    fullName = "$lastName, $firstName",
+                    dob = dob,
+                    age = DateTimeUtils.calculateAge(dob = dob),
                     honorific = honorific,
                     maritalStatus = maritalStatus,
                     contact = ContactEntity(
                         id = UUID.randomUUID(),
-                        email = "AnyName.AnySurname@email.com",
-                        phone = "123-456-789"
+                        email = "$firstName.$lastName@kcrud.com",
+                        phone = "+34-611-222-333",
+                        meta = Meta(
+                            createdAt = currentDateTime,
+                            updatedAt = currentDateTime
+                        )
+                    ),
+                    meta = Meta(
+                        createdAt = currentDateTime,
+                        updatedAt = currentDateTime
                     )
                 )
 
