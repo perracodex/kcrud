@@ -1,0 +1,123 @@
+/*
+ * Copyright (c) 2023-Present Perraco Labs. All rights reserved.
+ * This work is licensed under the terms of the MIT license.
+ * For a copy, see <https://opensource.org/licenses/MIT>
+ */
+
+body {
+    background-color: #1c1e26;
+    color: #d5d6db;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 10px;
+    width: 40%;
+}
+
+th, td {
+    background-color: #2a2c37;
+    text-align: left;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    min-height: 36px;
+    line-height: 36px;
+    vertical-align: middle;
+}
+
+th {
+    background-color: #565a69;
+}
+
+tr:nth-child(even) td {
+    background-color: #323540;
+}
+
+button {
+    background-color: #0088cc;
+    color: white;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 24px;
+}
+
+button:hover {
+    background-color: #0077b3;
+}
+
+.input-style {
+    width: 256px;
+    padding: 12px 12px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+}
+
+/* General styles for all select elements */
+select {
+    width: 100%;
+    height: 32px;
+    border-radius: 4px;
+    background-color: #2a2c37; /* Matching the cell color */
+    color: #d5d6db;
+    border: 1px solid #5a6872;
+    padding: 5px 10px;
+    font-size: 16px;
+    margin: 0 auto; /* Center the select inside the cell */
+    display: inline-block; /* Align the select box inline for centering */
+    text-align-last: center; /* Center text for select (may not work in all browsers) */
+    -moz-text-align-last: center; /* Firefox-specific center alignment */
+}
+
+select:focus {
+    outline: none;
+    border-color: #0088cc;
+}
+
+select option {
+    background-color: #323540; /* Darker background for options */
+    color: #d5d6db; /* Text color for options */
+    text-align: center; /* Attempt to center text for options */
+    padding: 0 10px; /* Adjust padding to attempt to center text */
+}
+
+#roleSelect {
+    width: 256px; /* Fixed width for the role dropdown */
+    margin: 10px auto; /* Center the dropdown */
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+    table {
+        width: 100%;
+    }
+}
+
+tr td.resource-column {
+    background-color: #495d6b;
+}
+
+tr td.access-level-column {
+    background-color: #2a2c37;
+    text-align: center;
+    vertical-align: middle;
+}

@@ -1,0 +1,1149 @@
+openapi: "3.0.3"
+info:
+  title: "Kcrud API"
+  description: "Kcrud API"
+  version: "1.0.0"
+servers:
+  - url: "http://127.0.0.1:8080"
+  - url: "https://127.0.0.1:8443"
+paths:
+  /:
+    get:
+      description: "Server root endpoint."
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Hello World."
+                Example#2:
+                  value: ""
+  /auth/token/create:
+    post:
+      description: "Creates a new token and responds with it."
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Failed to generate token."
+  /auth/token/refresh:
+    post:
+      description: "Endpoint for token refresh. <br> No Basic Authentication is required\
+        \ here, but an existing token's validity will be checked. <br> For example,\
+        \ in Postman set the endpoint and in the Headers add an Authorization key\
+        \ <br> with a 'Bearer' holding a previous valid token."
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Failed to generate token."
+        "401":
+          description: "Unauthorized <br> Token is invalid; respond with an Unauthorized\
+            \ status."
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Invalid token."
+  /demo:
+    delete:
+      description: "Delete all demo records."
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "All employees deleted."
+    get:
+      description: "Return demo records interactive HTML."
+      parameters:
+        - name: "sort"
+          in: "query"
+          required: false
+          schema:
+            type: "array"
+            items:
+              type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/Function1_? super HTML"
+              examples:
+                text/html:
+                  description: "HTML document"
+                  value: ""
+    post:
+      description: "Create a batch of demo records."
+      parameters:
+        - name: "count"
+          in: "query"
+          required: false
+          schema:
+            type: "integer"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: ""
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Invalid count. Must be between 1 and 100000."
+  /demo/json:
+    get:
+      description: "Return all demo records as JSON."
+      parameters:
+        - name: "sort"
+          in: "query"
+          required: false
+          schema:
+            type: "array"
+            items:
+              type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Page_? extends EmploymentEntity"
+  /health:
+    get:
+      description: "Healthcheck providing the current operational status."
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/HealthCheck"
+  /rbac/admin:
+    get:
+      description: ""
+      parameters:
+        - name: "role"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "302":
+          description: "Found <br> Redirect"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  description: ""
+                  value: "/rbac/login"
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/Function1_? super HTML"
+              examples:
+                text/html:
+                  description: "HTML document"
+                  value: ""
+    post:
+      description: ""
+      parameters:
+        - name: "role"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
+      responses:
+        "302":
+          description: "Found <br> Redirect"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  description: ""
+                  value: "/rbac/login"
+                Example#2:
+                  description: ""
+                  value: "/rbac/login"
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/Function1_? super HTML"
+              examples:
+                text/html:
+                  description: "HTML document"
+                  value: ""
+  /rbac/login:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/Function1_? super HTML"
+              examples:
+                text/html:
+                  description: "HTML document"
+                  value: ""
+        "302":
+          description: "Found <br> Redirect"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  description: ""
+                  value: "/rbac/admin"
+    post:
+      description: ""
+      responses:
+        "302":
+          description: "Found <br> Redirect"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  description: ""
+                  value: "/rbac/admin"
+  /rbac/logout:
+    post:
+      description: ""
+      responses:
+        "302":
+          description: "Found <br> Redirect"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  description: ""
+                  value: "/rbac/login"
+  /scheduler:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "string"
+  /snowflake/{id}:
+    get:
+      description: "Snowflake parser to read back the components of a snowflake ID."
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SnowflakeData"
+  /v1/employees:
+    delete:
+      description: "Delete all employees."
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "integer"
+                format: "int32"
+    get:
+      description: "Find all employees."
+      parameters:
+        - name: "sort"
+          in: "query"
+          required: false
+          schema:
+            type: "array"
+            items:
+              type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Page_? extends EmployeeEntity"
+    post:
+      description: "Create a new employee."
+      responses:
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/EmployeeEntity"
+  /v1/employees/{employee_id}:
+    delete:
+      description: "Delete an employee by ID."
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: "employee_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "integer"
+                format: "int32"
+    get:
+      description: "Find an employee by ID."
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: "employee_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/EmployeeEntity"
+    put:
+      description: "Update an employee by ID."
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: "employee_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/EmployeeEntity"
+  /v1/employees/{employee_id}/employments:
+    delete:
+      description: "Delete all employments for an employee ID."
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: "employee_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "integer"
+                format: "int32"
+    get:
+      description: "Find all employments for an employee ID."
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: "employee_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/EmploymentEntity"
+    post:
+      description: "Create a new employment."
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: "employee_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/EmploymentEntity"
+  /v1/employees/{employee_id}/employments/{employment_id}:
+    delete:
+      description: "Delete an employment by ID."
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: "employment_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "employee_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "integer"
+                format: "int32"
+    get:
+      description: "Find an employment by ID."
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: "employee_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "employment_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/EmploymentEntity"
+    put:
+      description: "Update an employment by ID."
+      security:
+        - BearerAuth: [ ]
+      parameters:
+        - name: "employee_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "employment_id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/EmploymentEntity"
+components:
+  schemas:
+    Function1:
+      type: "object"
+      properties: { }
+    Function1_? super HTML:
+      type: "object"
+    Sort:
+      type: "object"
+      properties:
+        field:
+          type: "string"
+        direction:
+          type: "string"
+          enum:
+            - "ASC"
+            - "DESC"
+      required:
+        - "field"
+        - "direction"
+    Page:
+      type: "object"
+      properties:
+        totalPages:
+          type: "integer"
+          format: "int32"
+        pageIndex:
+          type: "integer"
+          format: "int32"
+        totalElements:
+          type: "integer"
+          format: "int32"
+        elementsPerPage:
+          type: "integer"
+          format: "int32"
+        elementsInPage:
+          type: "integer"
+          format: "int32"
+        hasNext:
+          type: "boolean"
+        hasPrevious:
+          type: "boolean"
+        overflow:
+          type: "boolean"
+        sort:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Sort"
+        content:
+          type: "array"
+      required:
+        - "content"
+    Page_? extends EmploymentEntity:
+      type: "object"
+      properties:
+        totalPages:
+          type: "integer"
+          format: "int32"
+        pageIndex:
+          type: "integer"
+          format: "int32"
+        totalElements:
+          type: "integer"
+          format: "int32"
+        elementsPerPage:
+          type: "integer"
+          format: "int32"
+        elementsInPage:
+          type: "integer"
+          format: "int32"
+        hasNext:
+          type: "boolean"
+        hasPrevious:
+          type: "boolean"
+        overflow:
+          type: "boolean"
+        sort:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Sort"
+        content:
+          type: "array"
+          items:
+            type: "object"
+    LocalDateTime:
+      type: "object"
+      properties: { }
+    RuntimeCheck:
+      type: "object"
+      properties:
+        errors:
+          type: "array"
+          items:
+            type: "string"
+        machineId:
+          type: "integer"
+          format: "int32"
+        environment:
+          type: "string"
+          enum:
+            - "DEV"
+            - "PROD"
+            - "STAGING"
+            - "TEST"
+        developmentModeEnabled:
+          type: "boolean"
+        utc:
+          $ref: "#/components/schemas/LocalDateTime"
+        local:
+          $ref: "#/components/schemas/LocalDateTime"
+      required:
+        - "errors"
+        - "environment"
+        - "utc"
+        - "local"
+    Configured:
+      type: "object"
+      properties:
+        protocol:
+          type: "string"
+        port:
+          type: "integer"
+          format: "int32"
+        sslPort:
+          type: "integer"
+          format: "int32"
+        host:
+          type: "string"
+        allowedHosts:
+          type: "array"
+          items:
+            type: "string"
+      required:
+        - "protocol"
+        - "host"
+        - "allowedHosts"
+    ServerSpec:
+      type: "object"
+      properties:
+        serverHost:
+          type: "string"
+        serverPort:
+          type: "integer"
+          format: "int32"
+        localHost:
+          type: "string"
+        localPort:
+          type: "integer"
+          format: "int32"
+        remoteHostHost:
+          type: "string"
+        remoteAddress:
+          type: "string"
+        remotePort:
+          type: "integer"
+          format: "int32"
+        httpVersion:
+          type: "string"
+        scheme:
+          type: "string"
+    DeploymentCheck:
+      type: "object"
+      properties:
+        errors:
+          type: "array"
+          items:
+            type: "string"
+        configured:
+          $ref: "#/components/schemas/Configured"
+        serverSpec:
+          $ref: "#/components/schemas/ServerSpec"
+        connectors:
+          type: "string"
+      required:
+        - "errors"
+        - "configured"
+        - "serverSpec"
+        - "connectors"
+    SecurityCheck:
+      type: "object"
+      properties:
+        errors:
+          type: "array"
+          items:
+            type: "string"
+        useSecureConnection:
+          type: "boolean"
+        publicApiRateLimit:
+          type: "integer"
+          format: "int32"
+        publicApiRateRefillMs:
+          type: "integer"
+          format: "int64"
+        newTokenRateLimit:
+          type: "integer"
+          format: "int32"
+        newTokenRateRefillMs:
+          type: "integer"
+          format: "int64"
+      required:
+        - "errors"
+    Datasource:
+      type: "object"
+      properties:
+        totalConnections:
+          type: "integer"
+          format: "int32"
+        activeConnections:
+          type: "integer"
+          format: "int32"
+        idleConnections:
+          type: "integer"
+          format: "int32"
+        threadsAwaitingConnection:
+          type: "integer"
+          format: "int32"
+        connectionTimeout:
+          type: "integer"
+          format: "int64"
+        maxLifetime:
+          type: "integer"
+          format: "int64"
+        keepaliveTime:
+          type: "integer"
+          format: "int64"
+        maxPoolSize:
+          type: "integer"
+          format: "int32"
+    ConnectionTest:
+      type: "object"
+      properties:
+        established:
+          type: "boolean"
+        name:
+          type: "string"
+        version:
+          type: "string"
+        dialect:
+          type: "string"
+        url:
+          type: "string"
+        vendor:
+          type: "string"
+        autoCommit:
+          type: "boolean"
+        catalog:
+          type: "string"
+      required:
+        - "name"
+        - "version"
+        - "dialect"
+        - "url"
+        - "vendor"
+        - "catalog"
+    Configuration:
+      type: "object"
+      properties:
+        poolSize:
+          type: "integer"
+          format: "int32"
+        connectionTimeout:
+          type: "integer"
+          format: "int64"
+        isolationLevel:
+          type: "string"
+        transactionRetryAttempts:
+          type: "integer"
+          format: "int32"
+        warnLongQueriesDurationMs:
+          type: "integer"
+          format: "int64"
+        jdbcDriver:
+          type: "string"
+        jdbcUrl:
+          type: "string"
+      required:
+        - "isolationLevel"
+        - "jdbcDriver"
+        - "jdbcUrl"
+    DatabaseCheck:
+      type: "object"
+      properties:
+        errors:
+          type: "array"
+          items:
+            type: "string"
+        alive:
+          type: "boolean"
+        datasource:
+          $ref: "#/components/schemas/Datasource"
+        connectionTest:
+          $ref: "#/components/schemas/ConnectionTest"
+        configuration:
+          $ref: "#/components/schemas/Configuration"
+        tables:
+          type: "array"
+          items:
+            type: "string"
+      required:
+        - "errors"
+        - "configuration"
+        - "tables"
+    ApplicationCheck:
+      type: "object"
+      properties:
+        errors:
+          type: "array"
+          items:
+            type: "string"
+        docsEnabled:
+          type: "boolean"
+      required:
+        - "errors"
+    GraphQLCheck:
+      type: "object"
+      properties:
+        errors:
+          type: "array"
+          items:
+            type: "string"
+        enabled:
+          type: "boolean"
+        framework:
+          type: "string"
+          enum:
+            - "EXPEDIA_GROUP"
+            - "K_GRAPHQL"
+        playground:
+          type: "boolean"
+        dumpSchema:
+          type: "boolean"
+        schemaPath:
+          type: "string"
+      required:
+        - "errors"
+        - "framework"
+        - "schemaPath"
+    SnowflakeData:
+      type: "object"
+      properties:
+        machineId:
+          type: "integer"
+          format: "int32"
+        sequence:
+          type: "integer"
+          format: "int64"
+        utc:
+          $ref: "#/components/schemas/LocalDateTime"
+        local:
+          $ref: "#/components/schemas/LocalDateTime"
+      required:
+        - "utc"
+        - "local"
+    SnowflakeCheck:
+      type: "object"
+      properties:
+        errors:
+          type: "array"
+          items:
+            type: "string"
+        testId:
+          type: "string"
+        testResult:
+          $ref: "#/components/schemas/SnowflakeData"
+        timestampEpoch:
+          type: "integer"
+          format: "int64"
+        nanoTimeStart:
+          type: "integer"
+          format: "int64"
+      required:
+        - "errors"
+    HealthCheck:
+      type: "object"
+      properties:
+        health:
+          type: "array"
+          items:
+            type: "string"
+        runtime:
+          $ref: "#/components/schemas/RuntimeCheck"
+        deployment:
+          $ref: "#/components/schemas/DeploymentCheck"
+        security:
+          $ref: "#/components/schemas/SecurityCheck"
+        database:
+          $ref: "#/components/schemas/DatabaseCheck"
+        application:
+          $ref: "#/components/schemas/ApplicationCheck"
+        graphQL:
+          $ref: "#/components/schemas/GraphQLCheck"
+        snowflake:
+          $ref: "#/components/schemas/SnowflakeCheck"
+        endpoints:
+          type: "array"
+          items:
+            type: "string"
+      required:
+        - "health"
+        - "runtime"
+        - "deployment"
+        - "security"
+        - "database"
+        - "application"
+        - "graphQL"
+        - "snowflake"
+        - "endpoints"
+    Page_? extends EmployeeEntity:
+      type: "object"
+      properties:
+        totalPages:
+          type: "integer"
+          format: "int32"
+        pageIndex:
+          type: "integer"
+          format: "int32"
+        totalElements:
+          type: "integer"
+          format: "int32"
+        elementsPerPage:
+          type: "integer"
+          format: "int32"
+        elementsInPage:
+          type: "integer"
+          format: "int32"
+        hasNext:
+          type: "boolean"
+        hasPrevious:
+          type: "boolean"
+        overflow:
+          type: "boolean"
+        sort:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Sort"
+        content:
+          type: "array"
+          items:
+            type: "object"
+    LocalDate:
+      type: "object"
+      properties: { }
+    Meta:
+      type: "object"
+      properties:
+        createdAt:
+          $ref: "#/components/schemas/LocalDateTime"
+        updatedAt:
+          $ref: "#/components/schemas/LocalDateTime"
+      required:
+        - "createdAt"
+        - "updatedAt"
+    ContactEntity:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+        email:
+          type: "string"
+        phone:
+          type: "string"
+        meta:
+          $ref: "#/components/schemas/Meta"
+      required:
+        - "id"
+        - "email"
+        - "phone"
+        - "meta"
+    EmployeeEntity:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+        firstName:
+          type: "string"
+        lastName:
+          type: "string"
+        fullName:
+          type: "string"
+        dob:
+          $ref: "#/components/schemas/LocalDate"
+        age:
+          type: "integer"
+          format: "int32"
+        maritalStatus:
+          type: "string"
+          enum:
+            - "MARRIED"
+            - "SINGLE"
+            - "DIVORCED"
+            - "UNKNOWN"
+        honorific:
+          type: "string"
+          enum:
+            - "MR"
+            - "MRS"
+            - "MS"
+            - "DR"
+            - "MISS"
+            - "UNKNOWN"
+        contact:
+          $ref: "#/components/schemas/ContactEntity"
+        meta:
+          $ref: "#/components/schemas/Meta"
+      required:
+        - "id"
+        - "firstName"
+        - "lastName"
+        - "fullName"
+        - "dob"
+        - "maritalStatus"
+        - "honorific"
+        - "meta"
+    Period:
+      type: "object"
+      properties:
+        startDate:
+          $ref: "#/components/schemas/LocalDate"
+        endDate:
+          $ref: "#/components/schemas/LocalDate"
+        comments:
+          type: "string"
+      required:
+        - "startDate"
+    EmploymentEntity:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+        period:
+          $ref: "#/components/schemas/Period"
+        status:
+          type: "string"
+          enum:
+            - "ONBOARDING"
+            - "ACTIVE"
+            - "TERMINATED"
+        probationEndDate:
+          $ref: "#/components/schemas/LocalDate"
+        workModality:
+          type: "string"
+          enum:
+            - "ON_SITE"
+            - "REMOTE"
+            - "HYBRID"
+        employee:
+          $ref: "#/components/schemas/EmployeeEntity"
+        meta:
+          $ref: "#/components/schemas/Meta"
+      required:
+        - "id"
+        - "period"
+        - "status"
+        - "workModality"
+        - "employee"
+        - "meta"
+  securitySchemes:
+    BearerAuth: # JWT authentication scheme (Can be any name)
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    BasicAuth: # Basic authentication scheme (Can be any name)
+      type: http
+      scheme: basic

@@ -1,0 +1,2463 @@
+{
+	"info": {
+		"_postman_id": "21a0254c-f51f-40ff-ae42-4d4c1bd11408",
+		"name": "kcrud",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24235465"
+	},
+	"item": [
+		{
+			"name": "REST",
+			"item": [
+				{
+					"name": "employee",
+					"item": [
+						{
+							"name": "create",
+							"item": [
+								{
+									"name": "create",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"strictSSL": false
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstName\": \"AnyName\",\r\n    \"lastName\": \"AnySurname\",\r\n    \"dob\": \"1988-01-09\",\r\n    \"maritalStatus\": \"SINGLE\",\r\n    \"honorific\": \"MR\",\r\n    \"contact\": {\r\n        \"email\": \"AnyName.AnySurname@email.com\",\r\n        \"phone\": \"+34-665-021024\"\r\n    }\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/v1/employees",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v1",
+												"employees"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "create (no contact)",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"strictSSL": false
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoie1wiaWRcIjpcImNiMDI1Nzg3LTllMDAtNDBkZi1hYmQ3LTM3ODc2MjYwNTg2OVwiLFwibmFtZVwiOlwiYWRtaW5cIixcInJvbGVJZFwiOlwiZGM1YTRiZTAtOWExZS00YmM2LWE5ZDQtYzQ0Y2YwZDJjYTljXCJ9IiwiYXVkIjoiS2NydWQiLCJpc3MiOiJsb2NhbGhvc3QiLCJleHAiOjE3MDg3MTczNDN9.jTpNAjd4XBWUtumrMn_AeivA2ssKkN0ryCcbRYbQk7U",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstName\": \"AnyName\",\r\n    \"lastName\": \"AnySurname\",\r\n    \"dob\": \"1988-01-01\",\r\n    \"maritalStatus\": \"SINGLE\",\r\n    \"honorific\": \"MR\"\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/v1/employees",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v1",
+												"employees"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "update",
+							"item": [
+								{
+									"name": "update by employee id",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoie1wiaWRcIjpcIjc1ZDU3YmM0LTRjNTgtNDNiNi1iNTJiLTc1MWY0NDFiZWJkYVwiLFwibmFtZVwiOlwiYWRtaW5cIixcInJvbGVJZFwiOlwiMTZmMmQzMDAtZmIxZS00N2RiLWFlMmYtYzJlNGFhMDAyMjNkXCJ9IiwiYXVkIjoiS2NydWQiLCJpc3MiOiJsb2NhbGhvc3QiLCJleHAiOjE3MDk1NTM3MTR9.pUd5REjyXJgiZNBKgl3RQ_I4IZhck8TXeYgjT5EImWk",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstName\": \"AnyName2\",\r\n    \"lastName\": \"AnySurname2\",\r\n    \"dob\": \"1888-01-01\",\r\n    \"maritalStatus\": \"MARRIED\",\r\n    \"honorific\": \"MISS\",\r\n    \"contact\": {\r\n        \"email\": \"AnyName.AnySurname@email.com\",\r\n        \"phone\": \"+34-665-021024\"\r\n    }\r\n}"
+										},
+										"url": {
+                                          "raw": "http://localhost:8080/v1/employees/927b450c-3b04-452a-87dd-9ac71a0af555",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v1",
+												"employees",
+                                              "927b450c-3b04-452a-87dd-9ac71a0af555"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "find",
+							"item": [
+								{
+									"name": "get  by employee id",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2NvbnRleHQiOiJ7XCJhcGlVc2VySWRcIjpcImYyNzE2MDg2LTkzZjktNDQ0OS05ODY1LWYzOTExNWM3NTlkMlwiLFwidXNlcm5hbWVcIjpcImFkbWluXCIsXCJ1c2VyUm9sZUlkXCI6XCJmMjcxMWEzMS1kYmEwLTQ1N2UtOTc2My03Y2IxNjNjMDQ5YWRcIn0iLCJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcxMTE0MDg2OX0.GcxRVOpvJ-2uSQKG_AVlTWGli44i2686uLkYI4GUgVk",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/v1/employees/1",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v1",
+												"employees",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2NvbnRleHQiOiJ7XCJhcGlVc2VySWRcIjpcIjI4YTZiZWMxLTc0YWEtNDcxNy05YWZlLTEyMzhmNThmNDViNFwiLFwidXNlcm5hbWVcIjpcImFkbWluXCIsXCJ1c2VyUm9sZUlkXCI6XCIyNzExNzY4OC0yNGFjLTQ1NzAtYjZjYS1jZjNkMDZkMWZmNDlcIn0iLCJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcxMDYyMTQ5MH0.o7jBn1JEszNMdfOBXEIA4lN0XnoMubgdeOLOs3GHMRo",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/v1/employees",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v1",
+												"employees"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all (paginated)",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoie1wiaWRcIjpcImNiMDI1Nzg3LTllMDAtNDBkZi1hYmQ3LTM3ODc2MjYwNTg2OVwiLFwibmFtZVwiOlwiYWRtaW5cIixcInJvbGVJZFwiOlwiZGM1YTRiZTAtOWExZS00YmM2LWE5ZDQtYzQ0Y2YwZDJjYTljXCJ9IiwiYXVkIjoiS2NydWQiLCJpc3MiOiJsb2NhbGhvc3QiLCJleHAiOjE3MDg3MTczNDN9.jTpNAjd4XBWUtumrMn_AeivA2ssKkN0ryCcbRYbQk7U",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+                                          "raw": "http://localhost:8080/v1/employees?page=0&size=24",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v1",
+												"employees"
+											],
+											"query": [
+												{
+													"key": "page",
+                                                  "value": "0"
+												},
+												{
+													"key": "size",
+                                                  "value": "24"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all (sort)",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2NvbnRleHQiOiJ7XCJhcGlVc2VySWRcIjpcImYyNzE2MDg2LTkzZjktNDQ0OS05ODY1LWYzOTExNWM3NTlkMlwiLFwidXNlcm5hbWVcIjpcImFkbWluXCIsXCJ1c2VyUm9sZUlkXCI6XCJmMjcxMWEzMS1kYmEwLTQ1N2UtOTc2My03Y2IxNjNjMDQ5YWRcIn0iLCJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcxMTIwOTU4OX0.02FHlez1MtpeTI3o9gjqtoyLnEVieMFlrwG-LZe60dg",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/v1/employees?sort=firstName,asc",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v1",
+												"employees"
+											],
+											"query": [
+												{
+													"key": "sort",
+													"value": "firstName,asc"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all (paginated & sort)",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2NvbnRleHQiOiJ7XCJhcGlVc2VySWRcIjpcImYyNzE2MDg2LTkzZjktNDQ0OS05ODY1LWYzOTExNWM3NTlkMlwiLFwidXNlcm5hbWVcIjpcImFkbWluXCIsXCJ1c2VyUm9sZUlkXCI6XCJmMjcxMWEzMS1kYmEwLTQ1N2UtOTc2My03Y2IxNjNjMDQ5YWRcIn0iLCJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcxMTIwOTU4OX0.02FHlez1MtpeTI3o9gjqtoyLnEVieMFlrwG-LZe60dg",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+                                          "raw": "http://localhost:8080/v1/employees?page=0&size=10&sort=lastName,asc&&sort=maritalStatus,asc",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v1",
+												"employees"
+											],
+											"query": [
+												{
+													"key": "page",
+                                                  "value": "0"
+												},
+												{
+													"key": "size",
+													"value": "10"
+												},
+												{
+													"key": "sort",
+													"value": "lastName,asc"
+												},
+												{
+													"key": null,
+													"value": null
+												},
+												{
+													"key": "sort",
+													"value": "maritalStatus,asc"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "search",
+							"item": [
+								{
+									"name": "search (paginated)",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"strictSSL": false
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2NvbnRleHQiOiJ7XCJhcGlVc2VySWRcIjpcImYyNzE2MDg2LTkzZjktNDQ0OS05ODY1LWYzOTExNWM3NTlkMlwiLFwidXNlcm5hbWVcIjpcImFkbWluXCIsXCJ1c2VyUm9sZUlkXCI6XCJmMjcxMWEzMS1kYmEwLTQ1N2UtOTc2My03Y2IxNjNjMDQ5YWRcIn0iLCJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcxMTIwOTU4OX0.02FHlez1MtpeTI3o9gjqtoyLnEVieMFlrwG-LZe60dg",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+                                          "raw": "{\r\n    \"firstName\": \"AnyName\",\r\n    \"lastName\": \"AnySurname\",\r\n    \"honorific\": [\"MR\", \"MISS\"],\r\n    \"maritalStatus\": [\"SINGLE\", \"DIVORCED\"],\r\n    \"pageable\": {\r\n        \"page\": 0,\r\n        \"size\": 5\r\n    }\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/v1/employees/search",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v1",
+												"employees",
+												"search"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "search (sort)",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"strictSSL": false
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2NvbnRleHQiOiJ7XCJhcGlVc2VySWRcIjpcImYyNzE2MDg2LTkzZjktNDQ0OS05ODY1LWYzOTExNWM3NTlkMlwiLFwidXNlcm5hbWVcIjpcImFkbWluXCIsXCJ1c2VyUm9sZUlkXCI6XCJmMjcxMWEzMS1kYmEwLTQ1N2UtOTc2My03Y2IxNjNjMDQ5YWRcIn0iLCJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcxMTIwOTU4OX0.02FHlez1MtpeTI3o9gjqtoyLnEVieMFlrwG-LZe60dg",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+                                          "raw": "{\r\n    \"firstName\": \"AnyName\",\r\n    \"lastName\": \"AnySurname\",\r\n    \"honorific\": [\"MR\", \"MISS\"],\r\n    \"maritalStatus\": [\"SINGLE\", \"DIVORCED\"],\r\n    \"pageable\": {\r\n        \"page\": 0,\r\n        \"size\": 0,\r\n        \"sort\": [ \r\n            { \"field\": \"firstName\", \"direction\": \"ASC\" },\r\n            { \"field\": \"lastName\", \"direction\": \"DESC\" }\r\n        ]\r\n    }\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/v1/employees/search",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v1",
+												"employees",
+												"search"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "delete",
+							"item": [
+								{
+									"name": "delete all",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2NvbnRleHQiOiJ7XCJ1c2VySWRcIjpcIjQ3YTQzYzdkLWI2NmEtNGY4ZS1hMjZmLWE4Mjc5YTc0MWYzMVwiLFwidXNlcm5hbWVcIjpcImFkbWluXCIsXCJ1c2VyUm9sZUlkXCI6XCI1YmMyZGQ3Ny1hYmUxLTRjNWYtOGY3My0wZDU5MjZiNmYzZmZcIn0iLCJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcxMDE1NjA5OH0.ajFAZG_14_eiklN18AwqP_8ihqckdOWvI3TqvfD7uD0",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "http://localhost:8080/v1/employees",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v1",
+												"employees"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "other",
+							"item": [
+								{
+									"name": "Head",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "HEAD",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoie1wiaWRcIjpcImNiMDI1Nzg3LTllMDAtNDBkZi1hYmQ3LTM3ODc2MjYwNTg2OVwiLFwibmFtZVwiOlwiYWRtaW5cIixcInJvbGVJZFwiOlwiZGM1YTRiZTAtOWExZS00YmM2LWE5ZDQtYzQ0Y2YwZDJjYTljXCJ9IiwiYXVkIjoiS2NydWQiLCJpc3MiOiJsb2NhbGhvc3QiLCJleHAiOjE3MDg3MTczNDN9.jTpNAjd4XBWUtumrMn_AeivA2ssKkN0ryCcbRYbQk7U",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/v1/employees",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v1",
+												"employees"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Employment",
+					"item": [
+						{
+							"name": "create",
+							"item": [
+								{
+									"name": "create by employee id",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"strictSSL": false
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2NvbnRleHQiOiJ7XCJhcGlVc2VySWRcIjpcIjI4YTZiZWMxLTc0YWEtNDcxNy05YWZlLTEyMzhmNThmNDViNFwiLFwidXNlcm5hbWVcIjpcImFkbWluXCIsXCJ1c2VyUm9sZUlkXCI6XCIyNzExNzY4OC0yNGFjLTQ1NzAtYjZjYS1jZjNkMDZkMWZmNDlcIn0iLCJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcxMDYyMTQ5MH0.o7jBn1JEszNMdfOBXEIA4lN0XnoMubgdeOLOs3GHMRo",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+                                          "raw": "{\r\n    \"period\": {\r\n        \"isActive\": true,\r\n        \"startDate\": \"2023-02-01\",\r\n        \"endDate\": null,\r\n        \"comments\": null\r\n    },\r\n    \"status\": \"ACTIVE\",\r\n    \"probationEndDate\": \"2023-04-30\",\r\n    \"workModality\": \"REMOTE\"\r\n}\r\n\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+                                          "raw": "http://localhost:8080/v1/employees/492d423b-554f-41ad-bca7-14b5f82041db/employments",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v1",
+												"employees",
+                                              "492d423b-554f-41ad-bca7-14b5f82041db",
+												"employments"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "find",
+							"item": [
+								{
+									"name": "get by employment id",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true,
+										"strictSSL": false
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2NvbnRleHQiOiJ7XCJhcGlVc2VySWRcIjpcIjI4YTZiZWMxLTc0YWEtNDcxNy05YWZlLTEyMzhmNThmNDViNFwiLFwidXNlcm5hbWVcIjpcImFkbWluXCIsXCJ1c2VyUm9sZUlkXCI6XCIyNzExNzY4OC0yNGFjLTQ1NzAtYjZjYS1jZjNkMDZkMWZmNDlcIn0iLCJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcxMDYyMTQ5MH0.o7jBn1JEszNMdfOBXEIA4lN0XnoMubgdeOLOs3GHMRo",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/v1/employees/0e373eda-6143-4652-bf8d-4f1b57aac9e7/employments/6d3e4a14-a8ea-4935-ac28-39c0be291c12",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v1",
+												"employees",
+												"0e373eda-6143-4652-bf8d-4f1b57aac9e7",
+												"employments",
+												"6d3e4a14-a8ea-4935-ac28-39c0be291c12"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all by employee id",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true,
+										"strictSSL": false
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2NvbnRleHQiOiJ7XCJhcGlVc2VySWRcIjpcIjI4YTZiZWMxLTc0YWEtNDcxNy05YWZlLTEyMzhmNThmNDViNFwiLFwidXNlcm5hbWVcIjpcImFkbWluXCIsXCJ1c2VyUm9sZUlkXCI6XCIyNzExNzY4OC0yNGFjLTQ1NzAtYjZjYS1jZjNkMDZkMWZmNDlcIn0iLCJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcxMDYyMTQ5MH0.o7jBn1JEszNMdfOBXEIA4lN0XnoMubgdeOLOs3GHMRo",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/v1/employees/748e8a21-7257-479b-9c87-a1cf5c89deb3/employments",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v1",
+												"employees",
+												"748e8a21-7257-479b-9c87-a1cf5c89deb3",
+												"employments"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "delete",
+							"item": [
+								{
+									"name": "delete by employment id",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"strictSSL": false
+									},
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoie1wiaWRcIjpcImNiMDI1Nzg3LTllMDAtNDBkZi1hYmQ3LTM3ODc2MjYwNTg2OVwiLFwibmFtZVwiOlwiYWRtaW5cIixcInJvbGVJZFwiOlwiZGM1YTRiZTAtOWExZS00YmM2LWE5ZDQtYzQ0Y2YwZDJjYTljXCJ9IiwiYXVkIjoiS2NydWQiLCJpc3MiOiJsb2NhbGhvc3QiLCJleHAiOjE3MDg3MTczNDN9.jTpNAjd4XBWUtumrMn_AeivA2ssKkN0ryCcbRYbQk7U",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/v1/employees/5d22daa6-68a7-4775-a535-784ff1adc931/employments/ecfab1ce-4d2c-4ae2-aa18-ffe92d818c4b",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v1",
+												"employees",
+												"5d22daa6-68a7-4775-a535-784ff1adc931",
+												"employments",
+												"ecfab1ce-4d2c-4ae2-aa18-ffe92d818c4b"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete all by employee id",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"strictSSL": false
+									},
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoie1wiaWRcIjpcImNiMDI1Nzg3LTllMDAtNDBkZi1hYmQ3LTM3ODc2MjYwNTg2OVwiLFwibmFtZVwiOlwiYWRtaW5cIixcInJvbGVJZFwiOlwiZGM1YTRiZTAtOWExZS00YmM2LWE5ZDQtYzQ0Y2YwZDJjYTljXCJ9IiwiYXVkIjoiS2NydWQiLCJpc3MiOiJsb2NhbGhvc3QiLCJleHAiOjE3MDg3MTczNDN9.jTpNAjd4XBWUtumrMn_AeivA2ssKkN0ryCcbRYbQk7U",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/v1/employees/cd6b65cd-152d-4923-ae41-a857f96cffef/employments",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v1",
+												"employees",
+												"cd6b65cd-152d-4923-ae41-a857f96cffef",
+												"employments"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "GraphQL",
+			"item": [
+				{
+					"name": "employee",
+					"item": [
+						{
+							"name": "create",
+							"item": [
+								{
+									"name": "create",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2NvbnRleHQiOiJ7XCJ1c2VySWRcIjpcIjdhMTcxNWE5LWYzYmQtNDY4NS05ZWQyLTQxMDlhY2Q0ZmNhN1wiLFwidXNlcm5hbWVcIjpcImFkbWluXCIsXCJ1c2VyUm9sZUlkXCI6XCJlODhiYTNjOS0wNmJhLTRlNjUtODIyOC1jM2I1YzFhNzFhMDdcIn0iLCJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcxMDA5NDc0OH0.WnrJbo_c414QQCzQ1u6r8dPMzfHhn3e7pzh3ZVfgKVY",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\r\n    createEmployee(\r\n        employee: {\r\n            firstName: \"AnyName\",\r\n            lastName: \"AnySurname\",\r\n            dob: \"1988-01-01\",\r\n            maritalStatus: SINGLE,\r\n            honorific: MR,\r\n            contact: {\r\n                email: \"AnyName.AnySurname@email.com\",\r\n                phone: \"+34-665-021024\"\r\n            }\r\n        }\r\n    ) {\r\n        id\r\n        firstName\r\n        lastName\r\n        fullName\r\n        dob\r\n        maritalStatus\r\n        honorific\r\n        contact {\r\n            id\r\n            email\r\n            phone\r\n        }\r\n   }\r\n}\r\n\r\n",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/graphql",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "update",
+							"item": [
+								{
+									"name": "update",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoie1wiaWRcIjpcIjJjYzEyMjg0LWIwZjctNGI0Yy05OTYxLTc5ZDY4YTVjMTIyZFwiLFwibmFtZVwiOlwiYWRtaW5cIixcInJvbGVJZFwiOlwiNjc2NDllZjUtNDdhOS00NzkwLWE5ZTMtZmQ0YjRjOWJkOWRiXCJ9IiwiYXVkIjoiS2NydWQiLCJpc3MiOiJsb2NhbGhvc3QiLCJleHAiOjE3MDgyNzk4NjJ9.JMG4BvzR37m86XucwtWjvyylTcpKIQ7guifpY4tisPQ",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\r\n    updateEmployee(employeeId: \"3a77d261-da1c-49ad-9a0f-6e316bf44db6\", \r\n        employee: {\r\n            firstName: \"AnyName2\",\r\n            lastName: \"AnySurname2\",\r\n            dob: \"1988-01-01\",\r\n            maritalStatus: MARRIED,\r\n            honorific: MR,\r\n            contact: {\r\n                email: \"AnyName.AnySurname@email.com\",\r\n                phone: \"+34-665-021024\"\r\n            }\r\n        }\r\n    ) {\r\n        id\r\n        firstName\r\n        lastName\r\n        fullName\r\n        dob\r\n        maritalStatus\r\n        honorific\r\n        contact {\r\n            id\r\n            email\r\n            phone\r\n        }\r\n   }\r\n}\r\n\r\n",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/graphql",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "find",
+							"item": [
+								{
+									"name": "get all",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2NvbnRleHQiOiJ7XCJhcGlVc2VySWRcIjpcIjI4YTZiZWMxLTc0YWEtNDcxNy05YWZlLTEyMzhmNThmNDViNFwiLFwidXNlcm5hbWVcIjpcImFkbWluXCIsXCJ1c2VyUm9sZUlkXCI6XCIyNzExNzY4OC0yNGFjLTQ1NzAtYjZjYS1jZjNkMDZkMWZmNDlcIn0iLCJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcxMDYyMTQ5MH0.o7jBn1JEszNMdfOBXEIA4lN0XnoMubgdeOLOs3GHMRo",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+                                              "query": "query {\r\n    employees {\r\n        totalElements\r\n        totalPages\r\n        elementsPerPage\r\n        pageIndex\r\n        elementsInPage\r\n        isFirst\r\n        isLast\r\n        hasNext\r\n        hasPrevious\r\n        content {\r\n             id\r\n            firstName\r\n            lastName\r\n            fullName\r\n            dob\r\n            maritalStatus\r\n            honorific\r\n            contact {\r\n                id\r\n                email\r\n                phone\r\n            }\r\n        }\r\n   }\r\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/graphql",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get by id",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoie1wiaWRcIjpcIjJjYzEyMjg0LWIwZjctNGI0Yy05OTYxLTc5ZDY4YTVjMTIyZFwiLFwibmFtZVwiOlwiYWRtaW5cIixcInJvbGVJZFwiOlwiNjc2NDllZjUtNDdhOS00NzkwLWE5ZTMtZmQ0YjRjOWJkOWRiXCJ9IiwiYXVkIjoiS2NydWQiLCJpc3MiOiJsb2NhbGhvc3QiLCJleHAiOjE3MDgyNzk4NjJ9.JMG4BvzR37m86XucwtWjvyylTcpKIQ7guifpY4tisPQ",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "query {\r\n    employee(employeeId: \"f8d815b8-be9f-4d4d-b47e-bc75a8554dce\") {\r\n        id\r\n        firstName\r\n        lastName\r\n        fullName\r\n        dob\r\n        maritalStatus\r\n        honorific\r\n        contact {\r\n            id\r\n            email\r\n            phone\r\n        }\r\n   }\r\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/graphql",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all (paginated)",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2NvbnRleHQiOiJ7XCJhcGlVc2VySWRcIjpcImYyNzE2MDg2LTkzZjktNDQ0OS05ODY1LWYzOTExNWM3NTlkMlwiLFwidXNlcm5hbWVcIjpcImFkbWluXCIsXCJ1c2VyUm9sZUlkXCI6XCJmMjcxMWEzMS1kYmEwLTQ1N2UtOTc2My03Y2IxNjNjMDQ5YWRcIn0iLCJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcxMTIwOTU4OX0.02FHlez1MtpeTI3o9gjqtoyLnEVieMFlrwG-LZe60dg",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "user",
+												"value": "admin",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+                                              "query": "query {\r\n    employees(pageable: { page: 0, size: 10 }) {\r\n        totalElements\r\n        totalPages\r\n        elementsPerPage\r\n        pageIndex\r\n        elementsInPage\r\n        isFirst\r\n        isLast\r\n        hasNext\r\n        hasPrevious\r\n        overflow\r\n        content {\r\n             id\r\n            firstName\r\n            lastName\r\n            fullName\r\n            dob\r\n            maritalStatus\r\n            honorific\r\n            contact {\r\n                id\r\n                email\r\n                phone\r\n            }\r\n        }\r\n   }\r\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/graphql",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get all (paginated & sort)",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2NvbnRleHQiOiJ7XCJhcGlVc2VySWRcIjpcImYyNzE2MDg2LTkzZjktNDQ0OS05ODY1LWYzOTExNWM3NTlkMlwiLFwidXNlcm5hbWVcIjpcImFkbWluXCIsXCJ1c2VyUm9sZUlkXCI6XCJmMjcxMWEzMS1kYmEwLTQ1N2UtOTc2My03Y2IxNjNjMDQ5YWRcIn0iLCJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcxMTIwOTU4OX0.02FHlez1MtpeTI3o9gjqtoyLnEVieMFlrwG-LZe60dg",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "user",
+												"value": "admin",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+                                              "query": "query {\r\n    employees(\r\n        pageable: {\r\n            page: 0, size: 10,\r\n            sort: [\r\n                { field: \"firstName\", direction: ASC },\r\n                { field: \"maritalStatus\", direction: ASC }\r\n            ] \r\n        }\r\n    ) {\r\n        totalElements\r\n        totalPages\r\n        elementsPerPage\r\n        pageIndex\r\n        elementsInPage\r\n        isFirst\r\n        isLast\r\n        hasNext\r\n        hasPrevious\r\n        overflow\r\n        sort { field, direction } \r\n        content {\r\n             id\r\n            firstName\r\n            lastName\r\n            fullName\r\n            dob\r\n            maritalStatus\r\n            honorific\r\n            contact {\r\n                id\r\n                email\r\n                phone\r\n            }\r\n        }\r\n   }\r\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/graphql",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "filter",
+							"item": [
+								{
+									"name": "filter",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoie1wiaWRcIjpcIjJjYzEyMjg0LWIwZjctNGI0Yy05OTYxLTc5ZDY4YTVjMTIyZFwiLFwibmFtZVwiOlwiYWRtaW5cIixcInJvbGVJZFwiOlwiNjc2NDllZjUtNDdhOS00NzkwLWE5ZTMtZmQ0YjRjOWJkOWRiXCJ9IiwiYXVkIjoiS2NydWQiLCJpc3MiOiJsb2NhbGhvc3QiLCJleHAiOjE3MDgyNzk4NjJ9.JMG4BvzR37m86XucwtWjvyylTcpKIQ7guifpY4tisPQ",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+                                              "query": "query {\r\n    filterEmployees(\r\n       filterSet: { \r\n            honorific: [MR, MISS], maritalStatus: [SINGLE, MARRIED, DIVORCED]\r\n        }) {\r\n        totalElements\r\n        totalPages\r\n        elementsPerPage\r\n        pageIndex\r\n        elementsInPage\r\n        isFirst\r\n        isLast\r\n        hasNext\r\n        hasPrevious\r\n        overflow\r\n        content {\r\n             id\r\n            firstName\r\n            lastName\r\n            fullName\r\n            dob\r\n            maritalStatus\r\n            honorific\r\n            contact {\r\n                id\r\n                email\r\n                phone\r\n            }\r\n        }\r\n   }\r\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/graphql",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "filter (paginated)",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoie1wiaWRcIjpcIjJjYzEyMjg0LWIwZjctNGI0Yy05OTYxLTc5ZDY4YTVjMTIyZFwiLFwibmFtZVwiOlwiYWRtaW5cIixcInJvbGVJZFwiOlwiNjc2NDllZjUtNDdhOS00NzkwLWE5ZTMtZmQ0YjRjOWJkOWRiXCJ9IiwiYXVkIjoiS2NydWQiLCJpc3MiOiJsb2NhbGhvc3QiLCJleHAiOjE3MDgyNzk4NjJ9.JMG4BvzR37m86XucwtWjvyylTcpKIQ7guifpY4tisPQ",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+                                              "query": "query {\r\n    filterEmployees(\r\n       filterSet: { \r\n            honorific: [MR, MISS], maritalStatus: [SINGLE, MARRIED, DIVORCED],\r\n            pageable: { page: 1, size: 5 }\r\n        }) {\r\n        totalElements\r\n        totalPages\r\n        elementsPerPage\r\n        pageIndex\r\n        elementsInPage\r\n        isFirst\r\n        isLast\r\n        hasNext\r\n        hasPrevious\r\n        content {\r\n             id\r\n            firstName\r\n            lastName\r\n            fullName\r\n            dob\r\n            maritalStatus\r\n            honorific\r\n            contact {\r\n                id\r\n                email\r\n                phone\r\n            }\r\n        }\r\n   }\r\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/graphql",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "filter (paginated & sort)",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoie1wiaWRcIjpcIjJjYzEyMjg0LWIwZjctNGI0Yy05OTYxLTc5ZDY4YTVjMTIyZFwiLFwibmFtZVwiOlwiYWRtaW5cIixcInJvbGVJZFwiOlwiNjc2NDllZjUtNDdhOS00NzkwLWE5ZTMtZmQ0YjRjOWJkOWRiXCJ9IiwiYXVkIjoiS2NydWQiLCJpc3MiOiJsb2NhbGhvc3QiLCJleHAiOjE3MDgyNzk4NjJ9.JMG4BvzR37m86XucwtWjvyylTcpKIQ7guifpY4tisPQ",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+                                              "query": "query {\r\n    filterEmployees(\r\n       filterSet: { \r\n            honorific: [MR, MISS], maritalStatus: [SINGLE, MARRIED, DIVORCED],\r\n            pageable: {\r\n                page: 0, size: 10,\r\n                sort: [\r\n                    { field: \"firstName\", direction: ASC },\r\n                    { field: \"maritalStatus\", direction: ASC }\r\n                ] \r\n            }\r\n        }) {\r\n        totalElements\r\n        totalPages\r\n        elementsPerPage\r\n        pageIndex\r\n        elementsInPage\r\n        isFirst\r\n        isLast\r\n        hasNext\r\n        hasPrevious\r\n        overflow\r\n        sort { field, direction }\r\n        content {\r\n             id\r\n            firstName\r\n            lastName\r\n            fullName\r\n            dob\r\n            maritalStatus\r\n            honorific\r\n            contact {\r\n                id\r\n                email\r\n                phone\r\n            }\r\n        }\r\n   }\r\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/graphql",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "delete",
+							"item": [
+								{
+									"name": "delete",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoie1wiaWRcIjpcIjJjYzEyMjg0LWIwZjctNGI0Yy05OTYxLTc5ZDY4YTVjMTIyZFwiLFwibmFtZVwiOlwiYWRtaW5cIixcInJvbGVJZFwiOlwiNjc2NDllZjUtNDdhOS00NzkwLWE5ZTMtZmQ0YjRjOWJkOWRiXCJ9IiwiYXVkIjoiS2NydWQiLCJpc3MiOiJsb2NhbGhvc3QiLCJleHAiOjE3MDgyNzk4NjJ9.JMG4BvzR37m86XucwtWjvyylTcpKIQ7guifpY4tisPQ",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\r\n    deleteEmployee(employeeId: \"1ca6280c-6e0a-4690-b496-17f8cc84a110\")\r\n}\r\n",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/graphql",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete all",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoie1wiaWRcIjpcIjJjYzEyMjg0LWIwZjctNGI0Yy05OTYxLTc5ZDY4YTVjMTIyZFwiLFwibmFtZVwiOlwiYWRtaW5cIixcInJvbGVJZFwiOlwiNjc2NDllZjUtNDdhOS00NzkwLWE5ZTMtZmQ0YjRjOWJkOWRiXCJ9IiwiYXVkIjoiS2NydWQiLCJpc3MiOiJsb2NhbGhvc3QiLCJleHAiOjE3MDgyNzk4NjJ9.JMG4BvzR37m86XucwtWjvyylTcpKIQ7guifpY4tisPQ",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\r\n    deleteAllEmployees\r\n}\r\n",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/graphql",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "employment",
+					"item": [
+						{
+							"name": "create",
+							"item": [
+								{
+									"name": "create",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2NvbnRleHQiOiJ7XCJ1c2VySWRcIjpcIjdhMTcxNWE5LWYzYmQtNDY4NS05ZWQyLTQxMDlhY2Q0ZmNhN1wiLFwidXNlcm5hbWVcIjpcImFkbWluXCIsXCJ1c2VyUm9sZUlkXCI6XCJlODhiYTNjOS0wNmJhLTRlNjUtODIyOC1jM2I1YzFhNzFhMDdcIn0iLCJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcxMDA5NDc0OH0.WnrJbo_c414QQCzQ1u6r8dPMzfHhn3e7pzh3ZVfgKVY",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+                                              "query": "mutation {\r\n    createEmployment(employeeId: \"492d423b-554f-41ad-bca7-14b5f82041db\",\r\n            employment: {\r\n            probationEndDate: \"2023-04-01\",\r\n            status: ACTIVE,\r\n            workModality: REMOTE,\r\n            period: {\r\n                isActive: true,\r\n                startDate: \"2023-02-01\",\r\n                endDate: null,\r\n                comments: null\r\n            }\r\n        }\r\n    ) {\r\n        id\r\n        probationEndDate\r\n        status,\r\n        workModality\r\n        period {\r\n            isActive\r\n            startDate\r\n            endDate\r\n            comments\r\n        }\r\n        employee {\r\n            id\r\n            fullName\r\n            maritalStatus\r\n            honorific\r\n            contact {\r\n                id\r\n                email\r\n                phone\r\n            }\r\n        }\r\n    }\r\n}\r\n",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/graphql",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "update",
+							"item": [
+								{
+									"name": "update",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoie1wiaWRcIjpcIjJjYzEyMjg0LWIwZjctNGI0Yy05OTYxLTc5ZDY4YTVjMTIyZFwiLFwibmFtZVwiOlwiYWRtaW5cIixcInJvbGVJZFwiOlwiNjc2NDllZjUtNDdhOS00NzkwLWE5ZTMtZmQ0YjRjOWJkOWRiXCJ9IiwiYXVkIjoiS2NydWQiLCJpc3MiOiJsb2NhbGhvc3QiLCJleHAiOjE3MDgyNzk4NjJ9.JMG4BvzR37m86XucwtWjvyylTcpKIQ7guifpY4tisPQ",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+                                              "query": "mutation {\r\n    updateEmployment(employeeId: \"492d423b-554f-41ad-bca7-14b5f82041db\", employmentId: \"fa14fd6a-d6db-41b2-bcea-0f0892ac96e2\",\r\n                     employment: {\r\n                        probationEndDate: \"2023-04-01\",\r\n                        status: ONBOARDING,\r\n                        workModality: HYBRID,\r\n                        period: {\r\n                            isActive: false,\r\n                            startDate: \"2023-01-01\",\r\n                            endDate: null,\r\n                            comments: null\r\n                        }\r\n                    }\r\n    ) {\r\n        id\r\n        probationEndDate\r\n        status,\r\n        workModality\r\n        period {\r\n            isActive\r\n            startDate\r\n            endDate\r\n            comments\r\n        }\r\n        employee {\r\n            id\r\n            fullName\r\n            maritalStatus\r\n            honorific\r\n            contact {\r\n                id\r\n                email\r\n                phone\r\n            }\r\n        }\r\n    }\r\n}\r\n",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/graphql",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "find",
+							"item": [
+								{
+									"name": "get all",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2NvbnRleHQiOiJ7XCJ1c2VySWRcIjpcIjdhMTcxNWE5LWYzYmQtNDY4NS05ZWQyLTQxMDlhY2Q0ZmNhN1wiLFwidXNlcm5hbWVcIjpcImFkbWluXCIsXCJ1c2VyUm9sZUlkXCI6XCJlODhiYTNjOS0wNmJhLTRlNjUtODIyOC1jM2I1YzFhNzFhMDdcIn0iLCJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcxMDA5NDc0OH0.WnrJbo_c414QQCzQ1u6r8dPMzfHhn3e7pzh3ZVfgKVY",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+                                              "query": "query {\r\n    employments(employeeId: \"a149920a-4bf7-4049-9f01-ecd228fa9ced\") {\r\n        id\r\n        probationEndDate\r\n        status\r\n        workModality\r\n        period {\r\n            isActive\r\n            startDate\r\n            endDate\r\n            comments\r\n        }\r\n        employee {\r\n            id\r\n            firstName\r\n            lastName\r\n            fullName\r\n            dob\r\n            maritalStatus\r\n            honorific\r\n            contact {\r\n                id\r\n                email\r\n                phone\r\n            }\r\n        }\r\n   }\r\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/graphql",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "get by id",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoie1wiaWRcIjpcIjJjYzEyMjg0LWIwZjctNGI0Yy05OTYxLTc5ZDY4YTVjMTIyZFwiLFwibmFtZVwiOlwiYWRtaW5cIixcInJvbGVJZFwiOlwiNjc2NDllZjUtNDdhOS00NzkwLWE5ZTMtZmQ0YjRjOWJkOWRiXCJ9IiwiYXVkIjoiS2NydWQiLCJpc3MiOiJsb2NhbGhvc3QiLCJleHAiOjE3MDgyNzk4NjJ9.JMG4BvzR37m86XucwtWjvyylTcpKIQ7guifpY4tisPQ",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+                                              "query": "query {\r\n    employment(employeeId: \"f8d815b8-be9f-4d4d-b47e-bc75a8554dce\", employmentId: \"bd744700-a167-47ed-9fc3-6a87a6e0081c\") {\r\n        id\r\n        probationEndDate\r\n        status\r\n        workModality\r\n        period {\r\n            isActive\r\n            startDate\r\n            endDate\r\n            comments\r\n        }\r\n        employee {\r\n            id\r\n            firstName\r\n            lastName\r\n            fullName\r\n            dob\r\n            maritalStatus\r\n            honorific\r\n            contact {\r\n                id\r\n                email\r\n                phone\r\n            }\r\n        }\r\n   }\r\n}",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/graphql",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "delete",
+							"item": [
+								{
+									"name": "delete",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoie1wiaWRcIjpcIjJjYzEyMjg0LWIwZjctNGI0Yy05OTYxLTc5ZDY4YTVjMTIyZFwiLFwibmFtZVwiOlwiYWRtaW5cIixcInJvbGVJZFwiOlwiNjc2NDllZjUtNDdhOS00NzkwLWE5ZTMtZmQ0YjRjOWJkOWRiXCJ9IiwiYXVkIjoiS2NydWQiLCJpc3MiOiJsb2NhbGhvc3QiLCJleHAiOjE3MDgyNzk4NjJ9.JMG4BvzR37m86XucwtWjvyylTcpKIQ7guifpY4tisPQ",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\r\n    deleteEmployment(employmentId: \"e49b7e55-3d41-4f04-a84e-0934c2739e35\")\r\n}\r\n",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/graphql",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete all",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"pm.sendRequest({\r",
+													"    url: \"http://localhost:8080/auth/token/create\",\r",
+													"    method: 'POST',\r",
+													"    header: {\r",
+													"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+													"    }\r",
+													"}, function (err, response) {\r",
+													"    if (!err) {\r",
+													"        token = response.stream.toString()\r",
+													"        pm.request.headers.add({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + token\r",
+													"        });\r",
+													"    }\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoie1wiaWRcIjpcIjJjYzEyMjg0LWIwZjctNGI0Yy05OTYxLTc5ZDY4YTVjMTIyZFwiLFwibmFtZVwiOlwiYWRtaW5cIixcInJvbGVJZFwiOlwiNjc2NDllZjUtNDdhOS00NzkwLWE5ZTMtZmQ0YjRjOWJkOWRiXCJ9IiwiYXVkIjoiS2NydWQiLCJpc3MiOiJsb2NhbGhvc3QiLCJleHAiOjE3MDgyNzk4NjJ9.JMG4BvzR37m86XucwtWjvyylTcpKIQ7guifpY4tisPQ",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "mutation {\r\n    deleteAllEmployments(employeeId: \"1b3c5619-0ec8-46c8-9f7c-7ebea3ec9aaf\")\r\n}\r\n",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/graphql",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Token",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/auth/token/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"token",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: \"http://localhost:8080/auth/token/create\",\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+									"    }\r",
+									"}, function (err, response) {\r",
+									"    if (!err) {\r",
+									"        token = response.stream.toString()\r",
+									"        pm.request.headers.add({\r",
+									"            key: 'Authorization',\r",
+									"            value: 'Bearer ' + token\r",
+									"        });\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoie1wiaWRcIjpcIjJjYzEyMjg0LWIwZjctNGI0Yy05OTYxLTc5ZDY4YTVjMTIyZFwiLFwibmFtZVwiOlwiYWRtaW5cIixcInJvbGVJZFwiOlwiNjc2NDllZjUtNDdhOS00NzkwLWE5ZTMtZmQ0YjRjOWJkOWRiXCJ9IiwiYXVkIjoiS2NydWQiLCJpc3MiOiJsb2NhbGhvc3QiLCJleHAiOjE3MDgyNzk4NjJ9.JMG4BvzR37m86XucwtWjvyylTcpKIQ7guifpY4tisPQ",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/auth/token/refresh",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"token",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.sendRequest({\r",
+									"    url: \"http://localhost:8080/auth/token/create\",\r",
+									"    method: 'POST',\r",
+									"    header: {\r",
+									"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+									"    }\r",
+									"}, function (err, response) {\r",
+									"    if (!err) {\r",
+									"        token = response.stream.toString()\r",
+									"        pm.request.headers.add({\r",
+									"            key: 'Authorization',\r",
+									"            value: 'Bearer ' + token\r",
+									"        });\r",
+									"    }\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTY5ODEzMTQyNn0.2AXd4AVrTRmpUcmPfNwssKJYuI6mJaKTTQEYsnRIEvU",
+								"type": "default",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"AnyName\",\r\n    \"lastName\": \"AnySurname\",\r\n    \"dob\": \"1988-01-01\",\r\n    \"contact\": {\r\n        \"email\": \"AnyName.AnySurname@email.com\",\r\n        \"phone\": \"123-456-7890\"\r\n    }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

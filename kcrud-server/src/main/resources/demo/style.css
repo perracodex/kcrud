@@ -1,0 +1,274 @@
+/*
+ * Copyright (c) 2024-Present Perraco Labs. All rights reserved.
+ * This work is licensed under the terms of the MIT license.
+ * For a copy, see <https://opensource.org/licenses/MIT>
+ */
+
+body {
+    background-color: #1c1e26;
+    color: #d5d6db;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    color: #336699;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.table-header {
+    background-color: #333648; /* Background color for header */
+    color: #649ee0; /* Text color for header */
+    padding: 10px;
+    border: 1px solid #1d1d25;
+    border-radius: 6px;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    margin-bottom: 12px;
+    max-height: 32px;
+    display: flex;
+    align-items: center;
+}
+
+.table-header div, .table-row div {
+    text-align: left;
+    padding: 10px;
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* Avatar column adjustments */
+.table-header div:first-child, .table-row div:first-child {
+    flex: 0 1 72px; /* Avatar */
+}
+
+/* Number (#) column adjustments */
+.table-header div:nth-child(2), .table-row div:nth-child(2) {
+    flex: 0 1 100px; /* # number */
+}
+
+/* Apply consistent flex properties for all other columns from the third column onwards */
+.table-header div:nth-child(n+3), .table-row div:nth-child(n+3) {
+    flex: 1.5; /* Equal space for remaining columns, adjust as necessary */
+}
+
+.table-header div:nth-child(3), .table-row div:nth-child(3) {
+    flex: 2; /* Name */
+}
+
+.table-header div:nth-child(4), .table-row div:nth-child(4) {
+    flex: 0.5; /* Age */
+}
+
+.table-header div:nth-child(6), .table-row div:nth-child(6) {
+    flex: 1; /* Honorific */
+}
+
+.table-header div:nth-child(7), .table-row div:nth-child(7) {
+    flex: 1.5; /* Marital Status */
+}
+
+.table-header div:nth-child(8), .table-row div:nth-child(8) {
+    flex: 3; /* email */
+}
+
+.table-content {
+    overflow-y: scroll;
+    min-height: 100px;
+    max-height: 600px;
+    border-radius: 6px;
+}
+
+.table-row {
+    display: flex;
+    background-color: #383a48;
+    padding: 10px;
+    height: 48px;
+    box-sizing: border-box;
+    align-items: center;
+    cursor: pointer;
+}
+
+.table-row:hover {
+    border: 1px solid #649ee0;
+}
+
+.table-row div {
+    color: #d5d6db;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.table-row:nth-child(even) {
+    background-color: #2c2f38;
+}
+
+.page-details {
+    margin-top: 12px;
+    margin-bottom: 12px;
+    padding: 10px;
+    background-color: #333648;
+    color: #d5d6db;
+    border-radius: 6px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .table-header, .table-row {
+        display: block;
+    }
+
+    .table-header div, .table-row div {
+        text-align: right;
+    }
+
+    .table-header {
+        position: static;
+    }
+}
+
+.actions-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.action-records {
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.action-records input[type="number"] {
+    padding: 10px;
+    margin-left: 20px;
+    color: #ffffff;
+    background-color: #2d2e3d;
+    border: 1px solid #9494b6;
+    border-radius: 6px;
+    width: 150px;
+}
+
+.create-records {
+    padding: 10px 20px;
+    margin-left: 20px;
+    color: #ffffff;
+    background-color: #5d9b46;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.create-records:hover {
+    background-color: #53732b;
+}
+
+.json-dump {
+    padding: 10px 20px;
+    margin-left: 20px;
+    color: #ffffff;
+    background-color: #858139;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.json-dump:hover {
+    background-color: #4f4c1e;
+}
+
+.delete-records {
+    padding: 10px 20px;
+    margin-left: 20px;
+    color: #ffffff;
+    background-color: #9b4656;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.delete-records:hover {
+    background-color: #732b38;
+}
+
+.timer {
+    margin-right: 30px;
+    display: inline-block;
+    visibility: visible;
+    align-items: center;
+}
+
+button:disabled, button[disabled] {
+    opacity: .4;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+input:disabled, input[disabled] {
+    opacity: .5;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.page-size-container {
+    text-align: left;
+    align-items: center;
+}
+
+.page-size {
+    padding: 10px 20px;
+    margin-left: 20px;
+    max-width: 64px;
+    color: #ffffff;
+    background-color: #2d2e3d;
+    border: 1px solid #9494b6;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    align-items: flex-start;
+}
+
+.avatar span {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    overflow: hidden;
+    background-color: #656565;
+    color: #ffffff;
+    border: 2px solid #cecece;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8em;
+}
+
+.info-card {
+    display: none; /* Hidden by default */
+    position: absolute;
+    background-color: #323449;
+    color: #fac9b7;
+    border: 2px solid #424650;
+    padding: 16px;
+    border-radius: 10px;
+    top: 20px;
+    left: 20px;
+    width: 480px;
+    z-index: 3;
+    font-size: 1.25em;
+    cursor: pointer;
+}

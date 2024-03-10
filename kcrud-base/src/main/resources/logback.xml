@@ -1,0 +1,24 @@
+<configuration debug="false">
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener"/>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{YYYY-MM-dd HH:mm:ss.SSS} | [%thread] | %-5level | %X{id} | %logger | %msg%n</pattern>
+        </encoder>
+    </appender>
+    <root level="TRACE">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+    <logger name="Application" level="INFO"/>
+    <logger name="kcrud" level="DEBUG"/>
+
+    <logger name="io.ktor.routing.Routing" level="DEBUG"/>
+    <logger name="io.netty" level="WARN"/>
+    <logger name="io.swagger" level="ERROR"/>
+    <logger name="com.github.jknack" level="OFF"/>
+    <logger name="Exposed" level="INFO" additivity="false"/>
+    <logger name="org.quartz" level="INFO"/>
+    <logger name="com.zaxxer.hikari" level="WARN"/>
+    <logger name="io.ktor.server.plugins.callid" level="OFF"/>
+    <logger name="graphql.execution.ExecutionStrategy" level="OFF"/>
+</configuration>
