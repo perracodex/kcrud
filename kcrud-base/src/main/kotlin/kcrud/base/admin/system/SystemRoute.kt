@@ -44,7 +44,7 @@ fun Route.systemRoute() {
     }
 
     NetworkUtils.logEndpoints(
-        reason = "System endpoints",
+        reason = "Snowflake",
         endpoints = listOf(
             "snowflake/${SnowflakeFactory.nextId()}"
         )

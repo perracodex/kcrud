@@ -79,7 +79,6 @@ object ContactTable : Table(name = "contact") {
     /**
      * The timestamp when the record was created.
      */
-    @Suppress("unused")
     val createdAt = datetime(
         name = "created_at"
     ).defaultExpression(CurrentDateTime)

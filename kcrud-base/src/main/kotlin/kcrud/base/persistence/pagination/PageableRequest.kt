@@ -26,6 +26,17 @@ import io.ktor.server.application.*
  * Similarly, a [PaginationError.InvalidOrderDirection] is raised if an invalid direction is
  * specified in any 'sort' parameter.
  *
+ * The sorting logic accommodates scenarios involving multiple tables. If the sorting field specification
+ * includes a table name (denoted by a field name prefixed with the table name and separated by a dot,
+ * like "table.fieldName"), the sorting is applied specifically to the identified table and field.
+ * This explicit specification prevents ambiguity and ensures accurate sorting when queries involve
+ * multiple tables with potentially overlapping field names.
+ *
+ * If the field name does not include a table prefix, the function applies the sort order to the first
+ * matching field found among the query's target tables. It's important to note that without specifying
+ * table names, there might be ambiguity in queries targeting multiple tables with identical field names;
+ * hence, prefixing field names with table names is recommended for clarity and precision.
+ *
  * If no pagination or sorting is requested, the function returns null, indicating the absence of
  * pageable constraints.
  *
@@ -35,6 +46,7 @@ import io.ktor.server.application.*
  * @throws PaginationError.InvalidOrderDirection if a sorting direction is invalid.
  */
 fun ApplicationCall.getPageable(): Pageable? {
+
     val parameters: Parameters = request.queryParameters
     val pageIndex: Int? = parameters["page"]?.toIntOrNull()
     val pageSize: Int? = parameters["size"]?.toIntOrNull()
@@ -52,27 +64,31 @@ fun ApplicationCall.getPageable(): Pageable? {
         return null
     }
 
-    // Parse sorting parameters into a list of Order objects.
+    // Parse sorting parameters into a list of Sort objects.
     val sort: List<Pageable.Sort>? = sortParameters?.mapNotNull { parameter ->
-        val parts: List<String> = parameter.split(",").map { it.trim() }
+        val sortSegments: List<String> = parameter.split(SORT_SEGMENT_DELIMITER).map { it.trim() }
 
         when {
-            parts.size >= 2 -> {
-                // Only the first two elements of a sort parameter are considered, the rest are ignored.
-                val field: String = parts[0] // The first part is always the field name.
-                val directionString: String = parts[1] // The second part is always the direction.
+            sortSegments.isNotEmpty() -> {
+                val fieldSegment: String = sortSegments[FIELD_SEGMENT_INDEX]
+                val tableColumnPair: TableColumnPair = parseTableAndField(segment = fieldSegment)
 
-                try {
-                    val direction: Pageable.Direction = Pageable.Direction.valueOf(directionString.uppercase())
-                    Pageable.Sort(field = field, direction = direction)
-                } catch (e: IllegalArgumentException) {
-                    PaginationError.InvalidOrderDirection(direction = directionString).raise()
+                val direction: Pageable.Direction = if (sortSegments.size >= 2) {
+                    val directionString: String = sortSegments[DIRECTION_SEGMENT_INDEX]
+                    try {
+                        Pageable.Direction.valueOf(directionString.uppercase())
+                    } catch (e: IllegalArgumentException) {
+                        PaginationError.InvalidOrderDirection(direction = directionString).raise()
+                    }
+                } else {
+                    Pageable.Direction.ASC // Default direction.
                 }
-            }
 
-            parts.size == 1 -> {
-                // Treats a single part as a field name, defaulting direction to ASC.
-                Pageable.Sort(field = parts[0], direction = Pageable.Direction.ASC)
+                Pageable.Sort(
+                    table = tableColumnPair.table,
+                    field = tableColumnPair.field,
+                    direction = direction
+                )
             }
 
             else -> null // This case should never happen due to initial validation.
@@ -85,3 +101,34 @@ fun ApplicationCall.getPageable(): Pageable? {
         sort = sort
     )
 }
+
+/**
+ * Parses the table name and field name from a segment of a sort parameter.
+ *
+ * @param segment The segment of a sort parameter to parse the table and field names from.
+ * @return A [TableColumnPair] object containing the table and field names.
+ */
+private fun parseTableAndField(segment: String): TableColumnPair {
+    return if (segment.contains(FIELD_SEGMENT_DELIMITER)) {
+        val fieldParts: List<String> = segment.split(FIELD_SEGMENT_DELIMITER)
+        TableColumnPair(table = fieldParts[TABLE_NAME_INDEX], field = fieldParts[FIELD_NAME_INDEX])
+    } else {
+        // No table specified.
+        TableColumnPair(table = null, field = segment)
+    }
+}
+
+/**
+ * Represents a table and column name pair.
+ *
+ * @property table Optional name of the table the field belongs to. Used to avoid ambiguity.
+ * @property field The name of the field to sort by.
+ */
+private data class TableColumnPair(val table: String?, val field: String)
+
+private const val SORT_SEGMENT_DELIMITER: Char = ','
+private const val FIELD_SEGMENT_DELIMITER: Char = '.'
+private const val FIELD_SEGMENT_INDEX: Int = 0
+private const val DIRECTION_SEGMENT_INDEX: Int = 1
+private const val TABLE_NAME_INDEX: Int = 0
+private const val FIELD_NAME_INDEX: Int = 1

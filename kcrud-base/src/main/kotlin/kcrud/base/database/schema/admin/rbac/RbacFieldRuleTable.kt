@@ -59,7 +59,6 @@ object RbacFieldRuleTable : Table(name = "rbac_field_rule") {
     /**
      * The timestamp when the record was created.
      */
-    @Suppress("unused")
     val createdAt = datetime(
         name = "created_at"
     ).defaultExpression(CurrentDateTime)

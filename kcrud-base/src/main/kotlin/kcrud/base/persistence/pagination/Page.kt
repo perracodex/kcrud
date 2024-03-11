@@ -50,37 +50,41 @@ open class Page<out T : Any>(
          * @return A new [Page] instance with the given [content], including a computed page details.
          */
         fun <T : Any> build(content: List<T>, totalElements: Int, pageable: Pageable?): Page<T> {
-            // If the page size is 0, then the requested size is the entire dataset elements.
-            val (totalPages, pageSize) = when {
-                // No content, no pages.
-                (content.isEmpty()) -> 0 to 0
+            // Set default page size.
+            val pageSize: Int = pageable?.size.takeIf { it != null && it > 0 } ?: totalElements
 
-                // No pagination, just one page.
-                (pageable == null) || (pageable.size <= 0) -> 1 to content.size
-
-                // Compute the total pages and the requested size.
-                else -> {
-                    val requestedSize: Int = pageable.size
-                    val computedTotalPages: Int = max(1, (totalElements + requestedSize - 1) / requestedSize)
-                    computedTotalPages to requestedSize
-                }
+            // Calculate total pages, ensuring totalPages is 0 if there are no elements.
+            val totalPages: Int = if (totalElements > 0 && pageSize > 0) {
+                max(1, (totalElements + pageSize - 1) / pageSize)
+            } else {
+                0
             }
 
+            // Determine the current page index.
             val pageIndex: Int = pageable?.page ?: 0
 
+            // Adjust pagination state based on total pages and content availability.
+            val isFirst: Boolean = (pageIndex == 0) || (totalPages == 0)
+            val isLast: Boolean = (pageIndex >= totalPages - 1) || (totalPages == 0)
+            val hasNext: Boolean = (pageIndex < totalPages - 1) && (totalPages > 0)
+            val hasPrevious: Boolean = (pageIndex > 0) && (totalPages > 0)
+            val overflow: Boolean = (pageIndex >= totalPages) && (totalPages > 0)
+            val elementsInPage: Int = content.size
+
+            // Construct the Page object with the determined states.
             return Page(
                 totalPages = totalPages,
                 pageIndex = pageIndex,
                 totalElements = totalElements,
                 elementsPerPage = pageSize,
-                elementsInPage = content.size,
-                isFirst = (pageIndex == 0),
-                isLast = (pageIndex == totalPages - 1),
-                hasNext = (pageIndex < totalPages - 1),
-                hasPrevious = (pageIndex > 0),
-                overflow = (pageIndex >= totalPages),
+                elementsInPage = elementsInPage,
+                isFirst = isFirst,
+                isLast = isLast,
+                hasNext = hasNext,
+                hasPrevious = hasPrevious,
+                overflow = overflow,
                 sort = pageable?.sort,
-                content = content,
+                content = content
             )
         }
     }

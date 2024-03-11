@@ -63,7 +63,6 @@ object RbacResourceRuleTable : Table(name = "rbac_resource_rule") {
     /**
      * The timestamp when the record was created.
      */
-    @Suppress("unused")
     val createdAt = datetime(
         name = "created_at"
     ).defaultExpression(CurrentDateTime)

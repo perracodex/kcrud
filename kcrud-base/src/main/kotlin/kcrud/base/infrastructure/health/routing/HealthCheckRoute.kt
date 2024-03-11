@@ -37,7 +37,7 @@ fun Route.healthCheckRoute() {
     }
 
     NetworkUtils.logEndpoints(
-        reason = "Healthcheck endpoint",
+        reason = "Healthcheck",
         endpoints = listOf("health")
     )
 }

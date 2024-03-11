@@ -31,8 +31,16 @@ data class Pageable(
         ASC, DESC
     }
 
+    /**
+     * Sorting order for a field.
+     *
+     * @property table Optional name of the table the field belongs to. Used to avoid ambiguity.
+     * @property field The name of the field to sort by.
+     * @property direction The direction of the sorting.
+     */
     @Serializable
     data class Sort(
+        val table: String? = null,
         val field: String,
         val direction: Direction
     ) {

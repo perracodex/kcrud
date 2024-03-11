@@ -51,7 +51,6 @@ object RbacRoleTable : Table(name = "rbac_role") {
     /**
      * The timestamp when the record was created.
      */
-    @Suppress("unused")
     val createdAt = datetime(
         name = "created_at"
     ).defaultExpression(CurrentDateTime)

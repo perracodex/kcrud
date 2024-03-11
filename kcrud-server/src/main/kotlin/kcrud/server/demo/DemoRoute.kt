@@ -46,7 +46,7 @@ fun Route.employeesDemoRoute() {
     }
 
     NetworkUtils.logEndpoints(
-        reason = "Employees Demo", endpoints = listOf("demo?page=0&size=24")
+        reason = "Demo", endpoints = listOf("demo?page=0&size=24")
     )
 }
 

@@ -24,6 +24,7 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
+import kotlin.random.Random
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -56,11 +57,11 @@ class PaginationTest : KoinComponent {
             val totalRecords = 10
 
             // No records.
-            employeeService.findAll(pageable = Pageable(page = 1, size = totalRecords)).also { page ->
+            employeeService.findAll(pageable = Pageable(page = 0, size = totalRecords)).also { page ->
                 assertEquals(
-                    expected = 1,
+                    expected = 0,
                     actual = page.totalPages,
-                    message = "Total pages should be 1."
+                    message = "Total pages should be 0."
                 )
                 assertEquals(
                     expected = 0,
@@ -78,9 +79,9 @@ class PaginationTest : KoinComponent {
                     message = "Elements in page should be 0."
                 )
                 assertEquals(
-                    expected = 1,
+                    expected = 0,
                     actual = page.pageIndex,
-                    message = "Page index should be 1."
+                    message = "Page index should be 0."
                 )
                 assertEquals(
                     expected = false,
@@ -125,7 +126,7 @@ class PaginationTest : KoinComponent {
             }
 
             // 1 Page
-            employeeService.findAll(pageable = Pageable(page = 1, size = 0)).also { page ->
+            employeeService.findAll(pageable = Pageable(page = 0, size = 0)).also { page ->
                 assertEquals(
                     expected = 1,
                     actual = page.totalPages,
@@ -147,9 +148,9 @@ class PaginationTest : KoinComponent {
                     message = "Elements in page should be $totalRecords."
                 )
                 assertEquals(
-                    expected = 1,
+                    expected = 0,
                     actual = page.pageIndex,
-                    message = "Page index should be 1."
+                    message = "Page index should be 0."
                 )
                 assertEquals(
                     expected = false,
@@ -207,25 +208,25 @@ class PaginationTest : KoinComponent {
                 )
 
                 assertEquals(
-                    expected = true,
+                    expected = false,
                     actual = page.hasNext,
                     message = "Has next should be true."
                 )
 
                 assertEquals(
-                    expected = false,
+                    expected = true,
                     actual = page.hasPrevious,
                     message = "Has previous should be false."
                 )
 
                 assertEquals(
-                    expected = true,
+                    expected = false,
                     actual = page.isFirst,
                     message = "Is first should be true."
                 )
 
                 assertEquals(
-                    expected = false,
+                    expected = true,
                     actual = page.isLast,
                     message = "Is last should be false."
                 )
@@ -261,7 +262,7 @@ class PaginationTest : KoinComponent {
 
             val elementsPerPage = 5
 
-            (1..3).forEach { pageIndex ->
+            (0..2).forEach { pageIndex ->
                 employeeService.findAll(pageable = Pageable(page = pageIndex, size = elementsPerPage)).also { page ->
                     assertEquals(
                         expected = 3,
@@ -280,7 +281,7 @@ class PaginationTest : KoinComponent {
                     )
 
                     when (pageIndex) {
-                        1 -> {
+                        0 -> {
                             assertEquals(
                                 expected = elementsPerPage,
                                 actual = page.elementsInPage,
@@ -308,7 +309,7 @@ class PaginationTest : KoinComponent {
                             )
                         }
 
-                        2 -> {
+                        1 -> {
                             assertEquals(
                                 expected = elementsPerPage,
                                 actual = page.elementsInPage,
@@ -336,7 +337,7 @@ class PaginationTest : KoinComponent {
                             )
                         }
 
-                        3 -> {
+                        2 -> {
                             assertEquals(
                                 expected = 2,
                                 actual = page.elementsInPage,
@@ -446,16 +447,14 @@ class PaginationTest : KoinComponent {
                 employeeService.create(employeeRequest = employeeRequest)
             }
 
-            val random = kotlin.random.Random
-
             // Test random pagination.
-            (1..25).forEach { _ ->
-                val pageSize: Int = random.nextInt(from = 1, until = 50)
-                val pageIndex: Int = random.nextInt(from = 1, until = (totalRecords / pageSize) + 1)
+            (0..25).forEach { _ ->
+                val pageSize: Int = Random.nextInt(from = 1, until = 50)
+                val pageIndex: Int = Random.nextInt(from = 0, until = (totalRecords / pageSize))
 
                 employeeService.findAll(pageable = Pageable(page = pageIndex, size = pageSize)).also { page ->
                     val expectedTotalPages: Int = (totalRecords + pageSize - 1) / pageSize // Calculate expected total pages.
-                    val startIndex: Int = (pageIndex - 1) * pageSize // Calculate the start index of the records for the current page.
+                    val startIndex: Int = pageIndex * pageSize // Calculate the start index of the records for the current page.
 
                     assertEquals(
                         expected = expectedTotalPages,
@@ -484,7 +483,10 @@ class PaginationTest : KoinComponent {
                     )
 
                     // Verify the actual records on the page.
-                    val expectedNames: List<String> = names.subList(startIndex, minOf(startIndex + pageSize, totalRecords))
+                    val expectedNames: List<String> = names.subList(
+                        fromIndex = startIndex,
+                        toIndex = minOf(a = startIndex + pageSize, b = totalRecords)
+                    )
                     val actualNames: List<String> = page.content.map { it.firstName }
                     assertEquals(
                         expected = expectedNames,
@@ -525,12 +527,11 @@ class PaginationTest : KoinComponent {
                 createdEmployees.add(createdEmployee)
             }
 
-            val random = kotlin.random.Random
-            val sortFields = listOf("firstName", "lastName", "honorific", "maritalStatus", "dob")
+            val sortFields: List<String> = listOf("firstName", "lastName", "honorific", "maritalStatus", "dob")
 
-            (1..25).forEach { _ ->
-                val pageSize: Int = random.nextInt(from = 1, until = 50)
-                val pageIndex: Int = random.nextInt(from = 1, until = (totalRecords / pageSize) + 1)
+            (0..25).forEach { _ ->
+                val pageSize: Int = Random.nextInt(from = 1, until = 50)
+                val pageIndex: Int = Random.nextInt(from = 0, until = (totalRecords / pageSize))
                 val sortField: String = sortFields.random()
                 val sortOrder: Pageable.Direction = Pageable.Direction.entries.random()
 
@@ -572,7 +573,7 @@ class PaginationTest : KoinComponent {
                 employeeService.findAll(pageable = pageable).also { page ->
                     val expectedTotalPages: Int = (totalRecords + pageSize - 1) / pageSize
                     val expectedRecordsForPage = sortedEmployees
-                        .drop(n = (pageIndex - 1) * pageSize)
+                        .drop(n = pageIndex * pageSize)
                         .take(pageSize)
 
                     assertEquals(

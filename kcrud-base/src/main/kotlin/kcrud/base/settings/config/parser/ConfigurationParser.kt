@@ -40,6 +40,14 @@ internal object ConfigurationParser {
     private val tracer = Tracer<ConfigurationParser>()
 
     /**
+     * Represents a mapping from a constructor parameter to its corresponding configuration value.
+     *
+     * @property parameter The constructor parameter.
+     * @property value The value corresponding to the constructor parameter.
+     */
+    private data class ParameterMapping(val parameter: KParameter, val value: Any)
+
+    /**
      * Performs the application configuration parsing.
      * Top-level configurations are parsed concurrently.
      *
@@ -62,7 +70,7 @@ internal object ConfigurationParser {
         val constructorParameters: Map<String, KParameter> = constructor.parameters.associateBy { it.name!! }
 
         val arguments: Map<KParameter, Any> = coroutineScope {
-            val tasks: List<Deferred<Pair<KParameter, Any>?>> = mappings.map { configClassMap ->
+            val tasks: List<Deferred<ParameterMapping?>> = mappings.map { configClassMap ->
                 async {
                     // Map each configuration path to its corresponding class.
                     // Nested settings are handled recursively.
@@ -74,13 +82,13 @@ internal object ConfigurationParser {
 
                     // Pair the corresponding constructor parameter with the instantiated configuration class.
                     constructorParameters[configClassMap.argument]?.let { parameter ->
-                        parameter to configInstance
+                        ParameterMapping(parameter, configInstance)
                     }
                 }
             }
 
             // Await all results and construct the arguments map.
-            tasks.mapNotNull { it.await() }.toMap()
+            tasks.mapNotNull { it.await() }.associate { it.parameter to it.value }
         }
 
         // Create the instance of the output type with the mapped configuration values.

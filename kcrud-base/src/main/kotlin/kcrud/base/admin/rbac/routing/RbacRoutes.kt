@@ -30,7 +30,7 @@ fun Route.rbacRoute() {
     rbacAdminRoute()
 
     NetworkUtils.logEndpoints(
-        reason = "RBAC endpoints",
+        reason = "RBAC",
         endpoints = listOf("rbac/login")
     )
 }
