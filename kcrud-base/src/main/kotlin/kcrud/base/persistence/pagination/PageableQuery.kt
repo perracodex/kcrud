@@ -42,21 +42,22 @@ fun Query.applyPagination(pageable: Pageable?): Query {
 }
 
 /**
- * Handles the determination and application of column-based ordering for database
- * queries according to the provided [Pageable] object.
+ * Handles the determination and application of column-based ordering for database queries according
+ * to the provided [Pageable] object.
  *
- * Reflection is used to dynamically resolve column references from field names
- * and employing caching to optimize this process reducing the overhead
- * of repetitive reflection.
+ * Reflection is used to dynamically resolve column references from field names, and employing caching
+ * to optimize this process reducing the overhead of repetitive reflection.
  *
- * Must consider that this approach assumes that the first field name found in the
- * set of tables that compose a query, is the one to be used for the ordering.
- * So, if a query targets multiple tables, in which some of them have the same field name,
- * a different approach should be used. For example by using a prefix for the field name
- * that identifies the table, instead of passing only the field name.
+ * The sorting logic accommodates scenarios involving multiple tables. If the sorting field specification
+ * includes a table name (denoted by a field name prefixed with the table name and separated by a dot,
+ * like "table.fieldName"), the sorting is applied specifically to the identified table and field.
+ * This explicit specification prevents ambiguity and ensures accurate sorting when queries involve
+ * multiple tables with potentially overlapping field names.
  *
- * It also ensures correct column resolution across different tables, for better
- * handling identical names in different tables.
+ * If the field name does not include a table prefix, the function applies the sort order to the first
+ * matching field found among the query's target tables. It's important to note that without specifying
+ * table names, there might be ambiguity in queries targeting multiple tables with identical field names;
+ * hence, prefixing field names with table names is recommended for clarity and precision.
  */
 private object QueryOrderingHelper {
 
@@ -73,8 +74,24 @@ private object QueryOrderingHelper {
      */
     fun applyOrder(query: Query, pageable: Pageable?) {
         pageable?.sort?.forEach { order ->
-            val column: Column<*> = getSortColumn(targets = query.targets, fieldName = order.field)
-            val sortOrder: SortOrder = SortOrder.ASC.takeIf { (order.direction == Pageable.Direction.ASC) } ?: SortOrder.DESC
+            val (tableName, fieldName) = if (order.field.contains(".")) {
+                val parts: List<String> = order.field.split(".")
+                parts[0] to parts[1] // Split into table name and field name.
+            } else {
+                null to order.field // No table specified.
+            }
+
+            val column: Column<*> = if (tableName.isNullOrBlank()) {
+                // No specific table, search among all targets.
+                getSortColumn(targets = query.targets, fieldName = fieldName)
+            } else {
+                // If a table name is specified, find the corresponding table from the query targets.
+                val table: Table = query.targets.firstOrNull { it.tableName.equals(tableName, ignoreCase = true) }
+                    ?: throw IllegalArgumentException("Invalid sort table: $tableName")
+                getSortColumn(targets = listOf(table), fieldName = fieldName)
+            }
+
+            val sortOrder: SortOrder = if (order.direction == Pageable.Direction.ASC) SortOrder.ASC else SortOrder.DESC
             query.orderBy(column to sortOrder)
         }
     }
@@ -88,14 +105,13 @@ private object QueryOrderingHelper {
      * @throws IllegalArgumentException If the column is not found in any of the tables.
      */
     private fun getSortColumn(targets: List<Table>, fieldName: String): Column<*> {
-        for (table in targets) {
+        targets.forEach { table ->
             try {
                 return findColumn(table = table, fieldName = fieldName)
             } catch (e: IllegalArgumentException) {
                 // Ignore and try the next table.
             }
         }
-
         throw IllegalArgumentException("Invalid sort column: $fieldName")
     }
 
@@ -112,7 +128,7 @@ private object QueryOrderingHelper {
         val tableClass: KClass<out Table> = table::class
         val cacheKey: TableColumnKey = tableClass to fieldName.lowercase()
 
-        // Retrieve from cache, or use reflection to find the column and cache it.
+        // Retrieve from cache or use reflection to find the column and cache it.
         return columnCache.getOrPut(key = cacheKey) {
             tableClass.memberProperties
                 .firstOrNull {
@@ -120,7 +136,7 @@ private object QueryOrderingHelper {
                             it.returnType.classifier == Column::class
                 }
                 ?.getter?.call(table) as? Column<*>
-                ?: throw IllegalArgumentException("Invalid sort column: $fieldName")
+                ?: throw IllegalArgumentException("Column '$fieldName' not found in table '${table.tableName}'")
         }
     }
 }
