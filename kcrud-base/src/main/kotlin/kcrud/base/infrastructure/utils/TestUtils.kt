@@ -6,7 +6,6 @@
 
 package kcrud.base.infrastructure.utils
 
-import com.typesafe.config.ConfigFactory
 import io.ktor.server.config.*
 import kcrud.base.admin.actor.injection.ActorInjection
 import kcrud.base.admin.rbac.injection.RbacInjection
@@ -28,7 +27,7 @@ import kotlin.random.Random
 object TestUtils {
 
     fun loadSettings() {
-        val testConfig = HoconApplicationConfig(config = ConfigFactory.load("config_application.conf"))
+        val testConfig = ApplicationConfig(configPath = "config_application.conf")
 
         runBlocking {
             AppSettings.load(applicationConfig = testConfig)

@@ -25,6 +25,8 @@ kotlin {
 }
 
 application {
+    // Required for the Ktor fat jar to run.
+    // Note that all submodules must have their main class set to an empty string.
     mainClass.set("$group.ApplicationKt")
 
     val isDevelopment: Boolean = project.ext.has("development")
