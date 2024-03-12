@@ -28,7 +28,7 @@ import kotlin.random.Random
 object TestUtils {
 
     fun loadSettings() {
-        val testConfig = HoconApplicationConfig(config = ConfigFactory.load("application.conf"))
+        val testConfig = HoconApplicationConfig(config = ConfigFactory.load("config_application.conf"))
 
         runBlocking {
             AppSettings.load(applicationConfig = testConfig)

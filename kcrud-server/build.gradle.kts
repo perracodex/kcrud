@@ -14,13 +14,6 @@ plugins {
 group = "kcrud.server"
 version = "1.0.0"
 
-application {
-    mainClass.set("kcrud.server.ApplicationKt")
-
-    val isDevelopment: Boolean = project.ext.has("development")
-    applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
-}
-
 ktor {
     fatJar {
         archiveFileName.set("kcrud.jar")
@@ -28,7 +21,14 @@ ktor {
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(jdkVersion = 17)
+}
+
+application {
+    mainClass.set("$group.ApplicationKt")
+
+    val isDevelopment: Boolean = project.ext.has("development")
+    applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
 }
 
 repositories {

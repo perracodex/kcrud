@@ -8,8 +8,6 @@ package kcrud.base.graphql
 
 /**
  * The supported GraphQL frameworks.
- *
- * Configured in the application.conf file.
  */
 enum class GraphQLFramework {
     EXPEDIA_GROUP,

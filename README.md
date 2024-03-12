@@ -19,7 +19,7 @@ A [Ktor](https://ktor.io/) REST/GraphQL **CRUD** server.
 * [GraphQL](./kcrud-base/src/main/kotlin/kcrud/base/graphql) with either [ExpediaGroup](./kcrud-base/src/main/kotlin/kcrud/base/graphql/expedia) or [KGraphQL](./kcrud-base/src/main/kotlin/kcrud/base/graphql/kgraphql) frameworks.
 * [HTML DSL](https://ktor.io/docs/html-dsl.html) example.
 * [H2](https://github.com/h2database/h2database) embedded database, both in-memory and file-based.
-* [HOCON](./kcrud-base/src/main/resources/application.conf) configuration example, including [parsing](./kcrud-base/src/main/kotlin/kcrud/base/settings) for strongly typed settings.
+* [HOCON](./kcrud-server/src/main/resources) configuration example, including [parsing](./kcrud-base/src/main/kotlin/kcrud/base/settings) for strongly typed settings.
 * [Swagger-UI](https://ktor.io/docs/swagger-ui.html#configure-swagger), [OpenAPI](https://ktor.io/docs/openapi.html) and [Redoc](https://swagger.io/blog/api-development/redoc-openapi-powered-documentation/) integration.
 * [Routing](./kcrud-server/src/main/kotlin/kcrud/server/plugins/Routes.kt) organization examples.
 * [Call Logging](https://ktor.io/docs/call-logging.html) and [Call ID](https://ktor.io/docs/call-id.html) examples for events traceability.
@@ -28,6 +28,7 @@ A [Ktor](https://ktor.io/) REST/GraphQL **CRUD** server.
 * [Flyway](https://github.com/flyway/flyway) database migration example.
 * [Schema aware database transactions](./kcrud-base/src/main/kotlin/kcrud/base/database/service/TransactionWithSchema.kt), allowing to execute concrete transactions per schema.
 * Examples for [custom serializers](./kcrud-base/src/main/kotlin/kcrud/base/persistence/serializers), [custom validators](./kcrud-base/src/main/kotlin/kcrud/base/persistence/validators), [custom exceptions](./kcrud-base/src/main/kotlin/kcrud/base/infrastructure/errors), and [custom table column](./kcrud-base/src/main/kotlin/kcrud/base/database/custom_columns) constraints.
+* Fat Jar [building](#building-and-executing-a-fat-jar) and execution example.
 
 ---
 
@@ -106,6 +107,29 @@ Conversely, **Repository Layers** employ intentionally standard **non-suspendabl
 simplicity, avoiding issues that can arise from coroutine-based transactions, such as challenges with nested transactions,
 rollbacks, or scenarios where repositories may need to invoke other repositories. This approach ensures straightforward
 transaction processing, with repositories designed to be accessed only from within suspendable **Service Layer** methods.
+
+--- 
+
+## Building and Executing a Fat JAR
+
+The [Ktor Gradle plugin](https://ktor.io/docs/fatjar.html#build) allows to create and run an executable JAR that includes all code dependencies (fat JAR).
+
+* Building the **fat JAR**: Employ the `buildFatJar` Gradle task provided by Ktor.
+
+<img src="./.screenshots/gradle_fatjar.jpg" width="453" alt="gradle fat JAR">
+
+* Running the **fat JAR** Locally: Normally, executing the `runFatJar` Gradle task would suffice.
+  But since this project incorporates an SSL keystore example, you will need to launch the server with the following command:
+
+```
+java.exe -jar kcrud.jar -sslKeyStore=<path-to-the-keystore-file>/keystore.p12
+```
+
+_The project root folder houses the required `keystore.p12` file._
+
+Upon server startup, observe the console output. Once initialization is complete, access the demo endpoint in your preferred browser:
+
+http://localhost:8080/demo?page=0&size=24
 
 ---
 
