@@ -54,19 +54,20 @@ as an educational side aspect.
 
 ## Project Structure
 
-**Kcrud** is structured as a Multi-Module project comprising four modules:
+**Kcrud** is organized into a multi-project setup, where each component (_subproject_) serves a distinct role within
+the overall server architecture:
 
-1. [kcrud-server](./kcrud-server) is the core application module, responsible for server initialization, and integration of all modules.
-   It ensures the server's lifecycle management from startup to shut-down, making it central to the application's operation.
+1. [kcrud-server](./kcrud-server) is the primary project component, responsible for server initialization, and integration of all server components.
+   It manages the server's lifecycle from startup to shut-down and serves as the backbone of the application's operations.
 
-2. [kcrud-base](./kcrud-base) provides shared infrastructure and services like utilities, server configurations, and database connections.
-   It supports the operational needs of domain-specific modules, promoting code reuse and a unified approach to shared concerns.
+2. [kcrud-base](./kcrud-base) provides shared infrastructure and services, such as utility functions, server configurations, and database
+   connection facilities. Designed to support operational needs of domain-specific components, promoting code reuse to shared concerns.
 
-3. [kcrud-employee](./kcrud-employee) is a domain-specific module for managing employee records, including CRUD operations.
-   It leverages the ```kcrud-base``` module for shared functionalities, focusing on employee data management.
+3. [kcrud-employee](./kcrud-employee) is a specialized domain component dedicated to managing employee records, encompassing all CRUD operations.
+   It leverages the ```kcrud-base``` component for shared functionalities, with a primary focus on employee data management.
 
-4. [kcrud-employment](./kcrud-employment) manages employment-related data and logic. It depends on both ```kcrud-base``` for shared services
-   and ```kcrud-employee``` for accessing employee information, indicating its specialized role in handling detailed employment data.
+4. [kcrud-employment](./kcrud-employment) manages employment related data and logic, relying on ```kcrud-base``` for shared services and
+   ```kcrud-employee``` for accessing specific employee details, indicating its specialized role in handling detailed employment data.
 
 <img src="./.screenshots/server.jpg" width="800" alt="server">
 
@@ -78,9 +79,9 @@ Manage these settings via `hconf` configuration files.
 
 ---
 
-## Domain Modules Design Overview
+## Domain Component Design Overview
 
-[Kcrud](https://github.com/perracodex/Kcrud) modules follow a structured approach to ensure clean separation of concerns.
+[Kcrud](https://github.com/perracodex/Kcrud) components follow a structured approach to ensure clean separation of concerns.
 The architecture is divided into several layers, each with a specific role, promoting maintainability and scalability:
 
 [Routing Layer](./kcrud-employee/src/main/kotlin/kcrud/domain/employee/routing): This is the entry point for all incoming requests. [Routes](https://ktor.io/docs/routing-in-ktor.html) define the endpoints available
@@ -135,7 +136,7 @@ http://localhost:8080/demo?page=0&size=24
 
 ## Handling Security
 
-Security can be configured with the `config_security.conf`file located under the resources folder in the `kcrud-base` module.
+Security can be configured with the `config_security.conf`file located under the resources folder in the `kcrud-base` project.
 
 ### Generating and Refreshing JWT Tokens
 
