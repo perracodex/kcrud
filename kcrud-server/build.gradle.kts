@@ -23,7 +23,7 @@ application {
 
 ktor {
     fatJar {
-        archiveFileName.set("ktor.jar")
+        archiveFileName.set("kcrud.jar")
     }
 }
 
