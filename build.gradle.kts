@@ -8,8 +8,7 @@ plugins {
     application
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.ktor)
-    alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.graphql.expedia)
+    alias(libs.plugins.kotlin.serialization) apply false
 }
 
 group = "kcrud"
