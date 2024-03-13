@@ -4,28 +4,8 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-plugins {
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.ktor)
-    alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.graphql.expedia)
-}
-
 group = "kcrud.base"
 version = "1.0.0"
-
-kotlin {
-    jvmToolchain(17)
-}
-
-repositories {
-    mavenCentral()
-    maven { url = uri("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/kotlin-js-wrappers") }
-}
-
-application {
-    mainClass.set("")
-}
 
 dependencies {
 

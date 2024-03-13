@@ -48,6 +48,10 @@ data class CorsSettings(
 
         /**
          * Parses a host configuration from a string.
+         *
+         * See [CorsSettings] class documentation for the expected format.
+         *
+         * @param spec The string to parse.
          */
         fun parse(spec: String): HostConfig {
             var host = ""

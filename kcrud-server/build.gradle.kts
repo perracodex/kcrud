@@ -4,39 +4,8 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-plugins {
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.ktor)
-    alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.graphql.expedia)
-}
-
 group = "kcrud.server"
 version = "1.0.0"
-
-ktor {
-    fatJar {
-        archiveFileName.set("kcrud.jar")
-    }
-}
-
-kotlin {
-    jvmToolchain(jdkVersion = 17)
-}
-
-application {
-    // Required for the Ktor fat jar to run.
-    // Note that all submodules must have their main class set to an empty string.
-    mainClass.set("$group.ApplicationKt")
-
-    val isDevelopment: Boolean = project.ext.has("development")
-    applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
-}
-
-repositories {
-    mavenCentral()
-    maven { url = uri("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/kotlin-js-wrappers") }
-}
 
 dependencies {
 

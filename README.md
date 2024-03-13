@@ -4,6 +4,7 @@ A [Ktor](https://ktor.io/) REST/GraphQL **CRUD** server.
 
 ### Characteristics:
 
+* [Multi-project](#project-structure) setup.
 * [Exposed](https://github.com/JetBrains/Exposed) database framework.
 * [Database Connection Pooling](./kcrud-base/src/main/kotlin/kcrud/base/database/service/DatabasePooling.kt) with [HikariCP ](https://github.com/brettwooldridge/HikariCP).
 * [Encryption](./kcrud-base/src/main/kotlin/kcrud/base/database/schema/contact/ContactTable.kt) at field level example.
@@ -119,16 +120,18 @@ The [Ktor Gradle plugin](https://ktor.io/docs/fatjar.html#build) allows to creat
 
 <img src="./.screenshots/gradle_fatjar.jpg" width="453" alt="gradle fat JAR">
 
-* Running the **fat JAR** Locally: Normally, executing the `runFatJar` Gradle task would suffice.
-  But since this project incorporates an SSL keystore example, you will need to launch the server with the following command:
+* To run the **fat JAR** locally, either execute the `runFatJar` Gradle task or use the command line.
+  For the latter, open a terminal and navigate to the root `build/libs` directory, where the **fat JAR**
+  is located. Execute the following command:
 
 ```
-java.exe -jar kcrud.jar -sslKeyStore=<path-to-the-keystore-file>/keystore.p12
+java.exe -jar kcrud-1.0.0-all.jar
 ```
 
-_The project root folder houses the required `keystore.p12` file._
+Upon server startup, observe the console output. Once initialization is complete, you can test the server by
+opening a web browser and navigating to either of the following URLs:
 
-Upon server startup, observe the console output. Once initialization is complete, access the demo endpoint in your preferred browser:
+http://localhost:8080/
 
 http://localhost:8080/demo?page=0&size=24
 
