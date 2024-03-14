@@ -7,8 +7,8 @@
 package kcrud.server.plugins
 
 import io.ktor.server.application.*
-import kcrud.base.admin.actor.injection.ActorInjection
-import kcrud.base.admin.rbac.injection.RbacInjection
+import kcrud.access.actor.injection.ActorInjection
+import kcrud.access.rbac.injection.RbacInjection
 import kcrud.domain.employee.injection.EmployeeInjection
 import kcrud.domain.employment.injection.EmploymentInjection
 import org.koin.ktor.plugin.Koin

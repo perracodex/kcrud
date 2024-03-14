@@ -13,7 +13,6 @@ import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
 import kcrud.base.infrastructure.errors.KcrudException
 import kcrud.base.infrastructure.utils.Tracer
-import kcrud.base.security.service.CredentialService
 import kcrud.base.settings.AppSettings
 import kotlinx.serialization.json.Json
 
@@ -49,7 +48,7 @@ private fun StatusPagesConfig.setup() {
         call.response.header(name = HttpHeaders.WWWAuthenticate, value = "Basic realm=\"${realm}\"")
 
         // Respond with 401 Unauthorized status code.
-        val message = "$status | ${CredentialService.HINT}"
+        val message = "$status | Use either admin/admin or guest/guest."
         call.respond(status = HttpStatusCode.Unauthorized, message = message)
     }
 

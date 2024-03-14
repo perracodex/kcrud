@@ -6,7 +6,7 @@
 
 package kcrud.domain.employee.injection
 
-import kcrud.base.infrastructure.env.SessionContext
+import kcrud.access.system.SessionContext
 import kcrud.domain.contact.repository.ContactRepository
 import kcrud.domain.contact.repository.IContactRepository
 import kcrud.domain.employee.repository.EmployeeRepository

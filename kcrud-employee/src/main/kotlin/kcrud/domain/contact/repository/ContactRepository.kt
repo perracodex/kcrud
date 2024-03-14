@@ -6,9 +6,9 @@
 
 package kcrud.domain.contact.repository
 
+import kcrud.access.system.SessionContext
 import kcrud.base.database.schema.contact.ContactTable
 import kcrud.base.database.service.transactionWithSchema
-import kcrud.base.infrastructure.env.SessionContext
 import kcrud.base.infrastructure.utils.DateTimeUtils
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable

@@ -7,8 +7,6 @@
 package kcrud.base.infrastructure.utils
 
 import io.ktor.server.config.*
-import kcrud.base.admin.actor.injection.ActorInjection
-import kcrud.base.admin.rbac.injection.RbacInjection
 import kcrud.base.database.schema.contact.ContactTable
 import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.database.service.DatabaseService
@@ -42,13 +40,8 @@ object TestUtils {
     }
 
     fun setupKoin(modules: List<Module> = emptyList()) {
-        val baseModules: List<Module> = listOf(
-            RbacInjection.get(),
-            ActorInjection.get()
-        )
-
         startKoin {
-            modules(baseModules + modules)
+            modules(modules)
         }
     }
 

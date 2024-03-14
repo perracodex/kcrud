@@ -8,7 +8,6 @@ package kcrud.base.scheduler.listeners
 
 import kcrud.base.infrastructure.utils.Tracer
 import kcrud.base.scheduler.annotation.JobSchedulerAPI
-import kcrud.base.security.service.AuthenticationTokenService
 import org.quartz.JobExecutionContext
 import org.quartz.Trigger
 import org.quartz.Trigger.CompletedExecutionInstruction
@@ -16,7 +15,7 @@ import org.quartz.TriggerListener
 
 @JobSchedulerAPI
 class KcrudTriggerListener : TriggerListener {
-    private val tracer = Tracer<AuthenticationTokenService>()
+    private val tracer = Tracer<KcrudTriggerListener>()
 
     override fun getName() = KcrudTriggerListener::class.simpleName
 

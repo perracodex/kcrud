@@ -20,7 +20,6 @@ dependencies {
 
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.server.auth)
-    implementation(libs.ktor.server.auth.jwt)
     implementation(libs.ktor.server.autoHeadResponse)
     implementation(libs.ktor.server.caching.headers)
     implementation(libs.ktor.server.call.id)
@@ -35,7 +34,6 @@ dependencies {
     implementation(libs.ktor.server.http.redirect)
     implementation(libs.ktor.server.hsts)
     implementation(libs.ktor.server.rateLimit)
-    implementation(libs.ktor.server.sessions)
     implementation(libs.ktor.server.statusPages)
     implementation(libs.ktor.server.tests)
 
@@ -47,11 +45,6 @@ dependencies {
     implementation(libs.flyway.core)
 
     implementation(libs.google.phonenumber)
-
-    implementation(libs.graphql.expedia.generator)
-    implementation(libs.graphql.expedia.server)
-    implementation(libs.graphql.kgraphql)
-    implementation(libs.graphql.kgraphql.ktor)
 
     implementation(libs.hikariCP)
 

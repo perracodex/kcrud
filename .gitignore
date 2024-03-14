@@ -47,8 +47,6 @@ bin/
 
 ### Custom ###
 /kcrud-server/.runtime/database/*
-/kcrud-server/.runtime/graphql/*
 .runtime/*
 /.database/*
-/.graphql/*
 .idea/

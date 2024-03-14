@@ -10,6 +10,7 @@ version = "1.0.0"
 dependencies {
 
     implementation(project(":kcrud-base"))
+    implementation(project(":kcrud-access"))
     implementation(project(":kcrud-employee"))
     implementation(project(":kcrud-employment"))
 
@@ -24,9 +25,6 @@ dependencies {
     implementation(libs.ktor.server.netty)
     implementation(libs.ktor.server.rateLimit)
     implementation(libs.ktor.server.tests)
-
-    implementation(libs.graphql.expedia.server)
-    implementation(libs.graphql.kgraphql.ktor)
 
     implementation(libs.koin.ktor)
     implementation(libs.koin.logger.slf4j)

@@ -7,7 +7,7 @@
 package kcrud.domain.employment.routing
 
 import io.ktor.server.routing.*
-import kcrud.base.admin.rbac.plugin.withRbac
+import kcrud.access.rbac.plugin.withRbac
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacResource
 import kcrud.domain.employment.routing.annotation.EmploymentRouteAPI

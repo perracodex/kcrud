@@ -21,7 +21,7 @@ import kotlin.time.Duration.Companion.nanoseconds
  *
  * See: [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)
  */
-internal object SnowflakeFactory {
+object SnowflakeFactory {
 
     /**
      * The machine ID used to generate the Snowflake ID.

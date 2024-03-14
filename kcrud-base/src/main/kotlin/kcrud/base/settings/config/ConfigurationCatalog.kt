@@ -25,6 +25,5 @@ data class ConfigurationCatalog(
     val cors: CorsSettings,
     val database: DatabaseSettings,
     val docs: DocsSettings,
-    val graphql: GraphQLSettings,
     val security: SecuritySettings
 )

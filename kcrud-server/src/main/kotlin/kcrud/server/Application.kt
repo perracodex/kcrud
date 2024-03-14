@@ -8,10 +8,13 @@ package kcrud.server
 
 import io.ktor.server.application.*
 import io.ktor.server.netty.*
+import kcrud.access.plugins.configureBasicAuthentication
+import kcrud.access.plugins.configureJwtAuthentication
+import kcrud.access.plugins.configureRbac
+import kcrud.access.plugins.configureSessions
 import kcrud.base.infrastructure.utils.Tracer
 import kcrud.base.plugins.*
 import kcrud.base.settings.AppSettings
-import kcrud.server.plugins.configureGraphQL
 import kcrud.server.plugins.configureKoin
 import kcrud.server.plugins.configureRoutes
 
@@ -59,7 +62,7 @@ fun Application.kcrudModule() {
 
     configureRateLimit()
 
-    configureRbacLoginAuthentication()
+    configureRbac()
 
     configureBasicAuthentication()
 
@@ -72,8 +75,6 @@ fun Application.kcrudModule() {
     configuredDocumentation()
 
     configureMicroMeterMetrics()
-
-    configureGraphQL()
 
     configureStatusPages()
 

@@ -6,11 +6,11 @@
 
 package kcrud.domain.employment.repository
 
+import kcrud.access.system.SessionContext
 import kcrud.base.database.schema.contact.ContactTable
 import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.database.schema.employment.EmploymentTable
 import kcrud.base.database.service.transactionWithSchema
-import kcrud.base.infrastructure.env.SessionContext
 import kcrud.base.infrastructure.utils.DateTimeUtils
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable

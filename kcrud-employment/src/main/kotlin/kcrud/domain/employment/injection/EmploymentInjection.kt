@@ -6,7 +6,7 @@
 
 package kcrud.domain.employment.injection
 
-import kcrud.base.infrastructure.env.SessionContext
+import kcrud.access.system.SessionContext
 import kcrud.domain.employment.repository.EmploymentRepository
 import kcrud.domain.employment.repository.IEmploymentRepository
 import kcrud.domain.employment.service.EmploymentService

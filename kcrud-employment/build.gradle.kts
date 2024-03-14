@@ -10,6 +10,7 @@ version = "1.0.0"
 dependencies {
 
     implementation(project(":kcrud-base"))
+    implementation(project(":kcrud-access"))
     implementation(project(":kcrud-employee"))
 
     implementation(libs.kotlinx.datetime)
@@ -21,9 +22,6 @@ dependencies {
 
     implementation(libs.exposed.core)
     implementation(libs.exposed.kotlin.datetime)
-
-    implementation(libs.graphql.expedia.server)
-    implementation(libs.graphql.kgraphql.ktor)
 
     implementation(libs.koin.ktor)
     implementation(libs.koin.logger.slf4j)

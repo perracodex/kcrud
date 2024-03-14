@@ -11,13 +11,15 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.ratelimit.*
+import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.base.admin.rbac.routing.rbacRoute
-import kcrud.base.admin.system.systemRoute
+import kcrud.access.rbac.routing.rbacRoute
+import kcrud.access.system.SessionContext
+import kcrud.access.token.accessTokenRoute
 import kcrud.base.infrastructure.health.routing.healthCheckRoute
 import kcrud.base.plugins.RateLimitScope
 import kcrud.base.scheduler.routing.quartzRoutes
-import kcrud.base.security.routing.accessTokenRoute
+import kcrud.base.security.snowflake.snowflakeRoute
 import kcrud.base.settings.AppSettings
 import kcrud.domain.employee.routing.employeeRoute
 import kcrud.domain.employment.routing.employmentRoute
@@ -76,8 +78,16 @@ fun Application.configureRoutes() {
 
         accessTokenRoute()
         healthCheckRoute()
-        systemRoute()
+        snowflakeRoute()
         rbacRoute()
         quartzRoutes()
+
+        // Server root endpoint.
+        get("/") {
+            val sessionContext: SessionContext? = call.principal<SessionContext>()
+            sessionContext?.let {
+                call.respondText(text = "Hello World. Welcome ${it.username}!")
+            } ?: call.respondText(text = "Hello World.")
+        }
     }
 }

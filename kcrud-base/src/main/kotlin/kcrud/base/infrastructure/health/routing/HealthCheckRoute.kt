@@ -11,9 +11,6 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.base.admin.rbac.plugin.withRbac
-import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.base.database.schema.admin.rbac.types.RbacResource
 import kcrud.base.infrastructure.health.HealthCheck
 import kcrud.base.infrastructure.utils.NetworkUtils
 import kcrud.base.settings.AppSettings
@@ -27,12 +24,10 @@ import kcrud.base.settings.AppSettings
  */
 fun Route.healthCheckRoute() {
     authenticate(AppSettings.security.basic.providerName, optional = !AppSettings.security.isEnabled) {
-        withRbac(resource = RbacResource.SYSTEM, accessLevel = RbacAccessLevel.FULL) {
-            // Healthcheck providing the current operational status.
-            get("/health") {
-                val healthCheck = HealthCheck(call = call)
-                call.respond(status = HttpStatusCode.OK, message = healthCheck)
-            }
+        // Healthcheck providing the current operational status.
+        get("/health") {
+            val healthCheck = HealthCheck(call = call)
+            call.respond(status = HttpStatusCode.OK, message = healthCheck)
         }
     }
 

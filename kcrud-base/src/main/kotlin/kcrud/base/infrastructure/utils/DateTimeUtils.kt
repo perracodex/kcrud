@@ -8,7 +8,6 @@
 
 package kcrud.base.infrastructure.utils
 
-import kcrud.base.admin.rbac.service.RbacFieldAnonymization
 import kotlinx.datetime.*
 import kotlinx.datetime.TimeZone
 import java.time.Instant
@@ -52,10 +51,6 @@ object DateTimeUtils {
     }
 
     fun calculateAge(dob: KLocalDate): Int {
-
-        if (RbacFieldAnonymization.isAnonymized(value = dob)) {
-            return RbacFieldAnonymization.anonymize(value = 0) as Int
-        }
 
         // Get today's date based on the system clock and timezone.
         val currentDate: KLocalDate = currentUTCDate()

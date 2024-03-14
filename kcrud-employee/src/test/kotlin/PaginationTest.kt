@@ -7,9 +7,11 @@
 import io.ktor.test.dispatcher.*
 import io.mockk.every
 import io.mockk.mockk
+import kcrud.access.actor.injection.ActorInjection
+import kcrud.access.rbac.injection.RbacInjection
+import kcrud.access.system.SessionContext
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
-import kcrud.base.infrastructure.env.SessionContext
 import kcrud.base.infrastructure.utils.KLocalDate
 import kcrud.base.infrastructure.utils.TestUtils
 import kcrud.base.persistence.pagination.Page
@@ -36,7 +38,7 @@ class PaginationTest : KoinComponent {
     fun setUp() {
         TestUtils.loadSettings()
         TestUtils.setupDatabase()
-        TestUtils.setupKoin(listOf(EmployeeInjection.get()))
+        TestUtils.setupKoin(modules = listOf(RbacInjection.get(), ActorInjection.get(), EmployeeInjection.get()))
     }
 
     @AfterTest

@@ -11,9 +11,6 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.base.admin.rbac.plugin.withRbac
-import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.base.database.schema.admin.rbac.types.RbacResource
 import kcrud.base.infrastructure.utils.NetworkUtils
 import kcrud.base.scheduler.entities.JobScheduleEntity
 import kcrud.base.scheduler.service.JobSchedulerService
@@ -27,15 +24,13 @@ import kotlinx.serialization.json.Json
 fun Route.quartzRoutes() {
 
     authenticate(AppSettings.security.basic.providerName, optional = !AppSettings.security.isEnabled) {
-        withRbac(resource = RbacResource.SYSTEM, accessLevel = RbacAccessLevel.FULL) {
-            get("/scheduler") {
-                val jobs: List<JobScheduleEntity> = JobSchedulerService.getJobs()
+        get("/scheduler") {
+            val jobs: List<JobScheduleEntity> = JobSchedulerService.getJobs()
 
-                call.respondText(
-                    text = Json.encodeToString(value = jobs),
-                    contentType = ContentType.Application.Json
-                )
-            }
+            call.respondText(
+                text = Json.encodeToString(value = jobs),
+                contentType = ContentType.Application.Json
+            )
         }
     }
 

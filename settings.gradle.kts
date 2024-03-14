@@ -14,6 +14,7 @@ plugins {
 rootProject.name = "Kcrud"
 
 include("kcrud-base")
+include("kcrud-access")
 include("kcrud-employee")
 include("kcrud-employment")
 include("kcrud-server")

@@ -12,7 +12,6 @@ import kcrud.base.scheduler.annotation.JobSchedulerAPI
 import kcrud.base.scheduler.entities.JobScheduleEntity
 import kcrud.base.scheduler.listeners.KcrudJobListener
 import kcrud.base.scheduler.listeners.KcrudTriggerListener
-import kcrud.base.security.service.AuthenticationTokenService
 import kcrud.base.settings.AppSettings
 import org.quartz.*
 import org.quartz.impl.StdSchedulerFactory
@@ -32,7 +31,7 @@ import java.util.*
  * See: [Quartz Scheduler Configuration](https://www.quartz-scheduler.org/documentation/2.4.0-SNAPSHOT/configuration.html)
  */
 object JobSchedulerService {
-    private val tracer = Tracer<AuthenticationTokenService>()
+    private val tracer = Tracer<JobSchedulerService>()
 
     private const val PROPERTIES_FILE = "quartz.properties"
     private val scheduler: Scheduler

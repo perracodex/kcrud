@@ -1,6 +1,6 @@
 # [Kcrud](https://github.com/perracodex/Kcrud)
 
-A [Ktor](https://ktor.io/) REST/GraphQL **CRUD** server.
+A [Ktor](https://ktor.io/) REST **CRUD** server.
 
 ### Characteristics:
 
@@ -10,14 +10,13 @@ A [Ktor](https://ktor.io/) REST/GraphQL **CRUD** server.
 * [Encryption](./kcrud-base/src/main/kotlin/kcrud/base/database/schema/contact/ContactTable.kt) at field level example.
 * [Koin](./kcrud-server/src/main/kotlin/kcrud/server/plugins/Koin.kt) dependency injection.
 * [Quartz Scheduler](./kcrud-base/src/main/kotlin/kcrud/base/scheduler) integration. A popular and [flexible](https://github.com/quartz-scheduler/quartz/blob/main/docs/introduction.adoc) job scheduling library.
-* [In-memory hashed passwords](./kcrud-base/src/main/kotlin/kcrud/base/security/service/CredentialService.kt) storage lookup, with [enhanced security](./kcrud-base/src/main/kotlin/kcrud/base/security/hash).
-* [Sortable Pagination](./kcrud-base/src/main/kotlin/kcrud/base/persistence/pagination) and Filtering examples for both REST and GraphQL.
+* [In-memory hashed passwords](./kcrud-access/src/main/kotlin/kcrud/access/credential/CredentialService.kt) storage lookup, with enhanced security.
+* [Sortable pagination](./kcrud-base/src/main/kotlin/kcrud/base/persistence/pagination) and filtering examples.
 * [JSON serialization](https://ktor.io/docs/serialization.html) with [Kotlinx](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md).
-* [RBAC (Role Based Access Control)](./kcrud-base/src/main/kotlin/kcrud/base/admin/rbac) example, including a basic role [admin panel](./kcrud-base/src/main/kotlin/kcrud/base/admin/rbac/views).
-* [JWT authentication](./kcrud-base/src/main/kotlin/kcrud/base/plugins/AuthJwt.kt) example.
-* [Basic authentication](./kcrud-base/src/main/kotlin/kcrud/base/plugins/AuthBasic.kt) example.
+* [RBAC (Role Based Access Control)](./kcrud-access/src/main/kotlin/kcrud/access/rbac) example, including a basic role [admin panel](./kcrud-access/src/main/kotlin/kcrud/access/rbac/views).
+* [JWT authentication](./kcrud-access/src/main/kotlin/kcrud/access/plugins/AuthJwt.kt) example.
+* [Basic authentication](./kcrud-access/src/main/kotlin/kcrud/access/plugins/AuthBasic.kt) example.
 * [Connection Rate limit](kcrud-base/src/main/kotlin/kcrud/base/plugins/RateLimits.kt) examples.
-* [GraphQL](./kcrud-base/src/main/kotlin/kcrud/base/graphql) with either [ExpediaGroup](./kcrud-base/src/main/kotlin/kcrud/base/graphql/expedia) or [KGraphQL](./kcrud-base/src/main/kotlin/kcrud/base/graphql/kgraphql) frameworks.
 * [HTML DSL](https://ktor.io/docs/html-dsl.html) example.
 * [H2](https://github.com/h2database/h2database) embedded database, both in-memory and file-based.
 * [HOCON](./kcrud-server/src/main/resources) configuration example, including [parsing](./kcrud-base/src/main/kotlin/kcrud/base/settings) for strongly typed settings.
@@ -33,9 +32,7 @@ A [Ktor](https://ktor.io/) REST/GraphQL **CRUD** server.
 
 ---
 
-For convenience, it is included a
-*[Postman Collection](./.postman/kcrud.postman_collection.json)*
-with all the available REST endpoints, including the GraphQL queries and mutations.
+For convenience, it is included a *[Postman Collection](./.postman/kcrud.postman_collection.json)* with all the available REST endpoints.
 
 ---
 
@@ -47,9 +44,6 @@ The code intentionally contains redundancies and inconsistencies to illustrate d
 similar results. For example, different authentication methods (JWT and Basic, despite Basic being discouraged); different approaches
 to exception handling and validations across layers. The project also delves into data persistence, illustrating different methods
 to store enums in databases, field level encryption, etc.
-
-While the project includes a GraphQL implementation, its primary focus remains on REST principles, with GraphQL serving mainly
-as an educational side aspect.
 
 ---
 
@@ -64,19 +58,21 @@ the overall server architecture:
 2. [kcrud-base](./kcrud-base) provides shared infrastructure and services, such as utility functions, server configurations, and database
    connection facilities. Designed to support operational needs of domain-specific components, promoting code reuse to shared concerns.
 
-3. [kcrud-employee](./kcrud-employee) is a specialized domain component dedicated to managing employee records, encompassing all CRUD operations.
-   It leverages the ```kcrud-base``` component for shared functionalities, with a primary focus on employee data management.
+3. [kcrud-access](./kcrud-access) provides security and access control services, including authentication, authorization,
+   and user management. It leverages the ```kcrud-base``` for shared functionalities.
 
-4. [kcrud-employment](./kcrud-employment) manages employment related data and logic, relying on ```kcrud-base``` for shared services and
-   ```kcrud-employee``` for accessing specific employee details, indicating its specialized role in handling detailed employment data.
+4. [kcrud-employee](./kcrud-employee) is a specialized domain component dedicated to managing employee records, encompassing all CRUD operations.
+   It leverages the ```kcrud-base``` component for shared functionalities, and ```kcrud-access``` for security and access control.
+
+5. [kcrud-employment](./kcrud-employment) manages employment related data and logic, relying on ```kcrud-employee``` for accessing specific employee
+   details, ```kcrud-base``` for shared services, and ```kcrud-access``` for security and access control.
 
 <img src="./.screenshots/server.jpg" width="800" alt="server">
 
 ### A note about startup times.
 
-**Kcrud** server startup time can be optimized by disabling unnecessary features. Turn off documentation generation
-and the GraphQL framework if only REST is needed. Conduct database migrations in a controlled setting, not in production.
-Manage these settings via `hconf` configuration files.
+**Kcrud** server startup time can be optimized by disabling unnecessary features. Turn off documentation generation.
+Conduct database migrations in a controlled setting, not in production. Manage these settings via `hconf` configuration files.
 
 ---
 
@@ -173,8 +169,8 @@ http://localhost:8080/auth/token/refresh
 
 ## RBAC (Role Based Access Control)
 
-The project also includes an [RBAC](./kcrud-base/src/main/kotlin/kcrud/base/admin/rbac) implementation, including a basic role [admin panel](./kcrud-base/src/main/kotlin/kcrud/base/admin/rbac/views) build with HTML DSL.
-[Sample actors](./kcrud-base/src/main/kotlin/kcrud/base/admin/actor/service/DefaultActorFactory.kt) and roles are created at runtime.
+The project also includes an [RBAC](./kcrud-access/src/main/kotlin/kcrud/access/rbac) implementation, including a basic role [admin panel](./kcrud-access/src/main/kotlin/kcrud/access/rbac/views) build with HTML DSL.
+[Sample actors](./kcrud-access/src/main/kotlin/kcrud/access/actor/service/DefaultActorFactory.kt) and roles are created at runtime.
 
 ![RBAC Admin](./.screenshots/rbac_admin.jpg)
 
@@ -190,17 +186,17 @@ withRbac(resource = RbacResource.POTATO, accessLevel = RbacAccessLevel.FULL) {
 ```
 
 Where [RbacResource](./kcrud-base/src/main/kotlin/kcrud/base/database/schema/admin/rbac/types/RbacResource.kt) and [RbacAccessLevel](./kcrud-base/src/main/kotlin/kcrud/base/database/schema/admin/rbac/types/RbacAccessLevel.kt) define a type of resource and its required access level.
-Multiple endpoints can be wrapped within the same [withRbac](./kcrud-base/src/main/kotlin/kcrud/base/admin/rbac/plugin/WithRbac.kt) block, or have multiple `withRbac` blocks for different resources and levels.
+Multiple endpoints can be wrapped within the same [withRbac](./kcrud-access/src/main/kotlin/kcrud/access/rbac/plugin/WithRbac.kt) block, or have multiple `withRbac` blocks for different resources and levels.
 
 A resource can be as granular as required or any concept: a database table, a REST endpoint, a UI element, etc.
 Is up to the designer to define what a resource is, and act accordingly when its associated RBAC rule is verified.
 
-Once an endpoint is wrapped within a [withRbac](./kcrud-base/src/main/kotlin/kcrud/base/admin/rbac/plugin/WithRbac.kt) block, it becomes accessible only to actors that have being assigned
+Once an endpoint is wrapped within a [withRbac](./kcrud-access/src/main/kotlin/kcrud/access/rbac/plugin/WithRbac.kt) block, it becomes accessible only to actors that have being assigned
 a role that includes both the resource and the required access level for such resource.
 
-- Field Level access control is partially implemented. Each RBAC resource rule has a [fieldRules](./kcrud-base/src/main/kotlin/kcrud/base/admin/rbac/entities/field_rule) map that
+- Field Level access control is partially implemented. Each RBAC resource rule has a [fieldRules](./kcrud-access/src/main/kotlin/kcrud/access/rbac/entities/field_rule) map that
   can be used to define which fields must be managed, for example, should be anonymized. For such, the target entity
-  must inherit from [BaseRbacEntity](./kcrud-base/src/main/kotlin/kcrud/base/admin/rbac/entities/base/BaseRbacEntity.kt), and call the anonymize function accordingly based on the defined field rules,
+  must inherit from [BaseRbacEntity](./kcrud-access/src/main/kotlin/kcrud/access/rbac/entities/base/BaseRbacEntity.kt), and call the anonymize function accordingly based on the defined field rules,
   for example, before returning the entity to a client.
 
 ---
@@ -347,111 +343,6 @@ When filtering, all fields are optional. The supplied fields will construct an `
       }
     ]
   }
-}
-```
-
----
-
-### Postman **GraphQL**
-
-Both most popular GraphQL frameworks are included in the project, *ExpediaGroup GraphQL* and *KGraphQL*.
-Once the project starts the console will display their endpoints, including the playground.
-
-- Endpoint: http://localhost:8080/graphql
-
-#### Query Example:
-
-- Return a single employee
-
-```graphql
-query {
-    employee(employeeId: "b0984cf8-d63f-4d2c-a3bc-53bb3856ac3a") {
-        id
-        firstName
-        lastName
-        fullName
-        dob
-        maritalStatus
-        honorific
-        contact {
-            id
-            email
-            phone
-        }
-   }
-}
-```
-
-- Paginated employees (sorting is optional)
-
-```graphql
-query {
-    employees(
-        pageable: {
-            page: 0, size: 10,
-            sort: [
-                { field: "firstName", direction: ASC },
-                { field: "maritalStatus", direction: DESC }
-            ] 
-        }
-    ) {
-        totalElements
-        totalPages
-        elementsPerPage
-        pageIndex
-        elementsInPage
-        isFirst
-        isLast
-        hasNext
-        hasPrevious
-        overflow
-        sort { field, direction }
-        content {
-             id
-            firstName
-            lastName
-            fullName
-            dob
-            maritalStatus
-            honorific
-            contact {
-                id
-                email
-                phone
-            }
-        }
-   }
-}
-```
-
-#### Mutations Example
-
-- Create a new employee
-
-```graphql
-mutation {
-    createEmployee(employee: {
-        firstName: "AnyName",
-        lastName: "AnySurname",
-        dob: "2000-01-01",
-        contact: {
-            email: "AnyName.AnySurname@email.com"
-            phone: "+34-611-222-333"
-        }
-    }) {
-        id
-        firstName
-        lastName
-        fullName
-        dob
-        maritalStatus
-        honorific
-        contact {
-            id
-            email
-            phone
-        }
-    }
 }
 ```
 

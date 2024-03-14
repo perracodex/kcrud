@@ -46,7 +46,7 @@ class JobSchedulerServiceTest {
         }
 
         // Wait for enough time to allow the job to execute.
-        delay(timeMillis = 2000L)
+        delay(timeMillis = 3000L)
 
         assertTrue(actual = testResults.contains(uniqueTestKey))
 

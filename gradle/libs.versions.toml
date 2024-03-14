@@ -7,9 +7,6 @@ database-h2 = "2.2.224"                 # https://github.com/h2database/h2databa
 exposed = "0.48.0"                      # https://github.com/JetBrains/Exposed/releases
 flyway = "10.9.1"                       # https://github.com/flyway/flyway/releases
 google-phonenumber = "8.13.32"          # https://github.com/google/libphonenumber/releases
-graphql-exposed-generator = "7.0.2"     # https://github.com/ExpediaGroup/graphql-kotlin/releases
-graphql-exposed-server = "7.0.2"        # https://github.com/ExpediaGroup/graphql-kotlin/releases
-graphql-kgraphql = "0.19.0"             # https://github.com/aPureBase/KGraphQL/releases
 gson = "2.10.1"                         # https://github.com/google/gson/releases/tag/gson-parent-2.10.1
 hikariCP = "5.1.0"                      # https://github.com/brettwooldridge/HikariCP/tags
 koin = "3.5.3"                          # https://github.com/InsertKoinIO/koin/releases
@@ -113,19 +110,6 @@ koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 # https://github.com/h2database/h2database
 # https://github.com/h2database/h2database/releases
 database-h2 = { module = "com.h2database:h2", version.ref = "database-h2" }
-
-# GraphQL using ExpediaGroup.
-# https://opensource.expediagroup.com/graphql-kotlin/docs/server/ktor-server/ktor-overview
-# https://github.com/ExpediaGroup/graphql-kotlin/tree/master/servers/graphql-kotlin-ktor-server
-# https://github.com/ExpediaGroup/graphql-kotlin/releases
-graphql-expedia-server = { module = "com.expediagroup:graphql-kotlin-ktor-server", version.ref = "graphql-exposed-server" }
-graphql-expedia-generator = { module = "com.expediagroup:graphql-kotlin-schema-generator", version.ref = "graphql-exposed-generator" }
-
-# GraphQL using KGraphQL.
-# https://github.com/aPureBase/KGraphQL
-# https://github.com/aPureBase/KGraphQL/releases
-graphql-kgraphql = { module = "com.apurebase:kgraphql", version.ref = "graphql-kgraphql" }
-graphql-kgraphql-ktor = { module = "com.apurebase:kgraphql-ktor", version.ref = "graphql-kgraphql" }
 
 # OpenAPI / SwaggerUI.
 # https://ktor.io/docs/swagger-ui.html#configure-swagger

@@ -11,7 +11,7 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.base.infrastructure.env.SessionContext
+import kcrud.access.system.SessionContext
 import kcrud.base.persistence.utils.toUUID
 import kcrud.domain.employee.entities.EmployeeEntity
 import kcrud.domain.employee.entities.EmployeeRequest

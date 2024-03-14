@@ -590,6 +590,8 @@ components:
     Sort:
       type: "object"
       properties:
+        table:
+          type: "string"
         field:
           type: "string"
         direction:
@@ -893,30 +895,6 @@ components:
           type: "boolean"
       required:
         - "errors"
-    GraphQLCheck:
-      type: "object"
-      properties:
-        errors:
-          type: "array"
-          items:
-            type: "string"
-        enabled:
-          type: "boolean"
-        framework:
-          type: "string"
-          enum:
-            - "EXPEDIA_GROUP"
-            - "K_GRAPHQL"
-        playground:
-          type: "boolean"
-        dumpSchema:
-          type: "boolean"
-        schemaPath:
-          type: "string"
-      required:
-        - "errors"
-        - "framework"
-        - "schemaPath"
     SnowflakeData:
       type: "object"
       properties:
@@ -969,8 +947,6 @@ components:
           $ref: "#/components/schemas/DatabaseCheck"
         application:
           $ref: "#/components/schemas/ApplicationCheck"
-        graphQL:
-          $ref: "#/components/schemas/GraphQLCheck"
         snowflake:
           $ref: "#/components/schemas/SnowflakeCheck"
         endpoints:
@@ -984,7 +960,6 @@ components:
         - "security"
         - "database"
         - "application"
-        - "graphQL"
         - "snowflake"
         - "endpoints"
     Page_? extends EmployeeEntity:

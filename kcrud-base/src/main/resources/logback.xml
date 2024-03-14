@@ -20,5 +20,4 @@
     <logger name="org.quartz" level="INFO"/>
     <logger name="com.zaxxer.hikari" level="WARN"/>
     <logger name="io.ktor.server.plugins.callid" level="OFF"/>
-    <logger name="graphql.execution.ExecutionStrategy" level="OFF"/>
 </configuration>

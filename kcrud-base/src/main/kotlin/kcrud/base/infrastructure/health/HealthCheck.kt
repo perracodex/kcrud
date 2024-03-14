@@ -25,7 +25,6 @@ data class HealthCheck(
     val security: SecurityCheck,
     val database: DatabaseCheck,
     val application: ApplicationCheck,
-    val graphQL: GraphQLCheck,
     val snowflake: SnowflakeCheck,
     val endpoints: List<String>
 ) {
@@ -36,7 +35,6 @@ data class HealthCheck(
         security = SecurityCheck(),
         database = DatabaseService.getHealthCheck(),
         application = ApplicationCheck(),
-        graphQL = GraphQLCheck(),
         snowflake = SnowflakeCheck(),
         endpoints = call?.application?.collectRoutes() ?: emptyList()
     )
@@ -47,7 +45,6 @@ data class HealthCheck(
         health.addAll(security.errors)
         health.addAll(database.errors)
         health.addAll(application.errors)
-        health.addAll(graphQL.errors)
         health.addAll(snowflake.errors)
 
         if (endpoints.isEmpty()) {

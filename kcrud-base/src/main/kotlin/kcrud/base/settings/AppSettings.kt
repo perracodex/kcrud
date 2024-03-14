@@ -34,7 +34,6 @@ object AppSettings {
     val cors: CorsSettings get() = configuration.cors
     val database: DatabaseSettings get() = configuration.database
     val docs: DocsSettings get() = configuration.docs
-    val graphql: GraphQLSettings get() = configuration.graphql
     val security: SecuritySettings get() = configuration.security
 
     @OptIn(ConfigurationAPI::class)
@@ -57,7 +56,6 @@ object AppSettings {
                 ConfigClassMap(path = "cors", argument = "cors", kClass = CorsSettings::class),
                 ConfigClassMap(path = "database", argument = "database", kClass = DatabaseSettings::class),
                 ConfigClassMap(path = "docs", argument = "docs", kClass = DocsSettings::class),
-                ConfigClassMap(path = "graphql", argument = "graphql", kClass = GraphQLSettings::class),
                 ConfigClassMap(path = "security", argument = "security", kClass = SecuritySettings::class)
             )
 
