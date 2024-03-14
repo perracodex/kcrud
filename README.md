@@ -129,11 +129,15 @@ java.exe -jar kcrud-1.0.0-all.jar
 ```
 
 Upon server startup, observe the console output. Once initialization is complete, you can test the server by
-opening a web browser and navigating to either of the following URLs:
+opening a web browser and navigating to any of the following URLs:
 
-http://localhost:8080/
+http://localhost:8080
 
 http://localhost:8080/demo?page=0&size=24
+
+http://localhost:8080/health
+
+http://localhost:8080/rbac/login
 
 ---
 

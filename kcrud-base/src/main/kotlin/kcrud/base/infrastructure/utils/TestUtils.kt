@@ -27,7 +27,7 @@ import kotlin.random.Random
 object TestUtils {
 
     fun loadSettings() {
-        val testConfig = ApplicationConfig(configPath = "config_application.conf")
+        val testConfig = ApplicationConfig(configPath = "config/config_application.conf")
 
         runBlocking {
             AppSettings.load(applicationConfig = testConfig)
