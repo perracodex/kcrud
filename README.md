@@ -1,6 +1,6 @@
 # [Kcrud](https://github.com/perracodex/Kcrud)
 
-A [Ktor](https://ktor.io/) REST **CRUD** server.
+A [Ktor](https://ktor.io/) REST server.
 
 ### Characteristics:
 
