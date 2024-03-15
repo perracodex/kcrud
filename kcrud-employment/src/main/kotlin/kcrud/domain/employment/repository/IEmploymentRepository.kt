@@ -8,8 +8,8 @@ package kcrud.domain.employment.repository
 
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
-import kcrud.domain.employment.entities.EmploymentEntity
-import kcrud.domain.employment.entities.EmploymentRequest
+import kcrud.domain.employment.entity.EmploymentEntity
+import kcrud.domain.employment.entity.EmploymentRequest
 import java.util.*
 
 interface IEmploymentRepository {

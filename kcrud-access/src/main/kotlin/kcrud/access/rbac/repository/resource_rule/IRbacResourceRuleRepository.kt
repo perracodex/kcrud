@@ -6,8 +6,8 @@
 
 package kcrud.access.rbac.repository.resource_rule
 
-import kcrud.access.rbac.entities.resource_rule.RbacResourceRuleEntity
-import kcrud.access.rbac.entities.resource_rule.RbacResourceRuleRequest
+import kcrud.access.rbac.entity.resource_rule.RbacResourceRuleEntity
+import kcrud.access.rbac.entity.resource_rule.RbacResourceRuleRequest
 import java.util.*
 
 /**

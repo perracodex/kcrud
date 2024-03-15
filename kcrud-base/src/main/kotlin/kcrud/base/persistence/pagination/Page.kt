@@ -42,9 +42,9 @@ open class Page<out T : Any>(
 ) {
     companion object {
         /**
-         * Factory method to create a new [Page] object.
+         * Factory method to create a new [Page] instance.
          *
-         * @param content The list of objects for the current page.
+         * @param content The list of object data for the page.
          * @param totalElements The total number of elements in the entire dataset, not just the page.
          * @param pageable The pagination information that was used to request the content, or null if none was used.
          * @return A new [Page] instance with the given [content], including a computed page details.

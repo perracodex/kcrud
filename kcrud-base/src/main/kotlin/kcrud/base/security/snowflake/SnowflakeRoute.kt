@@ -11,8 +11,8 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.base.infrastructure.utils.NetworkUtils
 import kcrud.base.settings.AppSettings
+import kcrud.base.utils.NetworkUtils
 
 /**
  * Defines the snowflake route, which is used to parse snowflake IDs.

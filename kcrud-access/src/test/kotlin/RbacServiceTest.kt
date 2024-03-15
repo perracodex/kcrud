@@ -5,18 +5,18 @@
  */
 
 import io.ktor.test.dispatcher.*
-import kcrud.access.actor.entities.ActorEntity
-import kcrud.access.actor.entities.ActorRequest
+import kcrud.access.actor.entity.ActorEntity
+import kcrud.access.actor.entity.ActorRequest
 import kcrud.access.actor.injection.ActorInjection
 import kcrud.access.actor.service.ActorService
-import kcrud.access.rbac.entities.resource_rule.RbacResourceRuleRequest
-import kcrud.access.rbac.entities.role.RbacRoleEntity
-import kcrud.access.rbac.entities.role.RbacRoleRequest
+import kcrud.access.rbac.entity.resource_rule.RbacResourceRuleRequest
+import kcrud.access.rbac.entity.role.RbacRoleEntity
+import kcrud.access.rbac.entity.role.RbacRoleRequest
 import kcrud.access.rbac.injection.RbacInjection
 import kcrud.access.rbac.service.RbacService
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacResource
-import kcrud.base.infrastructure.utils.TestUtils
+import kcrud.base.utils.TestUtils
 import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

@@ -8,7 +8,7 @@ package kcrud.base.database.schema.contact
 
 import kcrud.base.database.custom_columns.encryptedValidVarChar
 import kcrud.base.database.schema.employee.EmployeeTable
-import kcrud.base.persistence.validators.implementations.EmailValidator
+import kcrud.base.persistence.validators.impl.EmailValidator
 import kcrud.base.security.utils.EncryptionUtils
 import org.jetbrains.exposed.crypt.Encryptor
 import org.jetbrains.exposed.crypt.encryptedVarchar

@@ -6,7 +6,7 @@
 
 package kcrud.access.rbac.views
 
-import kcrud.access.rbac.entities.role.RbacRoleEntity
+import kcrud.access.rbac.entity.role.RbacRoleEntity
 import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacResource

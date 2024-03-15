@@ -11,12 +11,12 @@ import kcrud.base.database.schema.contact.ContactTable
 import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.database.schema.employment.EmploymentTable
 import kcrud.base.database.service.transactionWithSchema
-import kcrud.base.infrastructure.utils.DateTimeUtils
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.pagination.applyPagination
-import kcrud.domain.employment.entities.EmploymentEntity
-import kcrud.domain.employment.entities.EmploymentRequest
+import kcrud.base.utils.DateTimeUtils
+import kcrud.domain.employment.entity.EmploymentEntity
+import kcrud.domain.employment.entity.EmploymentRequest
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.UpdateBuilder

@@ -47,7 +47,7 @@ internal val RbacPlugin = createRouteScopedPlugin(
     name = "RbacPlugin",
     createConfiguration = ::RbacPluginConfig
 ) {
-    on(AuthenticationChecked) { call ->
+    on(hook = AuthenticationChecked) { call ->
 
         val sessionContext: SessionContext? = call.principal<SessionContext>()
             ?: call.sessions.get(name = SessionContext.SESSION_NAME) as SessionContext?
@@ -64,7 +64,7 @@ internal val RbacPlugin = createRouteScopedPlugin(
             )
 
             if (hasPermission) {
-                // The actor has the required permission, so the call can proceed.
+                // The call is authorized to proceed.
                 return@on
             }
         }

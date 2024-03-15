@@ -7,9 +7,9 @@
 package kcrud.domain.employment.errors
 
 import io.ktor.http.*
-import kcrud.base.infrastructure.errors.BaseError
-import kcrud.base.infrastructure.errors.ErrorCodeRegistry
-import kcrud.base.infrastructure.utils.KLocalDate
+import kcrud.base.errors.BaseError
+import kcrud.base.errors.ErrorCodeRegistry
+import kcrud.base.utils.KLocalDate
 import java.util.*
 
 sealed class EmploymentError(

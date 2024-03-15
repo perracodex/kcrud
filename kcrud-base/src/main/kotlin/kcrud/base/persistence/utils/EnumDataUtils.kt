@@ -27,16 +27,16 @@ interface IEnumWithId {
  *
  * Usage Example:
  * ```
- * enum class Honorific(override val id: Int) : EnumWithId {
- *     MR(100), MRS(101), ...
+ * enum class AnyEnumName(override val id: Int) : EnumWithId {
+ *     ELEMENT_A(100), ELEMENT_B(101), ...
  *     companion object {
- *         private val map = Honorific.entries.associateBy(Honorific::id)
+ *         private val map = AnyEnumName.entries.associateBy(AnyEnumName::id)
  *         fun fromId(id: Int) = map[id]
  *     }
  * }
  *
- * object EmployeeTable : Table() {
- *     val honorific = enumById("honorific", Honorific::fromId)
+ * object AnyTable : Table() {
+ *     val anyField = enumById(name = "any_field", fromId = AnyEnumName::fromId)
  *     ...
  * }
  * ```

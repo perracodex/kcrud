@@ -6,12 +6,12 @@
 
 package kcrud.access.actor.repository
 
-import kcrud.access.actor.entities.ActorEntity
-import kcrud.access.actor.entities.ActorRequest
-import kcrud.access.rbac.entities.role.RbacRoleEntity
+import kcrud.access.actor.entity.ActorEntity
+import kcrud.access.actor.entity.ActorRequest
+import kcrud.access.rbac.entity.role.RbacRoleEntity
 import kcrud.access.rbac.repository.role.IRbacRoleRepository
 import kcrud.base.database.schema.admin.actor.ActorTable
-import kcrud.base.infrastructure.utils.DateTimeUtils
+import kcrud.base.utils.DateTimeUtils
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.lowerCase
 import org.jetbrains.exposed.sql.selectAll

@@ -13,8 +13,8 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
-import kcrud.access.rbac.entities.resource_rule.RbacResourceRuleRequest
-import kcrud.access.rbac.entities.role.RbacRoleEntity
+import kcrud.access.rbac.entity.resource_rule.RbacResourceRuleRequest
+import kcrud.access.rbac.entity.role.RbacRoleEntity
 import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.service.RbacService
 import kcrud.access.rbac.views.RbacAdminView

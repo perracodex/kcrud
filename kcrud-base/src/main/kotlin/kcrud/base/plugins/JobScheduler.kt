@@ -7,8 +7,8 @@
 package kcrud.base.plugins
 
 import io.ktor.server.application.*
-import kcrud.base.scheduler.plugin.JobSchedulerPlugin
-import kcrud.base.scheduler.service.JobSchedulerService
+import kcrud.base.scheduling.plugin.JobSchedulerPlugin
+import kcrud.base.scheduling.service.JobSchedulerService
 
 /**
  * Configures the job scheduler for chron jobs and scheduling tasks.

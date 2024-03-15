@@ -6,15 +6,15 @@
 
 package kcrud.access.actor.service
 
-import kcrud.access.actor.entities.ActorRequest
+import kcrud.access.actor.entity.ActorRequest
 import kcrud.access.credential.CredentialService
-import kcrud.access.rbac.entities.resource_rule.RbacResourceRuleRequest
-import kcrud.access.rbac.entities.role.RbacRoleEntity
-import kcrud.access.rbac.entities.role.RbacRoleRequest
+import kcrud.access.rbac.entity.resource_rule.RbacResourceRuleRequest
+import kcrud.access.rbac.entity.role.RbacRoleEntity
+import kcrud.access.rbac.entity.role.RbacRoleRequest
 import kcrud.access.rbac.service.RbacService
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacResource
-import kcrud.base.infrastructure.utils.Tracer
+import kcrud.base.env.Tracer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

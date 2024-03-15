@@ -7,7 +7,7 @@
 package kcrud.server.demo
 
 import kcrud.base.persistence.pagination.Page
-import kcrud.domain.employment.entities.EmploymentEntity
+import kcrud.domain.employment.entity.EmploymentEntity
 import kotlinx.html.*
 import java.text.NumberFormat
 import java.util.*

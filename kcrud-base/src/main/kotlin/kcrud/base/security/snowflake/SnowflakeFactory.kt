@@ -6,7 +6,7 @@
 
 package kcrud.base.security.snowflake
 
-import kcrud.base.infrastructure.utils.KLocalDateTime
+import kcrud.base.utils.KLocalDateTime
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime

@@ -16,12 +16,12 @@ import io.ktor.server.http.content.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.access.system.SessionContext
-import kcrud.base.infrastructure.utils.NetworkUtils
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.pagination.getPageable
+import kcrud.base.utils.NetworkUtils
 import kcrud.domain.employee.service.EmployeeService
-import kcrud.domain.employment.entities.EmploymentEntity
+import kcrud.domain.employment.entity.EmploymentEntity
 import kcrud.domain.employment.service.EmploymentService
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope

@@ -6,7 +6,7 @@
 
 package kcrud.base.persistence.pagination
 
-import kcrud.base.infrastructure.utils.Tracer
+import kcrud.base.env.Tracer
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Query
 import org.jetbrains.exposed.sql.SortOrder

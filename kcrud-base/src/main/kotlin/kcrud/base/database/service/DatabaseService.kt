@@ -8,9 +8,9 @@ package kcrud.base.database.service
 
 import com.zaxxer.hikari.HikariDataSource
 import kcrud.base.database.annotation.DatabaseAPI
-import kcrud.base.infrastructure.health.annotation.HealthCheckAPI
-import kcrud.base.infrastructure.health.checks.DatabaseCheck
-import kcrud.base.infrastructure.utils.Tracer
+import kcrud.base.env.Tracer
+import kcrud.base.env.health.annotation.HealthCheckAPI
+import kcrud.base.env.health.checks.DatabaseCheck
 import kcrud.base.settings.AppSettings
 import kcrud.base.settings.config.sections.DatabaseSettings
 import org.flywaydb.core.Flyway

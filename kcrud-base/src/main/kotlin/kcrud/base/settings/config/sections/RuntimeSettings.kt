@@ -6,7 +6,7 @@
 
 package kcrud.base.settings.config.sections
 
-import kcrud.base.infrastructure.env.EnvironmentType
+import kcrud.base.env.EnvironmentType
 import kcrud.base.settings.config.parser.IConfigSection
 
 /**

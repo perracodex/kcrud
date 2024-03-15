@@ -7,9 +7,9 @@
 package kcrud.access.credential
 
 import io.ktor.server.auth.*
-import kcrud.access.actor.entities.ActorEntity
+import kcrud.access.actor.entity.ActorEntity
 import kcrud.access.actor.service.ActorService
-import kcrud.base.infrastructure.utils.Tracer
+import kcrud.base.env.Tracer
 import kcrud.base.security.hash.SecureHash
 import kcrud.base.security.hash.SecureSalt
 import kotlinx.coroutines.Dispatchers

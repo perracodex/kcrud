@@ -6,13 +6,13 @@
 
 package kcrud.access.actor.service
 
-import kcrud.access.actor.entities.ActorEntity
-import kcrud.access.actor.entities.ActorRequest
+import kcrud.access.actor.entity.ActorEntity
+import kcrud.access.actor.entity.ActorRequest
 import kcrud.access.actor.repository.IActorRepository
 import kcrud.access.credential.CredentialService
 import kcrud.access.rbac.repository.role.IRbacRoleRepository
 import kcrud.access.rbac.service.RbacService
-import kcrud.base.infrastructure.utils.Tracer
+import kcrud.base.env.Tracer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent

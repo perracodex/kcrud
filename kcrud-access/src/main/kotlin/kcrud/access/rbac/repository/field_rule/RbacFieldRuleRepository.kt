@@ -6,9 +6,9 @@
 
 package kcrud.access.rbac.repository.field_rule
 
-import kcrud.access.rbac.entities.field_rule.RbacFieldRuleRequest
+import kcrud.access.rbac.entity.field_rule.RbacFieldRuleRequest
 import kcrud.base.database.schema.admin.rbac.RbacFieldRuleTable
-import kcrud.base.infrastructure.utils.DateTimeUtils
+import kcrud.base.utils.DateTimeUtils
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.batchInsert

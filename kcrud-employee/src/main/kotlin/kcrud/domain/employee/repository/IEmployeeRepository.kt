@@ -8,9 +8,9 @@ package kcrud.domain.employee.repository
 
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
-import kcrud.domain.employee.entities.EmployeeEntity
-import kcrud.domain.employee.entities.EmployeeFilterSet
-import kcrud.domain.employee.entities.EmployeeRequest
+import kcrud.domain.employee.entity.EmployeeEntity
+import kcrud.domain.employee.entity.EmployeeFilterSet
+import kcrud.domain.employee.entity.EmployeeRequest
 import java.util.*
 
 interface IEmployeeRepository {

@@ -6,8 +6,8 @@
 
 package kcrud.access.actor.repository
 
-import kcrud.access.actor.entities.ActorEntity
-import kcrud.access.actor.entities.ActorRequest
+import kcrud.access.actor.entity.ActorEntity
+import kcrud.access.actor.entity.ActorRequest
 import java.util.*
 
 /**

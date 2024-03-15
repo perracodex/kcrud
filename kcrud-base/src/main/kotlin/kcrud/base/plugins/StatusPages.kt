@@ -11,8 +11,8 @@ import io.ktor.server.application.*
 import io.ktor.server.plugins.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
-import kcrud.base.infrastructure.errors.KcrudException
-import kcrud.base.infrastructure.utils.Tracer
+import kcrud.base.env.Tracer
+import kcrud.base.errors.KcrudException
 import kcrud.base.settings.AppSettings
 import kotlinx.serialization.json.Json
 

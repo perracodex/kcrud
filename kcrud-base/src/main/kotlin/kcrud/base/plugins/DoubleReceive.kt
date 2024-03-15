@@ -39,8 +39,8 @@ fun Application.configureDoubleReceive() {
     install(DoubleReceive) {
         cacheRawRequest = true
 
-        // Exclude requests larger than 5 MB from cache.
-        maxSize(5 * 1024 * 1024)
+        // Exclude requests larger than 2 MB from cache.
+        maxSize(limit = 2 * 1024 * 1024)
 
         // Use file cache for requests larger than 1 MB.
         useFileForCache { call ->

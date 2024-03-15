@@ -9,7 +9,7 @@ A [Ktor](https://ktor.io/) REST server.
 * [Database Connection Pooling](./kcrud-base/src/main/kotlin/kcrud/base/database/service/DatabasePooling.kt) with [HikariCP ](https://github.com/brettwooldridge/HikariCP).
 * [Encryption](./kcrud-base/src/main/kotlin/kcrud/base/database/schema/contact/ContactTable.kt) at field level example.
 * [Koin](./kcrud-server/src/main/kotlin/kcrud/server/plugins/Koin.kt) dependency injection.
-* [Quartz Scheduler](./kcrud-base/src/main/kotlin/kcrud/base/scheduler) integration. A popular and [flexible](https://github.com/quartz-scheduler/quartz/blob/main/docs/introduction.adoc) job scheduling library.
+* [Quartz Scheduler](./kcrud-base/src/main/kotlin/kcrud/base/scheduling) integration. A popular and [flexible](https://github.com/quartz-scheduler/quartz/blob/main/docs/introduction.adoc) job scheduling library.
 * [In-memory hashed passwords](./kcrud-access/src/main/kotlin/kcrud/access/credential/CredentialService.kt) storage lookup, with enhanced security.
 * [Sortable pagination](./kcrud-base/src/main/kotlin/kcrud/base/persistence/pagination) and filtering examples.
 * [JSON serialization](https://ktor.io/docs/serialization.html) with [Kotlinx](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md).
@@ -27,7 +27,7 @@ A [Ktor](https://ktor.io/) REST server.
 * [Micrometer Metrics](./kcrud-base/src/main/kotlin/kcrud/base/plugins/MicrometerMetrics.kt) with Prometheus integration. Configuration steps for Prometheus and Grafana are [included](#micrometer-metrics).
 * [Flyway](https://github.com/flyway/flyway) database migration example.
 * [Schema aware database transactions](./kcrud-base/src/main/kotlin/kcrud/base/database/service/TransactionWithSchema.kt), allowing to execute concrete transactions per schema.
-* Examples for [custom serializers](./kcrud-base/src/main/kotlin/kcrud/base/persistence/serializers), [custom validators](./kcrud-base/src/main/kotlin/kcrud/base/persistence/validators), [custom exceptions](./kcrud-base/src/main/kotlin/kcrud/base/infrastructure/errors), and [custom table column](./kcrud-base/src/main/kotlin/kcrud/base/database/custom_columns) constraints.
+* Examples for [custom serializers](./kcrud-base/src/main/kotlin/kcrud/base/persistence/serializers), [custom validators](./kcrud-base/src/main/kotlin/kcrud/base/persistence/validators), [custom exceptions](./kcrud-base/src/main/kotlin/kcrud/base/errors), and [custom table column](./kcrud-base/src/main/kotlin/kcrud/base/database/custom_columns) constraints.
 * Fat Jar [building](#building-and-executing-a-fat-jar) and execution example.
 
 ---
@@ -194,9 +194,9 @@ Is up to the designer to define what a resource is, and act accordingly when its
 Once an endpoint is wrapped within a [withRbac](./kcrud-access/src/main/kotlin/kcrud/access/rbac/plugin/WithRbac.kt) block, it becomes accessible only to actors that have being assigned
 a role that includes both the resource and the required access level for such resource.
 
-- Field Level access control is partially implemented. Each RBAC resource rule has a [fieldRules](./kcrud-access/src/main/kotlin/kcrud/access/rbac/entities/field_rule) map that
+- Field Level access control is partially implemented. Each RBAC resource rule has a [fieldRules](./kcrud-access/src/main/kotlin/kcrud/access/rbac/entity/field_rule) map that
   can be used to define which fields must be managed, for example, should be anonymized. For such, the target entity
-  must inherit from [BaseRbacEntity](./kcrud-access/src/main/kotlin/kcrud/access/rbac/entities/base/BaseRbacEntity.kt), and call the anonymize function accordingly based on the defined field rules,
+  must inherit from [BaseRbacEntity](./kcrud-access/src/main/kotlin/kcrud/access/rbac/entity/base/BaseRbacEntity.kt), and call the anonymize function accordingly based on the defined field rules,
   for example, before returning the entity to a client.
 
 ---

@@ -7,8 +7,8 @@
 package kcrud.base.persistence.pagination
 
 import io.ktor.http.*
-import kcrud.base.infrastructure.errors.BaseError
-import kcrud.base.infrastructure.errors.ErrorCodeRegistry
+import kcrud.base.errors.BaseError
+import kcrud.base.errors.ErrorCodeRegistry
 
 /**
  * Pagination concrete errors.

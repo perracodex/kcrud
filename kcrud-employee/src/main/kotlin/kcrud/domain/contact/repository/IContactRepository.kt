@@ -8,9 +8,9 @@ package kcrud.domain.contact.repository
 
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
-import kcrud.domain.contact.entities.ContactEntity
-import kcrud.domain.contact.entities.ContactRequest
-import kcrud.domain.employee.entities.EmployeeRequest
+import kcrud.domain.contact.entity.ContactEntity
+import kcrud.domain.contact.entity.ContactRequest
+import kcrud.domain.employee.entity.EmployeeRequest
 import java.util.*
 
 interface IContactRepository {

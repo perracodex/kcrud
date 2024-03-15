@@ -13,15 +13,15 @@ import kcrud.access.rbac.injection.RbacInjection
 import kcrud.access.system.SessionContext
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
-import kcrud.base.infrastructure.utils.DateTimeUtils
-import kcrud.base.infrastructure.utils.KLocalDate
-import kcrud.base.infrastructure.utils.KLocalDateTime
-import kcrud.base.infrastructure.utils.TestUtils
-import kcrud.base.persistence.entities.Meta
+import kcrud.base.persistence.entity.Meta
 import kcrud.base.persistence.pagination.Page
-import kcrud.domain.contact.entities.ContactEntity
-import kcrud.domain.employee.entities.EmployeeEntity
-import kcrud.domain.employee.entities.EmployeeRequest
+import kcrud.base.utils.DateTimeUtils
+import kcrud.base.utils.KLocalDate
+import kcrud.base.utils.KLocalDateTime
+import kcrud.base.utils.TestUtils
+import kcrud.domain.contact.entity.ContactEntity
+import kcrud.domain.employee.entity.EmployeeEntity
+import kcrud.domain.employee.entity.EmployeeRequest
 import kcrud.domain.employee.injection.EmployeeInjection
 import kcrud.domain.employee.repository.IEmployeeRepository
 import kcrud.domain.employee.service.EmployeeService
@@ -63,7 +63,7 @@ class EmployeeEntityServiceTest : KoinComponent {
                     lastName = lastName,
                     fullName = "$lastName, $firstName",
                     dob = dob,
-                    age = DateTimeUtils.calculateAge(dob = dob),
+                    age = DateTimeUtils.age(dob = dob),
                     honorific = honorific,
                     maritalStatus = maritalStatus,
                     contact = ContactEntity(

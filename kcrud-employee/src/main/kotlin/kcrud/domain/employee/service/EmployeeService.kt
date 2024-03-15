@@ -7,16 +7,16 @@
 package kcrud.domain.employee.service
 
 import kcrud.access.system.SessionContext
-import kcrud.base.infrastructure.errors.BaseError
-import kcrud.base.infrastructure.utils.Tracer
+import kcrud.base.env.Tracer
+import kcrud.base.errors.BaseError
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.validators.IValidator
-import kcrud.base.persistence.validators.implementations.EmailValidator
-import kcrud.base.persistence.validators.implementations.PhoneValidator
-import kcrud.domain.employee.entities.EmployeeEntity
-import kcrud.domain.employee.entities.EmployeeFilterSet
-import kcrud.domain.employee.entities.EmployeeRequest
+import kcrud.base.persistence.validators.impl.EmailValidator
+import kcrud.base.persistence.validators.impl.PhoneValidator
+import kcrud.domain.employee.entity.EmployeeEntity
+import kcrud.domain.employee.entity.EmployeeFilterSet
+import kcrud.domain.employee.entity.EmployeeRequest
 import kcrud.domain.employee.errors.EmployeeError
 import kcrud.domain.employee.repository.IEmployeeRepository
 import kotlinx.coroutines.Dispatchers

@@ -6,9 +6,9 @@
 
 package kcrud.access.rbac.repository.field_rule
 
-import kcrud.access.rbac.entities.field_rule.RbacFieldRuleEntity
-import kcrud.access.rbac.entities.field_rule.RbacFieldRuleRequest
-import kcrud.access.rbac.entities.resource_rule.RbacResourceRuleRequest
+import kcrud.access.rbac.entity.field_rule.RbacFieldRuleEntity
+import kcrud.access.rbac.entity.field_rule.RbacFieldRuleRequest
+import kcrud.access.rbac.entity.resource_rule.RbacResourceRuleRequest
 import java.util.*
 
 /**

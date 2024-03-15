@@ -13,8 +13,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.access.system.SessionContext
 import kcrud.base.persistence.utils.toUUID
-import kcrud.domain.employment.entities.EmploymentEntity
-import kcrud.domain.employment.entities.EmploymentRequest
+import kcrud.domain.employment.entity.EmploymentEntity
+import kcrud.domain.employment.entity.EmploymentRequest
 import kcrud.domain.employment.errors.EmploymentError
 import kcrud.domain.employment.routing.annotation.EmploymentRouteAPI
 import kcrud.domain.employment.service.EmploymentService

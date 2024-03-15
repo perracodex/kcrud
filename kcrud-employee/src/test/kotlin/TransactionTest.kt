@@ -12,11 +12,11 @@ import kcrud.access.rbac.injection.RbacInjection
 import kcrud.access.system.SessionContext
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
-import kcrud.base.infrastructure.utils.KLocalDate
-import kcrud.base.infrastructure.utils.TestUtils
-import kcrud.domain.contact.entities.ContactRequest
+import kcrud.base.utils.KLocalDate
+import kcrud.base.utils.TestUtils
+import kcrud.domain.contact.entity.ContactRequest
 import kcrud.domain.contact.repository.IContactRepository
-import kcrud.domain.employee.entities.EmployeeRequest
+import kcrud.domain.employee.entity.EmployeeRequest
 import kcrud.domain.employee.injection.EmployeeInjection
 import kcrud.domain.employee.repository.IEmployeeRepository
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction

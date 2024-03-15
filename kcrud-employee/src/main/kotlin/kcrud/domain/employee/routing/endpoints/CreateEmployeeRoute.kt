@@ -12,8 +12,8 @@ import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.access.system.SessionContext
-import kcrud.domain.employee.entities.EmployeeEntity
-import kcrud.domain.employee.entities.EmployeeRequest
+import kcrud.domain.employee.entity.EmployeeEntity
+import kcrud.domain.employee.entity.EmployeeRequest
 import kcrud.domain.employee.routing.annotation.EmployeeRouteAPI
 import kcrud.domain.employee.service.EmployeeService
 import org.koin.core.parameter.parametersOf

@@ -7,7 +7,7 @@
 package kcrud.base.persistence.serializers
 
 import kcrud.base.persistence.validators.IValidator
-import kcrud.base.persistence.validators.implementations.EmailValidator
+import kcrud.base.persistence.validators.impl.EmailValidator
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException

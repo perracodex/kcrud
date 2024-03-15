@@ -4,11 +4,11 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-import kcrud.access.rbac.entities.base.BaseRbacEntity
+import kcrud.access.rbac.entity.base.BaseRbacEntity
 import kcrud.access.rbac.service.RbacFieldAnonymization
-import kcrud.base.infrastructure.utils.KLocalDate
-import kcrud.base.infrastructure.utils.KLocalDateTime
-import kcrud.base.infrastructure.utils.KLocalTime
+import kcrud.base.utils.KLocalDate
+import kcrud.base.utils.KLocalDateTime
+import kcrud.base.utils.KLocalTime
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

@@ -9,13 +9,13 @@ package kcrud.domain.contact.repository
 import kcrud.access.system.SessionContext
 import kcrud.base.database.schema.contact.ContactTable
 import kcrud.base.database.service.transactionWithSchema
-import kcrud.base.infrastructure.utils.DateTimeUtils
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.pagination.applyPagination
-import kcrud.domain.contact.entities.ContactEntity
-import kcrud.domain.contact.entities.ContactRequest
-import kcrud.domain.employee.entities.EmployeeRequest
+import kcrud.base.utils.DateTimeUtils
+import kcrud.domain.contact.entity.ContactEntity
+import kcrud.domain.contact.entity.ContactRequest
+import kcrud.domain.employee.entity.EmployeeRequest
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert

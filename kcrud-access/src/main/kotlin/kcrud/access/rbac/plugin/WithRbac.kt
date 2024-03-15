@@ -17,7 +17,7 @@ import kcrud.base.settings.AppSettings
  *
  * @param resource The RBAC resource associated with the route, defining the scope of access control.
  * @param accessLevel The RBAC access level required for accessing the route, defining the degree of access control.
- * @param build The routing logic to be applied within the RBAC-authorized route. This is the endpoint block.
+ * @param build The lambda function defining the route's handling logic that must adhere to the RBAC constraints.
  * @return The created Route object configured with RBAC constraints.
  */
 @OptIn(RbacAPI::class)

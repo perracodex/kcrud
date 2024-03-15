@@ -7,8 +7,8 @@
 package kcrud.domain.employee.errors
 
 import io.ktor.http.*
-import kcrud.base.infrastructure.errors.BaseError
-import kcrud.base.infrastructure.errors.ErrorCodeRegistry
+import kcrud.base.errors.BaseError
+import kcrud.base.errors.ErrorCodeRegistry
 import java.util.*
 
 sealed class EmployeeError(

@@ -8,7 +8,7 @@ package kcrud.access.system
 
 import com.auth0.jwt.interfaces.Payload
 import io.ktor.server.auth.*
-import kcrud.access.actor.entities.ActorEntity
+import kcrud.access.actor.entity.ActorEntity
 import kcrud.access.actor.service.ActorService
 import kcrud.base.persistence.serializers.SUUID
 import kotlinx.serialization.Serializable

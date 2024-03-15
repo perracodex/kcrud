@@ -11,7 +11,7 @@ import io.ktor.server.application.*
 import io.ktor.server.html.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.access.rbac.entities.role.RbacRoleEntity
+import kcrud.access.rbac.entity.role.RbacRoleEntity
 import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.plugin.withRbac
 import kcrud.access.rbac.routing.login.getRbacAdminAccessActor

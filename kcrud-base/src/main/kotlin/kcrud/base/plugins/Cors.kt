@@ -9,7 +9,7 @@ package kcrud.base.plugins
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.cors.routing.*
-import kcrud.base.infrastructure.utils.Tracer
+import kcrud.base.env.Tracer
 import kcrud.base.settings.AppSettings
 import kcrud.base.settings.config.sections.CorsSettings
 
@@ -66,7 +66,7 @@ fun Application.configureCors() {
 
         if (AppSettings.cors.allowAllHosts()) {
             anyHost()
-            tracer.byEnvironment("Allowing all hosts.")
+            tracer.withSeverity("Allowing all hosts.")
         } else {
             allowedHosts.forEach { entry ->
                 val config: CorsSettings.HostConfig = CorsSettings.parse(spec = entry)

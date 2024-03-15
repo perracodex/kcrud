@@ -7,11 +7,11 @@
 package kcrud.domain.employment.service
 
 import kcrud.access.system.SessionContext
-import kcrud.base.infrastructure.utils.Tracer
+import kcrud.base.env.Tracer
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
-import kcrud.domain.employment.entities.EmploymentEntity
-import kcrud.domain.employment.entities.EmploymentRequest
+import kcrud.domain.employment.entity.EmploymentEntity
+import kcrud.domain.employment.entity.EmploymentRequest
 import kcrud.domain.employment.errors.EmploymentError
 import kcrud.domain.employment.repository.IEmploymentRepository
 import kotlinx.coroutines.Dispatchers

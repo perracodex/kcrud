@@ -15,7 +15,7 @@ import kcrud.access.system.SessionContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.pagination.getPageable
-import kcrud.domain.employee.entities.EmployeeEntity
+import kcrud.domain.employee.entity.EmployeeEntity
 import kcrud.domain.employee.routing.annotation.EmployeeRouteAPI
 import kcrud.domain.employee.service.EmployeeService
 import org.koin.core.parameter.parametersOf

@@ -7,7 +7,7 @@
 package kcrud.base.settings.config.parser
 
 import io.ktor.server.config.*
-import kcrud.base.infrastructure.utils.Tracer
+import kcrud.base.env.Tracer
 import kcrud.base.settings.annotation.ConfigurationAPI
 import kcrud.base.settings.config.ConfigurationCatalog
 import kotlinx.coroutines.Deferred

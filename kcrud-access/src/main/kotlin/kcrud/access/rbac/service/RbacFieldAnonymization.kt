@@ -6,10 +6,10 @@
 
 package kcrud.access.rbac.service
 
-import kcrud.access.rbac.entities.base.BaseRbacEntity
-import kcrud.base.infrastructure.utils.KLocalDate
-import kcrud.base.infrastructure.utils.KLocalDateTime
-import kcrud.base.infrastructure.utils.KLocalTime
+import kcrud.access.rbac.entity.base.BaseRbacEntity
+import kcrud.base.utils.KLocalDate
+import kcrud.base.utils.KLocalDateTime
+import kcrud.base.utils.KLocalTime
 
 /**
  * Utility class to anonymize fields based on their type.

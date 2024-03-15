@@ -5,10 +5,10 @@
  */
 
 import io.ktor.test.dispatcher.*
-import kcrud.base.infrastructure.utils.TestUtils
-import kcrud.base.scheduler.entities.JobScheduleRequest
-import kcrud.base.scheduler.service.JobSchedulerService
-import kcrud.base.scheduler.service.JobStartAt
+import kcrud.base.scheduling.entity.JobScheduleRequest
+import kcrud.base.scheduling.service.JobSchedulerService
+import kcrud.base.scheduling.service.JobStartAt
+import kcrud.base.utils.TestUtils
 import kotlinx.coroutines.delay
 import org.quartz.*
 import kotlin.test.AfterTest

@@ -6,14 +6,14 @@
 
 package kcrud.access.rbac.repository.role
 
-import kcrud.access.rbac.entities.role.RbacRoleEntity
-import kcrud.access.rbac.entities.role.RbacRoleRequest
+import kcrud.access.rbac.entity.role.RbacRoleEntity
+import kcrud.access.rbac.entity.role.RbacRoleRequest
 import kcrud.access.rbac.repository.resource_rule.IRbacResourceRuleRepository
 import kcrud.base.database.schema.admin.actor.ActorTable
 import kcrud.base.database.schema.admin.rbac.RbacFieldRuleTable
 import kcrud.base.database.schema.admin.rbac.RbacResourceRuleTable
 import kcrud.base.database.schema.admin.rbac.RbacRoleTable
-import kcrud.base.infrastructure.utils.DateTimeUtils
+import kcrud.base.utils.DateTimeUtils
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll

@@ -12,8 +12,8 @@ import io.ktor.server.plugins.openapi.*
 import io.ktor.server.plugins.swagger.*
 import io.ktor.server.routing.*
 import io.swagger.codegen.v3.generators.html.StaticHtmlCodegen
-import kcrud.base.infrastructure.utils.NetworkUtils
 import kcrud.base.settings.AppSettings
+import kcrud.base.utils.NetworkUtils
 
 /**
  * Configures Swagger-UI, OpenAPI and Redoc.

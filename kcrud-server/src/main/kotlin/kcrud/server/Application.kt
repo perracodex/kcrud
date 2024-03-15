@@ -12,7 +12,7 @@ import kcrud.access.plugins.configureBasicAuthentication
 import kcrud.access.plugins.configureJwtAuthentication
 import kcrud.access.plugins.configureRbac
 import kcrud.access.plugins.configureSessions
-import kcrud.base.infrastructure.utils.Tracer
+import kcrud.base.env.Tracer
 import kcrud.base.plugins.*
 import kcrud.base.settings.AppSettings
 import kcrud.server.plugins.configureKoin
@@ -83,6 +83,6 @@ fun Application.kcrudModule() {
     configureJobScheduler()
 
     val tracer = Tracer.byFunction(ref = ::kcrudModule)
-    tracer.byEnvironment("Development Mode Enabled: ${environment.developmentMode}.")
+    tracer.withSeverity("Development Mode Enabled: ${environment.developmentMode}.")
     tracer.info("Server configured. Environment: ${AppSettings.runtime.environment}.")
 }

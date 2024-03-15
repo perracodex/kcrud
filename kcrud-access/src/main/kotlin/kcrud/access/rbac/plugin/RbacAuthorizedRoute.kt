@@ -17,22 +17,20 @@ import kcrud.base.database.schema.admin.rbac.types.RbacResource
  * of enforcing Role-Based Access Control (RBAC) on specific routes.
  *
  * How it works:
- * 1. Child Route Creation: Utilizes 'createChild' along with a custom 'AuthorizedRouteSelector'.
- *    This selector is crucial as it carries the RBAC resource and access level information, effectively
- *    tagging the route with these specific access control parameters.
+ * 1. Child Route Creation: A new route node is created to which RBAC constraints will be applied.
  *
- * 2. Plugin Installation: The 'RbacPlugin' is installed on this child route. During installation,
- *    the plugin is configured with the RBAC resource and access level. This association ensures that
- *    the RBAC logic defined in the plugin is applied only to this route, allowing the trigger of its
- *    enclosed endpoints only if the plugin authorizes it.
+ * 2. Plugin Installation: The 'RbacPlugin' is installed to the new child route node. During installation,
+ *    the plugin is configured with a target RBAC resource and access level. This association ensures that
+ *    the RBAC logic defined in the plugin is applied only to the new route, allowing the trigger of its
+ *    enclosed build block only if the plugin authorizes it.
  *
- * 3. Route Configuration: The lambda function 'build' is executed on this child route. This block
- *    is where the actual route logic (like handling GET/POST endpoints) is defined. Importantly,
- *    all route handlers within this block are subject to the RBAC constraints set earlier.
+ * 3. Route Configuration: The 'build' block is bound on the new child route. This build block is where
+ *    the actual source route logic (like handling endpoints) is defined. Importantly, all route handlers
+ *    within the build block are subject to the RBAC constraints handled by the created RBAC route node.
  *
  * @param resource The RBAC resource associated with the route, defining the scope of access control.
  * @param accessLevel The RBAC access level required for accessing the route, defining the degree of access control.
- * @param build The lambda function to define the route's handling logic.
+ * @param build The lambda function defining the route's handling logic that must adhere to the RBAC constraints.
  * @return The created Route object configured with RBAC constraints.
  */
 @RbacAPI
@@ -49,15 +47,27 @@ internal fun Route.rbacAuthorizedRoute(
         )
     }
 
+    // Create the selector to be used to tag routes for RBAC, acting only as a marker in the routing structure.
+    // It does not modify how routes are selected but signifies routes that require RBAC checks.
     val authorizedSelector = AuthorizedRouteSelector(resource = resource, accessLevel = accessLevel)
+
+    // Create the new route node marked with the new selector, to which the RBAC plugin will be applied.
     val authorizedRoute: Route = createChild(selector = authorizedSelector)
 
+    // Install the 'RbacPlugin' on the newly created child route. During this installation, the plugin
+    // is configured with the same RBAC resource and access level that were used to create the route.
+    // This ensures the enforcement of RBAC policies on the route, making certain that access is granted
+    // only to actors with the appropriate permissions defined by the resource and access level parameters.
     authorizedRoute.install(RbacPlugin) {
         this.resource = resource
         this.accessLevel = accessLevel
     }
 
+    // Apply the 'build' block to the new RBAC route, registering its route configurations and handlers
+    // within the context of the RBAC constraints. This sets up the route's structure and behavior according
+    // to the defined logic in 'build', but does not execute the request handling logic immediately.
     authorizedRoute.build()
+
     return authorizedRoute
 }
 

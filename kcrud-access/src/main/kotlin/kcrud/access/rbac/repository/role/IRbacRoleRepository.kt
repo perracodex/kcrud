@@ -6,8 +6,8 @@
 
 package kcrud.access.rbac.repository.role
 
-import kcrud.access.rbac.entities.role.RbacRoleEntity
-import kcrud.access.rbac.entities.role.RbacRoleRequest
+import kcrud.access.rbac.entity.role.RbacRoleEntity
+import kcrud.access.rbac.entity.role.RbacRoleRequest
 import java.util.*
 
 /**

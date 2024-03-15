@@ -12,7 +12,7 @@ import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.routing.admin.rbacAdminRoute
 import kcrud.access.rbac.routing.login.rbacLoginRoute
 import kcrud.access.rbac.routing.login.rbacLogoutRoute
-import kcrud.base.infrastructure.utils.NetworkUtils
+import kcrud.base.utils.NetworkUtils
 
 /**
  * Contains the RBAC endpoints.

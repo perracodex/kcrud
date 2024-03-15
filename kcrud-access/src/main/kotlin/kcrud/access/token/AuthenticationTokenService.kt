@@ -14,7 +14,7 @@ import io.ktor.http.*
 import io.ktor.http.auth.*
 import io.ktor.server.application.*
 import kcrud.access.system.SessionContext
-import kcrud.base.infrastructure.utils.Tracer
+import kcrud.base.env.Tracer
 import kcrud.base.settings.AppSettings
 import kcrud.base.settings.config.sections.security.sections.JwtSettings
 import kotlinx.serialization.json.Json
