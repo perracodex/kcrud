@@ -13,10 +13,10 @@ import io.ktor.server.plugins.*
 import io.ktor.server.plugins.callid.*
 import io.ktor.server.plugins.callloging.*
 import io.ktor.server.request.*
+import kcrud.base.env.SessionContext
 import kcrud.base.security.snowflake.SnowflakeFactory
 import kcrud.base.settings.AppSettings
 import org.slf4j.event.Level
-import java.security.Principal
 
 /**
  * Configures logging within the application using CallLogging and CallId plugins.
@@ -46,12 +46,12 @@ fun Application.configureCallLogging() {
 
         // Format the log message to include the call ID, context details, and processing time.
         format { call ->
-            val principal: Principal? = call.authentication.principal()
+            val sessionContext: SessionContext? = call.principal<SessionContext>()
             val callDurationMs: Long = call.processingTimeMillis()
 
             "Call Metric: [${call.request.origin.remoteHost}] " +
                     "${call.request.httpMethod.value} - ${call.request.path()} " +
-                    "- by '$principal' - ${callDurationMs}ms"
+                    "- by '$sessionContext' - ${callDurationMs}ms"
         }
     }
 

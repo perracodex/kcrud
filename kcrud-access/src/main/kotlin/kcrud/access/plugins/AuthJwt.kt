@@ -13,7 +13,8 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
-import kcrud.access.system.SessionContext
+import kcrud.access.system.SessionContextFactory
+import kcrud.base.env.SessionContext
 import kcrud.base.settings.AppSettings
 
 /**
@@ -66,7 +67,7 @@ fun Application.configureJwtAuthentication() {
                 // If both claims are valid, create and return a SessionContext from the JWT payload,
                 // so it can be accessed from any call's principal.
                 // If not, return null to indicate the token is invalid or not applicable.
-                val sessionContext: SessionContext? = SessionContext.from(jwtPayload = credential.payload)
+                val sessionContext: SessionContext? = SessionContextFactory.from(jwtPayload = credential.payload)
                 sessionContext
             }
 

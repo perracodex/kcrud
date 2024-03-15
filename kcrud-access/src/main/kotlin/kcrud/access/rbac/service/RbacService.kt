@@ -14,9 +14,9 @@ import kcrud.access.rbac.entity.role.RbacRoleEntity
 import kcrud.access.rbac.entity.role.RbacRoleRequest
 import kcrud.access.rbac.repository.resource_rule.IRbacResourceRuleRepository
 import kcrud.access.rbac.repository.role.IRbacRoleRepository
-import kcrud.access.system.SessionContext
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacResource
+import kcrud.base.env.SessionContext
 import kcrud.base.env.Tracer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex

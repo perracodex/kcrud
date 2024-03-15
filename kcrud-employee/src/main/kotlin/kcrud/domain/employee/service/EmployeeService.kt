@@ -6,7 +6,7 @@
 
 package kcrud.domain.employee.service
 
-import kcrud.access.system.SessionContext
+import kcrud.base.env.SessionContext
 import kcrud.base.env.Tracer
 import kcrud.base.errors.BaseError
 import kcrud.base.persistence.pagination.Page

@@ -17,9 +17,9 @@ import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.service.RbacService
 import kcrud.access.rbac.views.RbacAdminView
 import kcrud.access.rbac.views.RbacLoginView
-import kcrud.access.system.SessionContext
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacResource
+import kcrud.base.env.SessionContext
 import org.koin.java.KoinJavaComponent.getKoin
 
 @RbacAPI

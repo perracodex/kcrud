@@ -8,8 +8,8 @@ package kcrud.access.actor.entity
 
 import kcrud.access.credential.CredentialService
 import kcrud.access.rbac.entity.role.RbacRoleEntity
-import kcrud.access.system.SessionContext
 import kcrud.base.database.schema.admin.actor.ActorTable
+import kcrud.base.env.SessionContext
 import kcrud.base.persistence.entity.Meta
 import org.jetbrains.exposed.sql.ResultRow
 import java.util.*

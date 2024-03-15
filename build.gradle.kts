@@ -26,7 +26,7 @@ application {
     // Specify the fully qualified name of the main class for the application.
     // This setting is used to define the entry point for the executable JAR generated
     // by Gradle, which is essential for running the application with 'java -jar' command.
-    mainClass.set("$group.server.ApplicationKt")
+    mainClass.set("io.ktor.server.netty.EngineMain")
 
     // Determine if the 'development' flag is present in project properties.
     // This flag is used to set the application's operating mode.

@@ -29,6 +29,7 @@ A [Ktor](https://ktor.io/) REST server.
 * [Schema aware database transactions](./kcrud-base/src/main/kotlin/kcrud/base/database/service/TransactionWithSchema.kt), allowing to execute concrete transactions per schema.
 * Examples for [custom serializers](./kcrud-base/src/main/kotlin/kcrud/base/persistence/serializers), [custom validators](./kcrud-base/src/main/kotlin/kcrud/base/persistence/validators), [custom exceptions](./kcrud-base/src/main/kotlin/kcrud/base/errors), and [custom table column](./kcrud-base/src/main/kotlin/kcrud/base/database/custom_columns) constraints.
 * Fat Jar [building](#building-and-executing-a-fat-jar) and execution example.
+* Docker [containerization](./Dockerfile) example.
 
 ---
 
@@ -134,6 +135,27 @@ http://localhost:8080/demo?page=0&size=24
 http://localhost:8080/health
 
 http://localhost:8080/rbac/login
+
+---
+
+## Docker Containerization
+
+The [Dockerfile](./Dockerfile) provided in the root directory of the project allows to containerize the Kcrud server.
+
+To build the Docker image, execute the following command in the terminal:
+
+```
+docker build -t kcrud .
+```
+
+To run the Docker container, execute the following command:
+
+```
+docker run -e KCRUD_DEPLOYMENT_PORT=8080 -e KCRUD_DEPLOYMENT_HOST=0.0.0.0 -p 8080:8080 kcrud
+```
+
+Once the container is running, you can test the server by opening a web browser and navigating to any of the
+same URLs as mentioned in the previous section.
 
 ---
 

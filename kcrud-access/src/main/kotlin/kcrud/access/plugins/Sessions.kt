@@ -8,7 +8,7 @@ package kcrud.access.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.sessions.*
-import kcrud.access.system.SessionContext
+import kcrud.base.env.SessionContext
 import kcrud.base.security.utils.SecurityUtils.to16ByteIV
 import kcrud.base.settings.AppSettings
 

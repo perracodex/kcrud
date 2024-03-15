@@ -18,12 +18,12 @@ import kcrud.access.rbac.entity.resource_rule.RbacResourceRuleRequest
 import kcrud.access.rbac.entity.role.RbacRoleEntity
 import kcrud.access.rbac.entity.role.RbacRoleRequest
 import kcrud.access.rbac.service.RbacService
-import kcrud.access.system.SessionContext
 import kcrud.access.token.AuthenticationTokenService
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacResource
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
+import kcrud.base.env.SessionContext
 import kcrud.base.utils.KLocalDate
 import kcrud.base.utils.TestUtils
 import kcrud.domain.contact.entity.ContactRequest

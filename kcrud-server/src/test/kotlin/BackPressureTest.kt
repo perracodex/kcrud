@@ -13,10 +13,10 @@ import io.ktor.util.collections.*
 import kcrud.access.actor.entity.ActorEntity
 import kcrud.access.actor.service.ActorService
 import kcrud.access.actor.service.DefaultActorFactory
-import kcrud.access.system.SessionContext
 import kcrud.access.token.AuthenticationTokenService
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
+import kcrud.base.env.SessionContext
 import kcrud.base.utils.TestUtils
 import kcrud.domain.contact.entity.ContactRequest
 import kcrud.domain.employee.entity.EmployeeRequest

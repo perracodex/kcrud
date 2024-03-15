@@ -6,7 +6,7 @@
 
 package kcrud.domain.employment.service
 
-import kcrud.access.system.SessionContext
+import kcrud.base.env.SessionContext
 import kcrud.base.env.Tracer
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable

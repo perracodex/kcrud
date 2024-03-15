@@ -9,7 +9,7 @@ package kcrud.access.plugins
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import kcrud.access.credential.CredentialService
-import kcrud.access.system.SessionContext
+import kcrud.access.system.SessionContextFactory
 import kcrud.base.settings.AppSettings
 import org.koin.ktor.ext.inject
 
@@ -32,7 +32,7 @@ fun Application.configureBasicAuthentication() {
                 val userIdPrincipal: UserIdPrincipal? = credentialService.authenticate(credential = credential)
 
                 userIdPrincipal?.let { principal ->
-                    SessionContext.from(username = principal.name)
+                    SessionContextFactory.from(username = principal.name)
                 }
             }
         }

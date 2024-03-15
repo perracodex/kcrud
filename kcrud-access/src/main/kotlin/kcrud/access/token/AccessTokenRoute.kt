@@ -13,7 +13,7 @@ import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.access.credential.CredentialService
-import kcrud.access.system.SessionContext
+import kcrud.base.env.SessionContext
 import kcrud.base.plugins.RateLimitScope
 import kcrud.base.settings.AppSettings
 

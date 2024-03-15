@@ -12,7 +12,7 @@ import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.views.RbacLoginView
-import kcrud.access.system.SessionContext
+import kcrud.base.env.SessionContext
 
 @RbacAPI
 fun Route.rbacLogoutRoute() {

@@ -14,7 +14,8 @@ import kcrud.access.actor.service.DefaultActorFactory
 import kcrud.access.credential.CredentialService
 import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.views.RbacLoginView
-import kcrud.access.system.SessionContext
+import kcrud.access.system.SessionContextFactory
+import kcrud.base.env.SessionContext
 import org.koin.ktor.ext.inject
 
 /**
@@ -48,7 +49,7 @@ fun Application.configureRbac() {
                 val userIdPrincipal: UserIdPrincipal? = credentialService.authenticate(credential = credential)
 
                 userIdPrincipal?.let { principal ->
-                    SessionContext.from(username = principal.name)?.let { sessionContext ->
+                    SessionContextFactory.from(username = principal.name)?.let { sessionContext ->
                         this.sessions.set(name = SessionContext.SESSION_NAME, value = sessionContext)
                         return@validate sessionContext
                     }
