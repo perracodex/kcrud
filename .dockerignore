@@ -1,0 +1,15 @@
+*
+!*Dockerfile*
+!build.gradle.kts
+!settings.gradle.kts
+!/src
+!gradle/**
+!gradlew
+!gradlew.bat
+!keystore.p12
+!kcrud-access/**
+!kcrud-base/**
+!kcrud-employee/**
+!kcrud-employment/**
+!kcrud-server/**
+!build/libs/**

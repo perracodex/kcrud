@@ -29,7 +29,7 @@ A [Ktor](https://ktor.io/) REST server.
 * [Schema aware database transactions](./kcrud-base/src/main/kotlin/kcrud/base/database/service/TransactionWithSchema.kt), allowing to execute concrete transactions per schema.
 * Examples for [custom serializers](./kcrud-base/src/main/kotlin/kcrud/base/persistence/serializers), [custom validators](./kcrud-base/src/main/kotlin/kcrud/base/persistence/validators), [custom exceptions](./kcrud-base/src/main/kotlin/kcrud/base/errors), and [custom table column](./kcrud-base/src/main/kotlin/kcrud/base/database/custom_columns) constraints.
 * [Fat Jar building](#building-and-executing-a-fat-jar) and execution example.
-* [Docker containerization](./Dockerfile) example.
+* [Docker containerization](#docker-containerization) example.
 
 ---
 
@@ -140,28 +140,30 @@ http://localhost:8080/rbac/login
 
 ## Docker Containerization
 
-After the **fat JAR** is built, it can be containerized using Docker.
-Is assumed that Docker is [installed](https://www.docker.com/products/docker-desktop/) and running in the local environment.
+It is assumed that Docker is [installed](https://www.docker.com/products/docker-desktop/) and running in the local environment.
 
-The [Dockerfile](./Dockerfile) provided in the root directory of the project allows to containerize the Kcrud server.
+When using Docker, the above **fat JAR** steps are not necessary, as the provided [Dockerfile](./docker-full-build.Dockerfile) already
+includes a build stage to generate the **fat JAR** as part of the containerization process.
 
-To build the Docker image, execute the following command in the terminal:
+An alternative [Dockerfile](./docker-no-build.Dockerfile) is also provided, without the build stage, which will use
+a pre-built **fat JAR**, if such is preferred.
+
+To build the Docker image run the provided Docker files.
+Alternatively execute the following command:
 
 ```
 docker build -t kcrud .
 ```
 
-To run the Docker container, execute the following command:
+To start the Docker container run the provided [Docker Compose](./docker-compose.yaml) file.
+Alternatively execute the following command:
 
 ```
-docker run -e KCRUD_DEPLOYMENT_PORT=8080 -e KCRUD_DEPLOYMENT_HOST=0.0.0.0 -p 8080:8080 kcrud
+docker run -p 8080:8080 kcrud
 ```
 
-Notice that the environment variables `KCRUD_DEPLOYMENT_PORT` and `KCRUD_DEPLOYMENT_HOST` are set to `8080` and `0.0.0.0`
-respectively, so that the server listens on all network interfaces. This will allow the server to be accessible from the host machine.
-
-Once the container is running, you can test the server by opening a web browser in you host machine and navigating to any of the
-same URLs as mentioned in the previous section.
+Once the container is running, to test it open a web browser in the host machine and navigate to any of the same URLs
+mentioned in the previous section.
 
 ---
 
