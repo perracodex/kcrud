@@ -19,7 +19,7 @@ A [Ktor](https://ktor.io/) REST server.
 * [Connection Rate limit](kcrud-base/src/main/kotlin/kcrud/base/plugins/RateLimits.kt) examples.
 * [HTML DSL](https://ktor.io/docs/html-dsl.html) example.
 * [H2](https://github.com/h2database/h2database) embedded database, both in-memory and file-based.
-* [HOCON](./kcrud-server/src/main/resources) configuration example, including [parsing](./kcrud-base/src/main/kotlin/kcrud/base/settings) for strongly typed settings.
+* [HOCON](./kcrud-base/src/main/resources/config) configuration example, including [parsing](./kcrud-base/src/main/kotlin/kcrud/base/settings) for strongly typed settings.
 * [Swagger-UI](https://ktor.io/docs/swagger-ui.html#configure-swagger), [OpenAPI](https://ktor.io/docs/openapi.html) and [Redoc](https://swagger.io/blog/api-development/redoc-openapi-powered-documentation/) integration.
 * [Routing](./kcrud-server/src/main/kotlin/kcrud/server/plugins/Routes.kt) organization examples.
 * [Call Logging](https://ktor.io/docs/call-logging.html) and [Call ID](https://ktor.io/docs/call-id.html) examples for events traceability.
@@ -30,6 +30,7 @@ A [Ktor](https://ktor.io/) REST server.
 * Examples for [custom serializers](./kcrud-base/src/main/kotlin/kcrud/base/persistence/serializers), [custom validators](./kcrud-base/src/main/kotlin/kcrud/base/persistence/validators), [custom exceptions](./kcrud-base/src/main/kotlin/kcrud/base/errors), and [custom table column](./kcrud-base/src/main/kotlin/kcrud/base/database/custom_columns) constraints.
 * [Fat Jar building](#building-and-executing-a-fat-jar) and execution example.
 * [Docker containerization](#docker-containerization) example.
+* [Environment variables](#environment-variables-management) management example.
 
 ---
 
@@ -113,7 +114,7 @@ transaction processing, with repositories designed to be accessed only from with
 
 The [Ktor Gradle plugin](https://ktor.io/docs/fatjar.html#build) allows to create and run an executable JAR that includes all code dependencies (fat JAR).
 
-* Building the **fat JAR**: Employ the `buildFatJar` Gradle task provided by Ktor.
+* **Building the fat JAR:** Employ the `buildFatJar` Gradle task provided by Ktor.
 
 <img src="./.screenshots/gradle_fatjar.jpg" width="453" alt="gradle fat JAR">
 
@@ -164,6 +165,21 @@ docker run -p 8080:8080 kcrud-image
 
 Once the container is running, to test it open a web browser in the host machine and navigate to any of the same URLs
 mentioned in the previous section.
+
+---
+
+## Environment Variables Management
+
+The server configurations are managed through environment variables, centralized within a [.env](./.env) file.
+This standardizes settings across environments and deployment phases.
+
+* **Configuration Files:** Settings are primarily defined within [HOCON](./kcrud-base/src/main/resources/config) files.
+  These configurations use placeholders for variables, filled at runtime from the `.env` file or directly from the environment.
+
+* **Local Development:** Running the server locally automatically incorporates `.env` values.
+
+* **Docker:** In Docker environments, **Docker Compose** uses the `.env` file to set environment variables for containers,
+  bypassing the server's direct loading of the `.env` file, and instead injecting the variables directly into the Docker environment.
 
 ---
 

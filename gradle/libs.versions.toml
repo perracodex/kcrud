@@ -4,6 +4,7 @@
 
 commons-codec = "1.16.1"                # https://github.com/apache/commons-codec/tags
 database-h2 = "2.2.224"                 # https://github.com/h2database/h2database/releases
+dotenv = "6.4.1"                        # https://github.com/cdimascio/dotenv-kotlin/releases
 exposed = "0.48.0"                      # https://github.com/JetBrains/Exposed/releases
 flyway = "10.10.0"                      # https://github.com/flyway/flyway/releases
 google-phonenumber = "8.13.32"          # https://github.com/google/libphonenumber/releases
@@ -85,6 +86,11 @@ exposed-crypt = { module = "org.jetbrains.exposed:exposed-crypt", version.ref = 
 exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
 exposed-json = { module = "org.jetbrains.exposed:exposed-json", version.ref = "exposed" }
 exposed-kotlin-datetime = { module = "org.jetbrains.exposed:exposed-kotlin-datetime", version.ref = "exposed" }
+
+# Dotenv (Dynamic environment variables).
+# https://github.com/cdimascio/dotenv-kotlin
+# https://github.com/cdimascio/dotenv-kotlin/releases
+dotenv = { module = "io.github.cdimascio:dotenv-kotlin", version.ref = "dotenv" }
 
 # Flyway (Database migration).
 # https://github.com/flyway/flyway
