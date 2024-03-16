@@ -2,6 +2,6 @@ version: '3.8'
 
 services:
   kcrud:
-    image: kcrud
+    image: kcrud-image:latest
     ports:
       - "8080:8080"

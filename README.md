@@ -145,21 +145,21 @@ It is assumed that Docker is [installed](https://www.docker.com/products/docker-
 When using Docker, the above **fat JAR** steps are not necessary, as the provided [Dockerfile](./docker-full-build.Dockerfile) already
 includes a build stage to generate the **fat JAR** as part of the containerization process.
 
-An alternative [Dockerfile](./docker-no-build.Dockerfile) is also provided, without the build stage, which will use
+An alternative [Dockerfile](./docker-no-build.Dockerfile) is also provided without the build stage, which will use
 a pre-built **fat JAR**, if such is preferred.
 
 To build the Docker image run the provided Docker files.
 Alternatively execute the following command:
 
 ```
-docker build -t kcrud .
+docker build -t kcrud-image .
 ```
 
 To start the Docker container run the provided [Docker Compose](./docker-compose.yaml) file.
 Alternatively execute the following command:
 
 ```
-docker run -p 8080:8080 kcrud
+docker run -p 8080:8080 kcrud-image
 ```
 
 Once the container is running, to test it open a web browser in the host machine and navigate to any of the same URLs
