@@ -19,7 +19,6 @@ import kcrud.base.env.SessionContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.pagination.getPageable
-import kcrud.base.utils.NetworkUtils
 import kcrud.domain.employee.service.EmployeeService
 import kcrud.domain.employment.entity.EmploymentEntity
 import kcrud.domain.employment.service.EmploymentService
@@ -44,10 +43,6 @@ fun Route.employeesDemoRoute() {
 
         dumpJson()
     }
-
-    NetworkUtils.logEndpoints(
-        reason = "Demo", endpoints = listOf("demo?page=0&size=24")
-    )
 }
 
 @OptIn(DemoAPI::class)

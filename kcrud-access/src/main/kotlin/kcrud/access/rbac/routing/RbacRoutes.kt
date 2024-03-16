@@ -12,7 +12,6 @@ import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.routing.admin.rbacAdminRoute
 import kcrud.access.rbac.routing.login.rbacLoginRoute
 import kcrud.access.rbac.routing.login.rbacLogoutRoute
-import kcrud.base.utils.NetworkUtils
 
 /**
  * Contains the RBAC endpoints.
@@ -28,9 +27,4 @@ fun Route.rbacRoute() {
     rbacLogoutRoute()
 
     rbacAdminRoute()
-
-    NetworkUtils.logEndpoints(
-        reason = "RBAC",
-        endpoints = listOf("rbac/login")
-    )
 }

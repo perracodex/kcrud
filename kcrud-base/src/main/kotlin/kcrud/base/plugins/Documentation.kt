@@ -13,7 +13,6 @@ import io.ktor.server.plugins.swagger.*
 import io.ktor.server.routing.*
 import io.swagger.codegen.v3.generators.html.StaticHtmlCodegen
 import kcrud.base.settings.AppSettings
-import kcrud.base.utils.NetworkUtils
 
 /**
  * Configures Swagger-UI, OpenAPI and Redoc.
@@ -50,17 +49,5 @@ fun Application.configuredDocumentation() {
         swaggerUI(path = swaggerPath, swaggerFile = yamlFile) {
             version = "5.11.8"
         }
-
-        // Redoc.
-        val redocPath = "$rootPath/docs${AppSettings.docs.redocPath}"
-
-        NetworkUtils.logEndpoints(
-            reason = "Redoc - Swagger-UI - OpenApi",
-            endpoints = listOf(
-                redocPath,
-                swaggerPath,
-                openApiPath
-            )
-        )
     }
 }

@@ -14,7 +14,6 @@ import io.ktor.server.routing.*
 import kcrud.base.scheduling.entity.JobScheduleEntity
 import kcrud.base.scheduling.service.JobSchedulerService
 import kcrud.base.settings.AppSettings
-import kcrud.base.utils.NetworkUtils
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -33,10 +32,5 @@ fun Route.quartzRoutes() {
             )
         }
     }
-
-    NetworkUtils.logEndpoints(
-        reason = "Scheduled Jobs",
-        endpoints = listOf("scheduler")
-    )
 }
 

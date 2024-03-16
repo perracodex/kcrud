@@ -22,7 +22,6 @@ import io.micrometer.core.instrument.binder.system.UptimeMetrics
 import io.micrometer.prometheus.PrometheusConfig
 import io.micrometer.prometheus.PrometheusMeterRegistry
 import kcrud.base.settings.AppSettings
-import kcrud.base.utils.NetworkUtils
 
 /**
  * The [MicrometerMetrics] plugin enables Micrometer metrics in your Ktor server application
@@ -58,11 +57,6 @@ fun Application.configureMicroMeterMetrics() {
             }
         }
     }
-
-    NetworkUtils.logEndpoints(
-        reason = "Micrometer Metrics",
-        endpoints = listOf("metrics")
-    )
 }
 
 /**

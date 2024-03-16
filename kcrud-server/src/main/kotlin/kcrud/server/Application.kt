@@ -14,7 +14,9 @@ import kcrud.access.plugins.configureRbac
 import kcrud.access.plugins.configureSessions
 import kcrud.base.env.Tracer
 import kcrud.base.plugins.*
+import kcrud.base.security.snowflake.SnowflakeFactory
 import kcrud.base.settings.AppSettings
+import kcrud.base.utils.NetworkUtils
 import kcrud.server.plugins.configureKoin
 import kcrud.server.plugins.configureRoutes
 
@@ -82,7 +84,28 @@ fun Application.kcrudModule() {
 
     configureJobScheduler()
 
+    dumpEndpoints(environment = this.environment)
+
     val tracer = Tracer.byFunction(ref = ::kcrudModule)
     tracer.withSeverity("Development Mode Enabled: ${environment.developmentMode}.")
     tracer.info("Server configured. Environment: ${AppSettings.runtime.environment}.")
+}
+
+private fun dumpEndpoints(environment: ApplicationEnvironment) {
+    environment.monitor.subscribe(definition = ServerReady) {
+        NetworkUtils.logEndpoints(reason = "Demo", endpoints = listOf("demo?page=0&size=24"))
+        NetworkUtils.logEndpoints(reason = "Healthcheck", endpoints = listOf("health"))
+        NetworkUtils.logEndpoints(reason = "Snowflake", endpoints = listOf("snowflake/${SnowflakeFactory.nextId()}"))
+        NetworkUtils.logEndpoints(reason = "RBAC", endpoints = listOf("rbac/login"))
+        NetworkUtils.logEndpoints(reason = "Scheduled Jobs", endpoints = listOf("scheduler"))
+        NetworkUtils.logEndpoints(reason = "Micrometer Metrics", endpoints = listOf("metrics"))
+        NetworkUtils.logEndpoints(
+            reason = "Redoc - Swagger-UI - OpenApi",
+            endpoints = listOf(
+                "v1/docs${AppSettings.docs.redocPath}",
+                AppSettings.docs.swaggerPath,
+                AppSettings.docs.openApiPath
+            )
+        )
+    }
 }

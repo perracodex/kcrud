@@ -13,7 +13,6 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.base.env.health.HealthCheck
 import kcrud.base.settings.AppSettings
-import kcrud.base.utils.NetworkUtils
 
 /**
  * Defines the health check endpoints.
@@ -30,9 +29,4 @@ fun Route.healthCheckRoute() {
             call.respond(status = HttpStatusCode.OK, message = healthCheck)
         }
     }
-
-    NetworkUtils.logEndpoints(
-        reason = "Healthcheck",
-        endpoints = listOf("health")
-    )
 }

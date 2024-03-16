@@ -12,7 +12,6 @@ import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.base.settings.AppSettings
-import kcrud.base.utils.NetworkUtils
 
 /**
  * Defines the snowflake route, which is used to parse snowflake IDs.
@@ -26,11 +25,4 @@ fun Route.snowflakeRoute() {
             call.respond(status = HttpStatusCode.OK, message = data)
         }
     }
-
-    NetworkUtils.logEndpoints(
-        reason = "Snowflake",
-        endpoints = listOf(
-            "snowflake/${SnowflakeFactory.nextId()}"
-        )
-    )
 }
