@@ -28,9 +28,9 @@ A [Ktor](https://ktor.io/) REST server.
 * [Flyway](https://github.com/flyway/flyway) database migration example.
 * [Schema aware database transactions](./kcrud-base/src/main/kotlin/kcrud/base/database/service/TransactionWithSchema.kt), allowing to execute concrete transactions per schema.
 * Examples for [custom serializers](./kcrud-base/src/main/kotlin/kcrud/base/persistence/serializers), [custom validators](./kcrud-base/src/main/kotlin/kcrud/base/persistence/validators), [custom exceptions](./kcrud-base/src/main/kotlin/kcrud/base/errors), and [custom table column](./kcrud-base/src/main/kotlin/kcrud/base/database/custom_columns) constraints.
+* [Environment variables](#environment-variables-management) management example
 * [Fat Jar building](#building-and-executing-a-fat-jar) and execution example.
 * [Docker containerization](#docker-containerization) example.
-* [Environment variables](#environment-variables-management) management example.
 
 ---
 
@@ -110,6 +110,21 @@ transaction processing, with repositories designed to be accessed only from with
 
 --- 
 
+## Environment Variables Management
+
+The server configurations are managed through environment variables, centralized within a [.env](./.env) file.
+This standardizes settings across environments and deployment phases.
+
+* **Configuration Files:** Settings are primarily defined within [HOCON](./kcrud-base/src/main/resources/config) files.
+  These configurations use placeholders for variables, filled at runtime from the `.env` file or directly from the environment.
+
+* **Local Development:** Running the server locally automatically incorporates `.env` values.
+
+* **Docker:** In Docker environments, **Docker Compose** uses the `.env` file to set environment variables for containers,
+  bypassing the server's direct loading of the `.env` file, and instead injecting the variables directly into the Docker environment.
+
+---
+
 ## Building and Executing a Fat JAR
 
 The [Ktor Gradle plugin](https://ktor.io/docs/fatjar.html#build) allows to create and run an executable JAR that includes all code dependencies (fat JAR).
@@ -168,24 +183,9 @@ mentioned in the previous section.
 
 ---
 
-## Environment Variables Management
-
-The server configurations are managed through environment variables, centralized within a [.env](./.env) file.
-This standardizes settings across environments and deployment phases.
-
-* **Configuration Files:** Settings are primarily defined within [HOCON](./kcrud-base/src/main/resources/config) files.
-  These configurations use placeholders for variables, filled at runtime from the `.env` file or directly from the environment.
-
-* **Local Development:** Running the server locally automatically incorporates `.env` values.
-
-* **Docker:** In Docker environments, **Docker Compose** uses the `.env` file to set environment variables for containers,
-  bypassing the server's direct loading of the `.env` file, and instead injecting the variables directly into the Docker environment.
-
----
-
 ## Handling Security
 
-Security can be configured with the `config_security.conf`file located under the resources folder in the `kcrud-base` project.
+Security can be configured with the [config_security.conf](./kcrud-base/src/main/resources/config/config_security.conf) file.
 
 ### Generating and Refreshing JWT Tokens
 
@@ -210,6 +210,8 @@ http://localhost:8080/auth/token/refresh
 2. Add a new key-value pair:
     - Key: `Authorization`
     - Value: `Bearer <The-token-with-no-quotes>`
+
+Note that the provided postman collection is already configured to automatically refresh tokens.
 
 ---
 
