@@ -10,3 +10,5 @@ services:
       - "8080:8080"
     env_file:
       - .env
+    environment:
+      - KCRUD_KTOR_SECURITY_SSL_KEY_STORE=/app/keystore.p12

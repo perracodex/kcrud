@@ -25,22 +25,21 @@ LABEL image.tag="kcrud"
 LABEL name="kcrud-final-image"
 EXPOSE 8080
 
-# Uncomment the following COPY commands if the fat JAR is built locally without the above build stage.
-# COPY build/libs/kcrud-1.0.0-all.jar /kcrud-1.0.0-all.jar
-# COPY build/libs/keystore.p12 /keystore.p12
+RUN mkdir -p /app
 
-# Comment out the following COPY commands if skipping the above build stage.
-COPY --from=build /home/gradle/src/build/libs/kcrud-1.0.0-all.jar /kcrud-1.0.0-all.jar
-COPY --from=build /home/gradle/src/build/libs/keystore.p12 /keystore.p12
-#COPY --from=build /home/gradle/src/documentation/documentation.yaml /documentation/documentation.yaml
+COPY --from=build /home/gradle/src/build/libs/kcrud-1.0.0-all.jar /app/kcrud-1.0.0-all.jar
+COPY --from=build /home/gradle/src/build/libs/keystore.p12 /app/keystore.p12
 
-ENTRYPOINT ["java","-jar","kcrud-1.0.0-all.jar"]
+ENTRYPOINT ["java", "-jar", "/app/kcrud-1.0.0-all.jar"]
 
 #-------------------------------------------------------------------------------------------------
 # ENVOIRMENT VARIABLES.
 
 # Set host environment varianle to 0.0.0.0, so the server listens on all interfaces.
 ENV KCRUD_KTOR_DEPLOYMENT_HOST="0.0.0.0"
+
+# Set the SSL key store environment variable.
+ENV KCRUD_KTOR_SECURITY_SSL_KEY_STORE="/app/keystore.p12"
 
 # To override more configuration settings at image level add them here.
 # For more settings see the existing 'conf' files in the base project, under the resources folder.
