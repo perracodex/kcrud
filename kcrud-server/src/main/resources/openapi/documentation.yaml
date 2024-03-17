@@ -891,7 +891,7 @@ components:
           type: "array"
           items:
             type: "string"
-        docsEnabled:
+        apiSchemaEnabled:
           type: "boolean"
       required:
         - "errors"

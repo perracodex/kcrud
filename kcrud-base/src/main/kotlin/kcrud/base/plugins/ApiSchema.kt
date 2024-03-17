@@ -15,7 +15,7 @@ import io.swagger.codegen.v3.generators.html.StaticHtmlCodegen
 import kcrud.base.settings.AppSettings
 
 /**
- * Configures Swagger-UI, OpenAPI and Redoc.
+ * Configures OpenAPI, Swagger-UI and Redoc.
  *
  * See [OpenAPI](https://ktor.io/docs/openapi.html)
  *
@@ -25,28 +25,29 @@ import kcrud.base.settings.AppSettings
  *
  * See [Redoc](https://swagger.io/blog/api-development/redoc-openapi-powered-documentation/)
  */
-fun Application.configuredDocumentation() {
+fun Application.configuredApiSchema() {
 
-    if (!AppSettings.docs.environments.contains(AppSettings.runtime.environment)) {
+    if (!AppSettings.apiSchema.environments.contains(AppSettings.runtime.environment)) {
         return
     }
 
     routing {
-        val yamlFile: String = AppSettings.docs.yamlFile
-        val rootPath = "v1"
-
-        // Root path.
-        staticResources(remotePath = rootPath, basePackage = "openapi")
+        // Serve the static files: OpenAPI YAML, Redoc HTML, etc.
+        staticResources(remotePath = AppSettings.apiSchema.schemaRoot, basePackage = "openapi")
 
         // OpenAPI.
-        val openApiPath = AppSettings.docs.openApiPath
-        openAPI(path = openApiPath, swaggerFile = yamlFile) {
+        openAPI(
+            path = AppSettings.apiSchema.openApiEndpoint,
+            swaggerFile = AppSettings.apiSchema.schemaResourceFile
+        ) {
             codegen = StaticHtmlCodegen()
         }
 
         // Swagger-UI.
-        val swaggerPath = AppSettings.docs.swaggerPath
-        swaggerUI(path = swaggerPath, swaggerFile = yamlFile) {
+        swaggerUI(
+            path = AppSettings.apiSchema.swaggerEndpoint,
+            swaggerFile = AppSettings.apiSchema.schemaResourceFile
+        ) {
             version = "5.11.8"
         }
     }

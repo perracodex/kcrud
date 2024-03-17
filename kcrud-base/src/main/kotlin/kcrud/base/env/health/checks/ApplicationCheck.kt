@@ -15,19 +15,19 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ApplicationCheck(
     val errors: MutableList<String>,
-    val docsEnabled: Boolean
+    val apiSchemaEnabled: Boolean
 ) {
     constructor() : this(
         errors = mutableListOf(),
-        docsEnabled = AppSettings.docs.environments.contains(AppSettings.runtime.environment)
+        apiSchemaEnabled = AppSettings.apiSchema.environments.contains(AppSettings.runtime.environment)
     )
 
     init {
         val environment: EnvironmentType = AppSettings.runtime.environment
 
         if (environment == EnvironmentType.PROD) {
-            if (docsEnabled) {
-                errors.add("${this::class.simpleName}. Docs are enabled in '$environment' environment.")
+            if (apiSchemaEnabled) {
+                errors.add("${this::class.simpleName}. API schema is enabled in '$environment' environment.")
             }
         }
     }

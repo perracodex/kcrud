@@ -24,6 +24,6 @@ data class ConfigurationCatalog(
     val deployment: DeploymentSettings,
     val cors: CorsSettings,
     val database: DatabaseSettings,
-    val docs: DocsSettings,
+    val apiSchema: ApiSchemaSettings,
     val security: SecuritySettings
 )

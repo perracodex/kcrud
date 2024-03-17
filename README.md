@@ -20,7 +20,7 @@ A [Ktor](https://ktor.io/) REST server.
 * [HTML DSL](https://ktor.io/docs/html-dsl.html) example.
 * [H2](https://github.com/h2database/h2database) embedded database, both in-memory and file-based.
 * [HOCON](./kcrud-base/src/main/resources/config) configuration example, including [parsing](./kcrud-base/src/main/kotlin/kcrud/base/settings) for strongly typed settings.
-* [Swagger-UI](https://ktor.io/docs/swagger-ui.html#configure-swagger), [OpenAPI](https://ktor.io/docs/openapi.html) and [Redoc](https://swagger.io/blog/api-development/redoc-openapi-powered-documentation/) integration.
+* [Swagger-UI](https://ktor.io/docs/swagger-ui.html#configure-swagger), [Redoc](https://swagger.io/blog/api-development/redoc-openapi-powered-documentation/), and [OpenAPI](https://ktor.io/docs/openapi.html) integration.
 * [Routing](./kcrud-server/src/main/kotlin/kcrud/server/plugins/Routes.kt) organization examples.
 * [Call Logging](https://ktor.io/docs/call-logging.html) and [Call ID](https://ktor.io/docs/call-id.html) examples for events traceability.
 * [Snowflake](./kcrud-base/src/main/kotlin/kcrud/base/security/snowflake) unique IDs for logging purposes, suitable for distributed systems.
@@ -222,22 +222,23 @@ The project also includes an [RBAC](./kcrud-access/src/main/kotlin/kcrud/access/
 Whenever endpoints require RBAC management, these should be wrapped as follows:
 
 ```kotlin
-withRbac(resource = RbacResource.POTATO, accessLevel = RbacAccessLevel.FULL) {
-    get("/potato-endpoint") {
-        // endpoint logic
+withRbac(resource = RbacResource.SOME_RESOURCE, accessLevel = RbacAccessLevel.FULL) {
+    get("/some-endpoint") {
+        // endpoint logic block
     }
-    // Can have more endpoints grouped in the same resource and access level
+    // It is allowed to include more endpoints under the same resource and access level.
 }
 ```
 
-Where [RbacResource](./kcrud-base/src/main/kotlin/kcrud/base/database/schema/admin/rbac/types/RbacResource.kt) and [RbacAccessLevel](./kcrud-base/src/main/kotlin/kcrud/base/database/schema/admin/rbac/types/RbacAccessLevel.kt) define a type of resource and its required access level.
-Multiple endpoints can be wrapped within the same [withRbac](./kcrud-access/src/main/kotlin/kcrud/access/rbac/plugin/WithRbac.kt) block, or have multiple `withRbac` blocks for different resources and levels.
+[RbacResource](./kcrud-base/src/main/kotlin/kcrud/base/database/schema/admin/rbac/types/RbacResource.kt) and [RbacAccessLevel](./kcrud-base/src/main/kotlin/kcrud/base/database/schema/admin/rbac/types/RbacAccessLevel.kt) define a type of resource and its required access level.
+Multiple endpoints can be wrapped under the same [withRbac](./kcrud-access/src/main/kotlin/kcrud/access/rbac/plugin/WithRbac.kt) block, or use multiple `withRbac` blocks for different resources and levels.
 
-A resource can be as granular as required or any concept: a database table, a REST endpoint, a UI element, etc.
-Is up to the designer to define what a resource is, and act accordingly when its associated RBAC rule is verified.
+A resource can be any concept: a database table, a REST endpoint, a UI element, etc.
+It is up to the designer to define what a resource is, and act accordingly when its associated RBAC rule is verified.
 
-Once an endpoint is wrapped within a [withRbac](./kcrud-access/src/main/kotlin/kcrud/access/rbac/plugin/WithRbac.kt) block, it becomes accessible only to actors that have being assigned
-a role that includes both the resource and the required access level for such resource.
+Once an endpoint is wrapped under a [withRbac](./kcrud-access/src/main/kotlin/kcrud/access/rbac/plugin/WithRbac.kt) block, it becomes accessible only to
+**Actors** that have being assigned
+a **Role** that includes both the RBAC block associated resource and access level.
 
 - Field Level access control is partially implemented. Each RBAC resource rule has a [fieldRules](./kcrud-access/src/main/kotlin/kcrud/access/rbac/entity/field_rule) map that
   can be used to define which fields must be managed, for example, should be anonymized. For such, the target entity
@@ -248,9 +249,8 @@ a role that includes both the resource and the required access level for such re
 
 ## Interactive Paginated Demo
 
-Although UI elements are out of the scope of this project, a simple interactive demo with paginated scrolling is included.
-By no means the included javascript code is production-ready or should be used as a reference. It is just a simple example
-to illustrate the paginated REST endpoint.
+A simple interactive demo with paginated scrolling is included. By no means the included javascript code is production-ready
+or should be used as a reference. It is just a simple example to illustrate the paginated REST endpoint.
 
 Endpoint: http://localhost:8080/demo?page=0&size=24
 
@@ -260,7 +260,7 @@ Endpoint: http://localhost:8080/demo?page=0&size=24
 
 ## Handling Security
 
-Security can be configured with the [config_security.conf](./kcrud-base/src/main/resources/config/config_security.conf) file.
+Security settings can be configured in the [config_security.conf](./kcrud-base/src/main/resources/config/config_security.conf) file.
 
 ### Generating and Refreshing JWT Tokens
 

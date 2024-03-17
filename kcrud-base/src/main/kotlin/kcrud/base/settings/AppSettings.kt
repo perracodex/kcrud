@@ -33,7 +33,7 @@ object AppSettings {
     val runtime: RuntimeSettings get() = configuration.runtime
     val cors: CorsSettings get() = configuration.cors
     val database: DatabaseSettings get() = configuration.database
-    val docs: DocsSettings get() = configuration.docs
+    val apiSchema: ApiSchemaSettings get() = configuration.apiSchema
     val security: SecuritySettings get() = configuration.security
 
     @OptIn(ConfigurationAPI::class)
@@ -55,7 +55,7 @@ object AppSettings {
                 ConfigClassMap(path = "runtime", argument = "runtime", kClass = RuntimeSettings::class),
                 ConfigClassMap(path = "cors", argument = "cors", kClass = CorsSettings::class),
                 ConfigClassMap(path = "database", argument = "database", kClass = DatabaseSettings::class),
-                ConfigClassMap(path = "docs", argument = "docs", kClass = DocsSettings::class),
+                ConfigClassMap(path = "apiSchema", argument = "apiSchema", kClass = ApiSchemaSettings::class),
                 ConfigClassMap(path = "security", argument = "security", kClass = SecuritySettings::class)
             )
 

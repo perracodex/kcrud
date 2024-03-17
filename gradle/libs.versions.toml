@@ -122,9 +122,9 @@ database-h2 = { module = "com.h2database:h2", version.ref = "database-h2" }
 # https://github.com/swagger-api/swagger-ui
 # https://github.com/swagger-api/swagger-codegen-generators
 # https://github.com/swagger-api/swagger-codegen-generators/releases
-docs-openapi = { module = "io.ktor:ktor-server-openapi", version.ref = "ktor" }
-docs-swagger = { module = "io.ktor:ktor-server-swagger", version.ref = "ktor" }
-docs-swagger-generators = { module = "io.swagger.codegen.v3:swagger-codegen-maven-plugin", version.ref = "swagger-generators" }
+api-schema-openapi = { module = "io.ktor:ktor-server-openapi", version.ref = "ktor" }
+api-schema-swagger = { module = "io.ktor:ktor-server-swagger", version.ref = "ktor" }
+api-schema-swagger-generators = { module = "io.swagger.codegen.v3:swagger-codegen-maven-plugin", version.ref = "swagger-generators" }
 
 # Shared.
 shared-commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec" }

@@ -79,7 +79,7 @@ fun Application.kcrudModule() {
 
     configureRoutes()
 
-    configuredDocumentation()
+    configuredApiSchema()
 
     configureMicroMeterMetrics()
 
@@ -127,11 +127,11 @@ private fun dumpEndpoints(environment: ApplicationEnvironment) {
         NetworkUtils.logEndpoints(reason = "Scheduled Jobs", endpoints = listOf("scheduler"))
         NetworkUtils.logEndpoints(reason = "Micrometer Metrics", endpoints = listOf("metrics"))
         NetworkUtils.logEndpoints(
-            reason = "Redoc - Swagger-UI - OpenApi",
+            reason = "Swagger, Redoc, OpenApi",
             endpoints = listOf(
-                "v1/docs${AppSettings.docs.redocPath}",
-                AppSettings.docs.swaggerPath,
-                AppSettings.docs.openApiPath
+                AppSettings.apiSchema.swaggerEndpoint,
+                AppSettings.apiSchema.redocEndpoint,
+                AppSettings.apiSchema.openApiEndpoint,
             )
         )
     }

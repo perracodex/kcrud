@@ -11,9 +11,9 @@ dependencies {
 
     implementation(libs.database.h2)
 
-    implementation(libs.docs.swagger)
-    implementation(libs.docs.swagger.generators)
-    implementation(libs.docs.openapi)
+    implementation(libs.api.schema.swagger)
+    implementation(libs.api.schema.swagger.generators)
+    implementation(libs.api.schema.openapi)
 
     implementation(libs.kotlinx.atomicfu)
     implementation(libs.kotlinx.datetime)
