@@ -2,6 +2,9 @@ version: '3.8'
 
 services:
   kcrud:
+    build:
+      context: .
+      dockerfile: docker-full-build.Dockerfile
     image: kcrud-image:latest
     ports:
       - "8080:8080"

@@ -141,6 +141,8 @@ The [Ktor Gradle plugin](https://ktor.io/docs/fatjar.html#build) allows to creat
 java.exe -jar kcrud-1.0.0-all.jar
 ```
 
+### Testing the fat JAR:
+
 Upon server startup, observe the console output. Once initialization is complete, you can test the server by
 opening a web browser and navigating to any of the following URLs:
 
@@ -156,62 +158,57 @@ http://localhost:8080/rbac/login
 
 ## Docker Containerization
 
-It is assumed that Docker is [installed](https://www.docker.com/products/docker-desktop/) and running in the local environment.
+Ensure Docker is [installed](https://www.docker.com/products/docker-desktop/) and operational in your local environment.
 
-When using Docker, the above **fat JAR** steps are not necessary, as the provided [Dockerfile](./docker-full-build.Dockerfile) already
-includes a build stage to generate the **fat JAR** as part of the containerization process.
+### Docker Advantages:
 
-An alternative [Dockerfile](./docker-no-build.Dockerfile) is also provided without the build stage, which will use
-a pre-built **fat JAR**, if such is preferred.
+* Automated **fat JAR** creation using the provided [docker-full-build.Dockerfile](./docker-full-build.Dockerfile).
+* Alternative  [docker-no-build.Dockerfile](./docker-no-build.Dockerfile) for scenarios preferring the use of a pre-built **fat JAR**.
+* Simplified injection of environment variables via **Docker Compose**.
 
-To build the Docker image run the provided Docker files.
-Alternatively execute the following command:
+### Building the Docker Image:
 
-```
-docker build -t kcrud-image .
-```
-
-To start the Docker container run the provided [Docker Compose](./docker-compose.yaml) file.
-Alternatively execute the following command:
+To construct the Docker image with the complete build process:
 
 ```
-docker run -p 8080:8080 kcrud-image
+docker build -t kcrud-image -f ./docker-full-build.Dockerfile .
 ```
 
-Once the container is running, to test it open a web browser in the host machine and navigate to any of the same URLs
-mentioned in the previous section.
-
----
-
-## Handling Security
-
-Security can be configured with the [config_security.conf](./kcrud-base/src/main/resources/config/config_security.conf) file.
-
-### Generating and Refreshing JWT Tokens
-
-- #### To Create a new JWT (JSON Web Token) authorization token use the following endpoint:
+For using a pre-existing **fat JAR** (expected to be located in the build/libs directory):
 
 ```
-http://localhost:8080/auth/token/create
+docker build -t kcrud-image -f ./docker-no-build.Dockerfile .
 ```
 
-Creating a new token requires basic credential authentication. In *[Postman](https://www.postman.com/)* select the `Authorization` tab
-and create a `Basic Auth` type, filling it with either admin/admin or guest/guest.
+### Using Docker Compose:
 
-- #### To refresh an existing token use the following endpoint:
+**Docker Compose** simplifies setup and deployment by automating service build and initialization, as specified
+in the provided [docker-compose.yaml](./docker-compose.yaml), including port mapping and environment variable settings.
+
+To deploy services with **Docker Compose** and ensure old unused containers are cleaned up:
 
 ```
-http://localhost:8080/auth/token/refresh
+docker-compose up --build --remove-orphans
 ```
 
-- #### Refreshing or using the obtained Token in *[Postman](https://www.postman.com/)* requests:
+To rebuild the Docker image and restart the container, use the `--build` flag:
 
-1. Open **Postman** and select the **Headers** tab.
-2. Add a new key-value pair:
-    - Key: `Authorization`
-    - Value: `Bearer <The-token-with-no-quotes>`
+``` 
+docker-compose build --no-cache
+```
 
-Note that the provided postman collection is already configured to automatically refresh tokens.
+_Note: The **--build** option forces the image to rebuild.
+The **--remove-orphans** flag removes containers for services not defined in the Compose file._
+
+### IntelliJ IDEA Ultimate Integration:
+
+For users of [IntelliJ IDEA Ultimate](https://www.jetbrains.com/products/compare/?product=idea&product=idea-ce), many of these Docker and Docker Compose commands can be run directly from the IDE,
+which provides a convenient and integrated workflow for building images, starting services, and managing containers.
+
+### Testing the Application:
+
+After the container is running, validate the application functionality by navigating to the [previously mentioned URLs](#testing-the-fat-jar)
+from a web browser on the host machine.
 
 ---
 
@@ -258,6 +255,38 @@ to illustrate the paginated REST endpoint.
 Endpoint: http://localhost:8080/demo?page=0&size=24
 
 <img src="./.screenshots/demo.gif" width="1226" alt="demo">
+
+---
+
+## Handling Security
+
+Security can be configured with the [config_security.conf](./kcrud-base/src/main/resources/config/config_security.conf) file.
+
+### Generating and Refreshing JWT Tokens
+
+- #### To Create a new JWT (JSON Web Token) authorization token use the following endpoint:
+
+```
+http://localhost:8080/auth/token/create
+```
+
+Creating a new token requires basic credential authentication. In *[Postman](https://www.postman.com/)* select the `Authorization` tab
+and create a `Basic Auth` type, filling it with either admin/admin or guest/guest.
+
+- #### To refresh an existing token use the following endpoint:
+
+```
+http://localhost:8080/auth/token/refresh
+```
+
+- #### Refreshing or using the obtained Token in *[Postman](https://www.postman.com/)* requests:
+
+1. Open **Postman** and select the **Headers** tab.
+2. Add a new key-value pair:
+    - Key: `Authorization`
+    - Value: `Bearer <The-token-with-no-quotes>`
+
+Note that the provided postman collection is already configured to automatically refresh tokens.
 
 ---
 
