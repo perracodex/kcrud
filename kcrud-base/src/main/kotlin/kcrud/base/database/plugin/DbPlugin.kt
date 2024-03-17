@@ -12,9 +12,9 @@ import kcrud.base.settings.AppSettings
 import org.jetbrains.exposed.sql.Table
 
 /**
- * Configuration for the [DatabasePlugin].
+ * Configuration for the [DbPlugin].
  */
-class DatabasePluginConfig {
+class DbPluginConfig {
     val tables: MutableList<Table> = mutableListOf()
 
     fun addTable(table: Table) {
@@ -25,9 +25,9 @@ class DatabasePluginConfig {
 /**
  * Custom Ktor plugin to configure the database.
  */
-val DatabasePlugin = createApplicationPlugin(
+val DbPlugin = createApplicationPlugin(
     name = "DatabasePlugin",
-    createConfiguration = ::DatabasePluginConfig
+    createConfiguration = ::DbPluginConfig
 ) {
     DatabaseService.init(settings = AppSettings.database) {
         pluginConfig.tables.forEach { table ->

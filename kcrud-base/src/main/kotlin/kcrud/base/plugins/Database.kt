@@ -7,7 +7,7 @@
 package kcrud.base.plugins
 
 import io.ktor.server.application.*
-import kcrud.base.database.plugin.DatabasePlugin
+import kcrud.base.database.plugin.DbPlugin
 import kcrud.base.database.schema.admin.actor.ActorTable
 import kcrud.base.database.schema.admin.rbac.RbacFieldRuleTable
 import kcrud.base.database.schema.admin.rbac.RbacResourceRuleTable
@@ -17,16 +17,16 @@ import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.database.schema.employment.EmploymentTable
 
 /**
- * Configures the custom [DatabasePlugin].
+ * Configures the custom [DbPlugin].
  *
  * This will set up and configure database, including the connection pool, and register
  * the database schema tables so that the ORM can interact with them.
  *
- * See: [DatabasePlugin]
+ * See: [DbPlugin]
  */
 fun Application.configureDatabase() {
 
-    install(plugin = DatabasePlugin) {
+    install(plugin = DbPlugin) {
         // Default admin tables.
         addTable(table = RbacFieldRuleTable)
         addTable(table = RbacResourceRuleTable)
