@@ -13,7 +13,7 @@ import kcrud.base.database.schema.admin.rbac.types.RbacResource
 import kcrud.base.settings.AppSettings
 
 /**
- * DSL function for applying RBAC authorization to Ktor routes.
+ * Extension function designed to apply RBAC authorizations to Ktor routes.
  *
  * @param resource The RBAC resource associated with the route, defining the scope of access control.
  * @param accessLevel The RBAC access level required for accessing the route, defining the degree of access control.

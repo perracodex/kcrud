@@ -16,18 +16,6 @@ import kcrud.base.database.schema.admin.rbac.types.RbacResource
  * Creates an RBAC-authorized route within the Ktor routing structure. This function is a key part
  * of enforcing Role-Based Access Control (RBAC) on specific routes.
  *
- * How it works:
- * 1. Child Route Creation: A new route node is created to which RBAC constraints will be applied.
- *
- * 2. Plugin Installation: The 'RbacPlugin' is installed to the new child route node. During installation,
- *    the plugin is configured with a target RBAC resource and access level. This association ensures that
- *    the RBAC logic defined in the plugin is applied only to the new route, allowing the trigger of its
- *    enclosed build block only if the plugin authorizes it.
- *
- * 3. Route Configuration: The 'build' block is bound on the new child route. This build block is where
- *    the actual source route logic (like handling endpoints) is defined. Importantly, all route handlers
- *    within the build block are subject to the RBAC constraints handled by the created RBAC route node.
- *
  * @param resource The RBAC resource associated with the route, defining the scope of access control.
  * @param accessLevel The RBAC access level required for accessing the route, defining the degree of access control.
  * @param build The lambda function defining the route's handling logic that must adhere to the RBAC constraints.
