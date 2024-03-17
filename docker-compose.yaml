@@ -6,9 +6,15 @@ services:
       context: .
       dockerfile: docker-full-build.Dockerfile
     image: kcrud-image:latest
+    container_name: v1
     ports:
       - "8080:8080"
     env_file:
       - .env
     environment:
       - KCRUD_KTOR_SECURITY_SSL_KEY_STORE=/app/keystore.p12
+    networks:
+      - default_network
+
+networks:
+  default_network: { }
