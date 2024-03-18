@@ -59,18 +59,16 @@ fun Application.configureOAuthAuthentication() {
     routing {
         authenticate(AppSettings.security.oauth.providerName, optional = !AppSettings.security.isEnabled) {
             get("/callback") {
-                val principal: OAuthAccessTokenResponse.OAuth2? = call.principal<OAuthAccessTokenResponse.OAuth2>()
 
-                principal?.let {
-                    val sessionContext: SessionContext? = SessionContextFactory.from(oauth2 = it)
-
-                    sessionContext?.let {
-                        call.sessions.set(value = sessionContext)
+                call.principal<OAuthAccessTokenResponse.OAuth2>()?.let { principal ->
+                    SessionContextFactory.from(oauth2 = principal)?.let { sessionContext ->
+                        call.sessions.set(name = SessionContext.SESSION_NAME, value = sessionContext)
                         call.respondText("You are now logged in through OAuth.")
                         return@get
                     }
                 }
 
+                call.sessions.clear(name = SessionContext.SESSION_NAME)
                 call.respond(message = HttpStatusCode.Unauthorized)
             }
         }

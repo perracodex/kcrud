@@ -8,10 +8,10 @@ package kcrud.access.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
-import kcrud.access.credential.CredentialService
+import io.ktor.server.sessions.*
 import kcrud.access.system.SessionContextFactory
+import kcrud.base.env.SessionContext
 import kcrud.base.settings.AppSettings
-import org.koin.ktor.ext.inject
 
 /**
  * Configures the Basic authentication.
@@ -28,12 +28,13 @@ fun Application.configureBasicAuthentication() {
             realm = AppSettings.security.basic.realm
 
             validate { credential ->
-                val credentialService: CredentialService by inject()
-                val userIdPrincipal: UserIdPrincipal? = credentialService.authenticate(credential = credential)
-
-                userIdPrincipal?.let { principal ->
-                    SessionContextFactory.from(username = principal.name)
+                SessionContextFactory.from(credential = credential)?.let { sessionContext ->
+                    this.sessions.set(name = SessionContext.SESSION_NAME, value = sessionContext)
+                    return@validate sessionContext
                 }
+
+                this.sessions.clear(name = SessionContext.SESSION_NAME)
+                null
             }
         }
     }

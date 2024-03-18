@@ -8,33 +8,49 @@ package kcrud.access.system
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.interfaces.DecodedJWT
-import com.auth0.jwt.interfaces.Payload
 import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import kcrud.access.actor.entity.ActorEntity
 import kcrud.access.actor.service.ActorService
+import kcrud.access.credential.CredentialService
 import kcrud.base.env.SessionContext
 import kcrud.base.env.Tracer
 import kcrud.base.settings.AppSettings
 import kotlinx.serialization.json.Json
-import org.koin.mp.KoinPlatform
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 /**
  * Factory class for creating [SessionContext] instances.
  */
-object SessionContextFactory {
+object SessionContextFactory : KoinComponent {
     private val tracer = Tracer<SessionContextFactory>()
 
     /**
-     * Creates a [SessionContext] instance from a JWT [Payload].
+     * Creates a [SessionContext] instance from a JWT [JWTCredential].
      *
-     * @param jwtPayload The JWT [Payload] containing actor-related claims.
+     * @param jwtCredential The [JWTCredential] containing actor-related claims.
      * @return A [SessionContext] instance if both actorId and role are present and valid, null otherwise.
      */
-    fun from(jwtPayload: Payload): SessionContext? {
-        val payload: String? = jwtPayload.getClaim(SessionContext.CLAIM_KEY)?.asString()
+    fun from(jwtCredential: JWTCredential): SessionContext? {
+        // Check if the JWT audience claim matches the configured audience.
+        // This ensures the token is intended for the application.
+        if (!jwtCredential.payload.audience.contains(AppSettings.security.jwt.audience)) {
+            tracer.error("Invalid JWT audience: ${jwtCredential.payload.audience}")
+            return null
+        }
+
+        // Check if the JWT issuer matches the configured issuer.
+        // This ensures the token was issued by a trusted source.
+        if (jwtCredential.payload.issuer != AppSettings.security.jwt.issuer) {
+            tracer.error("Invalid JWT issuer: ${jwtCredential.payload.issuer}")
+            return null
+        }
+
+        val payload: String? = jwtCredential.payload.getClaim(SessionContext.CLAIM_KEY)?.asString()
 
         if (payload.isNullOrBlank()) {
-            tracer.error("Invalid JWT payload.")
+            tracer.error("Missing JWT payload.")
             return null
         }
 
@@ -51,13 +67,22 @@ object SessionContextFactory {
     }
 
     /**
-     * Retrieves a [SessionContext] instance from the database given a username.
+     * Retrieves a [SessionContext] instance from the database given a [UserPasswordCredential].
      *
-     * @param username The username of the Actor to retrieve.
+     * @param credential The [UserPasswordCredential] of the Actor to retrieve.
      * @return A [SessionContext] instance if the Actor exists, null otherwise.
      */
-    suspend fun from(username: String): SessionContext? {
-        val actorService: ActorService = KoinPlatform.getKoin().get()
+    suspend fun from(credential: UserPasswordCredential): SessionContext? {
+        val credentialService: CredentialService by inject()
+        val userIdPrincipal: UserIdPrincipal? = credentialService.authenticate(credential = credential)
+
+        if (userIdPrincipal == null) {
+            tracer.error("Invalid credentials.")
+            return null
+        }
+
+        val username: String = userIdPrincipal.name
+        val actorService: ActorService by inject()
         val actor: ActorEntity? = actorService.findByUsername(username = username)
 
         if (actor == null) {
@@ -78,13 +103,14 @@ object SessionContextFactory {
      * Creates a [SessionContext] instance from an OAuth [OAuthAccessTokenResponse.OAuth2].
      *
      * @param oauth2 The OAuth [OAuthAccessTokenResponse.OAuth2] containing actor-related claims.
-     * @return A [SessionContext] instance if both actorId and role are present and valid, null otherwise.
+     * @return A [SessionContext] instance if the auth token is valid, null otherwise.
      */
     suspend fun from(oauth2: OAuthAccessTokenResponse.OAuth2): SessionContext? {
         val jwt: DecodedJWT? = try {
             JWT.decode(oauth2.extraParameters["id_token"] as String)
         } catch (e: Exception) {
-            null
+            tracer.error("Invalid OAuth token. ${e.message}")
+            return null
         }
 
         if (jwt == null || jwt.subject.isNullOrBlank()) {
@@ -108,7 +134,7 @@ object SessionContextFactory {
             return null
         }
 
-        val actorService: ActorService = KoinPlatform.getKoin().get()
+        val actorService: ActorService by inject()
         val actor: ActorEntity? = actorService.findByUsername(username = username)
         if (actor == null) {
             tracer.error("No actor found for username: $username")

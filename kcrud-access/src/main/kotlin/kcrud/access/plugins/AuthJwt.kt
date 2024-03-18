@@ -13,6 +13,7 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
+import io.ktor.server.sessions.*
 import kcrud.access.system.SessionContextFactory
 import kcrud.base.env.SessionContext
 import kcrud.base.settings.AppSettings
@@ -52,26 +53,17 @@ fun Application.configureJwtAuthentication() {
             // The JWT library automatically verifies the token's signature before this block.
             // This ensures that the token was not tampered with and was signed with the correct secret key.
             validate { credential ->
-                // Check if the JWT audience claim matches the configured audience.
-                // This ensures the token is intended for the application.
-                if (!credential.payload.audience.contains(AppSettings.security.jwt.audience)) {
-                    return@validate null
+                SessionContextFactory.from(jwtCredential = credential)?.let { sessionContext ->
+                    this.sessions.set(name = SessionContext.SESSION_NAME, value = sessionContext)
+                    return@validate sessionContext
                 }
 
-                // Check if the JWT issuer matches the configured issuer.
-                // This ensures the token was issued by a trusted source.
-                if (credential.payload.issuer != AppSettings.security.jwt.issuer) {
-                    return@validate null
-                }
-
-                // If both claims are valid, create and return a SessionContext from the JWT payload,
-                // so it can be accessed from any call's principal.
-                // If not, return null to indicate the token is invalid or not applicable.
-                val sessionContext: SessionContext? = SessionContextFactory.from(jwtPayload = credential.payload)
-                sessionContext
+                this.sessions.clear(name = SessionContext.SESSION_NAME)
+                null
             }
 
             challenge { _, _ ->
+                call.sessions.clear(name = SessionContext.SESSION_NAME)
                 call.respond(status = HttpStatusCode.Unauthorized, message = "Token is not valid or has expired.")
             }
         }

@@ -11,12 +11,10 @@ import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.sessions.*
 import kcrud.access.actor.service.DefaultActorFactory
-import kcrud.access.credential.CredentialService
 import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.views.RbacLoginView
 import kcrud.access.system.SessionContextFactory
 import kcrud.base.env.SessionContext
-import org.koin.ktor.ext.inject
 
 /**
  * Refreshes the default actors, and configures the RBAC form login authentication.
@@ -45,14 +43,9 @@ fun Application.configureRbac() {
             }
 
             validate { credential ->
-                val credentialService: CredentialService by inject()
-                val userIdPrincipal: UserIdPrincipal? = credentialService.authenticate(credential = credential)
-
-                userIdPrincipal?.let { principal ->
-                    SessionContextFactory.from(username = principal.name)?.let { sessionContext ->
-                        this.sessions.set(name = SessionContext.SESSION_NAME, value = sessionContext)
-                        return@validate sessionContext
-                    }
+                SessionContextFactory.from(credential = credential)?.let { sessionContext ->
+                    this.sessions.set(name = SessionContext.SESSION_NAME, value = sessionContext)
+                    return@validate sessionContext
                 }
 
                 this.sessions.clear(name = SessionContext.SESSION_NAME)
