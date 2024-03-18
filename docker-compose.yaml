@@ -1,3 +1,6 @@
+# https://ktor.io/docs/docker-compose.html
+# https://ktor.io/docs/docker.html
+
 version: '3.8'
 
 services:

@@ -143,9 +143,10 @@ internal object ConfigurationParser {
         // Create an instance of the class with the obtained configuration values.
         return runCatching {
             constructor.callBy(args = arguments)
-        }.getOrElse {
+        }.getOrElse { error ->
+            val errorMessage: String = error.message ?: error.cause?.toString() ?: "Unknown error"
             throw IllegalArgumentException(
-                "Error instantiating class $kClass at '$keyPath':\n${it.message}.\nArguments: $arguments"
+                "Error instantiating class $kClass at '$keyPath':\n$errorMessage\nArguments: $arguments"
             )
         }
     }

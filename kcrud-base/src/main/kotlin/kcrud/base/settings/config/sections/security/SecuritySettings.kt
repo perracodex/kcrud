@@ -18,6 +18,7 @@ import kcrud.base.settings.config.sections.security.sections.*
  * @property constraints Settings related to security constraints, such endpoints rate limits.
  * @property jwt Settings related to JWT authentication, such as the JWT secrets.
  * @property basic Settings related to basic authentication, such as the realm and provider name.
+ * @property oauth Settings related to OAuth authentication, such as the client id and secret.
  * @property rbac Settings related to RBAC authentication.
  */
 data class SecuritySettings(
@@ -27,6 +28,7 @@ data class SecuritySettings(
     val constraints: ConstraintsSettings,
     val jwt: JwtSettings,
     val basic: HttpAuthSettings,
+    val oauth: OAuthSettings,
     val rbac: RbacSettings
 ) : IConfigSection {
     companion object {

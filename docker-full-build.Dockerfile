@@ -8,7 +8,6 @@
 
 #-------------------------------------------------------------------------------------------------
 # Build stage.
-# If the fat JAR is built locally, comment out the following 'build' stage.
 FROM gradle:8.2-jdk17 AS build
 LABEL authors="perracolabs"
 LABEL image.tag="kcrud-build"

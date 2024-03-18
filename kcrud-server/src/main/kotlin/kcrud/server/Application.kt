@@ -10,10 +10,7 @@ import io.github.cdimascio.dotenv.DotenvException
 import io.github.cdimascio.dotenv.dotenv
 import io.ktor.server.application.*
 import io.ktor.server.netty.*
-import kcrud.access.plugins.configureBasicAuthentication
-import kcrud.access.plugins.configureJwtAuthentication
-import kcrud.access.plugins.configureRbac
-import kcrud.access.plugins.configureSessions
+import kcrud.access.plugins.*
 import kcrud.base.env.Tracer
 import kcrud.base.plugins.*
 import kcrud.base.security.snowflake.SnowflakeFactory
@@ -74,6 +71,8 @@ fun Application.kcrudModule() {
     configureBasicAuthentication()
 
     configureJwtAuthentication()
+
+    configureOAuthAuthentication()
 
     configureSessions()
 
