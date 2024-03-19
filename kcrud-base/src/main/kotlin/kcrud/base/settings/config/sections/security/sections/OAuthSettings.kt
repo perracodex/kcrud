@@ -12,12 +12,12 @@ import kcrud.base.settings.config.parser.IConfigSection
  * OAuth-authentication settings.
  *
  * @property providerName Name of the OAuth provider.
- * @property redirectCallbackUrl Redirect URL that is opened when authorization is completed.
- * @property authorizeUrl OAuth server authorization page URL.
- * @property accessTokenUrl OAuth server access token request domain URL.
- * @property clientId Client id parameter (provided by OAuth server vendor).
- * @property clientSecret client secret parameter (provided by OAuth server vendor).
- * @property defaultScopes List of OAuth scopes used by default.
+ * @property redirectCallbackUrl Redirect URL opened when authorization is completed. Must be registered in the OAuth provider.
+ * @property authorizeUrl OAuth server authorization page URL. Provided by OAuth server vendor.
+ * @property accessTokenUrl OAuth server access token request domain URL. Provided by OAuth server vendor.
+ * @property clientId Client id parameter. Provided by OAuth server vendor.
+ * @property clientSecret client secret parameter. Provided by OAuth server vendor.
+ * @property defaultScopes List of OAuth scopes used by default. Provided by OAuth server vendor.
  */
 data class OAuthSettings(
     val providerName: String,

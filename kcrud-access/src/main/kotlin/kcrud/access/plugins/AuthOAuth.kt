@@ -58,7 +58,7 @@ fun Application.configureOAuthAuthentication() {
 
     routing {
         authenticate(AppSettings.security.oauth.providerName, optional = !AppSettings.security.isEnabled) {
-            get("/callback") {
+            get("/oauth/callback") {
 
                 call.principal<OAuthAccessTokenResponse.OAuth2>()?.let { principal ->
                     SessionContextFactory.from(oauth2 = principal)?.let { sessionContext ->
