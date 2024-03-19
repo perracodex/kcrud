@@ -41,7 +41,7 @@ object AppSettings {
         if (AppSettings::configuration.isInitialized)
             return
 
-        val tracer = Tracer.byFunction(ref = ::load)
+        val tracer = Tracer(ref = ::load)
         tracer.info("Loading application settings.")
 
         val timeTaken = measureTimeMillis {

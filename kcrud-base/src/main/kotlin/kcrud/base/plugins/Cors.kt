@@ -23,7 +23,7 @@ import kcrud.base.settings.config.sections.CorsSettings
  */
 fun Application.configureCors() {
 
-    val tracer: Tracer = Tracer.byFunction(ref = ::configureCors)
+    val tracer = Tracer(ref = Application::configureCors)
 
     // Install and configure the CORS feature.
     install(plugin = CORS) {

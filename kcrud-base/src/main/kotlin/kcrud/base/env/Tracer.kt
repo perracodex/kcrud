@@ -84,20 +84,19 @@ class Tracer(private val logger: Logger) {
         }
 
         /**
-         * Creates a new [Tracer] instance for a given function.
-         * Intended for top-level and extension functions where class context is not applicable.
+         * Creates a new [Tracer] instance intended for top-level and extension functions
+         * where class context is not applicable.
          *
-         * @param ref The reference to the function for which the logger is being created.
+         * @param ref The source reference to the top-level or extension function.
          * @return Tracer instance named after the function and its declaring class (if available).
          */
-        fun <R> byFunction(ref: KFunction<R>): Tracer {
-            val declaringClass: Class<*>? = ref.javaMethod?.declaringClass
-            val className: String = when {
-                (LOG_FULL_PACKAGE && (declaringClass != null)) -> declaringClass.name
-                (declaringClass != null) -> declaringClass.simpleName
-                else -> "UnknownClass"
+        operator fun <T> invoke(ref: KFunction<T>): Tracer {
+            val loggerName = if (LOG_FULL_PACKAGE) {
+                "${ref.javaMethod?.declaringClass?.name ?: "Unknown"}.${ref.name}"
+            } else {
+                ref.name
             }
-            return Tracer(logger = KtorSimpleLogger(name = "$className.${ref.name}"))
+            return Tracer(logger = KtorSimpleLogger(name = loggerName))
         }
     }
 }
