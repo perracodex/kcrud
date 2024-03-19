@@ -12,10 +12,13 @@ services:
     container_name: v1
     ports:
       - "8080:8080"
+      - "8443:8443"
+      - "5005:5005"
     env_file:
       - .env
     environment:
-      - KCRUD_KTOR_SECURITY_SSL_KEY_STORE=/app/keystore.p12
+      JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+      KCRUD_KTOR_SECURITY_SSL_KEY_STORE: "/app/keystore.p12"
     networks:
       - default_network
 
