@@ -1,9 +1,8 @@
 # https://ktor.io/docs/docker.html
 # https://ktor.io/docs/docker-compose.html
 
-# This Dockerfile variant does not include the fat-JAR build stage, only the final image stage.
-# It is intended to be used with a pre-built fat JAR.
-# If the image is not found, use the next command: docker image prune -a
+# No build Dockerfile.
+# Expected to be used with a pre-built jar file.
 
 #-------------------------------------------------------------------------------------------------
 # Final image stage.
@@ -16,7 +15,7 @@ EXPOSE 8080
 RUN mkdir -p /app
 
 COPY build/libs/kcrud-1.0.0-all.jar /app/kcrud-1.0.0-all.jar
-COPY build/libs/keystore.p12 /app/keystore.p12
+COPY keystore.p12 /app/keystore.p12
 
 ENTRYPOINT ["java", "-jar", "/app/kcrud-1.0.0-all.jar"]
 

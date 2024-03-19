@@ -1,10 +1,7 @@
 # https://ktor.io/docs/docker.html
 # https://ktor.io/docs/docker-compose.html
 
-# This Dockerfile variant include 2 stages, a full fat JAR build stage, and a final image stage.
-
-# NOTE: See '.dockerignore' file for the list of files and directories that are included/excluded in the Docker image.
-# If a new sub-project is added, make sure to include the new sub-project's files in the '.dockerignore' file.
+# Full build Dockerfile.
 
 #-------------------------------------------------------------------------------------------------
 # Build stage.
@@ -27,7 +24,7 @@ EXPOSE 8080
 RUN mkdir -p /app
 
 COPY --from=build /home/gradle/src/build/libs/kcrud-1.0.0-all.jar /app/kcrud-1.0.0-all.jar
-COPY --from=build /home/gradle/src/build/libs/keystore.p12 /app/keystore.p12
+COPY keystore.p12 /app/keystore.p12
 
 ENTRYPOINT ["java", "-jar", "/app/kcrud-1.0.0-all.jar"]
 
