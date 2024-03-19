@@ -8,7 +8,7 @@
 #-------------------------------------------------------------------------------------------------
 # Final image stage.
 FROM amazoncorretto:17
-LABEL authors="perracolabs"
+LABEL authors="perraco"
 LABEL image.tag="kcrud"
 LABEL name="kcrud-final-image"
 EXPOSE 8080
