@@ -6,9 +6,9 @@
 
 package kcrud.base.env
 
+import io.ktor.util.logging.*
 import kcrud.base.settings.AppSettings
 import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import kotlin.reflect.KFunction
 import kotlin.reflect.jvm.javaMethod
 
@@ -80,7 +80,7 @@ class Tracer(private val logger: Logger) {
             } else {
                 T::class.simpleName ?: "UnknownClass"
             }
-            return Tracer(logger = LoggerFactory.getLogger(loggerName))
+            return Tracer(logger = KtorSimpleLogger(name = loggerName))
         }
 
         /**
@@ -97,7 +97,7 @@ class Tracer(private val logger: Logger) {
                 (declaringClass != null) -> declaringClass.simpleName
                 else -> "UnknownClass"
             }
-            return Tracer(logger = LoggerFactory.getLogger("$className.${ref.name}"))
+            return Tracer(logger = KtorSimpleLogger(name = "$className.${ref.name}"))
         }
     }
 }
