@@ -44,9 +44,9 @@ For convenience, it is included a *[Postman Collection](./.postman/kcrud.postman
 [Kcrud](https://github.com/perracodex/Kcrud) serves as a comprehensive example of a Ktor server, showcasing a variety of features and best practices.
 
 The code intentionally contains redundancies and inconsistencies to illustrate different approaches and strategies to achieve
-similar results. For example, different authentication methods (JWT and Basic, despite Basic being discouraged); different approaches
-to exception handling and validations across layers. The project also delves into data persistence, illustrating different methods
-to store enums in databases, field level encryption, etc.
+similar results. For example, different authentication methods (JWT, OAuth, and Basic, despite Basic being discouraged);
+different approaches to exception handling and validations across layers. The project also delves into data persistence,
+illustrating custom columns with validation, field level encryption, different ways to store enums in a database, etc.
 
 ---
 
