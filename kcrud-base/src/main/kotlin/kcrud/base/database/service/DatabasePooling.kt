@@ -8,8 +8,8 @@ package kcrud.base.database.service
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import io.micrometer.prometheus.PrometheusMeterRegistry
 import kcrud.base.database.annotation.DatabaseAPI
-import kcrud.base.plugins.appMicrometerRegistry
 import kcrud.base.settings.config.sections.DatabaseSettings
 
 @DatabaseAPI
@@ -18,9 +18,12 @@ internal object DatabasePooling {
     /**
      * Create a HikariDataSource to enable database connection pooling.
      *
+     * @param settings The [DatabaseSettings] settings to be used for the database connection pooling.
+     * @param micrometerRegistry Optional [PrometheusMeterRegistry] instance for micro-metrics monitoring.
+     *
      * See: [Database Pooling](https://ktor.io/docs/connection-pooling-caching.html#connection-pooling)
      */
-    fun createDataSource(settings: DatabaseSettings): HikariDataSource {
+    fun createDataSource(settings: DatabaseSettings, micrometerRegistry: PrometheusMeterRegistry? = null): HikariDataSource {
         require(value = settings.connectionPoolSize > 0) { "Database connection pooling must be >= 1." }
 
         return HikariDataSource(HikariConfig().apply {
@@ -37,7 +40,9 @@ internal object DatabasePooling {
                 this.password = settings.password!!
             }
 
-            metricRegistry = appMicrometerRegistry
+            micrometerRegistry?.let {
+                metricRegistry = it
+            }
 
             validate()
         })

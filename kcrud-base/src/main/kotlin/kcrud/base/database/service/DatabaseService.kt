@@ -7,6 +7,7 @@
 package kcrud.base.database.service
 
 import com.zaxxer.hikari.HikariDataSource
+import io.micrometer.prometheus.PrometheusMeterRegistry
 import kcrud.base.database.annotation.DatabaseAPI
 import kcrud.base.env.Tracer
 import kcrud.base.env.health.annotation.HealthCheckAPI
@@ -45,17 +46,25 @@ object DatabaseService {
     /**
      * Initializes the database connection based on the provided mode and database type.
      *
-     * @param settings The database settings to use.
+     * @param settings The [DatabaseSettings] to be used to configure the database.
+     * @param micrometerRegistry Optional [PrometheusMeterRegistry] instance for micro-metrics monitoring.
      * @param schemaSetup Optional lambda to setup the database schema.
      */
-    fun init(settings: DatabaseSettings, schemaSetup: (SchemaBuilder.() -> Unit)? = null) {
-
+    fun init(
+        settings: DatabaseSettings,
+        micrometerRegistry: PrometheusMeterRegistry? = null,
+        schemaSetup: (SchemaBuilder.() -> Unit)? = null
+    ) {
         buildDatabase(settings = settings)
 
         // Establishes a database connection.
         // If a connection pool size is specified, a HikariCP DataSource is configured to manage the pool
         val databaseInstance: Database = if (settings.connectionPoolSize > 0) {
-            val dataSource: HikariDataSource = DatabasePooling.createDataSource(settings = settings)
+            val dataSource: HikariDataSource = DatabasePooling.createDataSource(
+                settings = settings,
+                micrometerRegistry = micrometerRegistry
+            )
+
             hikariDataSource = dataSource
             connectDatabase(settings = settings, datasource = dataSource)
         } else {

@@ -27,6 +27,8 @@ import kcrud.base.database.schema.employment.EmploymentTable
 fun Application.configureDatabase() {
 
     install(plugin = DbPlugin) {
+        micrometerRegistry = appMicrometerRegistry
+
         // Default admin tables.
         addTable(table = RbacFieldRuleTable)
         addTable(table = RbacResourceRuleTable)
