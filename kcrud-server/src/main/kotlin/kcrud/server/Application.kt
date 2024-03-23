@@ -64,6 +64,8 @@ fun Application.kcrudModule() {
 
     configureCallLogging()
 
+    configureContentNegotiation()
+
     configureRateLimit()
 
     configureRbac()

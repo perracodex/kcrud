@@ -6,10 +6,8 @@
 
 package kcrud.server.plugins
 
-import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
-import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -24,7 +22,6 @@ import kcrud.base.settings.AppSettings
 import kcrud.domain.employee.routing.employeeRoute
 import kcrud.domain.employment.routing.employmentRoute
 import kcrud.server.demo.employeesDemoRoute
-import kotlinx.serialization.json.Json
 
 /**
  * Initializes and sets up routing for the application.
@@ -38,41 +35,22 @@ import kotlinx.serialization.json.Json
  * See [Application Structure](https://ktor.io/docs/structuring-applications.html) for examples
  * of how to organize routes in diverse ways.
  *
- * See: [Content negotiation and serialization](https://ktor.io/docs/serialization.html#0)
- *
- * See: [Kotlin Serialization Guide](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md)
- *
  * See: [Ktor Rate Limit](https://ktor.io/docs/rate-limit.html)
  */
 fun Application.configureRoutes() {
 
     routing {
 
-        // The ContentNegotiation plugin is set at the routing level rather than
-        // at the application level to prevent potential conflicts that could arise
-        // if other libraries also attempt to install their own ContentNegotiation plugin,
-        // which would result in a DuplicatePluginException.
-        install(plugin = ContentNegotiation) {
-            // Define the behavior and characteristics for JSON serialization.
-            json(Json {
-                prettyPrint = true         // Format JSON output for easier reading.
-                encodeDefaults = true      // Serialize properties with default values.
-                ignoreUnknownKeys = false  // Fail on unknown keys in the incoming JSON.
-            })
-        }
-
-        val isSecurityOptional: Boolean = !AppSettings.security.isEnabled
-
-        // Define domain business routes.
+        // Define domain routes.
         rateLimit(configuration = RateLimitName(name = RateLimitScope.PUBLIC_API.key)) {
-            authenticate(AppSettings.security.jwt.providerName, optional = isSecurityOptional) {
+            authenticate(AppSettings.security.jwt.providerName, optional = !AppSettings.security.isEnabled) {
                 employeeRoute()
                 employmentRoute()
             }
         }
 
-        // Employees demo route.
-        authenticate(AppSettings.security.basic.providerName, optional = isSecurityOptional) {
+        // Demo route.
+        authenticate(AppSettings.security.basic.providerName, optional = !AppSettings.security.isEnabled) {
             employeesDemoRoute()
         }
 
