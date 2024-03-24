@@ -8,8 +8,8 @@ import io.ktor.test.dispatcher.*
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
-import kcrud.access.actor.injection.ActorInjection
-import kcrud.access.rbac.injection.RbacInjection
+import kcrud.access.actor.di.ActorInjection
+import kcrud.access.rbac.di.RbacInjection
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
 import kcrud.base.env.SessionContext
@@ -20,9 +20,9 @@ import kcrud.base.utils.KLocalDate
 import kcrud.base.utils.KLocalDateTime
 import kcrud.base.utils.TestUtils
 import kcrud.domain.contact.entity.ContactEntity
+import kcrud.domain.employee.di.EmployeeInjection
 import kcrud.domain.employee.entity.EmployeeEntity
 import kcrud.domain.employee.entity.EmployeeRequest
-import kcrud.domain.employee.injection.EmployeeInjection
 import kcrud.domain.employee.repository.IEmployeeRepository
 import kcrud.domain.employee.service.EmployeeService
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction

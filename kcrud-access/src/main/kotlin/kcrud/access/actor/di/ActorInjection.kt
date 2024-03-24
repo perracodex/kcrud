@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package kcrud.access.actor.injection
+package kcrud.access.actor.di
 
 import kcrud.access.actor.repository.ActorRepository
 import kcrud.access.actor.repository.IActorRepository

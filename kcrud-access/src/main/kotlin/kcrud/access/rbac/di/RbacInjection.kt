@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package kcrud.access.rbac.injection
+package kcrud.access.rbac.di
 
 import kcrud.access.actor.repository.IActorRepository
 import kcrud.access.rbac.repository.field_rule.IRbacFieldRuleRepository

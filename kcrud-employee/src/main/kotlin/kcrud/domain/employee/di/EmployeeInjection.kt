@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package kcrud.domain.employee.injection
+package kcrud.domain.employee.di
 
 import kcrud.base.env.SessionContext
 import kcrud.domain.contact.repository.ContactRepository
@@ -23,6 +23,7 @@ object EmployeeInjection {
     fun get(): Module {
         return module {
             // Definitions for scoped access within RequestScope.
+            // These are the definitions that are scoped to the lifecycle of a single request.
             scope<RequestScope> {
                 scoped<IContactRepository> {
                     ContactRepository(sessionContext = get<SessionContext>())
