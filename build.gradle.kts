@@ -4,6 +4,8 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     application
     alias(libs.plugins.kotlin.jvm)
@@ -27,13 +29,6 @@ application {
     // This setting is used to define the entry point for the executable JAR generated
     // by Gradle, which is essential for running the application with 'java -jar' command.
     mainClass.set("io.ktor.server.netty.EngineMain")
-
-    // Determine if the 'development' flag is present in project properties.
-    // This flag is used to set the application's operating mode.
-    // If 'development' is true, additional debug information and settings
-    // suitable for development may be enabled.
-    val isDevelopment: Boolean = project.ext.has("development")
-    applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
 }
 
 // Configuration block for all projects in this multi-project build.
@@ -65,6 +60,20 @@ subprojects {
     // This ensures that all Kotlin compilations in subprojects use the specified JDK version.
     kotlin {
         jvmToolchain(jdkVersion = 17)
+    }
+
+    // Defined in 'gradle.properties' file.
+    val disableOptimizations: Boolean = project.findProperty("disableOptimizations")?.toString()?.toBoolean() ?: false
+
+    // Targets 'KotlinCompile' tasks in each subproject to apply task-specific compiler options.
+    tasks.withType<KotlinCompile>().configureEach {
+        if (disableOptimizations) {
+            kotlinOptions {
+                // Add '-Xdebug' flag to disable local variable optimizations when debugging.
+                // WARNING: Never add this flag in production as it can cause memory leaks.
+                freeCompilerArgs += "-Xdebug"
+            }
+        }
     }
 }
 
