@@ -195,8 +195,9 @@ object DatabaseService {
      * Builds the database location directory.
      */
     private fun buildDatabase(settings: DatabaseSettings) {
-        val path: Path = Paths.get(settings.path)
-        Files.createDirectories(path)
+        val currentWorkingPath: Path = Paths.get("").toAbsolutePath()
+        val targetPath: Path = currentWorkingPath.resolve(settings.path)
+        Files.createDirectories(targetPath)
     }
 
     /**

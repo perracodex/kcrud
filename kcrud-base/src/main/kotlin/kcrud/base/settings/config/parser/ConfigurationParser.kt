@@ -40,6 +40,12 @@ internal object ConfigurationParser {
     private val tracer = Tracer<ConfigurationParser>()
 
     /**
+     * Represents the delimiter used for separating elements in a list,
+     * when the list is represented as a single string in the configuration.
+     */
+    private const val ARRAY_DELIMITER: Char = ';'
+
+    /**
      * Represents a mapping from a constructor parameter to its corresponding configuration value.
      *
      * @property parameter The constructor parameter.
@@ -215,9 +221,9 @@ internal object ConfigurationParser {
 
             type.java.isEnum -> {
                 // Check if the config value is build by single string with comma delimited values.
-                if (stringValue.contains(other = ",")) {
+                if (stringValue.contains(char = ARRAY_DELIMITER)) {
                     // Split the string by commas and trim spaces, then convert each part to enum.
-                    stringValue.split(",").mapNotNull { part ->
+                    stringValue.split(ARRAY_DELIMITER).mapNotNull { part ->
                         convertToEnum(enumType = type, stringValue = part.trim(), keyPath = keyPath)
                     }
                 } else {
@@ -274,8 +280,8 @@ internal object ConfigurationParser {
             // If failed to get a list, then treat it as a single string with comma-delimited values.
             val stringValue: String = config.tryGetString(key = keyPath) ?: ""
 
-            if (stringValue.contains(char = ',')) {
-                stringValue.split(',').map { it.trim() }
+            if (stringValue.contains(char = ARRAY_DELIMITER)) {
+                stringValue.split(ARRAY_DELIMITER).map { it.trim() }
             } else {
                 listOf(stringValue.trim())
             }
