@@ -7,15 +7,13 @@
 package kcrud.base.database.schema.contact
 
 import kcrud.base.database.custom_columns.encryptedValidVarChar
+import kcrud.base.database.schema.base.TimestampedTable
 import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.persistence.validators.impl.EmailValidator
 import kcrud.base.security.utils.EncryptionUtils
 import org.jetbrains.exposed.crypt.Encryptor
 import org.jetbrains.exposed.crypt.encryptedVarchar
 import org.jetbrains.exposed.sql.ReferenceOption
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.kotlin.datetime.CurrentDateTime
-import org.jetbrains.exposed.sql.kotlin.datetime.datetime
 
 /**
  * Database table definition for employee contact details.
@@ -33,7 +31,7 @@ import org.jetbrains.exposed.sql.kotlin.datetime.datetime
  * For encrypted fields, the lengths are larger than the actual length of the data,
  * since the encrypted data will be larger than the original value.
  */
-object ContactTable : Table(name = "contact") {
+object ContactTable : TimestampedTable(name = "contact") {
     private val encryptor: Encryptor = EncryptionUtils.getEncryptor()
 
     /**
@@ -75,20 +73,6 @@ object ContactTable : Table(name = "contact") {
         cipherTextLength = encryptor.maxColLength(inputByteSize = 128),
         encryptor = encryptor
     )
-
-    /**
-     * The timestamp when the record was created.
-     */
-    val createdAt = datetime(
-        name = "created_at"
-    ).defaultExpression(defaultValue = CurrentDateTime)
-
-    /**
-     * The timestamp when the record was last updated.
-     */
-    val updatedAt = datetime(
-        name = "updated_at"
-    ).defaultExpression(defaultValue = CurrentDateTime)
 
     override val primaryKey = PrimaryKey(
         firstColumn = id,

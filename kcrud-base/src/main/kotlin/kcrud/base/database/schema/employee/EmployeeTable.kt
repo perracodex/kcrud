@@ -6,18 +6,16 @@
 
 package kcrud.base.database.schema.employee
 
+import kcrud.base.database.schema.base.TimestampedTable
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
 import kcrud.base.persistence.utils.enumById
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.kotlin.datetime.CurrentDateTime
 import org.jetbrains.exposed.sql.kotlin.datetime.date
-import org.jetbrains.exposed.sql.kotlin.datetime.datetime
 
 /**
  * Database table definition for employees.
  */
-object EmployeeTable : Table(name = "employee") {
+object EmployeeTable : TimestampedTable(name = "employee") {
     /**
      * The unique id of the employee record.
      */
@@ -68,20 +66,6 @@ object EmployeeTable : Table(name = "employee") {
         name = "honorific",
         fromId = Honorific::fromId
     )
-
-    /**
-     * The timestamp when the record was created.
-     */
-    val createdAt = datetime(
-        name = "created_at"
-    ).defaultExpression(defaultValue = CurrentDateTime)
-
-    /**
-     * The timestamp when the record was last updated.
-     */
-    val updatedAt = datetime(
-        name = "updated_at"
-    ).defaultExpression(defaultValue = CurrentDateTime)
 
     override val primaryKey = PrimaryKey(
         firstColumn = id,

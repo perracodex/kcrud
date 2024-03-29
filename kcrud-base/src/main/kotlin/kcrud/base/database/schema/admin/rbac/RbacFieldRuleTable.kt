@@ -7,11 +7,9 @@
 package kcrud.base.database.schema.admin.rbac
 
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
+import kcrud.base.database.schema.base.TimestampedTable
 import kcrud.base.persistence.utils.enumById
 import org.jetbrains.exposed.sql.ReferenceOption
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.kotlin.datetime.CurrentDateTime
-import org.jetbrains.exposed.sql.kotlin.datetime.datetime
 
 /**
  * Database table definition holding the RBAC field level rules.
@@ -20,7 +18,7 @@ import org.jetbrains.exposed.sql.kotlin.datetime.datetime
  * unless added to this table and associated to a [RbacResourceRuleTable] record,
  * in which case the fields should be handled according to their access level.
  */
-object RbacFieldRuleTable : Table(name = "rbac_field_rule") {
+object RbacFieldRuleTable : TimestampedTable(name = "rbac_field_rule") {
     /**
      * The unique id of the field rule record.
      */
@@ -55,20 +53,6 @@ object RbacFieldRuleTable : Table(name = "rbac_field_rule") {
         name = "access_level",
         fromId = RbacAccessLevel::fromId
     )
-
-    /**
-     * The timestamp when the record was created.
-     */
-    val createdAt = datetime(
-        name = "created_at"
-    ).defaultExpression(defaultValue = CurrentDateTime)
-
-    /**
-     * The timestamp when the record was last updated.
-     */
-    val updatedAt = datetime(
-        name = "updated_at"
-    ).defaultExpression(defaultValue = CurrentDateTime)
 
     override val primaryKey = PrimaryKey(
         firstColumn = id,

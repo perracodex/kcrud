@@ -8,13 +8,11 @@ package kcrud.base.database.schema.admin.actor
 
 import kcrud.base.database.custom_columns.encryptedValidVarChar
 import kcrud.base.database.schema.admin.rbac.RbacRoleTable
+import kcrud.base.database.schema.base.TimestampedTable
 import kcrud.base.security.utils.EncryptionUtils
 import org.jetbrains.exposed.crypt.Encryptor
 import org.jetbrains.exposed.crypt.encryptedVarchar
 import org.jetbrains.exposed.sql.ReferenceOption
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.kotlin.datetime.CurrentDateTime
-import org.jetbrains.exposed.sql.kotlin.datetime.datetime
 
 /**
  * Database table definition holding Actors.
@@ -24,7 +22,7 @@ import org.jetbrains.exposed.sql.kotlin.datetime.datetime
  * It could be improved further by using our custom [encryptedValidVarChar] to add
  * some minimal validation constraints for all passwords.
  */
-object ActorTable : Table(name = "actor") {
+object ActorTable : TimestampedTable(name = "actor") {
     private val encryptor: Encryptor = EncryptionUtils.getEncryptor()
 
     /**
@@ -69,20 +67,6 @@ object ActorTable : Table(name = "actor") {
     val isLocked = bool(
         name = "is_locked"
     )
-
-    /**
-     * The timestamp when the record was created.
-     */
-    val createdAt = datetime(
-        name = "created_at"
-    ).defaultExpression(defaultValue = CurrentDateTime)
-
-    /**
-     * The timestamp when the record was last updated.
-     */
-    val updatedAt = datetime(
-        name = "updated_at"
-    ).defaultExpression(defaultValue = CurrentDateTime)
 
     override val primaryKey = PrimaryKey(
         firstColumn = id,

@@ -1,0 +1,28 @@
+# Deployment for Ktor application.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kcrud-deployment
+  namespace: kcrud-project
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: kcrud
+  template:
+    metadata:
+      labels:
+        app: kcrud
+    spec:
+      containers:
+        - name: kcrud
+          image: kcrud-image:latest
+          ports:
+            - containerPort: 8080
+            - containerPort: 8443
+            - containerPort: 5005
+          env:
+            - name: JAVA_OPTS
+              value: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+            - name: KCRUD_KTOR_SECURITY_SSL_KEY_STORE
+              value: "/app/keystore.p12"

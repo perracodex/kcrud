@@ -6,22 +6,20 @@
 
 package kcrud.base.database.schema.employment
 
+import kcrud.base.database.schema.base.PeriodTable
 import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.database.schema.employment.types.EmploymentStatus
 import kcrud.base.database.schema.employment.types.WorkModality
 import kcrud.base.persistence.utils.enumById
 import org.jetbrains.exposed.sql.ReferenceOption
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.kotlin.datetime.CurrentDateTime
 import org.jetbrains.exposed.sql.kotlin.datetime.date
-import org.jetbrains.exposed.sql.kotlin.datetime.datetime
 
 /**
  * Database table definition for employments.
  *
  * An employee may have multiple employments, which indicates re-hiring.
  */
-object EmploymentTable : Table(name = "employment") {
+object EmploymentTable : PeriodTable(name = "employment") {
     /**
      * The unique id of the employment record.
      */
@@ -65,47 +63,12 @@ object EmploymentTable : Table(name = "employment") {
     )
 
     /**
-     * Whether the employment is active or not.
-     */
-    val isActive = bool(
-        name = "is_active"
-    )
-
-    /**
-     * The date the employment started.
-     */
-    val startDate = date(
-        name = "start_date"
-    )
-
-    /**
-     * The date the employment ended.
-     */
-    val endDate = date(
-        name = "end_date"
-    ).nullable()
-
-    /**
      * Optional comments or notes for the employment.
      */
     val comments = varchar(
         name = "comments",
         length = 512
     ).nullable()
-
-    /**
-     * The timestamp when the record was created.
-     */
-    val createdAt = datetime(
-        name = "created_at"
-    ).defaultExpression(defaultValue = CurrentDateTime)
-
-    /**
-     * The timestamp when the record was last updated.
-     */
-    val updatedAt = datetime(
-        name = "updated_at"
-    ).defaultExpression(defaultValue = CurrentDateTime)
 
     override val primaryKey = PrimaryKey(
         firstColumn = id,

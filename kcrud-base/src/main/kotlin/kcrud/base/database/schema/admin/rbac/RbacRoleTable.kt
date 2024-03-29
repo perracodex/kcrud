@@ -6,9 +6,7 @@
 
 package kcrud.base.database.schema.admin.rbac
 
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.kotlin.datetime.CurrentDateTime
-import org.jetbrains.exposed.sql.kotlin.datetime.datetime
+import kcrud.base.database.schema.base.TimestampedTable
 
 /**
  * Database table definition holding the RBAC Roles.
@@ -17,7 +15,7 @@ import org.jetbrains.exposed.sql.kotlin.datetime.datetime
  *
  * @see RbacResourceRuleTable
  */
-object RbacRoleTable : Table(name = "rbac_role") {
+object RbacRoleTable : TimestampedTable(name = "rbac_role") {
     /**
      * The unique id of the role record.
      */
@@ -47,20 +45,6 @@ object RbacRoleTable : Table(name = "rbac_role") {
     val isSuper = bool(
         name = "is_super"
     )
-
-    /**
-     * The timestamp when the record was created.
-     */
-    val createdAt = datetime(
-        name = "created_at"
-    ).defaultExpression(defaultValue = CurrentDateTime)
-
-    /**
-     * The timestamp when the record was last updated.
-     */
-    val updatedAt = datetime(
-        name = "updated_at"
-    ).defaultExpression(defaultValue = CurrentDateTime)
 
     override val primaryKey = PrimaryKey(
         firstColumn = id,

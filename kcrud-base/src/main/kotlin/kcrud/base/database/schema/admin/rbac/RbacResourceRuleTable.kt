@@ -8,11 +8,9 @@ package kcrud.base.database.schema.admin.rbac
 
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacResource
+import kcrud.base.database.schema.base.TimestampedTable
 import kcrud.base.persistence.utils.enumById
 import org.jetbrains.exposed.sql.ReferenceOption
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.kotlin.datetime.CurrentDateTime
-import org.jetbrains.exposed.sql.kotlin.datetime.datetime
 
 /**
  * Database table definition holding RBAC rules for a concrete [RbacRoleTable] record.
@@ -23,7 +21,7 @@ import org.jetbrains.exposed.sql.kotlin.datetime.datetime
  *
  * @see RbacRoleTable
  */
-object RbacResourceRuleTable : Table(name = "rbac_resource_rule") {
+object RbacResourceRuleTable : TimestampedTable(name = "rbac_resource_rule") {
     /**
      * The unique id of the resource rule record.
      */
@@ -59,20 +57,6 @@ object RbacResourceRuleTable : Table(name = "rbac_resource_rule") {
         name = "access_level",
         fromId = RbacAccessLevel::fromId
     )
-
-    /**
-     * The timestamp when the record was created.
-     */
-    val createdAt = datetime(
-        name = "created_at"
-    ).defaultExpression(defaultValue = CurrentDateTime)
-
-    /**
-     * The timestamp when the record was last updated.
-     */
-    val updatedAt = datetime(
-        name = "updated_at"
-    ).defaultExpression(defaultValue = CurrentDateTime)
 
     override val primaryKey = PrimaryKey(
         firstColumn = id,
