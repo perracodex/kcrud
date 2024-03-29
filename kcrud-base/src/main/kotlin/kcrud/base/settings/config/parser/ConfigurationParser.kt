@@ -6,6 +6,7 @@
 
 package kcrud.base.settings.config.parser
 
+import com.typesafe.config.ConfigException
 import io.ktor.server.config.*
 import kcrud.base.env.Tracer
 import kcrud.base.settings.annotation.ConfigurationAPI
@@ -286,7 +287,7 @@ internal object ConfigurationParser {
         val rawList: List<String> = try {
             // Attempt to retrieve it as a list.
             config.tryGetStringList(key = keyPath) ?: listOf()
-        } catch (e: Exception) {
+        } catch (e: ConfigException) {
             // If failed to get a list, then treat it as a single string with comma-delimited values.
             val stringValue: String = config.tryGetString(key = keyPath) ?: ""
 

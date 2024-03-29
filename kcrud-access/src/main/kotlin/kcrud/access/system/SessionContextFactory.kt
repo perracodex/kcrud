@@ -7,6 +7,7 @@
 package kcrud.access.system
 
 import com.auth0.jwt.JWT
+import com.auth0.jwt.exceptions.JWTDecodeException
 import com.auth0.jwt.interfaces.DecodedJWT
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
@@ -108,7 +109,7 @@ object SessionContextFactory : KoinComponent {
     suspend fun from(oauth2: OAuthAccessTokenResponse.OAuth2): SessionContext? {
         val jwt: DecodedJWT? = try {
             JWT.decode(oauth2.extraParameters["id_token"] as String)
-        } catch (e: Exception) {
+        } catch (e: JWTDecodeException) {
             tracer.error("Invalid OAuth token. ${e.message}")
             return null
         }

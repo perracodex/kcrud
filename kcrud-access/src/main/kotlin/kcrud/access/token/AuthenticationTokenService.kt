@@ -9,6 +9,8 @@ package kcrud.access.token
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
+import com.auth0.jwt.exceptions.JWTDecodeException
+import com.auth0.jwt.exceptions.JWTVerificationException
 import com.auth0.jwt.exceptions.TokenExpiredException
 import io.ktor.http.*
 import io.ktor.http.auth.*
@@ -42,12 +44,19 @@ object AuthenticationTokenService {
             val token: String = fromHeader(call = call)
             val algorithm: Algorithm = Algorithm.HMAC256(AppSettings.security.jwt.secretKey)
             val verifier: JWTVerifier = JWT.require(algorithm).build()
-            verifier.verify(JWT.decode(token))
+            val decodedToken = JWT.decode(token)
+            verifier.verify(decodedToken)
             TokenState.Valid
         } catch (e: TokenExpiredException) {
             TokenState.Expired
-        } catch (e: Exception) {
+        } catch (e: JWTDecodeException) {
+            tracer.error("Failed to decide token: ${e.message}")
+            TokenState.Invalid
+        } catch (e: JWTVerificationException) {
             tracer.error("Token verification failed: ${e.message}")
+            TokenState.Invalid
+        } catch (e: IllegalArgumentException) {
+            tracer.error("Unexpected problem verifying token: ${e.message}")
             TokenState.Invalid
         }
     }
