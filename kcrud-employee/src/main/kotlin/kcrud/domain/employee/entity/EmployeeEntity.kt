@@ -40,7 +40,7 @@ data class EmployeeEntity(
     val age: Int,
     val maritalStatus: MaritalStatus,
     val honorific: Honorific,
-    val contact: ContactEntity? = null,
+    val contact: ContactEntity?,
     val meta: Meta
 ) {
     companion object {

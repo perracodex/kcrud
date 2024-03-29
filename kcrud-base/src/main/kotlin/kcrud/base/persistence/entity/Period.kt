@@ -23,8 +23,8 @@ import org.jetbrains.exposed.sql.Table
 data class Period(
     val isActive: Boolean,
     val startDate: KLocalDate,
-    val endDate: KLocalDate? = null,
-    val comments: String? = null
+    val endDate: KLocalDate?,
+    val comments: String?
 ) {
     companion object {
         fun toEntity(row: ResultRow, table: Table): Period {

@@ -13,7 +13,6 @@ import org.jetbrains.exposed.sql.kotlin.datetime.datetime
 /**
  * Base class for database tables holding entities with creation and modification timestamps.
  */
-@Suppress("unused")
 open class TimestampedTable(name: String) : Table(name = name) {
     /**
      * The timestamp when the record was created.

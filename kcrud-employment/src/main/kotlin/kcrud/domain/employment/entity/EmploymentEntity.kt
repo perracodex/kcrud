@@ -33,7 +33,7 @@ data class EmploymentEntity(
     val id: SUUID,
     val period: Period,
     val status: EmploymentStatus,
-    val probationEndDate: KLocalDate? = null,
+    val probationEndDate: KLocalDate?,
     val workModality: WorkModality,
     val employee: EmployeeEntity,
     val meta: Meta

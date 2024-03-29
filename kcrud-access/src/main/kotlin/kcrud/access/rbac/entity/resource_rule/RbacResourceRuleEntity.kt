@@ -36,7 +36,7 @@ data class RbacResourceRuleEntity(
     val roleId: SUUID,
     val resource: RbacResource,
     val accessLevel: RbacAccessLevel,
-    val fieldRules: List<RbacFieldRuleEntity>? = null,
+    val fieldRules: List<RbacFieldRuleEntity>?,
     val meta: Meta
 ) {
     companion object {

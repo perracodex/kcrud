@@ -11,7 +11,6 @@ import org.jetbrains.exposed.sql.kotlin.datetime.date
 /**
  * Base class for database tables holding entities that require period tracking.
  */
-@Suppress("unused")
 open class PeriodTable(name: String) : TimestampedTable(name = name) {
 
     /**
