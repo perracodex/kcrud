@@ -15,9 +15,7 @@ import kcrud.base.settings.config.parser.ConfigurationParser
 import kcrud.base.settings.config.parser.IConfigSection
 import kcrud.base.settings.config.sections.*
 import kcrud.base.settings.config.sections.security.SecuritySettings
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import kotlin.system.measureTimeMillis
 
 /**
@@ -60,12 +58,10 @@ object AppSettings {
             )
 
             runBlocking {
-                withContext(Dispatchers.IO) {
-                    configuration = ConfigurationParser.parse(
-                        configuration = applicationConfig,
-                        mappings = configMappings
-                    )
-                }
+                configuration = ConfigurationParser.parse(
+                    configuration = applicationConfig,
+                    configMappings = configMappings
+                )
             }
         }
 

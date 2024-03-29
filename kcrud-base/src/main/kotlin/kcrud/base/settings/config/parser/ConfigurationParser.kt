@@ -11,8 +11,9 @@ import kcrud.base.env.Tracer
 import kcrud.base.settings.annotation.ConfigurationAPI
 import kcrud.base.settings.config.ConfigurationCatalog
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 import kotlin.reflect.KParameter
@@ -48,35 +49,35 @@ internal object ConfigurationParser {
     /**
      * Represents a mapping from a constructor parameter to its corresponding configuration value.
      *
-     * @property parameter The constructor parameter.
-     * @property value The value corresponding to the constructor parameter.
+     * @property parameter The target constructor [KParameter].
+     * @property value The value corresponding to the constructor [parameter].
      */
-    private data class ParameterMapping(val parameter: KParameter, val value: Any)
+    private data class ParameterMapping(val parameter: KParameter, var value: Any)
 
     /**
      * Performs the application configuration parsing.
      * Top-level configurations are parsed concurrently.
      *
      * @param configuration The application configuration object to be parsed.
-     * @param mappings Map of top-level configuration paths to their corresponding classes.
+     * @param configMappings Map of top-level configuration paths to their corresponding classes.
      * @return A new [ConfigurationCatalog] object populated with the parsed configuration data.
      */
     suspend fun parse(
         configuration: ApplicationConfig,
-        mappings: List<ConfigClassMap<out IConfigSection>>
+        configMappings: List<ConfigClassMap<out IConfigSection>>
     ): ConfigurationCatalog {
 
-        // Retrieve the primary constructor of the generic type for parameter mapping.
-        val constructor: KFunction<ConfigurationCatalog> = ConfigurationCatalog::class.primaryConstructor
+        // Retrieve the primary constructor of the ConfigurationCatalog class,
+        // which will be used to instantiate the output object.
+        val configConstructor: KFunction<ConfigurationCatalog> = ConfigurationCatalog::class.primaryConstructor
             ?: throw IllegalArgumentException(
                 "Primary constructor is required for ${ConfigurationCatalog::class.simpleName}."
             )
 
-        // Create a map between each constructor parameter with its corresponding name as key.
-        val constructorParameters: Map<String, KParameter> = constructor.parameters.associateBy { it.name!! }
-
-        val arguments: Map<KParameter, Any> = coroutineScope {
-            val tasks: List<Deferred<ParameterMapping?>> = mappings.map { configClassMap ->
+        // Map each configuration path to its corresponding class,
+        // and construct the arguments map for the output object.
+        val constructorArguments: Map<KParameter, Any?> = withContext(Dispatchers.IO) {
+            val tasks: List<Deferred<ParameterMapping>> = configMappings.map { configClassMap ->
                 async {
                     // Map each configuration path to its corresponding class.
                     // Nested settings are handled recursively.
@@ -86,19 +87,24 @@ internal object ConfigurationParser {
                         kClass = configClassMap.kClass
                     )
 
-                    // Pair the corresponding constructor parameter with the instantiated configuration class.
-                    constructorParameters[configClassMap.argument]?.let { parameter ->
-                        ParameterMapping(parameter, configInstance)
-                    }
+                    // Find the constructor parameter corresponding to the configuration class.
+                    val parameter: KParameter = configConstructor.parameters.find { parameter ->
+                        parameter.name == configClassMap.argument
+                    } ?: throw IllegalArgumentException("Config argument for ${configClassMap.argument} not found.")
+
+                    // Return the mapping of the constructor argument parameter to its value.
+                    ParameterMapping(parameter = parameter, value = configInstance)
                 }
             }
 
             // Await all results and construct the arguments map.
-            tasks.mapNotNull { it.await() }.associate { it.parameter to it.value }
+            tasks.map { mapping -> mapping.await() }.associate { mapping ->
+                mapping.parameter to mapping.value
+            }
         }
 
-        // Create the instance of the output type with the mapped configuration values.
-        return constructor.callBy(args = arguments)
+        // Create the instance of the ConfigurationCatalog class with the parsed configuration values.
+        return configConstructor.callBy(args = constructorArguments)
     }
 
     /**
@@ -135,8 +141,12 @@ internal object ConfigurationParser {
                     kClass = parameterType
                 )
             } else {
-                // Conversion for simple types.
-                val property: KProperty1<T, *> = kClass.memberProperties.find { it.name == parameter.name }!!
+                // Find the target property attribute corresponding to the parameter in the class.
+                val property: KProperty1<T, *> = kClass.memberProperties.find {
+                    it.name == parameter.name
+                }!!
+
+                // Convert and return the configuration value for the parameter.
                 convertToType(
                     config = config,
                     keyPath = parameterKeyPath,
