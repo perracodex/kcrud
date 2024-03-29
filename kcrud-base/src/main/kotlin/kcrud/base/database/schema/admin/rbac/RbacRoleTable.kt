@@ -53,14 +53,14 @@ object RbacRoleTable : Table(name = "rbac_role") {
      */
     val createdAt = datetime(
         name = "created_at"
-    ).defaultExpression(CurrentDateTime)
+    ).defaultExpression(defaultValue = CurrentDateTime)
 
     /**
      * The timestamp when the record was last updated.
      */
     val updatedAt = datetime(
         name = "updated_at"
-    ).defaultExpression(CurrentDateTime)
+    ).defaultExpression(defaultValue = CurrentDateTime)
 
     override val primaryKey = PrimaryKey(
         firstColumn = id,
