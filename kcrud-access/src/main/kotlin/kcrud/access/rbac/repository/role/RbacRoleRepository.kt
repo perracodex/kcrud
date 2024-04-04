@@ -123,7 +123,6 @@ class RbacRoleRepository(
         this[RbacRoleTable.role_name] = roleRequest.roleName.trim()
         this[RbacRoleTable.description] = roleRequest.description?.trim()
         this[RbacRoleTable.isSuper] = roleRequest.isSuper
-        this[RbacRoleTable.updatedAt] = DateTimeUtils.currentUTCDateTime()
         if (withTimestamp) this[RbacRoleTable.updatedAt] = DateTimeUtils.currentUTCDateTime()
     }
 }
