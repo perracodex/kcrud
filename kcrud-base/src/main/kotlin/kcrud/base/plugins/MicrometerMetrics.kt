@@ -19,6 +19,7 @@ import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics
 import io.micrometer.core.instrument.binder.system.FileDescriptorMetrics
 import io.micrometer.core.instrument.binder.system.ProcessorMetrics
 import io.micrometer.core.instrument.binder.system.UptimeMetrics
+import io.micrometer.core.instrument.config.MeterFilter
 import io.micrometer.prometheus.PrometheusConfig
 import io.micrometer.prometheus.PrometheusMeterRegistry
 import kcrud.base.settings.AppSettings
@@ -67,4 +68,9 @@ fun Application.configureMicroMeterMetrics() {
  *
  * See: [Micrometer Prometheus](https://micrometer.io/docs/registry/prometheus)
  */
-val appMicrometerRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
+val appMicrometerRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT).apply {
+    config()
+        .meterFilter(MeterFilter.deny { id ->
+            id.name == "ktor.http.server.requests" && id.getTag("route") == "/rbac"
+        })
+}
