@@ -23,7 +23,7 @@ ALTER TABLE rbac_role
 CREATE TABLE IF NOT EXISTS rbac_resource_rule (
     resource_rule_id UUID,
     role_id UUID NOT NULL,
-    resource VARCHAR(64) NOT NULL,
+    resource INTEGER NOT NULL,
     access_level INTEGER NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,

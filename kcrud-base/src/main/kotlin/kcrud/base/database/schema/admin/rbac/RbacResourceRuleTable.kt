@@ -44,10 +44,9 @@ object RbacResourceRuleTable : TimestampedTable(name = "rbac_resource_rule") {
     /**
      * The [RbacResource] the rule is meant to target.
      */
-    val resource = enumerationByName(
+    val resource = enumById(
         name = "resource",
-        length = 64,
-        klass = RbacResource::class
+        fromId = RbacResource::fromId
     )
 
     /**

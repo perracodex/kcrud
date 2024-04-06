@@ -12,9 +12,14 @@ import kcrud.base.persistence.utils.IEnumWithId
  * The possible employment work modalities.
  */
 enum class WorkModality(override val id: Int) : IEnumWithId {
-    ON_SITE(100),
-    REMOTE(101),
-    HYBRID(102);
+    /** The employee works on-site premises. */
+    ON_SITE(id = 100),
+
+    /** The employee works remotely. */
+    REMOTE(id = 101),
+
+    /** The employee works in a hybrid modality, so both on-site and remotely. */
+    HYBRID(id = 102);
 
     companion object {
         private val map: Map<Int, WorkModality> = WorkModality.entries.associateBy(WorkModality::id)

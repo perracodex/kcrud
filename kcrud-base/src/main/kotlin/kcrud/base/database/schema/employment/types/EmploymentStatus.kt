@@ -12,9 +12,17 @@ import kcrud.base.persistence.utils.IEnumWithId
  * The possible employment statuses.
  */
 enum class EmploymentStatus(override val id: Int) : IEnumWithId {
-    ONBOARDING(100),
-    ACTIVE(101),
-    TERMINATED(102);
+    /** The employee employment is in the onboarding process. */
+    ONBOARDING(id = 100),
+
+    /** The employee employment is currently active. */
+    ACTIVE(id = 101),
+
+    /** The employee employment is in an idle state, such as a sabbatical. */
+    IDLE(id = 102),
+
+    /** The employee employment has been terminated. */
+    TERMINATED(id = 103);
 
     companion object {
         private val map: Map<Int, EmploymentStatus> = EmploymentStatus.entries.associateBy(EmploymentStatus::id)

@@ -6,6 +6,8 @@
 
 package kcrud.base.database.schema.admin.rbac.types
 
+import kcrud.base.persistence.utils.IEnumWithId
+
 /**
  * Enum to represent the resources that can be accessed.
  *
@@ -17,10 +19,15 @@ package kcrud.base.database.schema.admin.rbac.types
  *
  * @see RbacAccessLevel
  */
-enum class RbacResource {
-    RBAC_ADMIN,
-    SYSTEM,
-    EMPLOYEE_RECORDS,
-    EMPLOYEE_CONTACT_RECORDS,
-    EMPLOYMENT_RECORDS,
+enum class RbacResource(override val id: Int) : IEnumWithId {
+    RBAC_ADMIN(id = 100),
+    SYSTEM(id = 101),
+    EMPLOYEE_RECORDS(id = 102),
+    EMPLOYEE_CONTACT_RECORDS(id = 103),
+    EMPLOYMENT_RECORDS(id = 104);
+
+    companion object {
+        private val map: Map<Int, RbacResource> = RbacResource.entries.associateBy(RbacResource::id)
+        fun fromId(id: Int): RbacResource? = map[id]
+    }
 }
