@@ -19,8 +19,6 @@ import kcrud.base.utils.NetworkUtils
 import kcrud.server.plugins.configureKoin
 import kcrud.server.plugins.configureRoutes
 
-private val tracer = Tracer<Application>()
-
 /**
  * Application main entry point.
  * Launches the Ktor server using Netty as the application engine.
@@ -92,6 +90,7 @@ fun Application.kcrudModule() {
 
     dumpEndpoints(environment = this.environment)
 
+    val tracer = Tracer(ref = Application::kcrudModule)
     tracer.withSeverity("Development Mode Enabled: ${environment.developmentMode}.")
     tracer.info("Server configured. Environment: ${AppSettings.runtime.environment}.")
 }
@@ -102,6 +101,7 @@ fun Application.kcrudModule() {
  * without having to explicitly having to create at OS level.
  */
 private fun loadEnvironmentVariables() {
+    val tracer = Tracer(ref = ::loadEnvironmentVariables)
     tracer.info("Loading environment variables from '.env' file.")
 
     try {
