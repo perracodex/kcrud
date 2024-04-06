@@ -47,11 +47,13 @@ object DatabaseService {
      * Initializes the database connection based on the provided mode and database type.
      *
      * @param settings The [DatabaseSettings] to be used to configure the database.
+     * @param isolationLevel The isolation level to use for the database transactions.
      * @param micrometerRegistry Optional [PrometheusMeterRegistry] instance for micro-metrics monitoring.
      * @param schemaSetup Optional lambda to setup the database schema.
      */
     fun init(
         settings: DatabaseSettings,
+        isolationLevel: IsolationLevel = IsolationLevel.TRANSACTION_REPEATABLE_READ,
         micrometerRegistry: PrometheusMeterRegistry? = null,
         schemaSetup: (SchemaBuilder.() -> Unit)? = null
     ) {
@@ -62,13 +64,14 @@ object DatabaseService {
         val databaseInstance: Database = if (settings.connectionPoolSize > 0) {
             val dataSource: HikariDataSource = DatabasePooling.createDataSource(
                 settings = settings,
+                isolationLevel = isolationLevel,
                 micrometerRegistry = micrometerRegistry
             )
 
             hikariDataSource = dataSource
-            connectDatabase(settings = settings, datasource = dataSource)
+            connectDatabase(settings = settings, isolationLevel = isolationLevel, datasource = dataSource)
         } else {
-            connectDatabase(settings = settings)
+            connectDatabase(settings = settings, isolationLevel = isolationLevel)
         }
 
         schemaSetup?.let {
@@ -94,9 +97,13 @@ object DatabaseService {
      * @param datasource Optional HikariCP DataSource to use for the connection.
      * @return The database instance.
      */
-    private fun connectDatabase(settings: DatabaseSettings, datasource: HikariDataSource? = null): Database {
+    private fun connectDatabase(
+        settings: DatabaseSettings,
+        isolationLevel: IsolationLevel,
+        datasource: HikariDataSource? = null
+    ): Database {
         val databaseConfig = DatabaseConfig {
-            defaultIsolationLevel = settings.isolationLevel.id
+            defaultIsolationLevel = isolationLevel.id
             defaultRepetitionAttempts = settings.transactionRetryAttempts
             defaultMinRepetitionDelay = settings.transactionRetryMinDelayMs
             warnLongQueriesDuration = settings.warnLongQueriesDurationMs

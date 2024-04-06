@@ -6,7 +6,6 @@
 
 package kcrud.base.settings.config.sections
 
-import kcrud.base.database.service.IsolationLevel
 import kcrud.base.env.EnvironmentType
 import kcrud.base.settings.config.parser.IConfigSection
 
@@ -17,7 +16,6 @@ import kcrud.base.settings.config.parser.IConfigSection
  * @property path The database file location.
  * @property jdbcUrl The JDBC url database connection.
  * @property jdbcDriver The JDBC driver class name.
- * @property isolationLevel The database transactions [IsolationLevel].
  * @property transactionRetryAttempts Max retries inside a transaction if a SQLException happens. Overridable per-transaction level.
  * @property transactionRetryMinDelayMs Delay between retries in a transaction if a SQLException happens. Overridable per-transaction level.
  * @property warnLongQueriesDurationMs Threshold to log queries exceeding the threshold with WARN level. Overridable per-transaction level.
@@ -34,7 +32,6 @@ data class DatabaseSettings(
     val path: String,
     val jdbcUrl: String,
     val jdbcDriver: String,
-    val isolationLevel: IsolationLevel,
     val transactionRetryAttempts: Int,
     val transactionRetryMinDelayMs: Long,
     val warnLongQueriesDurationMs: Long,

@@ -19,11 +19,16 @@ internal object DatabasePooling {
      * Create a HikariDataSource to enable database connection pooling.
      *
      * @param settings The [DatabaseSettings] settings to be used for the database connection pooling.
+     * @param isolationLevel The isolation level to use for the database transactions.
      * @param micrometerRegistry Optional [PrometheusMeterRegistry] instance for micro-metrics monitoring.
      *
      * See: [Database Pooling](https://ktor.io/docs/connection-pooling-caching.html#connection-pooling)
      */
-    fun createDataSource(settings: DatabaseSettings, micrometerRegistry: PrometheusMeterRegistry? = null): HikariDataSource {
+    fun createDataSource(
+        settings: DatabaseSettings,
+        isolationLevel: IsolationLevel = IsolationLevel.TRANSACTION_REPEATABLE_READ,
+        micrometerRegistry: PrometheusMeterRegistry? = null
+    ): HikariDataSource {
         require(value = settings.connectionPoolSize > 0) { "Database connection pooling must be >= 1." }
 
         return HikariDataSource(HikariConfig().apply {
@@ -31,7 +36,7 @@ internal object DatabasePooling {
             jdbcUrl = settings.jdbcUrl
             maximumPoolSize = settings.connectionPoolSize
             connectionTimeout = settings.connectionPoolTimeoutMs
-            transactionIsolation = settings.isolationLevel.name
+            transactionIsolation = isolationLevel.name
             minimumIdle = settings.minimumPoolIdle
             isAutoCommit = false
 
