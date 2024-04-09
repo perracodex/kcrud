@@ -15,11 +15,11 @@ kotlin = "1.9.23"                       # https://github.com/JetBrains/kotlin/re
 kotlinx-atomicfu = "0.23.2"             # https://github.com/Kotlin/kotlinx-atomicfu/releases
 kotlinx-datetime = "0.5.0"              # https://github.com/Kotlin/kotlinx-datetime/releases
 ktor = "2.3.10"                         # https://github.com/ktorio/ktor/releases
-logback = "1.5.3"                       # https://github.com/qos-ch/logback/tags
+logback = "1.5.4"                       # https://github.com/qos-ch/logback/tags
 mockk = "1.13.10"                       # https://github.com/mockk/mockk/releases
-mockito-kotlin = "5.2.1"                # https://github.com/mockito/mockito-kotlin/releases
+mockito-kotlin = "5.3.1"                # https://github.com/mockito/mockito-kotlin/releases
 quartz-scheduler = "2.4.0-rc2"          # https://github.com/quartz-scheduler/quartz/releases
-prometheus = "1.12.4"                   # https://github.com/micrometer-metrics/micrometer/releases
+prometheus = "1.12.5"                   # https://github.com/micrometer-metrics/micrometer/releases
 swagger-generators = "3.0.54"           # https://github.com/swagger-api/swagger-codegen-generators/releases
 typesafe-config = "1.4.3"               # https://github.com/lightbend/config/releases
 
