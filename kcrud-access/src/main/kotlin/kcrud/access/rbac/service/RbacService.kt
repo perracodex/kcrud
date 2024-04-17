@@ -8,14 +8,14 @@ package kcrud.access.rbac.service
 
 import kcrud.access.actor.entity.ActorEntity
 import kcrud.access.actor.repository.IActorRepository
-import kcrud.access.rbac.entity.resource_rule.RbacResourceRuleEntity
-import kcrud.access.rbac.entity.resource_rule.RbacResourceRuleRequest
 import kcrud.access.rbac.entity.role.RbacRoleEntity
 import kcrud.access.rbac.entity.role.RbacRoleRequest
-import kcrud.access.rbac.repository.resource_rule.IRbacResourceRuleRepository
+import kcrud.access.rbac.entity.scope_rule.RbacScopeRuleEntity
+import kcrud.access.rbac.entity.scope_rule.RbacScopeRuleRequest
 import kcrud.access.rbac.repository.role.IRbacRoleRepository
+import kcrud.access.rbac.repository.scope_rule.IRbacScopeRuleRepository
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.base.database.schema.admin.rbac.types.RbacResource
+import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kcrud.base.env.SessionContext
 import kcrud.base.env.Tracer
 import kotlinx.coroutines.Dispatchers
@@ -30,18 +30,18 @@ import java.util.concurrent.ConcurrentHashMap
  *
  * @param actorRepository The [IActorRepository] to handle Actor operations.
  * @param roleRepository The [IRbacRoleRepository] to handle Role operations.
- * @param resourceRuleRepository The [IRbacResourceRuleRepository] to handle resource rule operations.
+ * @param scopeRuleRepository The [IRbacScopeRuleRepository] to handle scope rule operations.
  */
 class RbacService(
     private val actorRepository: IActorRepository,
     private val roleRepository: IRbacRoleRepository,
-    private val resourceRuleRepository: IRbacResourceRuleRepository
+    private val scopeRuleRepository: IRbacScopeRuleRepository
 ) {
     private val tracer = Tracer<RbacService>()
 
     /**
      * Cache holding Actor IDs paired with their respective [RbacRoleEntity],
-     * allowing to quickly check if an Actor has permission to access a resource,
+     * allowing to quickly check if an Actor has permission to access a scope,
      * whether is locked, and its Role attributes.
      *
      * This approach is better than holding the full [ActorEntity] tree,
@@ -76,7 +76,7 @@ class RbacService(
     }
 
     /**
-     * Refreshes the cache of [RbacResourceRuleEntity] entries, ensuring the service reflects
+     * Refreshes the cache of [RbacScopeRuleEntity] entries, ensuring the service reflects
      * the latest permissions. If an [actorId] is provided, only the permissions for that actor are refreshed;
      * otherwise permissions for all actors are refreshed.
      *
@@ -91,9 +91,9 @@ class RbacService(
             actorRepository.findById(actorId = actorId)?.let { listOf(it) } ?: emptyList()
         }
 
-        // Filter out Actors without any resource rules.
+        // Filter out Actors without any scope rules.
         targetActors = targetActors.filter { actor ->
-            actor.role.resourceRules.isNotEmpty()
+            actor.role.scopeRules.isNotEmpty()
         }
 
         if (actorId != null && targetActors.isNotEmpty()) {
@@ -125,38 +125,38 @@ class RbacService(
     }
 
     /**
-     * Checks if the given [SessionContext] has the given [RbacAccessLevel] for the given [RbacResource].
+     * Checks if the given [SessionContext] has the given [RbacAccessLevel] for the given [RbacScope].
      *
      * @param sessionContext The current request [SessionContext].
      * @param accessLevel The [RbacAccessLevel] to check.
-     * @param resource The [RbacResource] to check.
+     * @param scope The [RbacScope] to check.
      * @return True if the [SessionContext] has permission, false otherwise.
      */
     suspend fun hasPermission(
         sessionContext: SessionContext,
-        resource: RbacResource,
+        scope: RbacScope,
         accessLevel: RbacAccessLevel
     ): Boolean {
         if (isCacheEmpty())
             return false
 
         return cache[sessionContext.actorId]?.let { actorRole ->
-            !actorRole.isLocked && actorRole.role.resourceRules.any { resourceRule ->
-                (resourceRule.roleId == sessionContext.roleId) &&
-                        (resourceRule.resource == resource) &&
-                        resourceRule.accessLevel.hasSufficientPrivileges(requiredAccessLevel = accessLevel)
+            !actorRole.isLocked && actorRole.role.scopeRules.any { scopeRule ->
+                (scopeRule.roleId == sessionContext.roleId) &&
+                        (scopeRule.scope == scope) &&
+                        scopeRule.accessLevel.hasSufficientPrivileges(requiredAccessLevel = accessLevel)
             }
         } ?: false
     }
 
     /**
-     * Retrieves the [RbacAccessLevel] for the given [SessionContext] and [RbacResource].
+     * Retrieves the [RbacAccessLevel] for the given [SessionContext] and [RbacScope].
      *
      * @param sessionContext The [SessionContext] to check.
-     * @param resource The [RbacResource] to check.
-     * @return The [RbacAccessLevel] for the given [SessionContext] and [RbacResource].
+     * @param scope The [RbacScope] to check.
+     * @return The [RbacAccessLevel] for the given [SessionContext] and [RbacScope].
      */
-    suspend fun getPermissionLevel(sessionContext: SessionContext, resource: RbacResource): RbacAccessLevel {
+    suspend fun getPermissionLevel(sessionContext: SessionContext, scope: RbacScope): RbacAccessLevel {
         if (isCacheEmpty())
             RbacAccessLevel.NONE
 
@@ -164,8 +164,8 @@ class RbacService(
             if (role.isLocked) {
                 RbacAccessLevel.NONE
             } else {
-                role.role.resourceRules.find { resourceRule ->
-                    resourceRule.roleId == sessionContext.roleId && resourceRule.resource == resource
+                role.role.scopeRules.find { scopeRule ->
+                    scopeRule.roleId == sessionContext.roleId && scopeRule.scope == scope
                 }?.accessLevel ?: RbacAccessLevel.NONE
             }
         } ?: RbacAccessLevel.NONE
@@ -247,23 +247,23 @@ class RbacService(
     }
 
     /**
-     * Updates an existing role with the given set of [RbacResourceRuleRequest] entries.
+     * Updates an existing role with the given set of [RbacScopeRuleRequest] entries.
      *
-     * All the existing resource rules for the given [roleId] will be replaced by the new ones.
+     * All the existing scope rules for the given [roleId] will be replaced by the new ones.
      *
      * @param roleId The id of the role for which the rules are updated.
-     * @param resourceRuleRequests The new set of [RbacResourceRuleRequest] entries to set.
+     * @param scopeRuleRequests The new set of [RbacScopeRuleRequest] entries to set.
      * @return The number of rows updated.
      */
-    suspend fun updateResourceRules(
+    suspend fun updateScopeRules(
         roleId: UUID,
-        resourceRuleRequests: List<RbacResourceRuleRequest>
+        scopeRuleRequests: List<RbacScopeRuleRequest>
     ): Int = withContext(Dispatchers.IO) {
-        tracer.info("Updating resource rules for role with ID: $roleId")
+        tracer.info("Updating scope rules for role with ID: $roleId")
 
-        val updateCount: Int = resourceRuleRepository.replace(
+        val updateCount: Int = scopeRuleRepository.replace(
             roleId = roleId,
-            resourceRuleRequests = resourceRuleRequests
+            scopeRuleRequests = scopeRuleRequests
         )
 
         refresh()

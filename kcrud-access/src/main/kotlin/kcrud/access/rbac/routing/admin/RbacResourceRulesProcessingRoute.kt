@@ -13,14 +13,14 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
-import kcrud.access.rbac.entity.resource_rule.RbacResourceRuleRequest
 import kcrud.access.rbac.entity.role.RbacRoleEntity
+import kcrud.access.rbac.entity.scope_rule.RbacScopeRuleRequest
 import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.service.RbacService
 import kcrud.access.rbac.views.RbacAdminView
 import kcrud.access.rbac.views.RbacLoginView
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.base.database.schema.admin.rbac.types.RbacResource
+import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kcrud.base.env.SessionContext
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
@@ -28,7 +28,7 @@ import org.koin.core.component.inject
 import java.util.*
 
 @RbacAPI
-fun Route.rbacResourceRulesProcessingRoute(rbacService: RbacService) {
+fun Route.rbacScopeRulesProcessingRoute(rbacService: RbacService) {
     post("rbac/admin") {
         val sessionContext: SessionContext? = call.sessions.get<SessionContext>()
         if (sessionContext == null) {
@@ -40,13 +40,13 @@ fun Route.rbacResourceRulesProcessingRoute(rbacService: RbacService) {
         val currentRoleId: UUID? = parameters[RbacAdminView.ROLE_KEY]?.let(UUID::fromString)
 
         currentRoleId?.let { roleId ->
-            // Set the new resource rules for the role.
-            RbacResourceRulesManager.process(roleId = roleId, parameters = parameters)
+            // Set the new scope rules for the role.
+            RbacScopeRulesManager.process(roleId = roleId, parameters = parameters)
 
             // If no longer has access to the RBAC admin panel, redirect to the login.
             val permissionLevel: RbacAccessLevel = rbacService.getPermissionLevel(
                 sessionContext = sessionContext,
-                resource = RbacResource.RBAC_ADMIN
+                scope = RbacScope.RBAC_ADMIN
             )
             if (permissionLevel == RbacAccessLevel.NONE) {
                 call.sessions.clear(name = SessionContext.SESSION_NAME)
@@ -58,7 +58,7 @@ fun Route.rbacResourceRulesProcessingRoute(rbacService: RbacService) {
             val rbacRoles: List<RbacRoleEntity> = rbacService.findAllRoles()
             val rbacAccessLevel: RbacAccessLevel = rbacService.getPermissionLevel(
                 sessionContext = sessionContext,
-                resource = RbacResource.RBAC_ADMIN
+                scope = RbacScope.RBAC_ADMIN
             )
 
             call.respondHtml(status = HttpStatusCode.OK) {
@@ -80,9 +80,9 @@ fun Route.rbacResourceRulesProcessingRoute(rbacService: RbacService) {
  * Process the parameters received from the RBAC admin page.
  */
 @RbacAPI
-private object RbacResourceRulesManager : KoinComponent {
+private object RbacScopeRulesManager : KoinComponent {
     suspend fun process(roleId: UUID, parameters: Parameters) {
-        val resourceRulesRequests: MutableList<RbacResourceRuleRequest> = mutableListOf()
+        val scopeRulesRequests: MutableList<RbacScopeRuleRequest> = mutableListOf()
 
         parameters.entries()
             .filter { it.key.startsWith(prefix = RbacAdminView.ROLE_ITEM_KEY) }
@@ -96,18 +96,18 @@ private object RbacResourceRulesManager : KoinComponent {
                 val accessLevel: RbacAccessLevel = RbacAccessLevel.valueOf(paramEntry.value.first())
 
                 if (accessLevel != RbacAccessLevel.NONE) {
-                    val resourceRuleRequest = RbacResourceRuleRequest(
-                        resource = RbacResource.valueOf(accessKey.resource),
+                    val scopeRuleRequest = RbacScopeRuleRequest(
+                        scope = RbacScope.valueOf(accessKey.scope),
                         accessLevel = accessLevel
                     )
-                    resourceRulesRequests.add(resourceRuleRequest)
+                    scopeRulesRequests.add(scopeRuleRequest)
                 }
             }
 
         val rbacService: RbacService by inject()
-        rbacService.updateResourceRules(
+        rbacService.updateScopeRules(
             roleId = roleId,
-            resourceRuleRequests = resourceRulesRequests.toList()
+            scopeRuleRequests = scopeRulesRequests.toList()
         )
     }
 }

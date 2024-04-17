@@ -14,20 +14,20 @@ import io.ktor.server.sessions.*
 import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.service.RbacService
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.base.database.schema.admin.rbac.types.RbacResource
+import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kcrud.base.env.SessionContext
 import org.koin.ktor.ext.inject
 
 /**
  * Configuration for the RBAC plugin.
- * Holds the RBAC target resource and the required access level.
+ * Holds the RBAC target scope and the required access level.
  */
 @RbacAPI
 internal class RbacPluginConfig {
     /**
-     * The RBAC resource associated with the route, defining the scope of access control.
+     * The RBAC scope associated with the route, defining the scope of access control.
      */
-    lateinit var resource: RbacResource
+    lateinit var scope: RbacScope
 
     /**
      * The RBAC access level required for accessing the route, defining the degree of access control.
@@ -37,7 +37,7 @@ internal class RbacPluginConfig {
 
 /**
  * Custom Ktor RBAC plugin intercepting calls to routes, and
- * applying RBAC checks based on the configured resource and access level.
+ * applying RBAC checks based on the configured scope and access level.
  *
  * It ensures that only authorized Actors, as per the RBAC settings,
  * can access specific routes.
@@ -54,12 +54,12 @@ internal val RbacPlugin = createRouteScopedPlugin(
 
         sessionContext?.let {
             val rbacService: RbacService by call.application.inject()
-            val rbacResource: RbacResource = pluginConfig.resource
+            val rbacScope: RbacScope = pluginConfig.scope
             val rbacAccessLevel: RbacAccessLevel = pluginConfig.accessLevel
 
             val hasPermission: Boolean = rbacService.hasPermission(
                 sessionContext = it,
-                resource = rbacResource,
+                scope = rbacScope,
                 accessLevel = rbacAccessLevel
             )
 

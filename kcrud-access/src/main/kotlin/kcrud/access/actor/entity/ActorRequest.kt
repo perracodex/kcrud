@@ -10,12 +10,12 @@ import kcrud.base.persistence.serializers.SUUID
 import kotlinx.serialization.Serializable
 
 /**
- * Entity to create/update an Actor. An Actor is a user with a role and access to resources.
+ * Entity to create/update an Actor. An Actor is a user with a role and access to scopes.
  *
  * @property roleId The target Actor's role id.
  * @property username The unique Actor's username.
  * @property password The unencrypted Actor's password.
- * @property isLocked Whether the Actor is locked, so its role and resource rules are ignored, loosing all accesses.
+ * @property isLocked Whether the Actor is locked, so its role and scope rules are ignored, loosing all accesses.
  */
 @Serializable
 data class ActorRequest(

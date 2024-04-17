@@ -11,9 +11,9 @@ import kcrud.base.database.schema.base.TimestampedTable
 /**
  * Database table definition holding the RBAC Roles.
  *
- * Roles are used to define the access level of an actor to concrete resources.
+ * Roles are used to define the access level of an actor to concrete scopes.
  *
- * @see RbacResourceRuleTable
+ * @see RbacScopeRuleTable
  */
 object RbacRoleTable : TimestampedTable(name = "rbac_role") {
     /**

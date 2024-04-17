@@ -7,7 +7,7 @@
 package kcrud.base.database.schema.admin.rbac
 
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.base.database.schema.admin.rbac.types.RbacResource
+import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kcrud.base.database.schema.base.TimestampedTable
 import kcrud.base.persistence.utils.enumById
 import org.jetbrains.exposed.sql.ReferenceOption
@@ -15,18 +15,18 @@ import org.jetbrains.exposed.sql.ReferenceOption
 /**
  * Database table definition holding RBAC rules for a concrete [RbacRoleTable] record.
  *
- * A resource can be any concept: a database table, a REST endpoint, a UI element, etc.
- * Is up to the designer to define what a resource is, and act accordingly when its
+ * A scope can be any concept: a database table, a REST endpoint, a UI element, etc.
+ * Is up to the designer to define what a scope is, and act accordingly when its
  * associated RBAC rule is verified.
  *
  * @see RbacRoleTable
  */
-object RbacResourceRuleTable : TimestampedTable(name = "rbac_resource_rule") {
+object RbacScopeRuleTable : TimestampedTable(name = "rbac_scope_rule") {
     /**
-     * The unique id of the resource rule record.
+     * The unique id of the scope rule record.
      */
     val id = uuid(
-        name = "resource_rule_id"
+        name = "scope_rule_id"
     ).autoGenerate()
 
     /**
@@ -35,22 +35,22 @@ object RbacResourceRuleTable : TimestampedTable(name = "rbac_resource_rule") {
     val roleId = uuid(
         name = "role_id"
     ).references(
-        fkName = "fk_rbac_resource_rule__role_id",
+        fkName = "fk_rbac_scope_rule__role_id",
         ref = RbacRoleTable.id,
         onDelete = ReferenceOption.CASCADE,
         onUpdate = ReferenceOption.RESTRICT
     )
 
     /**
-     * The [RbacResource] the rule is meant to target.
+     * The [RbacScope] the rule is meant to target.
      */
-    val resource = enumById(
-        name = "resource",
-        fromId = RbacResource::fromId
+    val scope = enumById(
+        name = "scope",
+        fromId = RbacScope::fromId
     )
 
     /**
-     * The [RbacAccessLevel] representing the access level for the [RbacResource].
+     * The [RbacAccessLevel] representing the access level for the [RbacScope].
      */
     val accessLevel = enumById(
         name = "access_level",
@@ -59,13 +59,13 @@ object RbacResourceRuleTable : TimestampedTable(name = "rbac_resource_rule") {
 
     override val primaryKey = PrimaryKey(
         firstColumn = id,
-        name = "pk_resource_rule_id"
+        name = "pk_scope_rule_id"
     )
 
     init {
         uniqueIndex(
-            customIndexName = "uq_rbac_resource_rule__role_id__resource",
-            columns = arrayOf(roleId, resource)
+            customIndexName = "uq_rbac_scope_rule__role_id__scope",
+            columns = arrayOf(roleId, scope)
         )
     }
 }

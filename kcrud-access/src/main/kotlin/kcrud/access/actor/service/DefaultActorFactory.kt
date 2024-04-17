@@ -8,12 +8,12 @@ package kcrud.access.actor.service
 
 import kcrud.access.actor.entity.ActorRequest
 import kcrud.access.credential.CredentialService
-import kcrud.access.rbac.entity.resource_rule.RbacResourceRuleRequest
 import kcrud.access.rbac.entity.role.RbacRoleEntity
 import kcrud.access.rbac.entity.role.RbacRoleRequest
+import kcrud.access.rbac.entity.scope_rule.RbacScopeRuleRequest
 import kcrud.access.rbac.service.RbacService
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.base.database.schema.admin.rbac.types.RbacResource
+import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kcrud.base.env.Tracer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -99,10 +99,10 @@ object DefaultActorFactory : KoinComponent {
 
     private suspend fun createRoles(rbacService: RbacService): List<RbacRoleEntity> {
         RoleName.entries.forEach { role ->
-            val adminResourceRules: List<RbacResourceRuleRequest> = if (role == RoleName.ADMIN) {
-                RbacResource.entries.map { resource ->
-                    RbacResourceRuleRequest(
-                        resource = resource,
+            val adminScopeRules: List<RbacScopeRuleRequest> = if (role == RoleName.ADMIN) {
+                RbacScope.entries.map { scope ->
+                    RbacScopeRuleRequest(
+                        scope = scope,
                         accessLevel = RbacAccessLevel.FULL,
                         fieldRules = null
                     )
@@ -115,7 +115,7 @@ object DefaultActorFactory : KoinComponent {
                 roleName = role.name,
                 description = null,
                 isSuper = (role == RoleName.ADMIN),
-                resourceRules = adminResourceRules
+                scopeRules = adminScopeRules
             )
 
             rbacService.createRole(roleRequest = roleRequest)

@@ -14,13 +14,13 @@ import io.mockk.mockk
 import kcrud.access.actor.entity.ActorEntity
 import kcrud.access.actor.entity.ActorRequest
 import kcrud.access.actor.service.ActorService
-import kcrud.access.rbac.entity.resource_rule.RbacResourceRuleRequest
 import kcrud.access.rbac.entity.role.RbacRoleEntity
 import kcrud.access.rbac.entity.role.RbacRoleRequest
+import kcrud.access.rbac.entity.scope_rule.RbacScopeRuleRequest
 import kcrud.access.rbac.service.RbacService
 import kcrud.access.token.AuthenticationTokenService
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.base.database.schema.admin.rbac.types.RbacResource
+import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
 import kcrud.base.env.SessionContext
@@ -208,8 +208,8 @@ class RbacTest : KoinComponent {
 
     private suspend fun createActor(accessLevel: RbacAccessLevel, iteration: Int): ActorEntity {
         // Setup actor and role for the test.
-        val resourceRuleRequest = RbacResourceRuleRequest(
-            resource = RbacResource.EMPLOYEE_RECORDS,
+        val scopeRuleRequest = RbacScopeRuleRequest(
+            scope = RbacScope.EMPLOYEE_RECORDS,
             accessLevel = accessLevel,
             fieldRules = null
         )
@@ -217,7 +217,7 @@ class RbacTest : KoinComponent {
             roleName = "${accessLevel.name}_${iteration}".lowercase(), // Unique role name per iteration
             description = "Role for ${accessLevel.name} access, iteration $iteration",
             isSuper = false,
-            resourceRules = listOf(resourceRuleRequest)
+            scopeRules = listOf(scopeRuleRequest)
         )
 
         val rbacService: RbacService by inject()

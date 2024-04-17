@@ -8,11 +8,11 @@ package kcrud.access.rbac.repository.role
 
 import kcrud.access.rbac.entity.role.RbacRoleEntity
 import kcrud.access.rbac.entity.role.RbacRoleRequest
-import kcrud.access.rbac.repository.resource_rule.IRbacResourceRuleRepository
+import kcrud.access.rbac.repository.scope_rule.IRbacScopeRuleRepository
 import kcrud.base.database.schema.admin.actor.ActorTable
 import kcrud.base.database.schema.admin.rbac.RbacFieldRuleTable
-import kcrud.base.database.schema.admin.rbac.RbacResourceRuleTable
 import kcrud.base.database.schema.admin.rbac.RbacRoleTable
+import kcrud.base.database.schema.admin.rbac.RbacScopeRuleTable
 import kcrud.base.utils.DateTimeUtils
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.insert
@@ -23,13 +23,13 @@ import org.jetbrains.exposed.sql.update
 import java.util.*
 
 class RbacRoleRepository(
-    private val resourceRuleRepository: IRbacResourceRuleRepository
+    private val scopeRuleRepository: IRbacScopeRuleRepository
 ) : IRbacRoleRepository {
 
     override fun findById(roleId: UUID): RbacRoleEntity? {
         return transaction {
             RbacRoleTable
-                .leftJoin(otherTable = RbacResourceRuleTable)
+                .leftJoin(otherTable = RbacScopeRuleTable)
                 .leftJoin(otherTable = RbacFieldRuleTable)
                 .selectAll()
                 .where { RbacRoleTable.id eq roleId }
@@ -45,13 +45,13 @@ class RbacRoleRepository(
             // Filter out the Actor table columns. Only include the RBAC columns.
             val columns: List<Column<*>> = listOf(
                 RbacRoleTable.columns,
-                RbacResourceRuleTable.columns,
+                RbacScopeRuleTable.columns,
                 RbacFieldRuleTable.columns
             ).flatten()
 
             RbacRoleTable
                 .innerJoin(otherTable = ActorTable)
-                .leftJoin(otherTable = RbacResourceRuleTable)
+                .leftJoin(otherTable = RbacScopeRuleTable)
                 .leftJoin(otherTable = RbacFieldRuleTable)
                 .select(columns = columns)
                 .where { ActorTable.id eq actorId }
@@ -65,7 +65,7 @@ class RbacRoleRepository(
     override fun findAll(): List<RbacRoleEntity> {
         return transaction {
             RbacRoleTable
-                .leftJoin(otherTable = RbacResourceRuleTable)
+                .leftJoin(otherTable = RbacScopeRuleTable)
                 .leftJoin(otherTable = RbacFieldRuleTable)
                 .selectAll()
                 .groupBy { it[RbacRoleTable.id] }
@@ -81,11 +81,11 @@ class RbacRoleRepository(
                 roleRow.mapRoleRequest(roleRequest = roleRequest, withTimestamp = false)
             } get RbacRoleTable.id
 
-            // If the role insert was successful, insert the resource rules.
-            if (!roleRequest.resourceRules.isNullOrEmpty()) {
-                resourceRuleRepository.replace(
+            // If the role insert was successful, insert the scope rules.
+            if (!roleRequest.scopeRules.isNullOrEmpty()) {
+                scopeRuleRepository.replace(
                     roleId = roleId,
-                    resourceRuleRequests = roleRequest.resourceRules
+                    scopeRuleRequests = roleRequest.scopeRules
                 )
             }
 
@@ -103,11 +103,11 @@ class RbacRoleRepository(
                 roleRow.mapRoleRequest(roleRequest = roleRequest)
             }
 
-            // If the update was successful, recreate the resource rules.
+            // If the update was successful, recreate the scope rules.
             if (updateCount > 0) {
-                resourceRuleRepository.replace(
+                scopeRuleRepository.replace(
                     roleId = roleId,
-                    resourceRuleRequests = roleRequest.resourceRules
+                    scopeRuleRequests = roleRequest.scopeRules
                 )
             }
 

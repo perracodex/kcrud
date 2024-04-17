@@ -7,10 +7,10 @@
 package kcrud.access.rbac.entity.role
 
 import kcrud.access.rbac.entity.field_rule.RbacFieldRuleEntity
-import kcrud.access.rbac.entity.resource_rule.RbacResourceRuleEntity
+import kcrud.access.rbac.entity.scope_rule.RbacScopeRuleEntity
 import kcrud.base.database.schema.admin.rbac.RbacFieldRuleTable
-import kcrud.base.database.schema.admin.rbac.RbacResourceRuleTable
 import kcrud.base.database.schema.admin.rbac.RbacRoleTable
+import kcrud.base.database.schema.admin.rbac.RbacScopeRuleTable
 import kcrud.base.persistence.entity.Meta
 import kcrud.base.persistence.serializers.SUUID
 import kotlinx.serialization.Serializable
@@ -24,7 +24,7 @@ import java.util.*
  * @property roleName The unique role name.
  * @property description Optional role description.
  * @property isSuper Whether this is a super-role, in which case it should have all permissions granted.
- * @property resourceRules The list of [RbacResourceRuleEntity] entries for the role.
+ * @property scopeRules The list of [RbacScopeRuleEntity] entries for the role.
  * @property meta The metadata of the record.
  */
 @Serializable
@@ -33,22 +33,22 @@ data class RbacRoleEntity(
     val roleName: String,
     val description: String?,
     val isSuper: Boolean,
-    val resourceRules: List<RbacResourceRuleEntity>,
+    val scopeRules: List<RbacScopeRuleEntity>,
     val meta: Meta
 ) {
     companion object {
         fun from(roleId: UUID, rows: List<ResultRow>): RbacRoleEntity {
             // Construct the child entities (if any).
-            val resourceRules: List<RbacResourceRuleEntity> = rows
-                .filter { it.getOrNull(RbacResourceRuleTable.id) != null }
-                .distinctBy { it[RbacResourceRuleTable.id] }
-                .map { resourceRuleRow ->
-                    val resourceId: UUID = resourceRuleRow[RbacResourceRuleTable.id]
-                    val fieldRuleRows: List<ResultRow> = rows.filter { it[RbacFieldRuleTable.resourceRuleId] == resourceId }
+            val scopeRules: List<RbacScopeRuleEntity> = rows
+                .filter { it.getOrNull(RbacScopeRuleTable.id) != null }
+                .distinctBy { it[RbacScopeRuleTable.id] }
+                .map { scopeRuleRow ->
+                    val scopeId: UUID = scopeRuleRow[RbacScopeRuleTable.id]
+                    val fieldRuleRows: List<ResultRow> = rows.filter { it[RbacFieldRuleTable.scopeRuleId] == scopeId }
                     val fieldRuleEntities: List<RbacFieldRuleEntity> = fieldRuleRows.map {
                         RbacFieldRuleEntity.from(row = it)
                     }
-                    RbacResourceRuleEntity.from(row = resourceRuleRow, fieldRules = fieldRuleEntities)
+                    RbacScopeRuleEntity.from(row = scopeRuleRow, fieldRules = fieldRuleEntities)
                 }
 
             // Use the first row as the role of the 1-N relationship,
@@ -60,7 +60,7 @@ data class RbacRoleEntity(
                 roleName = record[RbacRoleTable.role_name],
                 description = record[RbacRoleTable.description],
                 isSuper = record[RbacRoleTable.isSuper],
-                resourceRules = resourceRules,
+                scopeRules = scopeRules,
                 meta = Meta.toEntity(row = record, table = RbacRoleTable)
             )
         }

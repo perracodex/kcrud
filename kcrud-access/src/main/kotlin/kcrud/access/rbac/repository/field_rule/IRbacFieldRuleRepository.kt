@@ -8,7 +8,7 @@ package kcrud.access.rbac.repository.field_rule
 
 import kcrud.access.rbac.entity.field_rule.RbacFieldRuleEntity
 import kcrud.access.rbac.entity.field_rule.RbacFieldRuleRequest
-import kcrud.access.rbac.entity.resource_rule.RbacResourceRuleRequest
+import kcrud.access.rbac.entity.scope_rule.RbacScopeRuleRequest
 import java.util.*
 
 /**
@@ -19,13 +19,13 @@ import java.util.*
 interface IRbacFieldRuleRepository {
 
     /**
-     * Updates an existing resource rule with the given set of [RbacFieldRuleRequest] entries.
+     * Updates an existing scope rule with the given set of [RbacFieldRuleRequest] entries.
      *
-     * All the existing field rules for the concrete resource rule will be replaced by the new ones.
+     * All the existing field rules for the concrete scope rule will be replaced by the new ones.
      *
-     * @param resourceRuleId The target [RbacResourceRuleRequest] being updated.
+     * @param scopeRuleId The target [RbacScopeRuleRequest] being updated.
      * @param requestList The new set of [RbacFieldRuleRequest] entries to set.
      * @return The new number of rows.
      */
-    fun replace(resourceRuleId: UUID, requestList: List<RbacFieldRuleRequest>?): Int
+    fun replace(scopeRuleId: UUID, requestList: List<RbacFieldRuleRequest>?): Int
 }

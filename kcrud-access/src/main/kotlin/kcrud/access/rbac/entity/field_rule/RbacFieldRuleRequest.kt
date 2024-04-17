@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
 /**
  * Entity to create a RBAC field rule.
  * Field rules are never updated, only re-created and deleted.
- * So, when updating a resource rule, all field rules are deleted and re-created.
+ * So, when updating a scope rule, all field rules are deleted and re-created.
  *
  * @property fieldName The name of the field being targeted.
  * @property accessLevel The field [RbacAccessLevel].

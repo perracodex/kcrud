@@ -19,7 +19,7 @@ import kcrud.access.rbac.service.RbacService
 import kcrud.access.rbac.views.RbacAdminView
 import kcrud.access.rbac.views.RbacLoginView
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.base.database.schema.admin.rbac.types.RbacResource
+import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kcrud.base.env.SessionContext
 import org.koin.ktor.ext.inject
 import java.util.*
@@ -28,14 +28,14 @@ import java.util.*
 fun Route.rbacAdminRoute() {
     val rbacService: RbacService by inject()
 
-    withRbac(resource = RbacResource.RBAC_ADMIN, accessLevel = RbacAccessLevel.VIEW) {
-        rbacResourceRulesRoute(rbacService = rbacService)
-        rbacResourceRulesProcessingRoute(rbacService = rbacService)
+    withRbac(scope = RbacScope.RBAC_ADMIN, accessLevel = RbacAccessLevel.VIEW) {
+        rbacScopeRulesRoute(rbacService = rbacService)
+        rbacScopeRulesProcessingRoute(rbacService = rbacService)
     }
 }
 
 @RbacAPI
-private fun Route.rbacResourceRulesRoute(rbacService: RbacService) {
+private fun Route.rbacScopeRulesRoute(rbacService: RbacService) {
     get("rbac/admin") {
         val sessionContext: SessionContext? = getRbacAdminAccessActor(call = call)
         if (sessionContext == null) {
@@ -45,7 +45,7 @@ private fun Route.rbacResourceRulesRoute(rbacService: RbacService) {
 
         val rbacAccessLevel: RbacAccessLevel = rbacService.getPermissionLevel(
             sessionContext = sessionContext,
-            resource = RbacResource.RBAC_ADMIN
+            scope = RbacScope.RBAC_ADMIN
         )
 
         val isViewOnly: Boolean = (rbacAccessLevel == RbacAccessLevel.VIEW)

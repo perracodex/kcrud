@@ -9,24 +9,24 @@ package kcrud.base.database.schema.admin.rbac.types
 import kcrud.base.persistence.utils.IEnumWithId
 
 /**
- * Enum representing the access level to a resource.
+ * Enum representing the access level to a scope.
  *
  * This enum can be expanded to encompass more granular permissions, like:
  * DELETE, UPDATE, CREATE, PRINT, etc.
  *
- * In conjunction with [RbacResource], it defines the access level to a resource,
+ * In conjunction with [RbacScope], it defines the access level to a scope,
  * facilitating role-based access control.
  *
- * @see RbacResource
+ * @see RbacScope
  */
 enum class RbacAccessLevel(override val id: Int) : IEnumWithId {
-    /** No access rights to a resource. */
+    /** No access rights to a scope. */
     NONE(id = 0),
 
-    /** Read-only access to a resource. */
+    /** Read-only access to a scope. */
     VIEW(id = 1),
 
-    /** Full unrestricted access rights to a resource. */
+    /** Full unrestricted access rights to a scope. */
     FULL(id = 100);
 
     /**

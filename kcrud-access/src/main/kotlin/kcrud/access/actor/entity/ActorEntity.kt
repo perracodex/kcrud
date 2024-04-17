@@ -15,7 +15,7 @@ import org.jetbrains.exposed.sql.ResultRow
 import java.util.*
 
 /**
- * Represents a single Actor. An Actor is a user with a role and access to resources.
+ * Represents a single Actor. An Actor is a user with a role and access to scopes.
  *
  * This entity is meant to be short-lived and not serialized, as it contains the Actor's password.
  * Instead, its details must be mapped to a [SessionContext] instance, while the password is automatically

@@ -9,7 +9,7 @@ package kcrud.domain.employment.routing
 import io.ktor.server.routing.*
 import kcrud.access.rbac.plugin.withRbac
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.base.database.schema.admin.rbac.types.RbacResource
+import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kcrud.domain.employment.routing.annotation.EmploymentRouteAPI
 import kcrud.domain.employment.routing.endpoints.*
 
@@ -27,22 +27,22 @@ fun Route.employmentRoute() {
 
     route("v1/employees/{employee_id}/employments") {
 
-        withRbac(resource = RbacResource.EMPLOYMENT_RECORDS, accessLevel = RbacAccessLevel.VIEW) {
+        withRbac(scope = RbacScope.EMPLOYMENT_RECORDS, accessLevel = RbacAccessLevel.VIEW) {
             findEmploymentByEmployeeId()
         }
 
-        withRbac(resource = RbacResource.EMPLOYMENT_RECORDS, accessLevel = RbacAccessLevel.FULL) {
+        withRbac(scope = RbacScope.EMPLOYMENT_RECORDS, accessLevel = RbacAccessLevel.FULL) {
             createEmployment()
             deleteEmploymentByEmployeeId()
         }
 
         route("{employment_id}") {
 
-            withRbac(resource = RbacResource.EMPLOYMENT_RECORDS, accessLevel = RbacAccessLevel.VIEW) {
+            withRbac(scope = RbacScope.EMPLOYMENT_RECORDS, accessLevel = RbacAccessLevel.VIEW) {
                 findEmploymentById()
             }
 
-            withRbac(resource = RbacResource.EMPLOYMENT_RECORDS, accessLevel = RbacAccessLevel.FULL) {
+            withRbac(scope = RbacScope.EMPLOYMENT_RECORDS, accessLevel = RbacAccessLevel.FULL) {
                 updateEmploymentById()
                 deleteEmploymentById()
             }

@@ -16,7 +16,7 @@ import org.jetbrains.exposed.sql.ReferenceOption
 
 /**
  * Database table definition holding Actors.
- * An Actor is a user with a role and access to resources.
+ * An Actor is a user with a role and access to scopes.
  *
  * The password is encrypted with the [encryptedVarchar] exposed extension function.
  * It could be improved further by using our custom [encryptedValidVarChar] to add

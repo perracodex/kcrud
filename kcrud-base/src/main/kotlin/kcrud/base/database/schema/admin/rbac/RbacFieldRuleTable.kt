@@ -15,7 +15,7 @@ import org.jetbrains.exposed.sql.ReferenceOption
  * Database table definition holding the RBAC field level rules.
  *
  * By default, all database fields should be returned as is,
- * unless added to this table and associated to a [RbacResourceRuleTable] record,
+ * unless added to this table and associated to a [RbacScopeRuleTable] record,
  * in which case the fields should be handled according to their access level.
  */
 object RbacFieldRuleTable : TimestampedTable(name = "rbac_field_rule") {
@@ -27,13 +27,13 @@ object RbacFieldRuleTable : TimestampedTable(name = "rbac_field_rule") {
     ).autoGenerate()
 
     /**
-     * The associated [RbacResourceRuleTable] id.
+     * The associated [RbacScopeRuleTable] id.
      */
-    val resourceRuleId = uuid(
-        name = "resource_rule_id"
+    val scopeRuleId = uuid(
+        name = "scope_rule_id"
     ).references(
-        fkName = "fk_rbac_field_rule__resource_rule_id",
-        ref = RbacResourceRuleTable.id,
+        fkName = "fk_rbac_field_rule__scope_rule_id",
+        ref = RbacScopeRuleTable.id,
         onDelete = ReferenceOption.CASCADE,
         onUpdate = ReferenceOption.RESTRICT
     )
@@ -61,8 +61,8 @@ object RbacFieldRuleTable : TimestampedTable(name = "rbac_field_rule") {
 
     init {
         uniqueIndex(
-            customIndexName = "uq_rbac_field_rule__resource_rule_id__field_name",
-            columns = arrayOf(resourceRuleId, fieldName)
+            customIndexName = "uq_rbac_field_rule__scope_rule_id__field_name",
+            columns = arrayOf(scopeRuleId, fieldName)
         )
     }
 }

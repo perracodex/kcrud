@@ -10,12 +10,12 @@ import kcrud.access.actor.entity.ActorEntity
 import kcrud.access.actor.entity.ActorRequest
 import kcrud.access.actor.service.ActorService
 import kcrud.access.rbac.di.RbacInjection
-import kcrud.access.rbac.entity.resource_rule.RbacResourceRuleRequest
 import kcrud.access.rbac.entity.role.RbacRoleEntity
 import kcrud.access.rbac.entity.role.RbacRoleRequest
+import kcrud.access.rbac.entity.scope_rule.RbacScopeRuleRequest
 import kcrud.access.rbac.service.RbacService
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.base.database.schema.admin.rbac.types.RbacResource
+import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kcrud.base.utils.TestUtils
 import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.koin.core.component.KoinComponent
@@ -51,9 +51,9 @@ class RbacServiceTest : KoinComponent {
             roleName = roleName,
             description = description,
             isSuper = false,
-            resourceRules = listOf(
-                RbacResourceRuleRequest(
-                    resource = RbacResource.SYSTEM,
+            scopeRules = listOf(
+                RbacScopeRuleRequest(
+                    scope = RbacScope.SYSTEM,
                     accessLevel = RbacAccessLevel.FULL
                 )
             )
@@ -97,9 +97,9 @@ class RbacServiceTest : KoinComponent {
             roleName = roleName,
             description = description,
             isSuper = false,
-            resourceRules = listOf(
-                RbacResourceRuleRequest(
-                    resource = RbacResource.SYSTEM,
+            scopeRules = listOf(
+                RbacScopeRuleRequest(
+                    scope = RbacScope.SYSTEM,
                     accessLevel = RbacAccessLevel.FULL
                 )
             )

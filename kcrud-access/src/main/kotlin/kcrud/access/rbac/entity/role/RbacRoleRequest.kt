@@ -6,8 +6,8 @@
 
 package kcrud.access.rbac.entity.role
 
-import kcrud.access.rbac.entity.resource_rule.RbacResourceRuleEntity
-import kcrud.access.rbac.entity.resource_rule.RbacResourceRuleRequest
+import kcrud.access.rbac.entity.scope_rule.RbacScopeRuleEntity
+import kcrud.access.rbac.entity.scope_rule.RbacScopeRuleRequest
 import kotlinx.serialization.Serializable
 
 /**
@@ -16,12 +16,12 @@ import kotlinx.serialization.Serializable
  * @property roleName The unique role name.
  * @property description Optional description of the role.
  * @property isSuper Whether this is a super-role, in which case it has all permissions granted.
- * @property resourceRules The list of [RbacResourceRuleEntity] entries for the role.
+ * @property scopeRules The list of [RbacScopeRuleEntity] entries for the role.
  */
 @Serializable
 data class RbacRoleRequest(
     val roleName: String,
     val description: String? = null,
     val isSuper: Boolean,
-    val resourceRules: List<RbacResourceRuleRequest>? = null
+    val scopeRules: List<RbacScopeRuleRequest>? = null
 )

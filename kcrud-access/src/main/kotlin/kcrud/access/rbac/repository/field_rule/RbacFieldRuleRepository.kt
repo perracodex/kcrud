@@ -19,10 +19,10 @@ import java.util.*
 
 class RbacFieldRuleRepository : IRbacFieldRuleRepository {
 
-    override fun replace(resourceRuleId: UUID, requestList: List<RbacFieldRuleRequest>?): Int {
+    override fun replace(scopeRuleId: UUID, requestList: List<RbacFieldRuleRequest>?): Int {
         return transaction {
             RbacFieldRuleTable.deleteWhere {
-                RbacFieldRuleTable.resourceRuleId eq resourceRuleId
+                RbacFieldRuleTable.scopeRuleId eq scopeRuleId
             }
 
             var newRowCount = 0
@@ -30,8 +30,8 @@ class RbacFieldRuleRepository : IRbacFieldRuleRepository {
             if (!requestList.isNullOrEmpty()) {
                 val newRows: List<ResultRow> = RbacFieldRuleTable.batchInsert(
                     data = requestList
-                ) { resourceRule ->
-                    this.mapRuleRequest(resourceRuleId = resourceRuleId, request = resourceRule)
+                ) { scopeRule ->
+                    this.mapRuleRequest(scopeRuleId = scopeRuleId, request = scopeRule)
                 }
 
                 newRowCount = newRows.size
@@ -45,8 +45,8 @@ class RbacFieldRuleRepository : IRbacFieldRuleRepository {
      * Populates an SQL [BatchInsertStatement] with data from an [RbacFieldRuleRequest] instance,
      * so that it can be used to update or create a database record.
      */
-    private fun BatchInsertStatement.mapRuleRequest(resourceRuleId: UUID, request: RbacFieldRuleRequest) {
-        this[RbacFieldRuleTable.resourceRuleId] = resourceRuleId
+    private fun BatchInsertStatement.mapRuleRequest(scopeRuleId: UUID, request: RbacFieldRuleRequest) {
+        this[RbacFieldRuleTable.scopeRuleId] = scopeRuleId
         this[RbacFieldRuleTable.fieldName] = request.fieldName
         this[RbacFieldRuleTable.accessLevel] = request.accessLevel
         this[RbacFieldRuleTable.updatedAt] = DateTimeUtils.currentUTCDateTime()

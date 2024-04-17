@@ -20,29 +20,29 @@ ALTER TABLE rbac_role
 
 -------------------------------------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS rbac_resource_rule (
-    resource_rule_id UUID,
+CREATE TABLE IF NOT EXISTS rbac_scope_rule (
+    scope_rule_id UUID,
     role_id UUID NOT NULL,
-    resource INTEGER NOT NULL,
+    scope INTEGER NOT NULL,
     access_level INTEGER NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT pk_resource_rule_id PRIMARY KEY (resource_rule_id),
+    CONSTRAINT pk_scope_rule_id PRIMARY KEY (scope_rule_id),
 
-    CONSTRAINT fk_rbac_resource_rule__role_id FOREIGN KEY (role_id)
+    CONSTRAINT fk_rbac_scope_rule__role_id FOREIGN KEY (role_id)
         REFERENCES rbac_role(role_id) ON DELETE CASCADE ON UPDATE RESTRICT
 );
 
-ALTER TABLE rbac_resource_rule
-    ADD CONSTRAINT uq_rbac_resource_rule__role_id__resource
-        UNIQUE (role_id, resource);
+ALTER TABLE rbac_scope_rule
+    ADD CONSTRAINT uq_rbac_scope_rule__role_id__scope
+        UNIQUE (role_id, scope);
 
 -------------------------------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS rbac_field_rule (
     field_rule_id UUID,
-    resource_rule_id UUID NOT NULL,
+    scope_rule_id UUID NOT NULL,
     field_name VARCHAR(64) NOT NULL,
     access_level INTEGER NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -50,13 +50,13 @@ CREATE TABLE IF NOT EXISTS rbac_field_rule (
 
     CONSTRAINT pk_field_rule_id PRIMARY KEY (field_rule_id),
 
-    CONSTRAINT fk_rbac_field_rule__resource_rule_id FOREIGN KEY (resource_rule_id)
-        REFERENCES rbac_resource_rule(resource_rule_id) ON DELETE CASCADE ON UPDATE RESTRICT
+    CONSTRAINT fk_rbac_field_rule__scope_rule_id FOREIGN KEY (scope_rule_id)
+        REFERENCES rbac_scope_rule(scope_rule_id) ON DELETE CASCADE ON UPDATE RESTRICT
 );
 
 ALTER TABLE rbac_field_rule
-    ADD CONSTRAINT uq_rbac_field_rule__resource_rule_id__field_name
-        UNIQUE (resource_rule_id, field_name);
+    ADD CONSTRAINT uq_rbac_field_rule__scope_rule_id__field_name
+        UNIQUE (scope_rule_id, field_name);
 
 -------------------------------------------------------------------------------------
 

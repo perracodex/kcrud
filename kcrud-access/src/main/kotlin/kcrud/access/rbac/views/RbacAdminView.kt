@@ -9,7 +9,7 @@ package kcrud.access.rbac.views
 import kcrud.access.rbac.entity.role.RbacRoleEntity
 import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.base.database.schema.admin.rbac.types.RbacResource
+import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kotlinx.html.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -22,11 +22,7 @@ internal object RbacAdminView {
     const val ROLE_ITEM_KEY: String = "{role_item}"
 
     @Serializable
-    data class AccessLevelKeyData(
-        val roleName: String,
-        val resource: String,
-        val isLocked: Boolean
-    )
+    data class AccessLevelKeyData(val roleName: String, val scope: String, val isLocked: Boolean)
 
     fun build(
         html: HTML,
@@ -136,28 +132,28 @@ internal object RbacAdminView {
 
     private fun TABLE.buildTableHeader() {
         tr {
-            th(classes = "resource-column") { +"Resource" }
+            th(classes = "scope-column") { +"Scope" }
             th(classes = "access-level-column") { +"Access Level" }
         }
     }
 
     private fun TABLE.buildTableRows(role: RbacRoleEntity, isLocked: Boolean) {
-        RbacResource.entries.forEach { resource ->
-            val accessLevel: RbacAccessLevel = role.resourceRules
-                .find { it.resource == resource }?.accessLevel ?: RbacAccessLevel.NONE
+        RbacScope.entries.forEach { scope ->
+            val accessLevel: RbacAccessLevel = role.scopeRules
+                .find { it.scope == scope }?.accessLevel ?: RbacAccessLevel.NONE
 
-            buildRowForRoleAndResource(
+            buildRowForRoleAndScope(
                 roleName = role.roleName,
-                resource = resource,
+                scope = scope,
                 isLocked = isLocked,
                 accessLevel = accessLevel
             )
         }
     }
 
-    private fun TABLE.buildRowForRoleAndResource(
+    private fun TABLE.buildRowForRoleAndScope(
         roleName: String,
-        resource: RbacResource,
+        scope: RbacScope,
         isLocked: Boolean,
         accessLevel: RbacAccessLevel
     ) {
@@ -165,13 +161,13 @@ internal object RbacAdminView {
             serializer = AccessLevelKeyData.serializer(),
             value = AccessLevelKeyData(
                 roleName = roleName,
-                resource = resource.name,
+                scope = scope.name,
                 isLocked = isLocked
             )
         )
 
         tr {
-            td(classes = "resource-column") { +resource.name.toCamelCase() }
+            td(classes = "scope-column") { +scope.name.toCamelCase() }
             buildAccessLevelDropdown(key = accessKey, isLocked = isLocked, currentLevel = accessLevel)
         }
     }
