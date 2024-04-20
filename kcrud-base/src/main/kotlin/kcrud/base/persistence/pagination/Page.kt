@@ -11,7 +11,7 @@ import kotlin.math.max
 
 /**
  * Holds the data for a page of results.
-
+ *
  * @param totalPages The total number of pages available based on the pagination settings.
  * @param pageIndex The current page number, 0-based.
  * @param totalElements Total number of elements in the entire dataset, not just a page.
