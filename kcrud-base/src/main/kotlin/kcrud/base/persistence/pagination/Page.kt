@@ -26,7 +26,7 @@ import kotlin.math.max
  * @param content The data that forms the content in a page.
  */
 @Serializable
-open class Page<out T : Any>(
+class Page<out T : Any>(
     val totalPages: Int,
     val pageIndex: Int,
     val totalElements: Int,
