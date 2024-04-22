@@ -20,7 +20,7 @@ mockk = "1.13.10"                       # https://github.com/mockk/mockk/release
 mockito-kotlin = "5.3.1"                # https://github.com/mockito/mockito-kotlin/releases
 quartz-scheduler = "2.4.0-rc2"          # https://github.com/quartz-scheduler/quartz/releases
 prometheus = "1.12.5"                   # https://github.com/micrometer-metrics/micrometer/releases
-swagger-generators = "3.0.54"           # https://github.com/swagger-api/swagger-codegen-generators/releases
+swagger-generators = "1.0.48"           # https://github.com/swagger-api/swagger-codegen-generators/releases
 typesafe-config = "1.4.3"               # https://github.com/lightbend/config/releases
 
 
@@ -119,12 +119,13 @@ database-h2 = { module = "com.h2database:h2", version.ref = "database-h2" }
 
 # OpenAPI / SwaggerUI.
 # https://ktor.io/docs/swagger-ui.html#configure-swagger
+# https://ktor.io/docs/server-openapi.html#configure-swagger
 # https://github.com/swagger-api/swagger-ui
 # https://github.com/swagger-api/swagger-codegen-generators
 # https://github.com/swagger-api/swagger-codegen-generators/releases
 api-schema-openapi = { module = "io.ktor:ktor-server-openapi", version.ref = "ktor" }
 api-schema-swagger = { module = "io.ktor:ktor-server-swagger", version.ref = "ktor" }
-api-schema-swagger-generators = { module = "io.swagger.codegen.v3:swagger-codegen-maven-plugin", version.ref = "swagger-generators" }
+api-schema-swagger-generators = { module = "io.swagger.codegen.v3:swagger-codegen-generators", version.ref = "swagger-generators" }
 
 # Shared.
 shared-commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec" }
