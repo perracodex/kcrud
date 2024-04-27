@@ -23,7 +23,7 @@ import kcrud.base.env.SessionContext
  * principal are not propagated across different requests, so we
  * must use sessions to store the actor information.
  *
- * See: [Basic Authentication Documentation](https://ktor.io/docs/basic.html)
+ * See: [Basic Authentication Documentation](https://ktor.io/docs/server-basic-auth.html)
  */
 @OptIn(RbacAPI::class)
 fun Application.configureRbac() {

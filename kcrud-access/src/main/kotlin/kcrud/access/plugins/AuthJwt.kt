@@ -31,7 +31,7 @@ import kcrud.base.settings.AppSettings
  * 2. Perform additional validations on the JWT payload.
  *
  *
- * See: [Ktor JWT Authentication Documentation](https://ktor.io/docs/jwt.html)
+ * See: [Ktor JWT Authentication Documentation](https://ktor.io/docs/server-jwt.html)
  */
 fun Application.configureJwtAuthentication() {
 

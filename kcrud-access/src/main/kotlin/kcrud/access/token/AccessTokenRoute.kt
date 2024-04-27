@@ -20,9 +20,9 @@ import kcrud.base.settings.AppSettings
 /**
  * Access-token endpoints.
  *
- * See: [Ktor JWT Authentication Documentation](https://ktor.io/docs/jwt.html)
+ * See: [Ktor JWT Authentication Documentation](https://ktor.io/docs/server-jwt.html)
  *
- * See: [Basic Authentication Documentation](https://ktor.io/docs/basic.html)
+ * See: [Basic Authentication Documentation](https://ktor.io/docs/server-basic-auth.html)
  */
 fun Route.accessTokenRoute() {
 

@@ -19,7 +19,7 @@ import kcrud.base.settings.config.sections.CorsSettings
  *
  * Note: The 'anyHost' setting for CORS is not recommended for production use.
  *
- * See: [CORS Documentation](https://ktor.io/docs/cors.html)
+ * See: [CORS Documentation](https://ktor.io/docs/server-cors.html)
  */
 fun Application.configureCors() {
 

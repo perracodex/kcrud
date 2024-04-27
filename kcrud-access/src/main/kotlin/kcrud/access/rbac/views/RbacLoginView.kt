@@ -13,7 +13,7 @@ import kotlinx.html.*
 /**
  * Handles generating the login form and managing form submission responses.
  *
- * See: [HTML DSL](https://ktor.io/docs/html-dsl.html)
+ * See: [HTML DSL](https://ktor.io/docs/server-html-dsl.html)
  */
 @RbacAPI
 internal object RbacLoginView {
@@ -40,7 +40,7 @@ internal object RbacLoginView {
     /**
      * Generates the login form using HTML DSL.
      *
-     * See: [HTML DSL](https://ktor.io/docs/html-dsl.html)
+     * See: [HTML DSL](https://ktor.io/docs/server-html-dsl.html)
      */
     private fun HTML.buildForm() {
         body {

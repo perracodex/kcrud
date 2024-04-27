@@ -98,7 +98,7 @@ dotenv = { module = "io.github.cdimascio:dotenv-kotlin", version.ref = "dotenv" 
 flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
 
 # HikariCP (Database connection pooling)
-# https://ktor.io/docs/connection-pooling-caching.html
+# https://ktor.io/docs/db-connection-pooling-caching.html
 # https://github.com/brettwooldridge/HikariCP
 # https://github.com/brettwooldridge/HikariCP/tags
 hikariCP = { module = "com.zaxxer:HikariCP", version.ref = "hikariCP" }
@@ -118,7 +118,7 @@ koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 database-h2 = { module = "com.h2database:h2", version.ref = "database-h2" }
 
 # OpenAPI / SwaggerUI.
-# https://ktor.io/docs/swagger-ui.html#configure-swagger
+# https://ktor.io/docs/server-swagger-ui.html#configure-swagger
 # https://ktor.io/docs/server-openapi.html#configure-swagger
 # https://github.com/swagger-api/swagger-ui
 # https://github.com/swagger-api/swagger-codegen-generators
@@ -137,7 +137,7 @@ shared-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 google-phonenumber = { module = "com.googlecode.libphonenumber:libphonenumber", version.ref = "google-phonenumber" }
 
 # Micrometer Metrics.
-# https://ktor.io/docs/micrometer-metrics.html
+# https://ktor.io/docs/server-metrics-micrometer.html
 # https://github.com/micrometer-metrics/micrometer/releases
 micrometer-metrics = { module = "io.ktor:ktor-server-metrics-micrometer", version.ref = "ktor" }
 micrometer-metrics-prometheus = { module = "io.micrometer:micrometer-registry-prometheus", version.ref = "prometheus" }

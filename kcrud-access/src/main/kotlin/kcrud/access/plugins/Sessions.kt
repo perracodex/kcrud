@@ -22,7 +22,7 @@ import kcrud.base.settings.AppSettings
  * In Ktor, you can implement sessions by using cookies or custom headers, choose whether to store
  * session data on the server or pass it to the client, sign and encrypt session data and more.
  *
- * See: [Sessions](https://ktor.io/docs/sessions.html)
+ * See: [Sessions](https://ktor.io/docs/server-sessions.html)
  */
 fun Application.configureSessions() {
 

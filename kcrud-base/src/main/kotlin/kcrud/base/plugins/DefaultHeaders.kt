@@ -6,6 +6,8 @@
 
 package kcrud.base.plugins
 
+import io.ktor.http.*
+import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.autohead.*
 import io.ktor.server.plugins.cachingheaders.*
@@ -15,13 +17,13 @@ import io.ktor.server.plugins.forwardedheaders.*
 /**
  * Configures header related plugins.
  *
- * See: [Default Headers Documentation](https://ktor.io/docs/default-headers.html)
+ * See: [Default Headers Documentation](https://ktor.io/docs/server-default-headers.html)
  *
- * See: [Auto Head Response Documentation](https://ktor.io/docs/autoheadresponse.html)
+ * See: [Auto Head Response Documentation](https://ktor.io/docs/server-autoheadresponse.html)
  *
- * See: [Caching Headers Plugin](https://ktor.io/docs/caching.html)
+ * See: [Caching Headers Plugin](https://ktor.io/docs/server-caching-headers.html)
  *
- * See: [X-Forwarded-Header Support Plugin](https://ktor.io/docs/x-forwarded-headers.html)
+ * See: [Forwarded-Header Plugin](https://ktor.io/docs/server-forward-headers.html)
  */
 fun Application.configureHeaders() {
 
@@ -42,7 +44,15 @@ fun Application.configureHeaders() {
 
     // The CachingHeaders plugin adds the capability to configure
     // the Cache-Control and Expires headers used for HTTP caching.
-    install(plugin = CachingHeaders)
+    install(plugin = CachingHeaders) {
+        options { _, content ->
+            when (content.contentType?.withoutParameters()) {
+                ContentType.Text.Plain -> CachingOptions(CacheControl.MaxAge(maxAgeSeconds = 3600))
+                ContentType.Text.Html -> CachingOptions(CacheControl.MaxAge(maxAgeSeconds = 60))
+                else -> null
+            }
+        }
+    }
 
     // The ForwardedHeaders and XForwardedHeaders plugins allow to handle
     // reverse proxy headers to get information about the original request

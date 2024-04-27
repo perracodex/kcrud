@@ -34,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap
  *
  * See: [HashedPasswordTableAuth]
  *
- * See: [Ktor UserHashedTableAuth](https://ktor.io/docs/basic.html#validate-user-hash)
+ * See: [Ktor UserHashedTableAuth](https://ktor.io/docs/server-basic-auth.html#validate-user-hash)
  */
 class CredentialService : KoinComponent {
     private val tracer = Tracer<CredentialService>()

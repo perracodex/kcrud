@@ -19,7 +19,7 @@ import kcrud.domain.employment.routing.endpoints.*
  * These endpoints are segmented in multiple functions/files
  * to demonstrate how to organize routes separately.
  *
- * See [Application Structure](https://ktor.io/docs/structuring-applications.html) for examples
+ * See [Application Structure](https://ktor.io/docs/server-application-structure.html) for examples
  * of how to organize routes in diverse ways.
  */
 @OptIn(EmploymentRouteAPI::class)

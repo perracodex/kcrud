@@ -19,7 +19,7 @@ import kcrud.base.settings.AppSettings
  * The Basic authentication scheme is a part of the HTTP framework used for access control and authentication.
  * In this scheme, actor credentials are transmitted as username/password pairs encoded using Base64.
  *
- * See: [Basic Authentication Documentation](https://ktor.io/docs/basic.html)
+ * See: [Basic Authentication Documentation](https://ktor.io/docs/server-basic-auth.html)
  */
 fun Application.configureBasicAuthentication() {
 

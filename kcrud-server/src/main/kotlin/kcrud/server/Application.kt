@@ -23,11 +23,11 @@ import kcrud.server.plugins.configureRoutes
  * Application main entry point.
  * Launches the Ktor server using Netty as the application engine.
  *
- * See: [Choosing an engine](https://ktor.io/docs/engines.html)
+ * See: [Choosing an engine](https://ktor.io/docs/server-engines.html)
  *
- * See: [Configure an engine](https://ktor.io/docs/engines.html#configure-engine)
+ * See: [Configure an engine](https://ktor.io/docs/server-engines.html#configure-engine)
  *
- * See: [Application Monitoring](https://ktor.io/docs/events.html)
+ * See: [Application Monitoring With Server Events](https://ktor.io/docs/server-events.html)
  *
  * @param args Command line arguments passed to the application.
  */
@@ -40,9 +40,9 @@ fun main(args: Array<String>) {
  * Application configuration module, responsible for setting up the server with various plugins.
  * Execution order is important as some configurations depend on the prior initialization of others.
  *
- * See: [Modules](https://ktor.io/docs/modules.html)
+ * See: [Modules](https://ktor.io/docs/server-modules.html)
  *
- * See: [Plugins](https://ktor.io/docs/plugins.html#install)
+ * See: [Plugins](https://ktor.io/docs/server-plugins.html)
  */
 fun Application.kcrudModule() {
 

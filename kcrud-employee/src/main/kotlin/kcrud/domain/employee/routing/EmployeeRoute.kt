@@ -16,7 +16,7 @@ import kcrud.domain.employee.routing.endpoints.*
 /**
  * Employee related endpoints.
  *
- * See [Application Structure](https://ktor.io/docs/structuring-applications.html) for examples
+ * See [Application Structure](https://ktor.io/docs/server-application-structure.html) for examples
  * of how to organize routes in diverse ways.
  */
 @OptIn(EmployeeRouteAPI::class)

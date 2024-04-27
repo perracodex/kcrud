@@ -22,7 +22,7 @@ internal object DatabasePooling {
      * @param isolationLevel The isolation level to use for the database transactions.
      * @param micrometerRegistry Optional [PrometheusMeterRegistry] instance for micro-metrics monitoring.
      *
-     * See: [Database Pooling](https://ktor.io/docs/connection-pooling-caching.html#connection-pooling)
+     * See: [Database Pooling](https://ktor.io/docs/db-connection-pooling-caching.html#connection-pooling)
      */
     fun createDataSource(
         settings: DatabaseSettings,

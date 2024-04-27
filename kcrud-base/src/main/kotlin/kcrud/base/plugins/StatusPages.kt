@@ -22,7 +22,7 @@ import kotlinx.serialization.json.Json
  * The [StatusPages] plugin allows Ktor applications to respond appropriately
  * to any failure state based on a thrown exception or status code.
  *
- * See: [Ktor Status Pages Documentation](https://ktor.io/docs/status-pages.html)
+ * See: [Ktor Status Pages Documentation](https://ktor.io/docs/server-status-pages.html)
  */
 fun Application.configureStatusPages() {
 

@@ -22,9 +22,9 @@ import kcrud.base.settings.AppSettings
  * to the RFC 6797. When the browser receives HSTS policy headers, it no longer attempts to connect
  * to the server with insecure connections for a given period.
  *
- * See: [Ktor HTTPS Redirect Plugin](https://ktor.io/docs/https-redirect.html)
+ * See: [Ktor HTTPS Redirect Plugin](https://ktor.io/docs/server-https-redirect.html)
  *
- * See: [Ktor HSTS (HTTP Strict Transport Security) Plugin](https://ktor.io/docs/hsts.html)
+ * See: [Ktor HSTS (HTTP Strict Transport Security) Plugin](https://ktor.io/docs/server-hsts.html)
  */
 fun Application.configureSecureConnection() {
 
