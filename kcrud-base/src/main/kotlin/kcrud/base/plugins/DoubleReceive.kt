@@ -15,11 +15,7 @@ import kcrud.base.settings.AppSettings
  * The [DoubleReceive] plugin provides the ability to receive a request body several times
  * without encountering a [RequestAlreadyConsumedException]. This capability is especially beneficial
  * in scenarios where the request body needs to be inspected, logged, or processed in multiple ways
- * before final processing. It enhances debugging, auditing, and data processing capabilities by
- * allowing repeated access to the request content without the need for additional request handling
- * or storage mechanisms.
- *
- * Benefits of using DoubleReceive include:
+ * before final processing. Benefits of using DoubleReceive include:
  * - Enhanced flexibility in request handling, enabling scenarios like logging and then processing the request body.
  * - Improved debugging and auditing capabilities by allowing request bodies to be inspected multiple times.
  * - Facilitation of complex application logic that requires the request to be read in different formats or multiple times.
