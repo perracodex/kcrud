@@ -18,7 +18,10 @@ import kcrud.base.persistence.validators.IValidator
 object PhoneValidator : IValidator {
     private val tracer = Tracer<PhoneValidator>()
 
-    override fun validate(value: String): IValidator.Result {
+    override fun <T> validate(value: T): IValidator.Result {
+        if (value !is String) {
+            return IValidator.Result.Failure(reason = "Phone number must be a string.")
+        }
 
         try {
             val phoneUtil: PhoneNumberUtil = PhoneNumberUtil.getInstance()

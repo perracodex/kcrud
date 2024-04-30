@@ -5,7 +5,7 @@
 commons-codec = "1.17.0"                # https://github.com/apache/commons-codec/tags
 database-h2 = "2.2.224"                 # https://github.com/h2database/h2database/releases
 dotenv = "6.4.1"                        # https://github.com/cdimascio/dotenv-kotlin/releases
-exposed = "0.49.0"                      # https://github.com/JetBrains/Exposed/releases
+exposed = "0.50.0"                      # https://github.com/JetBrains/Exposed/releases
 flyway = "10.11.1"                      # https://github.com/flyway/flyway/releases
 google-phonenumber = "8.13.35"          # https://github.com/google/libphonenumber/releases
 gson = "2.10.1"                         # https://github.com/google/gson/releases/tag/gson-parent-2.10.1

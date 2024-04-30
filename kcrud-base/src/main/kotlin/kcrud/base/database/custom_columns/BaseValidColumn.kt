@@ -24,29 +24,38 @@ import org.jetbrains.exposed.sql.Table
  * @param validator Validates the column data.
  * @return [Column]<[String]> with specified characteristics.
  */
-fun Table.baseValidColumn(
+inline fun <reified T : Any> Table.baseValidColumn(
     name: String,
     textLength: Int,
     validator: IValidator,
-    columnTypeProvider: (length: Int) -> ColumnType
-): Column<String> {
+    columnTypeProvider: (length: Int) -> ColumnType<T>
+): Column<T> {
     // Resolve the target column type using the provided lambda.
-    val baseColumnType: ColumnType = columnTypeProvider(textLength)
+    val baseColumn: ColumnType<T> = columnTypeProvider(textLength)
 
     // Create a custom ColumnType with validation.
-    val validColumnType: ColumnType = object : ColumnType() {
-        override fun sqlType(): String = baseColumnType.sqlType()
+    val validColumnType: ColumnType<T> = object : ColumnType<T>() {
+        override fun sqlType(): String = baseColumn.sqlType()
 
-        override fun notNullValueToDB(value: Any): Any {
-            if (value is String && validator.validate(value = value) is IValidator.Result.Success) {
-                return baseColumnType.notNullValueToDB(value = value)
+        override fun notNullValueToDB(value: T): Any {
+            if (validator.validate(value = value) is IValidator.Result.Success) {
+                return baseColumn.notNullValueToDB(value = value)
             }
 
             validator.raise(message = value.toString())
         }
 
-        override fun valueFromDB(value: Any): Any = baseColumnType.valueFromDB(value = value)
-        override fun nonNullValueToString(value: Any): String = baseColumnType.nonNullValueToString(value = value)
+        override fun valueFromDB(value: Any): T? {
+            return baseColumn.valueFromDB(value = value)
+        }
+
+        override fun nonNullValueToString(value: T): String {
+            return baseColumn.nonNullValueToString(value = value)
+        }
+
+        override fun nonNullValueAsDefaultString(value: T): String {
+            return baseColumn.nonNullValueAsDefaultString(value = value)
+        }
     }
 
     // Register the column with the new custom ColumnType.

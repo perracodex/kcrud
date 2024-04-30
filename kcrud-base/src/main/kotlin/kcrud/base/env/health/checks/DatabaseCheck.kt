@@ -130,7 +130,7 @@ data class DatabaseCheck(
     data class Configuration(
         val poolSize: Int = AppSettings.database.connectionPoolSize,
         val connectionTimeout: Long = AppSettings.database.connectionPoolTimeoutMs,
-        val transactionRetryAttempts: Int = AppSettings.database.transactionRetryAttempts,
+        val transactionRetryAttempts: Int = AppSettings.database.transactionMaxAttempts,
         val warnLongQueriesDurationMs: Long = AppSettings.database.warnLongQueriesDurationMs,
         val jdbcDriver: String = AppSettings.database.jdbcDriver,
         val jdbcUrl: String = AppSettings.database.jdbcUrl,

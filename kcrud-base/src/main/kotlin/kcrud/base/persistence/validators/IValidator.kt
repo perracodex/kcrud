@@ -8,9 +8,8 @@ package kcrud.base.persistence.validators
 
 /**
  * Implementing this interface allows defining custom validation
- * logic that can be applied to various data fields, such as
- * email addresses, phone numbers, or any other string-based
- * data requiring validation.
+ * logic that can be applied to various data fields, such as email
+ * addresses, phone numbers, or any other data requiring a validation.
  */
 interface IValidator {
     /**
@@ -19,7 +18,7 @@ interface IValidator {
      * @param value The target value to be validated.
      * @return A [Result] object containing the validation result.
      */
-    fun validate(value: String): Result
+    fun <T> validate(value: T): Result
 
     /**
      * Generates an error message for an invalid value.

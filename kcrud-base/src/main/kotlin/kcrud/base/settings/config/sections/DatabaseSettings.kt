@@ -16,8 +16,8 @@ import kcrud.base.settings.config.parser.IConfigSection
  * @property path The database file location.
  * @property jdbcUrl The JDBC url database connection.
  * @property jdbcDriver The JDBC driver class name.
- * @property transactionRetryAttempts Max retries inside a transaction if a SQLException happens. Overridable per-transaction level.
- * @property transactionRetryMinDelayMs Delay between retries in a transaction if a SQLException happens. Overridable per-transaction level.
+ * @property transactionMaxAttempts Max retries inside a transaction if a SQLException happens. Overridable per-transaction level.
+ * @property transactionMinRetryDelayMs Delay between retries in a transaction if a SQLException happens. Overridable per-transaction level.
  * @property warnLongQueriesDurationMs Threshold to log queries exceeding the threshold with WARN level. Overridable per-transaction level.
  * @property connectionPoolSize The database connection pool size. 0 for no connection pooling.
  * @property minimumPoolIdle The minimum number of idle connections to maintain in the pool.
@@ -32,8 +32,8 @@ data class DatabaseSettings(
     val path: String,
     val jdbcUrl: String,
     val jdbcDriver: String,
-    val transactionRetryAttempts: Int,
-    val transactionRetryMinDelayMs: Long,
+    val transactionMaxAttempts: Int,
+    val transactionMinRetryDelayMs: Long,
     val warnLongQueriesDurationMs: Long,
     val connectionPoolSize: Int,
     val minimumPoolIdle: Int,

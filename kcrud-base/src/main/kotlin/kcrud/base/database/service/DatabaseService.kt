@@ -104,8 +104,8 @@ object DatabaseService {
     ): Database {
         val databaseConfig = DatabaseConfig {
             defaultIsolationLevel = isolationLevel.id
-            defaultRepetitionAttempts = settings.transactionRetryAttempts
-            defaultMinRepetitionDelay = settings.transactionRetryMinDelayMs
+            defaultMaxAttempts = settings.transactionMaxAttempts
+            defaultMinRetryDelay = settings.transactionMinRetryDelayMs
             warnLongQueriesDuration = settings.warnLongQueriesDurationMs
         }
 

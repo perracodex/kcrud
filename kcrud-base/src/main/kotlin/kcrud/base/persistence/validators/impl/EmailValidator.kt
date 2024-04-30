@@ -53,7 +53,11 @@ object EmailValidator : IValidator {
     private const val MAX_LOCAL_PART_LENGTH: Int = 64
     private const val DOMAIN_SEPARATOR: String = "@"
 
-    override fun validate(value: String): IValidator.Result {
+    override fun <T> validate(value: T): IValidator.Result {
+        if (value !is String) {
+            return IValidator.Result.Failure(reason = "Email must be a string.")
+        }
+
         val emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}$"
         if (!value.matches(regex = emailRegex.toRegex())) {
             return IValidator.Result.Failure(reason = "Email does not match the required format.")
