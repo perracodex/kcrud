@@ -4,8 +4,6 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-@file:OptIn(DemoAPI::class)
-
 package kcrud.server.demo
 
 import io.ktor.http.*
