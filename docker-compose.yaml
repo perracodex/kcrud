@@ -17,7 +17,7 @@ services:
     env_file:
       - .env
     environment:
-      JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+      JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005" # Enables remote debugging on port 5005
       KCRUD_KTOR_SECURITY_SSL_KEY_STORE: "/app/keystore.p12"
     networks:
       - default_network
