@@ -46,7 +46,7 @@ internal fun Route.rbacAuthorizedRoute(
     // is configured with the same RBAC scope and access level that were used to create the route.
     // This ensures the enforcement of RBAC policies on the route, making certain that access is granted
     // only to actors with the appropriate permissions defined by the scope and access level parameters.
-    authorizedRoute.install(RbacPlugin) {
+    authorizedRoute.install(plugin = RbacPlugin) {
         this.scope = scope
         this.accessLevel = accessLevel
     }

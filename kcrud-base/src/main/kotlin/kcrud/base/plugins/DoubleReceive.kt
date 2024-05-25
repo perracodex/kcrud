@@ -32,7 +32,7 @@ fun Application.configureDoubleReceive() {
         return
     }
 
-    install(DoubleReceive) {
+    install(plugin = DoubleReceive) {
         cacheRawRequest = true
 
         // Exclude requests larger than 2 MB from cache.
