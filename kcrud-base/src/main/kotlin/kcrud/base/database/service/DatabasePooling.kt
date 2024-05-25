@@ -8,7 +8,7 @@ package kcrud.base.database.service
 
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
-import io.micrometer.prometheus.PrometheusMeterRegistry
+import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
 import kcrud.base.database.annotation.DatabaseAPI
 import kcrud.base.settings.config.sections.DatabaseSettings
 

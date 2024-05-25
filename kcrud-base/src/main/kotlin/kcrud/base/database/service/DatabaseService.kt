@@ -7,7 +7,7 @@
 package kcrud.base.database.service
 
 import com.zaxxer.hikari.HikariDataSource
-import io.micrometer.prometheus.PrometheusMeterRegistry
+import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
 import kcrud.base.database.annotation.DatabaseAPI
 import kcrud.base.env.Tracer
 import kcrud.base.env.health.annotation.HealthCheckAPI
@@ -188,7 +188,7 @@ object DatabaseService {
     private fun ping(): Boolean {
         return try {
             transaction(db = database) {
-                @Suppress("SqlDialectInspection")
+                @Suppress("SqlDialectInspection", "SqlNoDataSourceInspection")
                 exec(stmt = "SELECT 1;")
                 true
             }
