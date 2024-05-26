@@ -68,10 +68,10 @@ subprojects {
     // Targets 'KotlinCompile' tasks in each subproject to apply task-specific compiler options.
     tasks.withType<KotlinCompile>().configureEach {
         if (disableOptimizations) {
-            kotlinOptions {
+            compilerOptions {
                 // Add '-Xdebug' flag to disable local variable optimizations when debugging.
                 // WARNING: Never add this flag in production as it can cause memory leaks.
-                freeCompilerArgs += "-Xdebug"
+                freeCompilerArgs.add("-Xdebug")
             }
         }
     }
@@ -84,8 +84,8 @@ dependencies {
     implementation(project(":kcrud-server"))
 }
 
-// Part of the fat JAR workflow: Task to copy the SSL keystore file for secure deployment.
-val copyKeystoreTask by tasks.registering(Copy::class) {
+/** Part of the fat JAR workflow: Task to copy the SSL keystore file for secure deployment. */
+val copyKeystoreTask: TaskProvider<Copy> by tasks.registering(Copy::class) {
     from("keystore.p12")
     into("build/libs")
     doFirst {
@@ -93,7 +93,7 @@ val copyKeystoreTask by tasks.registering(Copy::class) {
     }
 }
 
-// Part of the fat JAR workflow: Ensures SSL keystore file is placed in the build output after the fat JAR creation.
+/** Part of the fat JAR workflow: Ensures SSL keystore file is placed in the build output after the fat JAR creation. */
 tasks.named("buildFatJar") {
     finalizedBy(copyKeystoreTask)
     doLast {

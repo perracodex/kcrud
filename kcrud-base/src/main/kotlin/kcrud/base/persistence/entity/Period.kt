@@ -18,6 +18,7 @@ import org.jetbrains.exposed.sql.Table
  * @property isActive Whether the period is currently active.
  * @property startDate The start date of the period.
  * @property endDate The end date of the period.
+ * @property comments Optional notes or comments.
  */
 @Serializable
 data class Period(
@@ -27,6 +28,13 @@ data class Period(
     val comments: String?
 ) {
     companion object {
+        /**
+         * Maps a [ResultRow] to a [Period] instance.
+         *
+         * @param row The [ResultRow] to map.
+         * @param table The [Table] that the [ResultRow] is from.
+         * @return The mapped [Period] instance.
+         */
         fun toEntity(row: ResultRow, table: Table): Period {
             val isActiveColumn: Column<*> = table.columns.single { it.name == "is_active" }
             val startDateColumn: Column<*> = table.columns.single { it.name == "start_date" }

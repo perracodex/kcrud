@@ -17,6 +17,12 @@ import org.jetbrains.exposed.sql.statements.BatchInsertStatement
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
 
+/**
+ * Implementation of [IRbacFieldRuleRepository].
+ * Manages the persistence of [RbacFieldRuleRequest] instances.
+ *
+ * @see RbacFieldRuleRequest
+ */
 class RbacFieldRuleRepository : IRbacFieldRuleRepository {
 
     override fun replace(scopeRuleId: UUID, requestList: List<RbacFieldRuleRequest>?): Int {

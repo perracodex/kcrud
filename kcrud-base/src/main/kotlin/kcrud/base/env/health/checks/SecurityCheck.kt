@@ -10,6 +10,17 @@ import kcrud.base.env.health.annotation.HealthCheckAPI
 import kcrud.base.settings.AppSettings
 import kotlinx.serialization.Serializable
 
+/**
+ * Used to check the security configuration of the application.
+ *
+ * @property errors List of errors found during the health check.
+ * @property isEnabled Flag indicating if security (JWT, Basic, etc.) is enabled, if not, the application is not secure.
+ * @property useSecureConnection Flag indicating if secure connections are used.
+ * @property publicApiRateLimit Rate limit specification for the public API endpoints.
+ * @property publicApiRateRefillMs The rate refill time for public API endpoints, in milliseconds
+ * @property newTokenRateLimit Rate limit specification for the New Authentication Token generation endpoint.
+ * @property newTokenRateRefillMs The rate refill time for the New Authentication Token generation endpoint, in milliseconds.
+ */
 @HealthCheckAPI
 @Serializable
 data class SecurityCheck(

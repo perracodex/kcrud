@@ -11,24 +11,44 @@ import kcrud.base.errors.BaseError
 import kcrud.base.errors.ErrorCodeRegistry
 import java.util.*
 
+/**
+ * Concrete errors for the Employee domain.
+ */
 sealed class EmployeeError(
     status: HttpStatusCode,
     code: String,
     description: String
 ) : BaseError(status = status, code = code, description = description) {
 
+    /**
+     * Error for when an employee is not found.
+     *
+     * @param employeeId The employee id that was not found.
+     */
     data class EmployeeNotFound(val employeeId: UUID) : EmployeeError(
         status = HttpStatusCode.NotFound,
         code = "${TAG}ENF",
         description = "Employee not found. Employee Id: $employeeId"
     )
 
+    /**
+     * Error for when an employee is already registered.
+     *
+     * @param employeeId The affected employee id.
+     * @param email The email that is already registered.
+     */
     data class InvalidEmailFormat(val employeeId: UUID?, val email: String) : EmployeeError(
         status = HttpStatusCode.BadRequest,
         code = "${TAG}IEF",
         description = "Invalid email format: '$email'. Employee Id: $employeeId"
     )
 
+    /**
+     * Error for when an employee phone has an invalid format.
+     *
+     * @param employeeId The affected employee id.
+     * @param phone The phone value with the invalid format.
+     */
     data class InvalidPhoneFormat(val employeeId: UUID?, val phone: String) : EmployeeError(
         status = HttpStatusCode.BadRequest,
         code = "${TAG}IPF",

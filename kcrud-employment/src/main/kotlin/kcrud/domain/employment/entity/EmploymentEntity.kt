@@ -39,6 +39,12 @@ data class EmploymentEntity(
     val meta: Meta
 ) {
     companion object {
+        /**
+         * Maps a [ResultRow] to a [EmploymentEntity] instance.
+         *
+         * @param row The [ResultRow] to map.
+         * @return The mapped [EmploymentEntity] instance.
+         */
         fun from(row: ResultRow): EmploymentEntity {
             return EmploymentEntity(
                 id = row[EmploymentTable.id],

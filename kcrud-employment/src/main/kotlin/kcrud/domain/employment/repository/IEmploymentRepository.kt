@@ -12,6 +12,9 @@ import kcrud.domain.employment.entity.EmploymentEntity
 import kcrud.domain.employment.entity.EmploymentRequest
 import java.util.*
 
+/**
+ * Responsible for managing employment data.
+ */
 interface IEmploymentRepository {
 
     /**

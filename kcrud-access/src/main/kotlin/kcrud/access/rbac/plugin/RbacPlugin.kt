@@ -43,7 +43,7 @@ internal class RbacPluginConfig {
  * can access specific routes.
  */
 @RbacAPI
-internal val RbacPlugin = createRouteScopedPlugin(
+internal val RbacPlugin: RouteScopedPlugin<RbacPluginConfig> = createRouteScopedPlugin(
     name = "RbacPlugin",
     createConfiguration = ::RbacPluginConfig
 ) {

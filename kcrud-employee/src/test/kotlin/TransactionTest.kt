@@ -56,7 +56,7 @@ class TransactionTest : KoinComponent {
      * no data is persisted in the database.
      */
     @Test
-    fun testNestedTransaction() = testSuspend {
+    fun testNestedTransaction(): Unit = testSuspend {
         val sessionContext: SessionContext = mockk<SessionContext>()
         every { sessionContext.schema } returns null
 
@@ -126,7 +126,7 @@ class TransactionTest : KoinComponent {
      * is provided, so the transaction must be rolled back on error.
      */
     @Test
-    fun testNestedTransactionRollbackByError() = testSuspend {
+    fun testNestedTransactionRollbackByError(): Unit = testSuspend {
         val sessionContext: SessionContext = mockk<SessionContext>()
         every { sessionContext.schema } returns null
 

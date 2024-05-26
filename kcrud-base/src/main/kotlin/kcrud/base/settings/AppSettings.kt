@@ -27,13 +27,30 @@ object AppSettings {
     @Volatile
     private lateinit var configuration: ConfigurationCatalog
 
+    /** The deployment settings. */
     val deployment: DeploymentSettings get() = configuration.deployment
+
+    /** The runtime settings. */
     val runtime: RuntimeSettings get() = configuration.runtime
+
+    /** The CORS settings. */
     val cors: CorsSettings get() = configuration.cors
+
+    /** The database settings. */
     val database: DatabaseSettings get() = configuration.database
+
+    /** The API schema settings. */
     val apiSchema: ApiSchemaSettings get() = configuration.apiSchema
+
+    /** The application security settings. */
     val security: SecuritySettings get() = configuration.security
 
+    /**
+     * Loads the application settings from the provided [ApplicationConfig].
+     * Will only load the settings once.
+     *
+     * @param applicationConfig The [ApplicationConfig] to load the settings from.
+     */
     @OptIn(ConfigurationAPI::class)
     fun load(applicationConfig: ApplicationConfig) {
         if (AppSettings::configuration.isInitialized)

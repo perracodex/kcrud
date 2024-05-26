@@ -47,7 +47,7 @@ class StressTest : KoinComponent {
     }
 
     @Test
-    fun largeConcurrentSet() = testSuspend {
+    fun largeConcurrentSet(): Unit = testSuspend {
         val employeeRequest = EmployeeRequest(
             firstName = "AnyName",
             lastName = "AnySurname",
@@ -104,7 +104,7 @@ class StressTest : KoinComponent {
     }
 
     @Test
-    fun largeEmployeeSet() = testSuspend {
+    fun largeEmployeeSet(): Unit = testSuspend {
         val employeeRequest = EmployeeRequest(
             firstName = "AnyName",
             lastName = "AnySurname",

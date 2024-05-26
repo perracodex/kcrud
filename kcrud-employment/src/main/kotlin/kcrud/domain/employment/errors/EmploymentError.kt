@@ -12,18 +12,36 @@ import kcrud.base.errors.ErrorCodeRegistry
 import kcrud.base.utils.KLocalDate
 import java.util.*
 
+/**
+ * Concrete errors for the Employment domain.
+ */
 sealed class EmploymentError(
     status: HttpStatusCode,
     code: String,
     description: String
 ) : BaseError(status = status, code = code, description = description) {
 
+    /**
+     * Error for when an employment is not found for a concrete employee.
+     *
+     * @param employeeId The affected employee id.
+     * @param employmentId The employment id that was not found.
+     */
     data class EmploymentNotFound(val employeeId: UUID, val employmentId: UUID) : EmploymentError(
         status = HttpStatusCode.NotFound,
         code = "${TAG}ENF",
         description = "Employment not found. Employee Id: $employeeId. Employment Id: $employmentId."
     )
 
+    /**
+     * Error when there is an inconsistency in the period dates,
+     * where the end date is prior to the start date.
+     *
+     * @param employeeId The affected employee id.
+     * @param employmentId The employment id associated with the error.
+     * @param startDate The start date of the employment period.
+     * @param endDate The end date of the employment period.
+     */
     data class PeriodDatesMismatch(
         val employeeId: UUID,
         val employmentId: UUID?,
@@ -37,6 +55,14 @@ sealed class EmploymentError(
                 "Start Date: $startDate. End Date: $endDate."
     )
 
+    /**
+     * Error when the probation end date is prior to the employment start date.
+     *
+     * @param employeeId The affected employee id.
+     * @param employmentId The employment id associated with the error.
+     * @param startDate The start date of the employment period.
+     * @param probationEndDate The probation end date of the employment period.
+     */
     data class InvalidProbationEndDate(
         val employeeId: UUID,
         val employmentId: UUID?,

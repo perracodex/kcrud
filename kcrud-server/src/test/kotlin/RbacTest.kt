@@ -55,7 +55,7 @@ class RbacTest : KoinComponent {
      * Verifies that each API endpoint honors the correct access level by either permitting or denying requests.
      */
     @Test
-    fun testAccess() = testApplication {
+    fun testAccess(): Unit = testApplication {
         startApplication()
 
         // Prepare a generic employee request used in POST and PUT endpoints.

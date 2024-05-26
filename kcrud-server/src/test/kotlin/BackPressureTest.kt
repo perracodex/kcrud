@@ -49,7 +49,7 @@ class BackPressureTest : KoinComponent {
      * and checking the average response time.
      */
     @Test
-    fun testWithControlledLoadIncrease() = testApplication {
+    fun testWithControlledLoadIncrease(): Unit = testApplication {
         startApplication()
 
         // Initial setup (unchanged)
@@ -149,7 +149,7 @@ class BackPressureTest : KoinComponent {
      * a large number of concurrent read requests to the server.
      */
     @Test
-    fun testConcurrentReads() = testApplication {
+    fun testConcurrentReads(): Unit = testApplication {
         // Start the application so that the Koin DI container is initialized.
         startApplication()
 
@@ -216,7 +216,7 @@ class BackPressureTest : KoinComponent {
      * a large number of concurrent write requests to the server.
      */
     @Test
-    fun testConcurrentWrites() = testApplication {
+    fun testConcurrentWrites(): Unit = testApplication {
         // Start the application so that the Koin DI container is initialized.
         startApplication()
 
@@ -267,7 +267,7 @@ class BackPressureTest : KoinComponent {
      * a large number of concurrent read and write requests to the server.
      */
     @Test
-    fun testConcurrentReadWrite() = testApplication {
+    fun testConcurrentReadWrite(): Unit = testApplication {
         // Start the application so that the Koin DI container is initialized.
         startApplication()
 

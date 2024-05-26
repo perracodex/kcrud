@@ -6,6 +6,8 @@
 
 package kcrud.base.database.schema.base
 
+import kcrud.base.utils.KLocalDate
+import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.kotlin.datetime.date
 
 /**
@@ -16,21 +18,21 @@ open class PeriodTable(name: String) : TimestampedTable(name = name) {
     /**
      * Whether the employment is active or not.
      */
-    val isActive = bool(
+    val isActive: Column<Boolean> = bool(
         name = "is_active"
     )
 
     /**
      * The date the employment started.
      */
-    val startDate = date(
+    val startDate: Column<KLocalDate> = date(
         name = "start_date"
     )
 
     /**
      * The date the employment ended.
      */
-    val endDate = date(
+    val endDate: Column<KLocalDate?> = date(
         name = "end_date"
     ).nullable()
 }

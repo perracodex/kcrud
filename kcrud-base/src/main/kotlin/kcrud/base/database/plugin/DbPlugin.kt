@@ -35,7 +35,7 @@ class DbPluginConfig {
 /**
  * Custom Ktor plugin to configure the database.
  */
-val DbPlugin = createApplicationPlugin(
+val DbPlugin: ApplicationPlugin<DbPluginConfig> = createApplicationPlugin(
     name = "DatabasePlugin",
     createConfiguration = ::DbPluginConfig
 ) {

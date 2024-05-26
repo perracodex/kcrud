@@ -12,6 +12,7 @@ import java.util.*
 
 /**
  * Repository for [RbacScopeRuleEntity] data.
+ * Responsible for managing [RbacScopeRuleRequest] data.
  *
  * @see RbacScopeRuleRequest
  */

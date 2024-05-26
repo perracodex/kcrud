@@ -33,7 +33,7 @@ import java.util.*
 object JobSchedulerService {
     private val tracer = Tracer<JobSchedulerService>()
 
-    private const val PROPERTIES_FILE = "quartz.properties"
+    private const val PROPERTIES_FILE: String = "quartz.properties"
     private val scheduler: Scheduler
 
     init {

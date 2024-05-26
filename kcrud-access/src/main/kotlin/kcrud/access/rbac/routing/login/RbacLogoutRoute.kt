@@ -14,6 +14,9 @@ import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.views.RbacLoginView
 import kcrud.base.env.SessionContext
 
+/**
+ * The route for logging out of the RBAC admin panel.
+ */
 @RbacAPI
 fun Route.rbacLogoutRoute() {
     route("/rbac/logout") {

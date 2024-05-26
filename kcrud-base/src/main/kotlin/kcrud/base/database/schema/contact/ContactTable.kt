@@ -13,7 +13,10 @@ import kcrud.base.persistence.validators.impl.EmailValidator
 import kcrud.base.security.utils.EncryptionUtils
 import org.jetbrains.exposed.crypt.Encryptor
 import org.jetbrains.exposed.crypt.encryptedVarchar
+import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ReferenceOption
+import org.jetbrains.exposed.sql.Table
+import java.util.*
 
 /**
  * Database table definition for employee contact details.
@@ -37,14 +40,14 @@ object ContactTable : TimestampedTable(name = "contact") {
     /**
      * The unique id of the contact record.
      */
-    val id = uuid(
+    val id: Column<UUID> = uuid(
         name = "contact_id"
     ).autoGenerate()
 
     /**
      * The id of the employee to which the contact details belong.
      */
-    val employeeId = uuid(
+    val employeeId: Column<UUID> = uuid(
         name = "employee_id"
     ).references(
         fkName = "fk_contact__employee_id",
@@ -57,7 +60,7 @@ object ContactTable : TimestampedTable(name = "contact") {
      * The contact's email.
      * Must be a valid email.
      */
-    val email = encryptedValidVarChar(
+    val email: Column<String> = encryptedValidVarChar(
         name = "email",
         cipherTextLength = 256,
         encryptor = encryptor,
@@ -68,13 +71,13 @@ object ContactTable : TimestampedTable(name = "contact") {
      * The contact's phone.
      * Must be a valid phone number.
      */
-    val phone = encryptedVarchar(
+    val phone: Column<String> = encryptedVarchar(
         name = "phone",
         cipherTextLength = encryptor.maxColLength(inputByteSize = 128),
         encryptor = encryptor
     )
 
-    override val primaryKey = PrimaryKey(
+    override val primaryKey: Table.PrimaryKey = PrimaryKey(
         firstColumn = id,
         name = "pk_contact_id"
     )

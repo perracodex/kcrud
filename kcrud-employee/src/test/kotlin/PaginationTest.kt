@@ -47,7 +47,7 @@ class PaginationTest : KoinComponent {
     }
 
     @Test
-    fun testEmptyPagination() = testSuspend {
+    fun testEmptyPagination(): Unit = testSuspend {
         newSuspendedTransaction {
             val sessionContext: SessionContext = mockk<SessionContext>()
             every { sessionContext.schema } returns null
@@ -110,7 +110,7 @@ class PaginationTest : KoinComponent {
     }
 
     @Test
-    fun testEvenPagination() = testSuspend {
+    fun testEvenPagination(): Unit = testSuspend {
         newSuspendedTransaction {
             val sessionContext: SessionContext = mockk<SessionContext>()
             every { sessionContext.schema } returns null
@@ -245,7 +245,7 @@ class PaginationTest : KoinComponent {
     }
 
     @Test
-    fun testOddPagination() = testSuspend {
+    fun testOddPagination(): Unit = testSuspend {
         newSuspendedTransaction {
             val sessionContext: SessionContext = mockk<SessionContext>()
             every { sessionContext.schema } returns null
@@ -382,7 +382,7 @@ class PaginationTest : KoinComponent {
     }
 
     @Test
-    fun testPaginationCount() = testSuspend {
+    fun testPaginationCount(): Unit = testSuspend {
         newSuspendedTransaction {
             val sessionContext: SessionContext = mockk<SessionContext>()
             every { sessionContext.schema } returns null
@@ -424,7 +424,7 @@ class PaginationTest : KoinComponent {
     }
 
     @Test
-    fun testRandomPagination() = testSuspend {
+    fun testRandomPagination(): Unit = testSuspend {
         newSuspendedTransaction {
             val sessionContext: SessionContext = mockk<SessionContext>()
             every { sessionContext.schema } returns null
@@ -503,7 +503,7 @@ class PaginationTest : KoinComponent {
     }
 
     @Test
-    fun testRandomPaginationWithSorting() = testSuspend {
+    fun testRandomPaginationWithSorting(): Unit = testSuspend {
         newSuspendedTransaction {
             val sessionContext: SessionContext = mockk<SessionContext>()
             every { sessionContext.schema } returns null

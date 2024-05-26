@@ -24,7 +24,9 @@ import org.jetbrains.exposed.sql.ResultRow
  * @property id The employee's id.
  * @property firstName The first name of the employee.
  * @property lastName The last name of the employee.
+ * @property fullName The full name of the employee, computed as "lastName, firstName".
  * @property dob The date of birth of the employee.
+ * @property age The age of the employee, computed from [dob].
  * @property maritalStatus The marital status of the employee.
  * @property honorific The honorific or title of the employee.
  * @property contact Optional contact details of the employee.
@@ -44,6 +46,12 @@ data class EmployeeEntity(
     val meta: Meta
 ) {
     companion object {
+        /**
+         * Maps a [ResultRow] to a [EmployeeEntity] instance.
+         *
+         * @param row The [ResultRow] to map.
+         * @return The mapped [EmployeeEntity] instance.
+         */
         fun from(row: ResultRow): EmployeeEntity {
             val contact: ContactEntity? = row.getOrNull(ContactTable.id)?.let {
                 ContactEntity.from(row = row)

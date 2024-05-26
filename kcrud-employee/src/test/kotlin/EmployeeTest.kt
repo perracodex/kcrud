@@ -47,7 +47,7 @@ class EmployeeEntityServiceTest : KoinComponent {
     }
 
     @Test
-    fun testGetEmployee() = testSuspend {
+    fun testGetEmployee(): Unit = testSuspend {
         MaritalStatus.entries.forEachIndexed { index, maritalStatus ->
             Honorific.entries.forEach { honorific ->
 
@@ -105,7 +105,7 @@ class EmployeeEntityServiceTest : KoinComponent {
     }
 
     @Test
-    fun testCreateUpdateEmployee() = testSuspend {
+    fun testCreateUpdateEmployee(): Unit = testSuspend {
         val employeeRequest = EmployeeRequest(
             firstName = "AnyName",
             lastName = "AnySurname",

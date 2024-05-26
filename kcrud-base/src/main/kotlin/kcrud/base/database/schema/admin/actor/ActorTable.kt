@@ -12,7 +12,10 @@ import kcrud.base.database.schema.base.TimestampedTable
 import kcrud.base.security.utils.EncryptionUtils
 import org.jetbrains.exposed.crypt.Encryptor
 import org.jetbrains.exposed.crypt.encryptedVarchar
+import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ReferenceOption
+import org.jetbrains.exposed.sql.Table
+import java.util.*
 
 /**
  * Database table definition holding Actors.
@@ -28,14 +31,14 @@ object ActorTable : TimestampedTable(name = "actor") {
     /**
      * The unique id of the Actor record.
      */
-    val id = uuid(
+    val id: Column<UUID> = uuid(
         name = "actor_id"
     ).autoGenerate()
 
     /**
      * The actor's unique username.
      */
-    val username = varchar(
+    val username: Column<String> = varchar(
         name = "username",
         length = 16
     )
@@ -43,7 +46,7 @@ object ActorTable : TimestampedTable(name = "actor") {
     /**
      * The actor's encrypted password.
      */
-    val password = encryptedVarchar(
+    val password: Column<String> = encryptedVarchar(
         name = "password",
         cipherTextLength = encryptor.maxColLength(inputByteSize = 128),
         encryptor = encryptor
@@ -52,7 +55,7 @@ object ActorTable : TimestampedTable(name = "actor") {
     /**
      * The associated [RbacRoleTable] id.
      */
-    val roleId = uuid(
+    val roleId: Column<UUID> = uuid(
         name = "role_id"
     ).references(
         fkName = "fk_rbac_role__role_id",
@@ -64,11 +67,11 @@ object ActorTable : TimestampedTable(name = "actor") {
     /**
      * Whether the Actor is locked and therefore has full restricted access.
      */
-    val isLocked = bool(
+    val isLocked: Column<Boolean> = bool(
         name = "is_locked"
     )
 
-    override val primaryKey = PrimaryKey(
+    override val primaryKey: Table.PrimaryKey = PrimaryKey(
         firstColumn = id,
         name = "pk_actor_id"
     )

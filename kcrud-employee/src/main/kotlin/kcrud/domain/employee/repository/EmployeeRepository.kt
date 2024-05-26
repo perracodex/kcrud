@@ -23,6 +23,10 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import java.util.*
 
+/**
+ * Implementation of the [IEmployeeRepository] interface.
+ * Responsible for managing employee data.
+ */
 internal class EmployeeRepository(
     private val sessionContext: SessionContext,
     private val contactRepository: IContactRepository

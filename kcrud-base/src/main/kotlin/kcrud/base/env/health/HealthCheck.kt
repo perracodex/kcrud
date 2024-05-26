@@ -14,7 +14,16 @@ import kcrud.base.env.health.utils.collectRoutes
 import kotlinx.serialization.Serializable
 
 /**
- * Data class representing the health check for the system.
+ * Data class representing the overall health check for the system.
+ *
+ * @property health List of errors found during any of the health checks.
+ * @property runtime The [RuntimeCheck] health check.
+ * @property deployment The [DeploymentCheck] health check.
+ * @property security The [SecurityCheck] health check.
+ * @property database The [DatabaseCheck] health check.
+ * @property application The [ApplicationCheck] health check.
+ * @property snowflake The [SnowflakeCheck] health check.
+ * @property endpoints The list of endpoints detected by the application.
  */
 @OptIn(HealthCheckAPI::class)
 @Serializable

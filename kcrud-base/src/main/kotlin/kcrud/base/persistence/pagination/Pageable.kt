@@ -27,8 +27,15 @@ data class Pageable(
         require(value = (size >= 0)) { "Page size must be >= 0. (0 means all elements)." }
     }
 
+    /**
+     * Sorting direction.
+     */
     enum class Direction {
-        ASC, DESC
+        /** Ascending sorting direction. */
+        ASC,
+
+        /** Descending sorting direction. */
+        DESC
     }
 
     /**

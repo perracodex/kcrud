@@ -13,6 +13,9 @@ import kcrud.domain.employee.entity.EmployeeFilterSet
 import kcrud.domain.employee.entity.EmployeeRequest
 import java.util.*
 
+/**
+ * Responsible for managing employee data.
+ */
 interface IEmployeeRepository {
 
     /**

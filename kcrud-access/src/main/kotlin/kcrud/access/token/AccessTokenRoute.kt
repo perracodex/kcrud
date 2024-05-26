@@ -46,18 +46,18 @@ fun Route.accessTokenRoute() {
             val tokenState: AuthenticationTokenService.TokenState = AuthenticationTokenService.getState(call = call)
 
             when (tokenState) {
-                AuthenticationTokenService.TokenState.Valid -> {
+                AuthenticationTokenService.TokenState.VALID -> {
                     // Token is still valid; return the same token to the client.
                     val jwtToken: String = AuthenticationTokenService.fromHeader(call = call)
                     call.respond(status = HttpStatusCode.OK, message = jwtToken)
                 }
 
-                AuthenticationTokenService.TokenState.Expired -> {
+                AuthenticationTokenService.TokenState.EXPIRED -> {
                     // Token has expired; generate a new token and respond with it.
                     call.respondWithToken()
                 }
 
-                AuthenticationTokenService.TokenState.Invalid -> {
+                AuthenticationTokenService.TokenState.INVALID -> {
                     // Token is invalid; respond with an Unauthorized status.
                     call.respond(status = HttpStatusCode.Unauthorized, message = "Invalid token.")
                 }

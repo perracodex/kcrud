@@ -38,6 +38,13 @@ data class ActorEntity(
     val meta: Meta
 ) {
     companion object {
+        /**
+         * Maps a [ResultRow] to an [ActorEntity] instance.
+         *
+         * @param row The [ResultRow] to map.
+         * @param role The associated [RbacRoleEntity] instance.
+         * @return The mapped [ActorEntity] instance.
+         */
         fun from(row: ResultRow, role: RbacRoleEntity): ActorEntity {
             return ActorEntity(
                 id = row[ActorTable.id],

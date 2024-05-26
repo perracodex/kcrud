@@ -20,6 +20,10 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import java.util.*
 
+/**
+ * Implementation of [IActorRepository].
+ * Responsible for managing [ActorEntity] data.
+ */
 class ActorRepository(private val roleRepository: IRbacRoleRepository) : IActorRepository {
 
     override suspend fun findByUsername(username: String): ActorEntity? {

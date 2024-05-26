@@ -10,6 +10,8 @@ import kcrud.base.persistence.utils.IEnumWithId
 
 /**
  * The possible employment work modalities.
+ *
+ * @property id The unique identifier of the work modality.
  */
 enum class WorkModality(override val id: Int) : IEnumWithId {
     /** The employee works on-site premises. */
@@ -23,6 +25,13 @@ enum class WorkModality(override val id: Int) : IEnumWithId {
 
     companion object {
         private val map: Map<Int, WorkModality> = WorkModality.entries.associateBy(WorkModality::id)
+
+        /**
+         * Retrieves the work modality from its unique identifier.
+         *
+         * @param id The unique identifier of the work modality.
+         * @return The work modality associated with the given identifier.
+         */
         fun fromId(id: Int): WorkModality? = map[id]
     }
 }

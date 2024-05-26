@@ -27,8 +27,11 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.util.*
 
+/**
+ * Handles the POST request for the RBAC admin panel.
+ */
 @RbacAPI
-fun Route.rbacScopeRulesProcessingRoute(rbacService: RbacService) {
+internal fun Route.rbacSAdminRoutePost(rbacService: RbacService) {
     post("rbac/admin") {
         val sessionContext: SessionContext? = call.sessions.get<SessionContext>()
         if (sessionContext == null) {

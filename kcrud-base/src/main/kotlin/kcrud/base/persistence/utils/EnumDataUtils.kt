@@ -13,6 +13,8 @@ import org.jetbrains.exposed.sql.Table
  * Example in which each item has an id,
  * which is the actual value that will be stored in the database,
  * instead of the name of the enum item.
+ *
+ * @property id The integer ID of the enum item.
  */
 interface IEnumWithId {
     val id: Int
@@ -25,7 +27,7 @@ interface IEnumWithId {
  * It uses a custom enumeration column type in Exposed to map between the enum values
  * in Kotlin and their integer IDs in the database.
  *
- * Usage Example:
+ * Usage example:
  * ```
  * enum class AnyEnumName(override val id: Int) : EnumWithId {
  *     ELEMENT_A(100), ELEMENT_B(101), ...

@@ -37,6 +37,14 @@ data class RbacRoleEntity(
     val meta: Meta
 ) {
     companion object {
+        /**
+         * Maps a list of [ResultRow]s to a [RbacRoleEntity] instance.
+         * Each row is expected to represent a different scope rule.
+         *
+         * @param roleId The id of the role.
+         * @param rows The [ResultRow] list to map.
+         * @return The mapped [RbacRoleEntity] instance.
+         */
         fun from(roleId: UUID, rows: List<ResultRow>): RbacRoleEntity {
             // Construct the child entities (if any).
             val scopeRules: List<RbacScopeRuleEntity> = rows

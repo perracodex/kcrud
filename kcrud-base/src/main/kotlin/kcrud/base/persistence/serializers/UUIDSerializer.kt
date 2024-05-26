@@ -24,7 +24,7 @@ internal object UUIDSerializer : KSerializer<UUID> {
         kind = PrimitiveKind.STRING
     )
 
-    override fun serialize(encoder: Encoder, value: UUID) = encoder.encodeString(value = value.toString())
+    override fun serialize(encoder: Encoder, value: UUID): Unit = encoder.encodeString(value = value.toString())
 
     override fun deserialize(decoder: Decoder): UUID = UUID.fromString(decoder.decodeString())
 }

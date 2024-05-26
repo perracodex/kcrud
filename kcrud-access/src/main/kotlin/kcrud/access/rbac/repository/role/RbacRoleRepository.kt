@@ -22,6 +22,12 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import java.util.*
 
+/**
+ * Implementation of [IRbacRoleRepository].
+ * Handles the persistence of [RbacRoleEntity] data.
+ *
+ * @see IRbacRoleRepository
+ */
 class RbacRoleRepository(
     private val scopeRuleRepository: IRbacScopeRuleRepository
 ) : IRbacRoleRepository {

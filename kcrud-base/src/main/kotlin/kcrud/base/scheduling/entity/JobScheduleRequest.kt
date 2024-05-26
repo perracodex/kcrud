@@ -33,6 +33,13 @@ data class JobScheduleRequest(
     var parameters: Map<String, Any> = emptyMap()
 ) {
     companion object {
+        /**
+         * Creates a new job schedule request.
+         *
+         * @param jobClass The class of the job to be scheduled.
+         * @param configure The configuration for the job schedule request.
+         * @return The [JobKey] of the scheduled job.
+         */
         fun send(jobClass: Class<out Job>, configure: JobScheduleRequest.() -> Unit): JobKey {
             val config = JobScheduleRequest(jobClass).apply(configure)
             val jobKey: JobKey = JobKey.jobKey(config.jobName, config.groupName)

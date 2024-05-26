@@ -32,6 +32,12 @@ data class RbacFieldRuleEntity(
     val meta: Meta
 ) {
     companion object {
+        /**
+         * Maps a [ResultRow] to a [RbacFieldRuleEntity] instance.
+         *
+         * @param row The [ResultRow] to map.
+         * @return The mapped [RbacFieldRuleEntity] instance.
+         */
         fun from(row: ResultRow): RbacFieldRuleEntity {
             return RbacFieldRuleEntity(
                 id = row[RbacFieldRuleTable.id],

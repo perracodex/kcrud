@@ -6,11 +6,7 @@
 
 package kcrud.server.demo
 
-import kcrud.base.persistence.pagination.Page
-import kcrud.domain.employment.entity.EmploymentEntity
 import kotlinx.html.*
-import java.text.NumberFormat
-import java.util.*
 
 /**
  * Builds the HTML for the demo view.
@@ -18,7 +14,12 @@ import java.util.*
 @DemoAPI
 object DemoView {
 
-    fun build(html: HTML, page: Page<EmploymentEntity>) {
+    /**
+     * Builds the HTML for the demo view.
+     *
+     * @param html The [HTML] builder.
+     */
+    fun build(html: HTML) {
         with(html) {
             head {
                 title { +"Demo" }
@@ -35,14 +36,14 @@ object DemoView {
                         input(classes = "page-size", type = InputType.number) {
                             id = "pageSize"
                             placeholder = "Page Size"
-                            value = page.elementsPerPage.toString()
+                            value = 0.toString()
                         }
                     }
                     div(classes = "action-records") {
                         div(classes = "timer-placeholder")
                         h3 {
                             id = "totalElements"
-                            +page.totalElements.formatNumberWithThousands()
+                            +(0.toString())
                         }
                         input {
                             type = InputType.number
@@ -65,19 +66,13 @@ object DemoView {
                     }
                 }
 
-                // Page index  starts from 1.
-                // Calculate the total number of records loaded up to the previous page.
-                val totalRecordsUpToPreviousPage = (page.pageIndex - 1) * page.elementsPerPage
-                // Add the number of records in the current page.
-                val totalLoadedRecords = totalRecordsUpToPreviousPage + page.content.size
-
                 // Page details.
                 div(classes = "page-details") {
-                    +("Loaded Pages: ${page.pageIndex}, " +
-                            "Loaded Records: ${totalLoadedRecords}, " +
-                            "Records per Page: ${page.elementsPerPage}, " +
-                            "Total Pages: ${page.totalPages}, " +
-                            "Total Records: ${page.totalElements}")
+                    +("Loaded Pages: 0, " +
+                            "Loaded Records: 0, " +
+                            "Records per Page: 0, " +
+                            "Total Pages: 0, " +
+                            "Total Records: 0")
                 }
 
                 // Static header.
@@ -99,10 +94,5 @@ object DemoView {
                 div(classes = "table-content")
             }
         }
-    }
-
-    private fun Int.formatNumberWithThousands(): String {
-        val formatter: NumberFormat = NumberFormat.getNumberInstance(Locale.US)
-        return formatter.format(this)
     }
 }

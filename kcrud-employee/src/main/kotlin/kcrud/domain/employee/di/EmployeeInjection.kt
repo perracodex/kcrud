@@ -20,6 +20,10 @@ import org.koin.ktor.plugin.RequestScope
  * Employee domain dependency injection module.
  */
 object EmployeeInjection {
+
+    /**
+     * Get the dependency injection module for the Employee domain.
+     */
     fun get(): Module {
         return module {
             // Definitions for scoped access within RequestScope.

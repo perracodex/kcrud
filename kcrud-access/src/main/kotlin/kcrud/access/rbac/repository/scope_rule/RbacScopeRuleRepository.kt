@@ -19,6 +19,12 @@ import org.jetbrains.exposed.sql.statements.BatchInsertStatement
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
 
+/**
+ * Implementation of [IRbacScopeRuleRepository].
+ * Responsible for managing [RbacScopeRuleRequest] data.
+ *
+ * @see RbacScopeRuleRequest
+ */
 class RbacScopeRuleRepository(
     private val fieldRuleRepository: IRbacFieldRuleRepository
 ) : IRbacScopeRuleRepository {

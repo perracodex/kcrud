@@ -66,8 +66,8 @@ internal fun Route.rbacAuthorizedRoute(
  * The 'evaluate' function returns a constant evaluation, indicating that this selector does not participate
  * in the route resolution process but is used solely for marking purposes.
  *
- * @param scope The RBAC scope associated with the route, defining the scope of access control.
- * @param accessLevel The RBAC access level required for accessing the route, defining the degree of access control.
+ * @property scope The RBAC scope associated with the route, defining the scope of access control.
+ * @property accessLevel The RBAC access level required for accessing the route, defining the degree of access control.
  */
 private class AuthorizedRouteSelector(
     private val scope: RbacScope,

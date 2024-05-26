@@ -32,8 +32,18 @@ import kotlin.time.Duration.Companion.seconds
 object AuthenticationTokenService {
     private val tracer = Tracer<AuthenticationTokenService>()
 
+    /**
+     * The authentication token state.
+     */
     enum class TokenState {
-        Valid, Expired, Invalid
+        /** The token is valid. */
+        VALID,
+
+        /** The token has expired. */
+        EXPIRED,
+
+        /** The token is invalid. */
+        INVALID
     }
 
     /**
@@ -46,18 +56,18 @@ object AuthenticationTokenService {
             val verifier: JWTVerifier = JWT.require(algorithm).build()
             val decodedToken = JWT.decode(token)
             verifier.verify(decodedToken)
-            TokenState.Valid
+            TokenState.VALID
         } catch (e: TokenExpiredException) {
-            TokenState.Expired
+            TokenState.EXPIRED
         } catch (e: JWTDecodeException) {
             tracer.error("Failed to decide token: ${e.message}")
-            TokenState.Invalid
+            TokenState.INVALID
         } catch (e: JWTVerificationException) {
             tracer.error("Token verification failed: ${e.message}")
-            TokenState.Invalid
+            TokenState.INVALID
         } catch (e: IllegalArgumentException) {
             tracer.error("Unexpected problem verifying token: ${e.message}")
-            TokenState.Invalid
+            TokenState.INVALID
         }
     }
 

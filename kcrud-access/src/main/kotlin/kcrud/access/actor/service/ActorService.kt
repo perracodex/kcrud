@@ -22,8 +22,8 @@ import java.util.*
 /**
  * Service to handle Actor operations.
  *
- * @param actorRepository The [IActorRepository] to handle Actor persistence operations.
- * @param roleRepository The [IRbacRoleRepository] to handle RBAC role operations.
+ * @property actorRepository The [IActorRepository] to handle Actor persistence operations.
+ * @property roleRepository The [IRbacRoleRepository] to handle RBAC role operations.
  */
 class ActorService(
     private val actorRepository: IActorRepository,
@@ -91,7 +91,7 @@ class ActorService(
      * @param isLocked Whether the [ActorEntity] should be locked or unlocked.
      */
     @Suppress("unused")
-    suspend fun setLockedState(actorId: UUID, isLocked: Boolean) = withContext(Dispatchers.IO) {
+    suspend fun setLockedState(actorId: UUID, isLocked: Boolean): Unit = withContext(Dispatchers.IO) {
         tracer.debug("Setting lock state for actor with ID: $actorId")
         actorRepository.setLockedState(actorId = actorId, isLocked = isLocked)
         refresh(actorId = actorId)

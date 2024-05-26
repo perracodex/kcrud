@@ -24,6 +24,10 @@ import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import org.jetbrains.exposed.sql.update
 import java.util.*
 
+/**
+ * Implementation of [IContactRepository].
+ * Responsible for managing [ContactEntity] data.
+ */
 internal class ContactRepository(
     private val sessionContext: SessionContext
 ) : IContactRepository {

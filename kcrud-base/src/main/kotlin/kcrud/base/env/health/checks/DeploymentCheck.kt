@@ -11,10 +11,20 @@ import io.ktor.server.engine.*
 import io.ktor.server.request.*
 import kcrud.base.env.EnvironmentType
 import kcrud.base.env.health.annotation.HealthCheckAPI
+import kcrud.base.env.health.checks.DeploymentCheck.Configured
+import kcrud.base.env.health.checks.DeploymentCheck.ServerSpec
 import kcrud.base.settings.AppSettings
 import kcrud.base.utils.NetworkUtils
 import kotlinx.serialization.Serializable
 
+/**
+ * Used to check the deployment configuration of the application.
+ *
+ * @property errors List of errors found during the health check.
+ * @property configured The [Configured] deployment settings.
+ * @property serverSpec The [ServerSpec] configuration of the server.
+ * @property connectors The connectors used by the application.
+ */
 @HealthCheckAPI
 @Serializable
 data class DeploymentCheck(
@@ -30,6 +40,15 @@ data class DeploymentCheck(
         connectors = getConnectors(call = call, errors = mutableListOf())
     )
 
+    /**
+     * Contains the deployment settings.
+     *
+     * @property protocol The network protocol used by the application, such as "http" or "https".
+     * @property port The network port the server listens on.
+     * @property sslPort The network port the server listens on for secure connections.
+     * @property host The network address the server is bound to.
+     * @property allowedHosts The list of allowed hosts configured in CORS.
+     */
     @Serializable
     data class Configured(
         val protocol: String = NetworkUtils.getProtocol().name,
@@ -39,6 +58,19 @@ data class DeploymentCheck(
         val allowedHosts: List<String> = AppSettings.cors.allowedHosts,
     )
 
+    /**
+     * Contains the server configuration.
+     *
+     * @property serverHost The host to which the request are sent.
+     * @property serverPort Port to which the request are sent, for example, 80 or 443.
+     * @property localHost The host on which the request are received.
+     * @property localPort The port on which the request are received, for example, 80 or 443.
+     * @property remoteHostHost Client address or host name if it can be resolved.
+     * @property remoteAddress Client address.
+     * @property remotePort Client port.
+     * @property httpVersion The HTTP version of the request.
+     * @property scheme The scheme of the request, for example, "http" or "https".
+     */
     @Serializable
     data class ServerSpec(
         val serverHost: String?,

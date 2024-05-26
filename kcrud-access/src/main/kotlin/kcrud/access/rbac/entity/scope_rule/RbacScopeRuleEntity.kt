@@ -40,6 +40,13 @@ data class RbacScopeRuleEntity(
     val meta: Meta
 ) {
     companion object {
+        /**
+         * Maps a [ResultRow] to a [RbacScopeRuleEntity] instance.
+         *
+         * @param row The [ResultRow] to map.
+         * @param fieldRules The list of [RbacFieldRuleEntity] to associate with the [RbacScopeRuleEntity].
+         * @return The mapped [RbacScopeRuleEntity] instance.
+         */
         fun from(row: ResultRow, fieldRules: List<RbacFieldRuleEntity>): RbacScopeRuleEntity {
             return RbacScopeRuleEntity(
                 id = row[RbacScopeRuleTable.id],

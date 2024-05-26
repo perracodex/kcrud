@@ -11,6 +11,8 @@ import kcrud.base.scheduling.service.JobSchedulerService
 
 /**
  * Configuration for the job scheduler plugin.
+ *
+ * @property autoStart Whether the job scheduler should start automatically after configuration.
  */
 class JobSchedulerPluginConfig {
     var autoStart: Boolean = false
@@ -19,7 +21,7 @@ class JobSchedulerPluginConfig {
 /**
  * Custom Ktor plugin to configure the job scheduler.
  */
-val JobSchedulerPlugin = createApplicationPlugin(
+val JobSchedulerPlugin: ApplicationPlugin<JobSchedulerPluginConfig> = createApplicationPlugin(
     name = "JobSchedulerPlugin",
     ::JobSchedulerPluginConfig
 ) {

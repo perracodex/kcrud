@@ -36,7 +36,16 @@ typealias KLocalDateTime = LocalDateTime
  */
 object DateTimeUtils {
 
+    /**
+     * Enum class for date formats.
+     *
+     * @property pattern The pattern to format the date.
+     */
     enum class DateFormat(val pattern: String) {
+        /** Format: yyyy-MM-dd, e.g. 2024-04-01 */
+        YYYY_MM_DD("yyyy-MM-dd"),
+
+        /** Format: yyyy-MMM-dd, e.g. 2024-APR-01 */
         YYYY_MMM_DD("yyyy-MMM-dd")
     }
 

@@ -22,6 +22,9 @@ import org.koin.dsl.module
  */
 object RbacInjection {
 
+    /**
+     * Get the dependency injection module for the RBAC domain.
+     */
     fun get(): Module {
         return module {
             single<IRbacFieldRuleRepository> {

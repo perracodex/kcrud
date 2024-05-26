@@ -28,6 +28,12 @@ data class ContactEntity(
     val meta: Meta
 ) {
     companion object {
+        /**
+         * Maps a [ResultRow] to a [ContactEntity] instance.
+         *
+         * @param row The [ResultRow] to map.
+         * @return The mapped [ContactEntity] instance.
+         */
         fun from(row: ResultRow): ContactEntity {
             return ContactEntity(
                 id = row[ContactTable.id],

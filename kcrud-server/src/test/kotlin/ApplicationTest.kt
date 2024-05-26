@@ -21,7 +21,7 @@ class ApplicationTest {
     }
 
     @Test
-    fun testRoot() = testApplication {
+    fun testRoot(): Unit = testApplication {
         client.get("/").apply {
             assertEquals(expected = HttpStatusCode.OK, actual = status)
             assertEquals(expected = "Hello World.", actual = bodyAsText(), message = "Should be: Hello World.")

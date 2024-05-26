@@ -89,7 +89,7 @@ class CredentialService : KoinComponent {
      *
      * @param actorId The id of the Actor to refresh. If null, refreshes all actors.
      */
-    suspend fun refresh(actorId: UUID? = null) = withContext(Dispatchers.IO) {
+    suspend fun refresh(actorId: UUID? = null): Unit = withContext(Dispatchers.IO) {
         tracer.info("Refreshing credentials cache.")
 
         val actorService: ActorService by inject()

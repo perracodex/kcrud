@@ -11,8 +11,12 @@ import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.database.schema.employment.types.EmploymentStatus
 import kcrud.base.database.schema.employment.types.WorkModality
 import kcrud.base.persistence.utils.enumById
+import kcrud.base.utils.KLocalDate
+import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ReferenceOption
+import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.date
+import java.util.*
 
 /**
  * Database table definition for employments.
@@ -23,14 +27,14 @@ object EmploymentTable : PeriodTable(name = "employment") {
     /**
      * The unique id of the employment record.
      */
-    val id = uuid(
+    val id: Column<UUID> = uuid(
         name = "employment_id"
     ).autoGenerate()
 
     /**
      * The id of the employee to which the employment belongs.
      */
-    val employeeId = uuid(
+    val employeeId: Column<UUID> = uuid(
         name = "employee_id"
     ).references(
         fkName = "fk_employment__employee_id",
@@ -42,7 +46,7 @@ object EmploymentTable : PeriodTable(name = "employment") {
     /**
      * The status of the employment.
      */
-    val status = enumById(
+    val status: Column<EmploymentStatus> = enumById(
         name = "status",
         fromId = EmploymentStatus::fromId
     )
@@ -50,14 +54,14 @@ object EmploymentTable : PeriodTable(name = "employment") {
     /**
      * The date the employment started.
      */
-    val probationEndDate = date(
+    val probationEndDate: Column<KLocalDate?> = date(
         name = "probation_end_date"
     ).nullable()
 
     /**
      * The [WorkModality] of the employment.
      */
-    val workModality = enumById(
+    val workModality: Column<WorkModality> = enumById(
         name = "work_modality",
         fromId = WorkModality::fromId
     )
@@ -65,12 +69,12 @@ object EmploymentTable : PeriodTable(name = "employment") {
     /**
      * Optional comments or notes for the employment.
      */
-    val comments = varchar(
+    val comments: Column<String?> = varchar(
         name = "comments",
         length = 512
     ).nullable()
 
-    override val primaryKey = PrimaryKey(
+    override val primaryKey: Table.PrimaryKey = PrimaryKey(
         firstColumn = id,
         name = "pk_employment_id"
     )

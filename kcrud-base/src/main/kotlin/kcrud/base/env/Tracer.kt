@@ -18,26 +18,44 @@ import kotlin.reflect.jvm.javaMethod
 @Suppress("unused")
 class Tracer(private val logger: Logger) {
 
+    /**
+     * Logs a trace message with no severity level.
+     */
     fun trace(message: String) {
         logger.trace(message)
     }
 
+    /**
+     * Logs a message with debug severity level.
+     */
     fun debug(message: String) {
         logger.debug(message)
     }
 
+    /**
+     * Logs a message with info severity level.
+     */
     fun info(message: String) {
         logger.info(message)
     }
 
+    /**
+     * Logs a message with warning severity level.
+     */
     fun warning(message: String) {
         logger.warn(message)
     }
 
+    /**
+     * Logs a message with error severity level.
+     */
     fun error(message: String) {
         logger.error(message)
     }
 
+    /**
+     * Logs a message with error severity level and an associated throwable.
+     */
     fun error(message: String? = "Unexpected Exception", throwable: Throwable) {
         logger.error(message, throwable)
     }
@@ -65,7 +83,7 @@ class Tracer(private val logger: Logger) {
 
     companion object {
         /** Toggle for full package name or simple name. */
-        const val LOG_FULL_PACKAGE = true
+        const val LOG_FULL_PACKAGE: Boolean = true
 
         /**
          * Creates a new [Tracer] instance for a given class.

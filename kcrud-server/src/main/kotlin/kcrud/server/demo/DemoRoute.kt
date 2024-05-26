@@ -47,9 +47,8 @@ fun Route.employeesDemoRoute() {
 private fun Route.getDemoRecords() {
     // Return demo records interactive HTML.
     get {
-        val page: Page<EmploymentEntity> = call.getEmployments()
         call.respondHtml(status = HttpStatusCode.OK) {
-            DemoView.build(html = this, page = page)
+            DemoView.build(html = this)
         }
     }
 }

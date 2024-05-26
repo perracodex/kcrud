@@ -36,7 +36,10 @@ object DefaultActorFactory : KoinComponent {
      * when none are found in the database.
      */
     enum class RoleName {
+        /** ADMIN actor role. Usually with full access. */
         ADMIN,
+
+        /** GUEST actor role. Usually with very limited access. */
         GUEST
     }
 

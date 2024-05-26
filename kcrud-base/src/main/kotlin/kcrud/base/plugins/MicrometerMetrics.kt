@@ -68,7 +68,7 @@ fun Application.configureMicroMeterMetrics() {
  *
  * See: [Micrometer Prometheus](https://micrometer.io/docs/registry/prometheus)
  */
-val appMicrometerRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT).apply {
+val appMicrometerRegistry: PrometheusMeterRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT).apply {
     config()
         .meterFilter(MeterFilter.deny { id ->
             id.name == "ktor.http.server.requests" && id.getTag("route") == "/rbac"

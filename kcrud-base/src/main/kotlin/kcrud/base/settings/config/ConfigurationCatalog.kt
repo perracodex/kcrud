@@ -18,6 +18,13 @@ import kcrud.base.settings.config.sections.security.SecuritySettings
  *
  * Note: It is crucial that the property names in this class exactly match the respective section
  * names in the configuration file to ensure proper mapping and instantiation of the settings.
+ *
+ * @property runtime The runtime settings for the application.
+ * @property deployment The deployment settings for the application.
+ * @property cors The CORS settings for the application.
+ * @property database The database settings for the application.
+ * @property apiSchema The API schema settings for the application.
+ * @property security The security settings for the application.
  */
 data class ConfigurationCatalog(
     val runtime: RuntimeSettings,

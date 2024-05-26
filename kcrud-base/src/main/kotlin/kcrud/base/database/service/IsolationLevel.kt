@@ -11,6 +11,8 @@ import java.sql.Connection
 /**
  * Represents the isolation level for database transactions.
  *
+ * @property id The id of the isolation level.
+ *
  * @see [java.sql.Connection]
  */
 @Suppress("unused")

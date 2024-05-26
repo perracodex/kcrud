@@ -11,6 +11,13 @@ import kcrud.base.env.health.annotation.HealthCheckAPI
 import kcrud.base.settings.AppSettings
 import kotlinx.serialization.Serializable
 
+/**
+ * Used to check general application's health checks
+ * that cannot be categorized by the other concrete health check.
+ *
+ * @property errors List of errors found during the health check.
+ * @property apiSchemaEnabled Whether the API schema generation is enabled.
+ */
 @HealthCheckAPI
 @Serializable
 data class ApplicationCheck(

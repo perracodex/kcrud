@@ -19,6 +19,9 @@ import org.koin.dsl.module
  */
 object ActorInjection {
 
+    /**
+     * Get the dependency injection module for the Actor domain.
+     */
     fun get(): Module {
         return module {
             single<IActorRepository>(createdAtStart = true) {

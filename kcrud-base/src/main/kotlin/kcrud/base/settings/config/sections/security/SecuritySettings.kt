@@ -32,6 +32,7 @@ data class SecuritySettings(
     val rbac: RbacSettings
 ) : IConfigSection {
     companion object {
+        /** The minimum length for a security key, such as encryption and secret keys. */
         const val MIN_KEY_LENGTH: Int = 12
     }
 }

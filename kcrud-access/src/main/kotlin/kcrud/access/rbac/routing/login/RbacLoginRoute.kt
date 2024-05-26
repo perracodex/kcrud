@@ -22,6 +22,9 @@ import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kcrud.base.env.SessionContext
 import org.koin.java.KoinJavaComponent.getKoin
 
+/**
+ * The route for logging into the RBAC admin panel.
+ */
 @RbacAPI
 fun Route.rbacLoginRoute() {
 
@@ -42,6 +45,13 @@ fun Route.rbacLoginRoute() {
     }
 }
 
+/**
+ * Get the [SessionContext] if the user has access to the RBAC admin panel.
+ * If the user does not have access, the session is cleared and null is returned.
+ *
+ * @param call The application call.
+ * @return The [SessionContext] if the user has access to the RBAC admin panel, null otherwise.
+ */
 @RbacAPI
 suspend fun getRbacAdminAccessActor(call: ApplicationCall): SessionContext? {
     val sessionContext: SessionContext? = call.sessions.get<SessionContext>()

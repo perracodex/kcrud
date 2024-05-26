@@ -22,6 +22,10 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import java.util.*
 
+/**
+ * Implementation of the [IEmploymentRepository] interface.
+ * Responsible for managing employment data.
+ */
 internal class EmploymentRepository(
     private val sessionContext: SessionContext
 ) : IEmploymentRepository {

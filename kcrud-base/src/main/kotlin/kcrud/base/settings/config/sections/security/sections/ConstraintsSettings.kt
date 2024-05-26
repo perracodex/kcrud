@@ -18,6 +18,17 @@ data class ConstraintsSettings(
     val publicApi: LimitSpec,
     val newToken: LimitSpec
 ) : IConfigSection {
+
+    /**
+     * Rate limit specification.
+     * For example, a limit of 10 requests per second would be represented as:
+     * ```
+     * LimitSpec(limit = 10, refillMs = 1000)
+     * ```
+     *
+     * @property limit The maximum number of requests allowed within the refill period. Must be > 0.
+     * @property refillMs The time period in milliseconds after which the limit is reset. Must be > 0.
+     */
     data class LimitSpec(
         val limit: Int,
         val refillMs: Long

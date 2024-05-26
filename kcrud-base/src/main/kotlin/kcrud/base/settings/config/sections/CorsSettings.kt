@@ -29,6 +29,13 @@ import kcrud.base.settings.config.parser.IConfigSection
 data class CorsSettings(
     val allowedHosts: List<String>
 ) : IConfigSection {
+    /**
+     * Represents a single host configuration.
+     *
+     * @property host The host, for example "potato.com".
+     * @property schemes The allowed schemes in the host, such as "http" and/or "https".
+     * @property subDomains The allowed subdomains, such as "api","admin", etc.
+     */
     data class HostConfig(
         val host: String,
         val schemes: List<String>,

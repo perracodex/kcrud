@@ -55,8 +55,13 @@ fun Application.configureRateLimit() {
 
 /**
  * The rate limit scopes used in the application.
+ *
+ * @property key The key that identifies the rate limit scope.
  */
 enum class RateLimitScope(val key: String) {
-    NEW_AUTH_TOKEN(key = "new_auth_token"), // Scope key for authorization tokens.
-    PUBLIC_API(key = "public_api") // Scope key for the public API.
+    /** Scope key for authorization tokens. */
+    NEW_AUTH_TOKEN(key = "new_auth_token"),
+
+    /** Scope key for the public API. */
+    PUBLIC_API(key = "public_api")
 }

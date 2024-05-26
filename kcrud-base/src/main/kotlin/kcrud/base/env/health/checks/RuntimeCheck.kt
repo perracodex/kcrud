@@ -14,6 +14,16 @@ import kcrud.base.utils.DateTimeUtils
 import kcrud.base.utils.KLocalDateTime
 import kotlinx.serialization.Serializable
 
+/**
+ * Used to check the runtime configuration of the application.
+ *
+ * @property errors List of errors found during the health check.
+ * @property machineId The unique identifier of the machine running the application.
+ * @property environment The [EnvironmentType] the application is running in.
+ * @property developmentModeEnabled Flag indicating if development mode is enabled.
+ * @property utc The current UTC timestamp.
+ * @property local The current local timestamp.
+ */
 @HealthCheckAPI
 @Serializable
 data class RuntimeCheck(
@@ -51,6 +61,7 @@ data class RuntimeCheck(
     }
 
     companion object {
-        val timestamp: KLocalDateTime = DateTimeUtils.currentUTCDateTime()
+        /** The current UTC timestamp. */
+        private val timestamp: KLocalDateTime = DateTimeUtils.currentUTCDateTime()
     }
 }

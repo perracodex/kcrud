@@ -17,6 +17,8 @@ import kcrud.base.persistence.utils.IEnumWithId
  * In conjunction with [RbacScope], it defines the access level to a scope,
  * facilitating role-based access control.
  *
+ * @property id The unique identifier of the access level.
+ *
  * @see RbacScope
  */
 enum class RbacAccessLevel(override val id: Int) : IEnumWithId {
@@ -50,6 +52,13 @@ enum class RbacAccessLevel(override val id: Int) : IEnumWithId {
 
     companion object {
         private val map: Map<Int, RbacAccessLevel> = RbacAccessLevel.entries.associateBy(RbacAccessLevel::id)
+
+        /**
+         * Retrieves an [RbacAccessLevel] from its unique identifier.
+         *
+         * @param id The unique identifier of the access level.
+         * @return The [RbacAccessLevel] corresponding to the unique identifier, or null if not found.
+         */
         fun fromId(id: Int): RbacAccessLevel? = map[id]
     }
 }

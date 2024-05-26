@@ -10,7 +10,10 @@ import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kcrud.base.database.schema.base.TimestampedTable
 import kcrud.base.persistence.utils.enumById
+import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ReferenceOption
+import org.jetbrains.exposed.sql.Table
+import java.util.*
 
 /**
  * Database table definition holding RBAC rules for a concrete [RbacRoleTable] record.
@@ -25,14 +28,14 @@ object RbacScopeRuleTable : TimestampedTable(name = "rbac_scope_rule") {
     /**
      * The unique id of the scope rule record.
      */
-    val id = uuid(
+    val id: Column<UUID> = uuid(
         name = "scope_rule_id"
     ).autoGenerate()
 
     /**
      * The associated [RbacRoleTable] id.
      */
-    val roleId = uuid(
+    val roleId: Column<UUID> = uuid(
         name = "role_id"
     ).references(
         fkName = "fk_rbac_scope_rule__role_id",
@@ -44,7 +47,7 @@ object RbacScopeRuleTable : TimestampedTable(name = "rbac_scope_rule") {
     /**
      * The [RbacScope] the rule is meant to target.
      */
-    val scope = enumById(
+    val scope: Column<RbacScope> = enumById(
         name = "scope",
         fromId = RbacScope::fromId
     )
@@ -52,12 +55,12 @@ object RbacScopeRuleTable : TimestampedTable(name = "rbac_scope_rule") {
     /**
      * The [RbacAccessLevel] representing the access level for the [RbacScope].
      */
-    val accessLevel = enumById(
+    val accessLevel: Column<RbacAccessLevel> = enumById(
         name = "access_level",
         fromId = RbacAccessLevel::fromId
     )
 
-    override val primaryKey = PrimaryKey(
+    override val primaryKey: Table.PrimaryKey = PrimaryKey(
         firstColumn = id,
         name = "pk_scope_rule_id"
     )

@@ -43,7 +43,7 @@ class RbacServiceTest : KoinComponent {
     }
 
     @Test
-    fun testRoleCreation() = testSuspend {
+    fun testRoleCreation(): Unit = testSuspend {
         val roleName = "any_role_name"
         val description = "Any role description"
 
@@ -89,7 +89,7 @@ class RbacServiceTest : KoinComponent {
     }
 
     @Test
-    fun testActor() = testSuspend {
+    fun testActor(): Unit = testSuspend {
         val roleName = "any_role_name"
         val description = "Any role description"
 

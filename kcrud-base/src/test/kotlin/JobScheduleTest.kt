@@ -36,7 +36,7 @@ class JobSchedulerServiceTest {
     }
 
     @Test
-    fun testEntity() = testSuspend {
+    fun testEntity(): Unit = testSuspend {
         val uniqueTestKey = "uniqueTestJob_${System.nanoTime()}"
 
         val jobKey: JobKey = JobScheduleRequest.send(jobClass = SimpleTestJob::class.java) {
@@ -55,7 +55,7 @@ class JobSchedulerServiceTest {
     }
 
     @Test
-    fun testJobMisfireHandling() = testSuspend {
+    fun testJobMisfireHandling(): Unit = testSuspend {
         val jobKey: JobKey = JobKey.jobKey("misfireTestJob", "testGroup")
         val jobDetail: JobDetail = JobBuilder.newJob(MisfireTestJob::class.java)
             .withIdentity(jobKey)
@@ -85,8 +85,8 @@ class JobSchedulerServiceTest {
 
     class MisfireTestJob : Job {
         companion object {
-            const val MISFIRE_MESSAGE = "Misfire_Handled"
-            private const val REGULAR_EXECUTION_MESSAGE = "Regular_Execution"
+            const val MISFIRE_MESSAGE: String = "Misfire_Handled"
+            private const val REGULAR_EXECUTION_MESSAGE: String = "Regular_Execution"
         }
 
         override fun execute(context: JobExecutionContext?) {

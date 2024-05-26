@@ -22,6 +22,10 @@ object EncryptionUtils {
         TRIPLE_DES
     }
 
+    /**
+     * Get the [Encryptor] based on the encryption configuration settings.
+     * Used for example to encrypt database fields.
+     */
     fun getEncryptor(): Encryptor {
         val encryption: EncryptionSettings = AppSettings.security.encryption
         val algorithm: AlgorithmName = AlgorithmName.valueOf(encryption.algorithm)

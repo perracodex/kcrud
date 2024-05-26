@@ -13,6 +13,9 @@ import kcrud.domain.contact.entity.ContactRequest
 import kcrud.domain.employee.entity.EmployeeRequest
 import java.util.*
 
+/**
+ * Responsible for managing [ContactEntity] data.
+ */
 interface IContactRepository {
 
     /**

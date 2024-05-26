@@ -54,7 +54,7 @@ class TimestampTest : KoinComponent {
      * no data is persisted in the database.
      */
     @Test
-    fun testTimestamp() = testSuspend {
+    fun testTimestamp(): Unit = testSuspend {
         val sessionContext: SessionContext = mockk<SessionContext>()
         every { sessionContext.schema } returns null
 

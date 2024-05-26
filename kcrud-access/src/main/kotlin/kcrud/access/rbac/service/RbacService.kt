@@ -28,9 +28,9 @@ import java.util.concurrent.ConcurrentHashMap
 /**
  * Service to handle Role-Based Access Control (RBAC) operations.
  *
- * @param actorRepository The [IActorRepository] to handle Actor operations.
- * @param roleRepository The [IRbacRoleRepository] to handle Role operations.
- * @param scopeRuleRepository The [IRbacScopeRuleRepository] to handle scope rule operations.
+ * @property actorRepository The [IActorRepository] to handle Actor operations.
+ * @property roleRepository The [IRbacRoleRepository] to handle Role operations.
+ * @property scopeRuleRepository The [IRbacScopeRuleRepository] to handle scope rule operations.
  */
 class RbacService(
     private val actorRepository: IActorRepository,
@@ -82,7 +82,7 @@ class RbacService(
      *
      * @param actorId The id of the Actor to refresh. If null, refreshes permissions for all Actors.
      */
-    suspend fun refresh(actorId: UUID? = null) = withContext(Dispatchers.IO) {
+    suspend fun refresh(actorId: UUID? = null): Unit = withContext(Dispatchers.IO) {
         tracer.info("Refreshing RBAC cache.")
 
         var targetActors: List<ActorEntity> = if (actorId == null) {

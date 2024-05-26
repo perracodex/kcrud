@@ -29,9 +29,18 @@ import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 import kotlin.random.Random
 
+/**
+ * Utility class for demo-related operations.
+ */
 @DemoAPI
 object DemoUtils {
 
+    /**
+     * Creates demo records.
+     *
+     * @param call The application call.
+     * @param count The number of records to create.
+     */
     suspend fun createDemoRecords(call: ApplicationCall, count: Int) {
         val sessionContext: SessionContext? = call.principal<SessionContext>()
         val employeeService: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }

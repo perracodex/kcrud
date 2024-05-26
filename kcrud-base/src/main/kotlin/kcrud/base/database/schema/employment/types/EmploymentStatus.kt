@@ -10,6 +10,8 @@ import kcrud.base.persistence.utils.IEnumWithId
 
 /**
  * The possible employment statuses.
+ *
+ * @property id The id of the employment status.
  */
 enum class EmploymentStatus(override val id: Int) : IEnumWithId {
     /** The employee employment is in the onboarding process. */
@@ -26,6 +28,13 @@ enum class EmploymentStatus(override val id: Int) : IEnumWithId {
 
     companion object {
         private val map: Map<Int, EmploymentStatus> = EmploymentStatus.entries.associateBy(EmploymentStatus::id)
+
+        /**
+         * Get the [EmploymentStatus] from the given [id].
+         *
+         * @param id The id of the [EmploymentStatus].
+         * @return The [EmploymentStatus] with the given [id].
+         */
         fun fromId(id: Int): EmploymentStatus? = map[id]
     }
 }

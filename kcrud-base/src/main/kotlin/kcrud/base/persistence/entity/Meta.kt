@@ -24,6 +24,13 @@ data class Meta(
     val updatedAt: KLocalDateTime
 ) {
     companion object {
+        /**
+         * Maps a [ResultRow] to a [Meta] instance.
+         *
+         * @param row The [ResultRow] to map.
+         * @param table The [Table] from which the [ResultRow] was obtained.
+         * @return The mapped [Meta] instance.
+         */
         fun toEntity(row: ResultRow, table: Table): Meta {
             val createdAt: Column<*> = table.columns.single { it.name == "created_at" }
             val updatedAt: Column<*> = table.columns.single { it.name == "updated_at" }

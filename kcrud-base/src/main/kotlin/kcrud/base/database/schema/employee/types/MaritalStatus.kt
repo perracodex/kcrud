@@ -11,8 +11,15 @@ package kcrud.base.database.schema.employee.types
  * at database level instead of being hardcoded.
  */
 enum class MaritalStatus {
+    /** Married marital status. */
     MARRIED,
+
+    /** Single marital status. */
     SINGLE,
+
+    /** Divorced marital status. */
     DIVORCED,
+
+    /** Unknown marital status. */
     UNKNOWN
 }

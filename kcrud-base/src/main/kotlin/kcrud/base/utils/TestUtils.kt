@@ -24,6 +24,9 @@ import kotlin.random.Random
  */
 object TestUtils {
 
+    /**
+     * Loads the application settings for testing.
+     */
     fun loadSettings() {
         val testConfig = ApplicationConfig(configPath = "config/config_application.conf")
 
@@ -32,6 +35,9 @@ object TestUtils {
         }
     }
 
+    /**
+     * Sets up the database for testing.
+     */
     fun setupDatabase() {
         DatabaseService.init(settings = AppSettings.database) {
             addTable(table = ContactTable)
@@ -39,12 +45,20 @@ object TestUtils {
         }
     }
 
+    /**
+     * Sets up Koin for testing.
+     *
+     * @param modules The modules to load.
+     */
     fun setupKoin(modules: List<Module> = emptyList()) {
         startKoin {
             modules(modules)
         }
     }
 
+    /**
+     * Tears down the testing environment.
+     */
     fun tearDown() {
         stopKoin()
 
@@ -56,11 +70,17 @@ object TestUtils {
         }
     }
 
+    /**
+     * Generates a random phone number.
+     */
     fun randomPhoneNumber(): String {
         val phoneSuffix: Int = (111..999).random()
         return "+34611222$phoneSuffix"
     }
 
+    /**
+     * Generates a random email.
+     */
     fun randomDob(): KLocalDate {
         val year: Int = (1960..2000).random()
         val month: Int = (1..12).random()
@@ -68,6 +88,11 @@ object TestUtils {
         return KLocalDate(year = year, monthNumber = month, dayOfMonth = day)
     }
 
+    /**
+     * Generates a random [Period].
+     *
+     * @param threshold The threshold date to start generating [Period]s from.
+     */
     fun randomPeriod(threshold: KLocalDate): Period {
         val startYear: Int = threshold.year + 18 + Random.nextInt(from = 0, until = 5)
         val startMonth: Int = Random.nextInt(from = 1, until = 13)
@@ -95,6 +120,9 @@ object TestUtils {
         )
     }
 
+    /**
+     * Generates a random actor name.
+     */
     fun randomName(): String {
         val beginning: List<String> = listOf("Bel", "Nar", "Jen", "Mar", "Car", "Dan", "El", "San", "Chi", "Am")
         val middle: List<String> = listOf("li", "ven", "na", "la", "son", "fer", "man", "der", "tan", "ron")

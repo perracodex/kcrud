@@ -38,6 +38,8 @@ object DatabaseService {
     private val tracer = Tracer<DatabaseService>()
 
     private var _database: Database? = null
+
+    /** The database instance held by the service. */
     val database: Database
         get() = _database ?: throw IllegalStateException("Database not initialized.")
 
@@ -242,9 +244,19 @@ object DatabaseService {
         }
     }
 
+    /**
+     * Builder class for setting up the database schema.
+     *
+     * Setting up the schema is optional, as it can be created also by migrations.
+     */
     class SchemaBuilder {
         private val tables = mutableListOf<Table>()
 
+        /**
+         * Adds a table to the schema. If the table already exists, it will be ignored.
+         *
+         * @param table The table to add.
+         */
         fun addTable(table: Table) {
             tables.add(table)
         }

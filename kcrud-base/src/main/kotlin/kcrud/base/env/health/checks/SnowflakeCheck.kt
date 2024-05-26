@@ -11,6 +11,15 @@ import kcrud.base.security.snowflake.SnowflakeData
 import kcrud.base.security.snowflake.SnowflakeFactory
 import kotlinx.serialization.Serializable
 
+/**
+ * A health check that generates a snowflake id and parses it.
+ *
+ * @property errors A list of errors that occurred during the check.
+ * @property testId A generated snowflake id at the time of the check.
+ * @property testResult The parsed snowflake data from the testId.
+ * @property timestampEpoch The timestamp epoch used to generate the snowflake id.
+ * @property nanoTimeStart The nano time start used to generate the snowflake id.
+ */
 @HealthCheckAPI
 @Serializable
 data class SnowflakeCheck(
