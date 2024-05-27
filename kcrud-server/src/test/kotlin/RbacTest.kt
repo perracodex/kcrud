@@ -225,8 +225,8 @@ class RbacTest : KoinComponent {
         assertNotNull(actual = role, message = "Role should not be null")
 
         // Create the Actor with the associated role.
-        val username = "actor_${accessLevel.name}_${iteration}".lowercase() // Unique username per iteration.
-        val password = "pass_${iteration}".lowercase() // Unique password per iteration.
+        val username: String = "actor_${accessLevel.name}_${iteration}".lowercase() // Unique username per iteration.
+        val password: String = "pass_${iteration}".lowercase() // Unique password per iteration.
         val actorRequest = ActorRequest(
             roleId = role.id,
             username = username,
