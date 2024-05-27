@@ -14,6 +14,10 @@ import java.util.*
 
 /**
  * Concrete errors for the Employment domain.
+ *
+ * @property status The [HttpStatusCode] associated with this error.
+ * @property code A unique code identifying the type of error.
+ * @property description A human-readable description of the error.
  */
 sealed class EmploymentError(
     status: HttpStatusCode,
@@ -24,8 +28,8 @@ sealed class EmploymentError(
     /**
      * Error for when an employment is not found for a concrete employee.
      *
-     * @param employeeId The affected employee id.
-     * @param employmentId The employment id that was not found.
+     * @property employeeId The affected employee id.
+     * @property employmentId The employment id that was not found.
      */
     data class EmploymentNotFound(val employeeId: UUID, val employmentId: UUID) : EmploymentError(
         status = HttpStatusCode.NotFound,
@@ -37,10 +41,10 @@ sealed class EmploymentError(
      * Error when there is an inconsistency in the period dates,
      * where the end date is prior to the start date.
      *
-     * @param employeeId The affected employee id.
-     * @param employmentId The employment id associated with the error.
-     * @param startDate The start date of the employment period.
-     * @param endDate The end date of the employment period.
+     * @property employeeId The affected employee id.
+     * @property employmentId The employment id associated with the error.
+     * @property startDate The start date of the employment period.
+     * @property endDate The end date of the employment period.
      */
     data class PeriodDatesMismatch(
         val employeeId: UUID,
@@ -58,10 +62,10 @@ sealed class EmploymentError(
     /**
      * Error when the probation end date is prior to the employment start date.
      *
-     * @param employeeId The affected employee id.
-     * @param employmentId The employment id associated with the error.
-     * @param startDate The start date of the employment period.
-     * @param probationEndDate The probation end date of the employment period.
+     * @property employeeId The affected employee id.
+     * @property employmentId The employment id associated with the error.
+     * @property startDate The start date of the employment period.
+     * @property probationEndDate The probation end date of the employment period.
      */
     data class InvalidProbationEndDate(
         val employeeId: UUID,

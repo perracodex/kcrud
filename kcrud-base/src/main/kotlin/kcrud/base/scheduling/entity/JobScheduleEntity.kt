@@ -11,13 +11,13 @@ import kotlinx.serialization.Serializable
 /**
  * Entity representing the details of a scheduled job.
  *
- * @param name The name of the job.
- * @param group The group of the job.
- * @param className the instance of Job that is executed.
- * @param description The description of the Job.
- * @param isDurable Whether the Job should remain stored after it is orphaned (no Triggers point to it).
- * @param shouldRecover Whether the job should be re-executed if a 'recovery' or 'fail-over' situation is encountered.
- * @param dataMap Concrete state information for Job instance.
+ * @property name The name of the job.
+ * @property group The group of the job.
+ * @property className the instance of Job that is executed.
+ * @property description The description of the Job.
+ * @property isDurable Whether the Job should remain stored after it is orphaned (no Triggers point to it).
+ * @property shouldRecover Whether the job should be re-executed if a 'recovery' or 'fail-over' situation is encountered.
+ * @property dataMap Concrete state information for Job instance.
  */
 @Serializable
 data class JobScheduleEntity(

@@ -15,13 +15,13 @@ import org.quartz.*
 /**
  * Data class to build a new job schedule request.
  *
- * @param jobClass The class of the job to be scheduled.
- * @param jobName The name of the job.
- * @param groupName The group of the job.
- * @param startAt The time at which the job should start.
- * @param repeatIntervalInSeconds The interval at which the job should repeat.
- * @param repeatCount The number of times the job should repeat.
- * @param parameters Optional parameters to be passed to the job class.
+ * @property jobClass The class of the job to be scheduled.
+ * @property jobName The name of the job.
+ * @property groupName The group of the job.
+ * @property startAt The time at which the job should start.
+ * @property repeatIntervalInSeconds The interval at which the job should repeat.
+ * @property repeatCount The number of times the job should repeat.
+ * @property parameters Optional parameters to be passed to the job class.
  */
 data class JobScheduleRequest(
     val jobClass: Class<out Job>,

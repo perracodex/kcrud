@@ -41,9 +41,7 @@ internal class HashedPasswordTableAuth(
     }
 
     companion object {
-        /**
-         * The algorithm used to hash passwords.
-         */
+        /** The algorithm used to hash passwords. */
         private const val ALGORITHM: String = "SHA-256"
 
         /**

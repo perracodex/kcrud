@@ -16,19 +16,13 @@ import java.util.*
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 
-/**
- * Alias for kotlinx [LocalDate], to avoid ambiguity with Java's LocalDate
- */
+/** Alias for kotlinx [LocalDate], to avoid ambiguity with Java's LocalDate. */
 typealias KLocalDate = LocalDate
 
-/**
- * Alias for kotlinx [LocalTime], to avoid ambiguity with Java's LocalTime
- */
+/** Alias for kotlinx [LocalTime], to avoid ambiguity with Java's LocalTime. */
 typealias KLocalTime = LocalTime
 
-/**
- * Alias for kotlinx [LocalDateTime], to avoid ambiguity with Java's LocalDateTime
- */
+/** Alias for kotlinx [LocalDateTime], to avoid ambiguity with Java's LocalDateTime. */
 typealias KLocalDateTime = LocalDateTime
 
 /**

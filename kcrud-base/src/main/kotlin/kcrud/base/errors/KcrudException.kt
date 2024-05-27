@@ -11,8 +11,8 @@ import kotlinx.serialization.Serializable
 /**
  * The application exception class, wrapping a [BaseError] instance.
  *
- * @param error The [BaseError] details associated with this exception.
- * @param reason An optional human-readable reason for the exception, providing more context.
+ * @property error The [BaseError] details associated with this exception.
+ * @property reason An optional human-readable reason for the exception, providing more context.
  * @param cause The underlying cause of the exception, if any.
  */
 class KcrudException(

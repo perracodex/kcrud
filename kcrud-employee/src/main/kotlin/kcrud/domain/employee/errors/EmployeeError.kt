@@ -13,6 +13,10 @@ import java.util.*
 
 /**
  * Concrete errors for the Employee domain.
+ *
+ * @property status The [HttpStatusCode] associated with this error.
+ * @property code A unique code identifying the type of error.
+ * @property description A human-readable description of the error.
  */
 sealed class EmployeeError(
     status: HttpStatusCode,
@@ -23,7 +27,7 @@ sealed class EmployeeError(
     /**
      * Error for when an employee is not found.
      *
-     * @param employeeId The employee id that was not found.
+     * @property employeeId The employee id that was not found.
      */
     data class EmployeeNotFound(val employeeId: UUID) : EmployeeError(
         status = HttpStatusCode.NotFound,
@@ -34,8 +38,8 @@ sealed class EmployeeError(
     /**
      * Error for when an employee is already registered.
      *
-     * @param employeeId The affected employee id.
-     * @param email The email that is already registered.
+     * @property employeeId The affected employee id.
+     * @property email The email that is already registered.
      */
     data class InvalidEmailFormat(val employeeId: UUID?, val email: String) : EmployeeError(
         status = HttpStatusCode.BadRequest,
@@ -46,8 +50,8 @@ sealed class EmployeeError(
     /**
      * Error for when an employee phone has an invalid format.
      *
-     * @param employeeId The affected employee id.
-     * @param phone The phone value with the invalid format.
+     * @property employeeId The affected employee id.
+     * @property phone The phone value with the invalid format.
      */
     data class InvalidPhoneFormat(val employeeId: UUID?, val phone: String) : EmployeeError(
         status = HttpStatusCode.BadRequest,

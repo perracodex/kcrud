@@ -52,14 +52,10 @@ class RbacService(
      */
     private val cache: ConcurrentHashMap<UUID, ActorRole> = ConcurrentHashMap()
 
-    /**
-     * Data class holding role attributes and the actor's locked status.
-     */
+    /** Data class holding role attributes and the actor's locked status. */
     private data class ActorRole(val isLocked: Boolean, val role: RbacRoleEntity)
 
-    /**
-     * Lock to ensure thread-safe access and updates to the service cache.
-     */
+    /** Lock to ensure thread-safe access and updates to the service cache. */
     private val lock: Mutex = Mutex()
 
     /**

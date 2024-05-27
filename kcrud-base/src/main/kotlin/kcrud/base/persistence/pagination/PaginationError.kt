@@ -12,6 +12,10 @@ import kcrud.base.errors.ErrorCodeRegistry
 
 /**
  * Pagination concrete errors.
+ *
+ * @property status The [HttpStatusCode] associated with this error.
+ * @property code A unique code identifying the type of error.
+ * @property description A human-readable description of the error.
  */
 sealed class PaginationError(
     status: HttpStatusCode,

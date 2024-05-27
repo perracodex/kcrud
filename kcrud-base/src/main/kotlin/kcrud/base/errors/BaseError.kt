@@ -11,9 +11,9 @@ import io.ktor.http.*
 /**
  * Abstract base class for representing application concrete errors.
  *
- * @param status The [HttpStatusCode] associated with this error.
- * @param code A unique code identifying the type of error.
- * @param description A human-readable description of the error.
+ * @property status The [HttpStatusCode] associated with this error.
+ * @property code A unique code identifying the type of error.
+ * @property description A human-readable description of the error.
  */
 abstract class BaseError(
     val code: String,

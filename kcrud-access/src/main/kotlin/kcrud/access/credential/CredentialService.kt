@@ -39,19 +39,13 @@ import java.util.concurrent.ConcurrentHashMap
 class CredentialService : KoinComponent {
     private val tracer = Tracer<CredentialService>()
 
-    /**
-     * Lock to ensure thread-safe access and updates to the actor mapping cache.
-     */
+    /** Lock to ensure thread-safe access and updates to the actor mapping cache. */
     private val lock = Mutex()
 
-    /**
-     * Mapping of usernames to hashed passwords.
-     */
+    /** Mapping of usernames to hashed passwords. */
     private val cache: ConcurrentHashMap<String, SecureHash> = ConcurrentHashMap()
 
-    /**
-     * Provides the in-memory authentication store.
-     */
+    /** Provides the in-memory authentication store. */
     private val store: HashedPasswordTableAuth = HashedPasswordTableAuth(
         digester = { password, salt -> HashedPasswordTableAuth.hashPassword(password = password, salt = salt) },
         table = cache

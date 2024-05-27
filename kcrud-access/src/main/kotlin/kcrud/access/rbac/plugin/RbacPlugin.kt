@@ -24,14 +24,10 @@ import org.koin.ktor.ext.inject
  */
 @RbacAPI
 internal class RbacPluginConfig {
-    /**
-     * The RBAC scope associated with the route, defining the scope of access control.
-     */
+    /** The RBAC scope associated with the route, defining the scope of access control. */
     lateinit var scope: RbacScope
 
-    /**
-     * The RBAC access level required for accessing the route, defining the degree of access control.
-     */
+    /** The RBAC access level required for accessing the route, defining the degree of access control. */
     lateinit var accessLevel: RbacAccessLevel
 }
 
