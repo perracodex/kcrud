@@ -20,10 +20,10 @@ import kcrud.base.security.hash.SecureSalt
  * certain types of brute force attacks.
  *
  * @property digester A function that, given a password and a salt, produces a [SecureHash] containing
- * the hashed password and the used salt.
+ *                    the hashed password and the used salt.
  * @property table A map associating usernames (as keys) with their corresponding [SecureHash] instances.
- * This table serves as the storage for the hashed passwords and their salts, enabling the authentication
- * process.
+ *                 This table serves as the storage for the hashed passwords and their salts,
+ *                 enabling the authentication process.
  */
 internal class HashedPasswordTableAuth(
     private val digester: (password: String, salt: SecureSalt) -> SecureHash,
