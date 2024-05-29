@@ -11,7 +11,7 @@ google-phonenumber = "8.13.37"          # https://github.com/google/libphonenumb
 gson = "2.11.0"                         # https://github.com/google/gson/releases/tag/gson-parent-2.10.1
 hikariCP = "5.1.0"                      # https://github.com/brettwooldridge/HikariCP/tags
 koin = "3.5.6"                          # https://github.com/InsertKoinIO/koin/releases
-kotlin = "2.0.0"                       # https://github.com/JetBrains/kotlin/releases
+kotlin = "2.0.0"                        # https://github.com/JetBrains/kotlin/releases
 kotlinx-atomicfu = "0.24.0"             # https://github.com/Kotlin/kotlinx-atomicfu/releases
 kotlinx-datetime = "0.6.0"              # https://github.com/Kotlin/kotlinx-datetime/releases
 ktor = "2.3.11"                         # https://github.com/ktorio/ktor/releases, https://ktor.io/docs/releases.html#release-details
@@ -20,7 +20,7 @@ mockk = "1.13.11"                       # https://github.com/mockk/mockk/release
 mockito-kotlin = "5.3.1"                # https://github.com/mockito/mockito-kotlin/releases
 quartz-scheduler = "2.4.0-rc2"          # https://github.com/quartz-scheduler/quartz/releases
 prometheus = "1.13.0"                   # https://github.com/micrometer-metrics/micrometer/releases
-swagger-generators = "1.0.49"           # https://github.com/swagger-api/swagger-codegen-generators/releases
+swagger-generators = "1.0.50"           # https://github.com/swagger-api/swagger-codegen-generators/releases
 typesafe-config = "1.4.3"               # https://github.com/lightbend/config/releases
 
 

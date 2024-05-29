@@ -6,7 +6,7 @@
 #-------------------------------------------------------------------------------------------------
 # Build stage.
 FROM gradle:8.2-jdk17 AS build
-LABEL authors="perraco"
+LABEL authors="perracodex"
 LABEL image.tag="kcrud-build"
 LABEL name="kcrud-build-image"
 
@@ -16,7 +16,7 @@ RUN gradle buildFatJar --no-daemon --info
 
 # Final image stage.
 FROM amazoncorretto:17
-LABEL authors="perraco"
+LABEL authors="perracodex"
 LABEL image.tag="kcrud"
 LABEL name="kcrud-final-image"
 

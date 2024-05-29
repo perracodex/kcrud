@@ -1,7 +1,7 @@
 // noinspection JSUnresolvedReference
 
 /*
- * Copyright (c) 2024-Present Perraco. All rights reserved.
+ * Copyright (c) 2024-Present Perracodex. All rights reserved.
  * This work is licensed under the terms of the MIT license.
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
