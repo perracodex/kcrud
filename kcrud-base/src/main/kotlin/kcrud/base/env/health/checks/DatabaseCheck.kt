@@ -95,32 +95,47 @@ data class DatabaseCheck(
         val autoCommit: Boolean,
         val catalog: String,
     ) {
+        /**
+         * Represents the result of a connection test.
+         *
+         * @property output The [ConnectionTest] object if the test was successful.
+         * @property error The error message if the test failed.
+         */
+        data class Result(val output: ConnectionTest?, val error: String?)
+
         companion object {
             /**
              * Builds a [ConnectionTest] object from a [Database] object.
              *
-             * @param database The [Database] object.
-             * @return The [ConnectionTest] object.
+             * @param database The source [Database] object to test.
+             * @return A pair of the [ConnectionTest] object if successful, and an error message if not.
              */
-            fun build(database: Database?): ConnectionTest? {
-                return database?.let {
-                    val connector: ExposedConnection<*> = it.connector()
-                    try {
-                        return ConnectionTest(
-                            established = !connector.isClosed,
-                            isReadOnly = connector.readOnly,
-                            name = it.name,
-                            version = it.version.toString(),
-                            dialect = it.dialect.name,
-                            url = it.url,
-                            vendor = it.vendor,
-                            autoCommit = connector.autoCommit,
-                            catalog = connector.catalog
-                        )
-                    } finally {
-                        connector.close()
-                    }
+            fun build(database: Database?): Result = runCatching {
+                requireNotNull(database) { "${ConnectionTest::class.simpleName}. Database must not be null" }
+
+                val connector: ExposedConnection<*> = database.connector()
+
+                try {
+                    val test = ConnectionTest(
+                        established = !connector.isClosed,
+                        isReadOnly = connector.readOnly,
+                        name = database.name,
+                        version = database.version.toString(),
+                        dialect = database.dialect.name,
+                        url = database.url,
+                        vendor = database.vendor,
+                        autoCommit = connector.autoCommit,
+                        catalog = connector.catalog
+                    )
+
+                    Result(output = test, error = null)
+                } catch (e: Exception) {
+                    Result(output = null, error = "${ConnectionTest::class.simpleName}. ${e.message}")
+                } finally {
+                    connector.close()
                 }
+            }.getOrElse { e ->
+                Result(output = null, error = e.message)
             }
         }
     }

@@ -222,12 +222,18 @@ object DatabaseService {
      */
     @OptIn(HealthCheckAPI::class)
     fun getHealthCheck(): DatabaseCheck {
-        return DatabaseCheck(
+        val databaseTest: DatabaseCheck.ConnectionTest.Result = DatabaseCheck.ConnectionTest.build(database = database)
+
+        val databaseCheck = DatabaseCheck(
             alive = ping(),
-            connectionTest = DatabaseCheck.ConnectionTest.build(database = database),
+            connectionTest = databaseTest.output,
             datasource = DatabaseCheck.Datasource.build(datasource = hikariDataSource),
             tables = dumpTables()
         )
+
+        databaseTest.error?.let { databaseCheck.errors.add(it) }
+
+        return databaseCheck
     }
 
     /**
