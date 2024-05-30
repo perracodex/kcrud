@@ -14,6 +14,8 @@ import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.name
 import org.jetbrains.exposed.sql.statements.api.ExposedConnection
+import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.vendors.currentDialect
 
 /**
  * Represents the database health check.
@@ -121,7 +123,7 @@ data class DatabaseCheck(
                         isReadOnly = connector.readOnly,
                         name = database.name,
                         version = database.version.toString(),
-                        dialect = database.dialect.name,
+                        dialect = transaction(db = database) { currentDialect.name },
                         url = database.url,
                         vendor = database.vendor,
                         autoCommit = connector.autoCommit,
