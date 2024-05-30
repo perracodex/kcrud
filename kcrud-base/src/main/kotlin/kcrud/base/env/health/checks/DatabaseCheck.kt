@@ -111,7 +111,7 @@ data class DatabaseCheck(
              * @return A pair of the [ConnectionTest] object if successful, and an error message if not.
              */
             fun build(database: Database?): Result = runCatching {
-                requireNotNull(database) { "${ConnectionTest::class.simpleName}. Database must not be null" }
+                requireNotNull(database) { "Database must not be null" }
 
                 val connector: ExposedConnection<*> = database.connector()
 
@@ -129,13 +129,11 @@ data class DatabaseCheck(
                     )
 
                     Result(output = test, error = null)
-                } catch (e: Exception) {
-                    Result(output = null, error = "${ConnectionTest::class.simpleName}. ${e.message}")
                 } finally {
                     connector.close()
                 }
             }.getOrElse { e ->
-                Result(output = null, error = e.message)
+                Result(output = null, error = "${ConnectionTest::class.simpleName}. ${e.message}")
             }
         }
     }
