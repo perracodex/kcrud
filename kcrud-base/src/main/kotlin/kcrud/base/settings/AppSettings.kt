@@ -27,11 +27,8 @@ object AppSettings {
     @Volatile
     private lateinit var configuration: ConfigurationCatalog
 
-    /** The deployment settings. */
-    val deployment: DeploymentSettings get() = configuration.deployment
-
-    /** The runtime settings. */
-    val runtime: RuntimeSettings get() = configuration.runtime
+    /** The API schema settings. */
+    val apiSchema: ApiSchemaSettings get() = configuration.apiSchema
 
     /** The CORS settings. */
     val cors: CorsSettings get() = configuration.cors
@@ -39,8 +36,11 @@ object AppSettings {
     /** The database settings. */
     val database: DatabaseSettings get() = configuration.database
 
-    /** The API schema settings. */
-    val apiSchema: ApiSchemaSettings get() = configuration.apiSchema
+    /** The deployment settings. */
+    val deployment: DeploymentSettings get() = configuration.deployment
+
+    /** The runtime settings. */
+    val runtime: RuntimeSettings get() = configuration.runtime
 
     /** The application security settings. */
     val security: SecuritySettings get() = configuration.security
@@ -66,12 +66,12 @@ object AppSettings {
             // ConfigurationCatalog class, and the third argument is the data class
             // that will be instantiated with the configuration values.
             val configMappings: List<ConfigClassMap<out IConfigSection>> = listOf(
-                ConfigClassMap(path = "ktor.deployment", argument = "deployment", kClass = DeploymentSettings::class),
-                ConfigClassMap(path = "runtime", argument = "runtime", kClass = RuntimeSettings::class),
-                ConfigClassMap(path = "cors", argument = "cors", kClass = CorsSettings::class),
-                ConfigClassMap(path = "database", argument = "database", kClass = DatabaseSettings::class),
-                ConfigClassMap(path = "apiSchema", argument = "apiSchema", kClass = ApiSchemaSettings::class),
-                ConfigClassMap(path = "security", argument = "security", kClass = SecuritySettings::class)
+                ConfigClassMap(mappingName = "apiSchema", path = "apiSchema", kClass = ApiSchemaSettings::class),
+                ConfigClassMap(mappingName = "cors", path = "cors", kClass = CorsSettings::class),
+                ConfigClassMap(mappingName = "database", path = "database", kClass = DatabaseSettings::class),
+                ConfigClassMap(mappingName = "deployment", path = "ktor.deployment", kClass = DeploymentSettings::class),
+                ConfigClassMap(mappingName = "runtime", path = "runtime", kClass = RuntimeSettings::class),
+                ConfigClassMap(mappingName = "security", path = "security", kClass = SecuritySettings::class)
             )
 
             runBlocking {

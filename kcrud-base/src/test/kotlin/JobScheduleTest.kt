@@ -41,7 +41,7 @@ class JobSchedulerServiceTest {
 
         val jobKey: JobKey = JobScheduleRequest.send(jobClass = SimpleTestJob::class.java) {
             groupName = "TestGroup"
-            startAt = JobStartAt.Now
+            startAt = JobStartAt.Immediate
             parameters = mapOf("uniqueKey" to uniqueTestKey)
         }
 

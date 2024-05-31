@@ -17,14 +17,14 @@ sealed class JobStartAt {
     /**
      * Object representing the current time.
      */
-    data object Now : JobStartAt()
+    data object Immediate : JobStartAt()
 
     /**
      * Data class representing a specific date and time.
      *
-     * @param date The date and time at which the job should start.
+     * @param datetime The date and time at which the job should start.
      */
-    data class AtDate(val date: KLocalDateTime) : JobStartAt()
+    data class AtDateTime(val datetime: KLocalDateTime) : JobStartAt()
 
     /**
      * Data class representing a duration from the current time.

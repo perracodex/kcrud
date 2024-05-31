@@ -5,9 +5,9 @@
 commons-codec = "1.17.0"                # https://github.com/apache/commons-codec/tags
 database-h2 = "2.2.224"                 # https://github.com/h2database/h2database/releases
 dotenv = "6.4.1"                        # https://github.com/cdimascio/dotenv-kotlin/releases
-exposed = "0.50.1"                      # https://github.com/JetBrains/Exposed/releases
+exposed = "0.51.0"                      # https://github.com/JetBrains/Exposed/releases
 flyway = "10.13.0"                      # https://github.com/flyway/flyway/releases
-google-phonenumber = "8.13.37"          # https://github.com/google/libphonenumber/releases
+google-phonenumber = "8.13.38"          # https://github.com/google/libphonenumber/releases
 gson = "2.11.0"                         # https://github.com/google/gson/releases/tag/gson-parent-2.10.1
 hikariCP = "5.1.0"                      # https://github.com/brettwooldridge/HikariCP/tags
 koin = "3.5.6"                          # https://github.com/InsertKoinIO/koin/releases
@@ -32,6 +32,71 @@ ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 
 
 [libraries]
+
+# OpenAPI / SwaggerUI.
+# https://ktor.io/docs/server-swagger-ui.html#configure-swagger
+# https://ktor.io/docs/server-openapi.html#configure-swagger
+# https://github.com/swagger-api/swagger-ui
+# https://github.com/swagger-api/swagger-codegen-generators
+# https://github.com/swagger-api/swagger-codegen-generators/releases
+api-schema-openapi = { module = "io.ktor:ktor-server-openapi", version.ref = "ktor" }
+api-schema-swagger = { module = "io.ktor:ktor-server-swagger", version.ref = "ktor" }
+api-schema-swagger-generators = { module = "io.swagger.codegen.v3:swagger-codegen-generators", version.ref = "swagger-generators" }
+
+# H2 database.
+# https://github.com/h2database/h2database
+# https://github.com/h2database/h2database/releases
+database-h2 = { module = "com.h2database:h2", version.ref = "database-h2" }
+
+# Dotenv (Dynamic environment variables).
+# https://github.com/cdimascio/dotenv-kotlin
+# https://github.com/cdimascio/dotenv-kotlin/releases
+dotenv = { module = "io.github.cdimascio:dotenv-kotlin", version.ref = "dotenv" }
+
+# Exposed ORM.
+# https://github.com/JetBrains/Exposed
+# https://github.com/JetBrains/Exposed/blob/main/docs/ChangeLog.md
+# https://github.com/JetBrains/Exposed/releases
+exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
+exposed-crypt = { module = "org.jetbrains.exposed:exposed-crypt", version.ref = "exposed" }
+exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
+exposed-json = { module = "org.jetbrains.exposed:exposed-json", version.ref = "exposed" }
+exposed-kotlin-datetime = { module = "org.jetbrains.exposed:exposed-kotlin-datetime", version.ref = "exposed" }
+
+# Flyway (Database migration).
+# https://github.com/flyway/flyway
+# https://github.com/flyway/flyway/releases
+flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
+
+# Phone number validation.
+# https://github.com/google/libphonenumber
+# https://github.com/google/libphonenumber/releases
+google-phonenumber = { module = "com.googlecode.libphonenumber:libphonenumber", version.ref = "google-phonenumber" }
+
+# HikariCP (Database connection pooling)
+# https://ktor.io/docs/db-connection-pooling-caching.html
+# https://github.com/brettwooldridge/HikariCP
+# https://github.com/brettwooldridge/HikariCP/tags
+hikariCP = { module = "com.zaxxer:HikariCP", version.ref = "hikariCP" }
+
+# Koin.
+# https://insert-koin.io/docs/quickstart/ktor
+# https://github.com/InsertKoinIO/koin
+# https://github.com/InsertKoinIO/koin-getting-started
+# https://github.com/JetBrains/kotlin/releases
+koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "koin" }
+koin-logger-slf4j = { module = "io.insert-koin:koin-logger-slf4j", version.ref = "koin" }
+koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
+
+# AtomicFU.
+# https://github.com/Kotlin/kotlinx-atomicfu
+# https://github.com/Kotlin/kotlinx-atomicfu/releases
+kotlinx-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinx-atomicfu" }
+
+# Serializable DateTime.
+# https://github.com/Kotlin/kotlinx-datetime
+# https://github.com/Kotlin/kotlinx-datetime/releases
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 
 # Ktor.
 # https://api.ktor.io
@@ -67,85 +132,11 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 # https://github.com/qos-ch/logback
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 
-# Serializable DateTime.
-# https://github.com/Kotlin/kotlinx-datetime
-# https://github.com/Kotlin/kotlinx-datetime/releases
-kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
-
-# 'Conf' type safety.
-# https://github.com/lightbend/config
-# https://github.com/lightbend/config/releases
-typesafe-config = { module = "com.typesafe:config", version.ref = "typesafe-config" }
-
-# Exposed ORM.
-# https://github.com/JetBrains/Exposed
-# https://github.com/JetBrains/Exposed/blob/main/docs/ChangeLog.md
-# https://github.com/JetBrains/Exposed/releases
-exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
-exposed-crypt = { module = "org.jetbrains.exposed:exposed-crypt", version.ref = "exposed" }
-exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
-exposed-json = { module = "org.jetbrains.exposed:exposed-json", version.ref = "exposed" }
-exposed-kotlin-datetime = { module = "org.jetbrains.exposed:exposed-kotlin-datetime", version.ref = "exposed" }
-
-# Dotenv (Dynamic environment variables).
-# https://github.com/cdimascio/dotenv-kotlin
-# https://github.com/cdimascio/dotenv-kotlin/releases
-dotenv = { module = "io.github.cdimascio:dotenv-kotlin", version.ref = "dotenv" }
-
-# Flyway (Database migration).
-# https://github.com/flyway/flyway
-# https://github.com/flyway/flyway/releases
-flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
-
-# HikariCP (Database connection pooling)
-# https://ktor.io/docs/db-connection-pooling-caching.html
-# https://github.com/brettwooldridge/HikariCP
-# https://github.com/brettwooldridge/HikariCP/tags
-hikariCP = { module = "com.zaxxer:HikariCP", version.ref = "hikariCP" }
-
-# Koin.
-# https://insert-koin.io/docs/quickstart/ktor
-# https://github.com/InsertKoinIO/koin
-# https://github.com/InsertKoinIO/koin-getting-started
-# https://github.com/JetBrains/kotlin/releases
-koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "koin" }
-koin-logger-slf4j = { module = "io.insert-koin:koin-logger-slf4j", version.ref = "koin" }
-koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
-
-# H2 database.
-# https://github.com/h2database/h2database
-# https://github.com/h2database/h2database/releases
-database-h2 = { module = "com.h2database:h2", version.ref = "database-h2" }
-
-# OpenAPI / SwaggerUI.
-# https://ktor.io/docs/server-swagger-ui.html#configure-swagger
-# https://ktor.io/docs/server-openapi.html#configure-swagger
-# https://github.com/swagger-api/swagger-ui
-# https://github.com/swagger-api/swagger-codegen-generators
-# https://github.com/swagger-api/swagger-codegen-generators/releases
-api-schema-openapi = { module = "io.ktor:ktor-server-openapi", version.ref = "ktor" }
-api-schema-swagger = { module = "io.ktor:ktor-server-swagger", version.ref = "ktor" }
-api-schema-swagger-generators = { module = "io.swagger.codegen.v3:swagger-codegen-generators", version.ref = "swagger-generators" }
-
-# Shared.
-shared-commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec" }
-shared-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
-
-# Phone number validation.
-# https://github.com/google/libphonenumber
-# https://github.com/google/libphonenumber/releases
-google-phonenumber = { module = "com.googlecode.libphonenumber:libphonenumber", version.ref = "google-phonenumber" }
-
 # Micrometer Metrics.
 # https://ktor.io/docs/server-metrics-micrometer.html
 # https://github.com/micrometer-metrics/micrometer/releases
 micrometer-metrics = { module = "io.ktor:ktor-server-metrics-micrometer", version.ref = "ktor" }
 micrometer-metrics-prometheus = { module = "io.micrometer:micrometer-registry-prometheus", version.ref = "prometheus" }
-
-# AtomicFU.
-# https://github.com/Kotlin/kotlinx-atomicfu
-# https://github.com/Kotlin/kotlinx-atomicfu/releases
-kotlinx-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinx-atomicfu" }
 
 # Quartz Scheduler.
 # https://github.com/quartz-scheduler/quartz
@@ -154,11 +145,20 @@ kotlinx-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "k
 # https://www.marcogomiero.com/posts/2022/ktor-jobs-quartz
 quartz-scheduler = { module = "org.quartz-scheduler:quartz", version.ref = "quartz-scheduler" }
 
+# Shared.
+shared-commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec" }
+shared-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+
+# 'Conf' type safety.
+# https://github.com/lightbend/config
+# https://github.com/lightbend/config/releases
+typesafe-config = { module = "com.typesafe:config", version.ref = "typesafe-config" }
+
 # Testing.
 # https://github.com/mockk/mockk
 # https://github.com/mockito/mockito-kotlin
 # https://github.com/mockk/mockk/releases
 # https://github.com/mockito/mockito-kotlin/releases
-test-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 test-kotlin-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+test-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 test-mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin" }
