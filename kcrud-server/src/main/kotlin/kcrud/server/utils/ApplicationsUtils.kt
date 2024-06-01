@@ -22,11 +22,13 @@ internal object ApplicationsUtils {
 
     /**
      * Loads environment variables from the project `.env` file and sets them as system properties.
-     * This allows the application to access these variables throughout the application
-     * without having to explicitly having to create at OS level.
+     * This allows the application to seamlessly access these variables without needing explicit
+     * creation at the OS level.
      *
-     * This method must be called before the server is started, so when the [AppSettings]
-     * are loaded, they can access the environment variables.
+     * This method must be called before the server is started to ensure that when [AppSettings]
+     * is initialized, it properly incorporates these environment variables into the server configuration.
+     * This is crucial because the server configuration utilizes placeholders that are replaced by
+     * these environment variables.
      */
     fun loadEnvironmentVariables() {
         tracer.info("Loading environment variables from '.env' file.")
