@@ -8,6 +8,7 @@ package kcrud.base.settings.config
 
 import kcrud.base.settings.config.sections.*
 import kcrud.base.settings.config.sections.security.SecuritySettings
+import kotlinx.serialization.Serializable
 
 /**
  * Represents the top-level configuration settings for the application.
@@ -26,6 +27,7 @@ import kcrud.base.settings.config.sections.security.SecuritySettings
  * @property runtime The runtime settings for the application.
  * @property security The security settings for the application.
  */
+@Serializable
 data class ConfigurationCatalog(
     val apiSchema: ApiSchemaSettings,
     val cors: CorsSettings,

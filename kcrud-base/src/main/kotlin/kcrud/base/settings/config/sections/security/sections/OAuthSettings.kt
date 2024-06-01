@@ -7,6 +7,7 @@
 package kcrud.base.settings.config.sections.security.sections
 
 import kcrud.base.settings.config.parser.IConfigSection
+import kotlinx.serialization.Serializable
 
 /**
  * OAuth-authentication settings.
@@ -19,6 +20,7 @@ import kcrud.base.settings.config.parser.IConfigSection
  * @property clientSecret client secret parameter. Provided by OAuth server vendor.
  * @property defaultScopes List of OAuth scopes used by default. Provided by OAuth server vendor.
  */
+@Serializable
 data class OAuthSettings(
     val providerName: String,
     val redirectCallbackUrl: String,

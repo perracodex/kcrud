@@ -8,6 +8,7 @@ package kcrud.base.settings.config.sections
 
 import kcrud.base.env.EnvironmentType
 import kcrud.base.settings.config.parser.IConfigSection
+import kotlinx.serialization.Serializable
 
 /**
  * Contains settings related to Swagger and OpenAPI.
@@ -19,6 +20,7 @@ import kcrud.base.settings.config.parser.IConfigSection
  * @property swaggerEndpoint The endpoint to the Swagger UI.
  * @property redocEndpoint The endpoint path to the Redoc UI.
  */
+@Serializable
 data class ApiSchemaSettings(
     val environments: List<EnvironmentType>,
     val schemaRoot: String,

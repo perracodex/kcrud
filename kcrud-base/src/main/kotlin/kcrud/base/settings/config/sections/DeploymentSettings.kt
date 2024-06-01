@@ -7,6 +7,7 @@
 package kcrud.base.settings.config.sections
 
 import kcrud.base.settings.config.parser.IConfigSection
+import kotlinx.serialization.Serializable
 
 /**
  * Contains settings related to how the application is deployed.
@@ -15,6 +16,7 @@ import kcrud.base.settings.config.parser.IConfigSection
  * @property sslPort The network port the server listens on for secure connections.
  * @property host The network address the server is bound to.
  */
+@Serializable
 data class DeploymentSettings(
     val port: Int,
     val sslPort: Int,

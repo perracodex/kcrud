@@ -8,6 +8,7 @@ package kcrud.base.settings.config.sections.security.sections
 
 import kcrud.base.settings.config.parser.IConfigSection
 import kcrud.base.settings.config.sections.security.SecuritySettings
+import kotlinx.serialization.Serializable
 
 /**
  * Encryption key settings.
@@ -17,6 +18,7 @@ import kcrud.base.settings.config.sections.security.SecuritySettings
  * @property key Secret key for encrypting/decrypting data.
  * @property sign Signature key to sign the encrypted data.
  */
+@Serializable
 data class EncryptionSettings(
     val algorithm: String,
     val salt: String,

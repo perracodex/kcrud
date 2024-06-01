@@ -8,6 +8,7 @@ package kcrud.base.settings.config.sections.security
 
 import kcrud.base.settings.config.parser.IConfigSection
 import kcrud.base.settings.config.sections.security.sections.*
+import kotlinx.serialization.Serializable
 
 /**
  * Top level section for the Security related settings.
@@ -21,6 +22,7 @@ import kcrud.base.settings.config.sections.security.sections.*
  * @property oauth Settings related to OAuth authentication, such as the client id and secret.
  * @property rbac Settings related to RBAC authentication.
  */
+@Serializable
 data class SecuritySettings(
     val isEnabled: Boolean,
     val useSecureConnection: Boolean,

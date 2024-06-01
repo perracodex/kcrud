@@ -33,6 +33,9 @@ import java.util.*
 object JobSchedulerService {
     private val tracer = Tracer<JobSchedulerService>()
 
+    /** The key used to store the application settings in the job data map. */
+    const val APP_SETTINGS_KEY: String = "APP_SETTINGS"
+
     private const val PROPERTIES_FILE: String = "quartz.properties"
     private val scheduler: Scheduler
 
@@ -53,6 +56,7 @@ object JobSchedulerService {
         // Create the scheduler and configure it with the properties.
         val schedulerFactory: SchedulerFactory = StdSchedulerFactory(schema)
         scheduler = schedulerFactory.scheduler
+        scheduler.setJobFactory(CustomJobFactory())
 
         tracer.debug("Job scheduler configured.")
     }
@@ -111,9 +115,26 @@ object JobSchedulerService {
 
     /**
      * Deletes a job from the scheduler.
+     *
+     * @param key The key of the job to be deleted.
+     * @return True if the job was deleted, false otherwise.
      */
-    fun deleteJob(key: JobKey) {
-        scheduler.deleteJob(key)
+    fun deleteJob(key: JobKey): Boolean {
+        return scheduler.deleteJob(key)
+    }
+
+    /**
+     * Deletes all jobs from the scheduler.
+     *
+     * @return The number of jobs deleted.
+     */
+    fun deleteAll(): Int {
+        var count = 0
+        scheduler.getJobKeys(GroupMatcher.anyGroup()).map { jobKey ->
+            if (scheduler.deleteJob(jobKey))
+                count++
+        }
+        return count
     }
 
     /**

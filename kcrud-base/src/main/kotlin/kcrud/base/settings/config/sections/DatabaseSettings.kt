@@ -8,6 +8,7 @@ package kcrud.base.settings.config.sections
 
 import kcrud.base.env.EnvironmentType
 import kcrud.base.settings.config.parser.IConfigSection
+import kotlinx.serialization.Serializable
 
 /**
  * Database related settings.
@@ -27,6 +28,7 @@ import kcrud.base.settings.config.parser.IConfigSection
  * @property username Optional database username.
  * @property password Optional database password.
  */
+@Serializable
 data class DatabaseSettings(
     val name: String,
     val path: String,

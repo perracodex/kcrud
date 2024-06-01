@@ -8,6 +8,7 @@ package kcrud.base.settings.config.sections.security.sections
 
 import kcrud.base.settings.config.parser.IConfigSection
 import kcrud.base.settings.config.sections.security.SecuritySettings
+import kotlinx.serialization.Serializable
 
 /**
  * JWT authentication settings.
@@ -19,6 +20,7 @@ import kcrud.base.settings.config.sections.security.SecuritySettings
  * @property realm Security realm for the JWT authentication.
  * @property secretKey Secret key for signing the JWT.
  */
+@Serializable
 data class JwtSettings(
     val providerName: String,
     val tokenLifetimeSec: Long,

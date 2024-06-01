@@ -7,12 +7,14 @@
 package kcrud.base.settings.config.sections.security.sections
 
 import kcrud.base.settings.config.parser.IConfigSection
+import kotlinx.serialization.Serializable
 
 /**
  * RBAC settings.
  *
  * @property isEnabled Flag to enable/disable RBAC authentication.
  */
+@Serializable
 data class RbacSettings(
     val isEnabled: Boolean
 ) : IConfigSection

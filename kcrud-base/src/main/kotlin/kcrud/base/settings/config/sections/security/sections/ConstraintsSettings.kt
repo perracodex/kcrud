@@ -7,6 +7,7 @@
 package kcrud.base.settings.config.sections.security.sections
 
 import kcrud.base.settings.config.parser.IConfigSection
+import kotlinx.serialization.Serializable
 
 /**
  * Security constraints settings.
@@ -14,6 +15,7 @@ import kcrud.base.settings.config.parser.IConfigSection
  * @property publicApi Rate limit specification for the Public API endpoints.
  * @property newToken Rate limit specification for the New Authentication Token generation endpoint.
  */
+@Serializable
 data class ConstraintsSettings(
     val publicApi: LimitSpec,
     val newToken: LimitSpec
@@ -29,6 +31,7 @@ data class ConstraintsSettings(
      * @property limit The maximum number of requests allowed within the refill period. Must be > 0.
      * @property refillMs The time period in milliseconds after which the limit is reset. Must be > 0.
      */
+    @Serializable
     data class LimitSpec(
         val limit: Int,
         val refillMs: Long

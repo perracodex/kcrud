@@ -7,6 +7,7 @@
 package kcrud.base.settings.config.sections.security.sections
 
 import kcrud.base.settings.config.parser.IConfigSection
+import kotlinx.serialization.Serializable
 
 /**
  * Configuration parameters for HTTP authentication mechanisms.
@@ -14,6 +15,7 @@ import kcrud.base.settings.config.parser.IConfigSection
  * @property providerName Name of the authentication provider.
  * @property realm Security realm for the HTTP authentication, used to differentiate between protection spaces.
  */
+@Serializable
 data class HttpAuthSettings(
     val providerName: String,
     val realm: String,

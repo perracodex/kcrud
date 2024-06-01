@@ -16,6 +16,7 @@ import kcrud.base.settings.config.parser.IConfigSection
 import kcrud.base.settings.config.sections.*
 import kcrud.base.settings.config.sections.security.SecuritySettings
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
 import kotlin.system.measureTimeMillis
 
 /**
@@ -83,5 +84,30 @@ object AppSettings {
         }
 
         tracer.info("Application settings loaded. Time taken: $timeTaken ms.")
+    }
+
+    /**
+     * Serializes the current settings configuration to a JSON string.
+     * The [load] method must be called before this method.
+     *
+     * @return The JSON string representation of the current settings.
+     */
+    fun serialize(): String {
+        return Json.encodeToString(
+            serializer = ConfigurationCatalog.serializer(),
+            value = configuration
+        )
+    }
+
+    /**
+     * Deserializes the provided JSON string into the current settings.
+     *
+     * @param jsonString The JSON string to deserialize.
+     */
+    fun deserialize(jsonString: String) {
+        configuration = Json.decodeFromString(
+            deserializer = ConfigurationCatalog.serializer(),
+            string = jsonString
+        )
     }
 }

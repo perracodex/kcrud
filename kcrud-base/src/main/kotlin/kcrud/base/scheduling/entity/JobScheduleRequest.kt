@@ -6,6 +6,7 @@
 
 package kcrud.base.scheduling.entity
 
+import kcrud.base.persistence.serializers.SUUID
 import kcrud.base.scheduling.service.JobSchedulerService
 import kcrud.base.scheduling.service.JobStartAt
 import kcrud.base.utils.DateTimeUtils.toJavaDate
@@ -26,7 +27,7 @@ import java.util.*
  */
 data class JobScheduleRequest(
     val jobClass: Class<out Job>,
-    val jobName: String = "job_${System.nanoTime()}",
+    val jobName: String,
     var groupName: String = "DefaultGroup",
     var startAt: JobStartAt = JobStartAt.Immediate,
     var repeatIntervalInSeconds: Int? = null,
@@ -37,12 +38,14 @@ data class JobScheduleRequest(
         /**
          * Creates a new job schedule request.
          *
+         * @param jobId The ID of the job to be scheduled.
          * @param jobClass The class of the job to be scheduled.
          * @param configure The configuration for the job schedule request.
          * @return The [JobKey] of the scheduled job.
          */
-        fun send(jobClass: Class<out Job>, configure: JobScheduleRequest.() -> Unit): JobKey {
-            val config = JobScheduleRequest(jobClass).apply(configure)
+        fun send(jobId: SUUID, jobClass: Class<out Job>, configure: JobScheduleRequest.() -> Unit): JobKey {
+            val jobName = "job__${jobId}__${System.nanoTime()}"
+            val config: JobScheduleRequest = JobScheduleRequest(jobClass = jobClass, jobName = jobName).apply(configure)
             val jobKey: JobKey = JobKey.jobKey(config.jobName, config.groupName)
             val jobDataMap = JobDataMap(config.parameters)
 
@@ -54,7 +57,7 @@ data class JobScheduleRequest(
 
             // Set the trigger name and start time based on job start configuration.
             val triggerBuilder: TriggerBuilder<Trigger> = TriggerBuilder.newTrigger()
-                .withIdentity("${config.jobName}_trigger", config.groupName)
+                .withIdentity("${jobName}__trigger", config.groupName)
                 .apply {
                     when (val startDateTime: JobStartAt = config.startAt) {
                         is JobStartAt.Immediate -> startNow()
@@ -66,7 +69,7 @@ data class JobScheduleRequest(
             // Define the schedule builder and set misfire instructions
             // to handle cases where the trigger misses its scheduled time,
             // in which case the job will be executed immediately.
-            val scheduleBuilder = SimpleScheduleBuilder.simpleSchedule()
+            val scheduleBuilder: SimpleScheduleBuilder = SimpleScheduleBuilder.simpleSchedule()
                 .withMisfireHandlingInstructionFireNow()
 
             // Apply repeat interval and count if specified.

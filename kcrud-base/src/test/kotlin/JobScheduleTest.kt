@@ -11,6 +11,7 @@ import kcrud.base.scheduling.service.JobStartAt
 import kcrud.base.utils.TestUtils
 import kotlinx.coroutines.delay
 import org.quartz.*
+import java.util.*
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -39,7 +40,7 @@ class JobSchedulerServiceTest {
     fun testEntity(): Unit = testSuspend {
         val uniqueTestKey = "uniqueTestJob_${System.nanoTime()}"
 
-        val jobKey: JobKey = JobScheduleRequest.send(jobClass = SimpleTestJob::class.java) {
+        val jobKey: JobKey = JobScheduleRequest.send(jobId = UUID.randomUUID(), jobClass = SimpleTestJob::class.java) {
             groupName = "TestGroup"
             startAt = JobStartAt.Immediate
             parameters = mapOf("uniqueKey" to uniqueTestKey)
