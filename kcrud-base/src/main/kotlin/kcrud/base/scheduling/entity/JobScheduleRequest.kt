@@ -9,6 +9,7 @@ package kcrud.base.scheduling.entity
 import kcrud.base.persistence.serializers.SUUID
 import kcrud.base.scheduling.service.JobSchedulerService
 import kcrud.base.scheduling.service.JobStartAt
+import kcrud.base.security.snowflake.SnowflakeFactory
 import kcrud.base.utils.DateTimeUtils.toJavaDate
 import kcrud.base.utils.DateTimeUtils.toJavaInstant
 import org.quartz.*
@@ -18,17 +19,13 @@ import java.util.*
  * Data class to build a new job schedule request.
  *
  * @property jobClass The class of the job to be scheduled.
- * @property jobName The name of the job.
- * @property groupName The group of the job.
  * @property startAt The time at which the job should start.
  * @property repeatIntervalInSeconds The interval at which the job should repeat.
  * @property repeatCount The number of times the job should repeat.
  * @property parameters Optional parameters to be passed to the job class.
  */
 data class JobScheduleRequest(
-    val jobClass: Class<out Job>,
-    val jobName: String,
-    var groupName: String = "DefaultGroup",
+    var jobClass: Class<out Job>,
     var startAt: JobStartAt = JobStartAt.Immediate,
     var repeatIntervalInSeconds: Int? = null,
     var repeatCount: Int? = null,
@@ -40,13 +37,19 @@ data class JobScheduleRequest(
          *
          * @param jobId The ID of the job to be scheduled.
          * @param jobClass The class of the job to be scheduled.
-         * @param configure The configuration for the job schedule request.
+         * @param configuration The configuration for the job schedule request.
          * @return The [JobKey] of the scheduled job.
          */
-        fun send(jobId: SUUID, jobClass: Class<out Job>, configure: JobScheduleRequest.() -> Unit): JobKey {
-            val jobName = "job__${jobId}__${System.nanoTime()}"
-            val config: JobScheduleRequest = JobScheduleRequest(jobClass = jobClass, jobName = jobName).apply(configure)
-            val jobKey: JobKey = JobKey.jobKey(config.jobName, config.groupName)
+        fun send(jobId: SUUID, jobClass: Class<out Job>, configuration: JobScheduleRequest.() -> Unit): JobKey {
+            val snowflake: String = SnowflakeFactory.nextId()
+            val jobName = "job-${snowflake}-${System.nanoTime()}"
+            val groupName: String = jobId.toString()
+
+            val config: JobScheduleRequest = JobScheduleRequest(
+                jobClass = jobClass
+            ).apply(configuration)
+
+            val jobKey: JobKey = JobKey.jobKey(jobName, groupName)
             val jobDataMap = JobDataMap(config.parameters)
 
             val jobDetail: JobDetail = JobBuilder
@@ -57,7 +60,7 @@ data class JobScheduleRequest(
 
             // Set the trigger name and start time based on job start configuration.
             val triggerBuilder: TriggerBuilder<Trigger> = TriggerBuilder.newTrigger()
-                .withIdentity("${jobName}__trigger", config.groupName)
+                .withIdentity("${jobName}-trigger", groupName)
                 .apply {
                     when (val startDateTime: JobStartAt = config.startAt) {
                         is JobStartAt.Immediate -> startNow()

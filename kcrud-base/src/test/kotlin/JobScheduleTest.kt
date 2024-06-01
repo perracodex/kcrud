@@ -41,7 +41,6 @@ class JobSchedulerServiceTest {
         val uniqueTestKey = "uniqueTestJob_${System.nanoTime()}"
 
         val jobKey: JobKey = JobScheduleRequest.send(jobId = UUID.randomUUID(), jobClass = SimpleTestJob::class.java) {
-            groupName = "TestGroup"
             startAt = JobStartAt.Immediate
             parameters = mapOf("uniqueKey" to uniqueTestKey)
         }
