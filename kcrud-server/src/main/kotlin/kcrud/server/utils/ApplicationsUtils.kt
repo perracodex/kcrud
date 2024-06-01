@@ -24,6 +24,9 @@ internal object ApplicationsUtils {
      * Loads environment variables from the project `.env` file and sets them as system properties.
      * This allows the application to access these variables throughout the application
      * without having to explicitly having to create at OS level.
+     *
+     * This method must be called before the server is started, so when the [AppSettings]
+     * are loaded, they can access the environment variables.
      */
     fun loadEnvironmentVariables() {
         tracer.info("Loading environment variables from '.env' file.")
