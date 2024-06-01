@@ -32,9 +32,9 @@ import java.util.concurrent.ConcurrentHashMap
  * Password hashing is done using SHA-256 and a random salt per password, so two identical
  * passwords will produce different hashes due to their unique salts.
  *
- * See: [HashedPasswordTableAuth]
- *
  * See: [Ktor UserHashedTableAuth](https://ktor.io/docs/server-basic-auth.html#validate-user-hash)
+ *
+ * @see HashedPasswordTableAuth
  */
 class CredentialService : KoinComponent {
     private val tracer = Tracer<CredentialService>()

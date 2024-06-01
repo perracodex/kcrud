@@ -22,7 +22,7 @@ import kcrud.base.database.schema.employment.EmploymentTable
  * This will set up and configure database, including the connection pool, and register
  * the database schema tables so that the ORM can interact with them.
  *
- * See: [DbPlugin]
+ * @see DbPlugin
  */
 fun Application.configureDatabase() {
 
