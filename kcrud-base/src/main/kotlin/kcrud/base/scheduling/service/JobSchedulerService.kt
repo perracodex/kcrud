@@ -103,6 +103,7 @@ object JobSchedulerService {
      * Stops the job scheduler.
      */
     fun stop() {
+        tracer.info("Stopping job scheduler.")
         scheduler.shutdown()
     }
 
@@ -110,6 +111,7 @@ object JobSchedulerService {
      * Schedules a new job with the given trigger.
      */
     fun newJob(job: JobDetail, trigger: Trigger) {
+        tracer.debug("Scheduling new job. Job: $job. Trigger: $trigger.")
         scheduler.scheduleJob(job, trigger)
     }
 
@@ -120,7 +122,20 @@ object JobSchedulerService {
      * @return True if the job was deleted, false otherwise.
      */
     fun deleteJob(key: JobKey): Boolean {
+        tracer.debug("Deleting job. Key: $key.")
         return scheduler.deleteJob(key)
+    }
+
+    /**
+     * Deletes a job from the scheduler.
+     *
+     * @param name The name of the job to be deleted.
+     * @param group The group of the job to be deleted.
+     * @return True if the job was deleted, false otherwise.
+     */
+    fun deleteJob(name: String, group: String): Boolean {
+        tracer.debug("Deleting job.Name: $name. Group: $group.")
+        return deleteJob(JobKey.jobKey(name, group))
     }
 
     /**
@@ -129,6 +144,7 @@ object JobSchedulerService {
      * @return The number of jobs deleted.
      */
     fun deleteAll(): Int {
+        tracer.debug("Deleting all jobs.")
         var count = 0
         scheduler.getJobKeys(GroupMatcher.anyGroup()).map { jobKey ->
             if (scheduler.deleteJob(jobKey))

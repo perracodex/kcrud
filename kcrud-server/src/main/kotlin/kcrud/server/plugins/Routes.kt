@@ -16,7 +16,7 @@ import kcrud.access.token.accessTokenRoute
 import kcrud.base.env.SessionContext
 import kcrud.base.env.health.routing.healthCheckRoute
 import kcrud.base.plugins.RateLimitScope
-import kcrud.base.scheduling.routing.quartzRoutes
+import kcrud.base.scheduling.routing.adminSchedulerRoutes
 import kcrud.base.security.snowflake.snowflakeRoute
 import kcrud.base.settings.AppSettings
 import kcrud.domain.employee.routing.employeeRoute
@@ -58,7 +58,7 @@ fun Application.configureRoutes() {
         healthCheckRoute()
         snowflakeRoute()
         rbacRoute()
-        quartzRoutes()
+        adminSchedulerRoutes()
 
         // Server root endpoint.
         get("/") {

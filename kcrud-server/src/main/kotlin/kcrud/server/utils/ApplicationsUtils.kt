@@ -56,7 +56,7 @@ internal object ApplicationsUtils {
             NetworkUtils.logEndpoints(reason = "Healthcheck", endpoints = listOf("health"))
             NetworkUtils.logEndpoints(reason = "Snowflake", endpoints = listOf("snowflake/${SnowflakeFactory.nextId()}"))
             NetworkUtils.logEndpoints(reason = "RBAC", endpoints = listOf("rbac/login"))
-            NetworkUtils.logEndpoints(reason = "Scheduled Jobs", endpoints = listOf("scheduler"))
+            NetworkUtils.logEndpoints(reason = "Scheduled Jobs", endpoints = listOf("scheduler/jobs"))
             NetworkUtils.logEndpoints(reason = "Micrometer Metrics", endpoints = listOf("metrics"))
             NetworkUtils.logEndpoints(
                 reason = "Swagger, Redoc, OpenApi",
