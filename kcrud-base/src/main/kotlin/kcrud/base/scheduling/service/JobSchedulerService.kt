@@ -219,7 +219,7 @@ object JobSchedulerService {
      * @return [JobScheduleStateChangeEntity] containing details of the operation.
      */
     fun pause(): JobScheduleStateChangeEntity {
-        return changeJobState(TriggerState.PAUSED) { scheduler.pauseAll() }
+        return changeJobState(targetState = TriggerState.PAUSED) { scheduler.pauseAll() }
     }
 
     /**
@@ -228,7 +228,7 @@ object JobSchedulerService {
      * @return [JobScheduleStateChangeEntity] containing details of the operation.
      */
     fun resume(): JobScheduleStateChangeEntity {
-        return changeJobState(TriggerState.NORMAL) { scheduler.resumeAll() }
+        return changeJobState(targetState = TriggerState.NORMAL) { scheduler.resumeAll() }
     }
 
     /**
