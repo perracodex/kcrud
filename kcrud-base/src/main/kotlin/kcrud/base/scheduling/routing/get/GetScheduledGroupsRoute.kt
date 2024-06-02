@@ -11,8 +11,6 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.base.scheduling.service.JobSchedulerService
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 /**
  * Gets all scheduled job groups.
@@ -21,10 +19,6 @@ fun Route.getScheduledJobGroupRoute() {
     // Gets all scheduled job groups.
     get("/groups") {
         val groups: List<String> = JobSchedulerService.getGroups()
-
-        call.respondText(
-            text = Json.encodeToString(value = groups),
-            contentType = ContentType.Application.Json
-        )
+        call.respond(status = HttpStatusCode.OK, message = groups)
     }
 }

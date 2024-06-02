@@ -63,7 +63,7 @@ fun Application.configureOAuthAuthentication() {
                 call.principal<OAuthAccessTokenResponse.OAuth2>()?.let { principal ->
                     SessionContextFactory.from(oauth2 = principal)?.let { sessionContext ->
                         call.sessions.set(name = SessionContext.SESSION_NAME, value = sessionContext)
-                        call.respondText("You are now logged in through OAuth.")
+                        call.respondText(text = "You are now logged in through OAuth.")
                         return@get
                     }
                 }
