@@ -17,7 +17,7 @@ import kcrud.base.scheduling.routing.state.resumeScheduledJobsRoute
 /**
  * Route administers all scheduled jobs, allowing to list and delete them.
  */
-fun Route.adminSchedulerRoutes() {
+fun Route.schedulerRoutes() {
 
     route("scheduler/jobs") {
         getScheduledJobsRoute()
