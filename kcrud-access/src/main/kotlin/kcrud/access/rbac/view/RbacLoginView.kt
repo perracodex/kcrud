@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package kcrud.access.rbac.views
+package kcrud.access.rbac.view
 
 import kcrud.access.credential.CredentialService
 import kcrud.access.rbac.plugin.annotation.RbacAPI

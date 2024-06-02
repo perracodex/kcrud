@@ -17,8 +17,8 @@ import kcrud.access.rbac.entity.role.RbacRoleEntity
 import kcrud.access.rbac.entity.scope_rule.RbacScopeRuleRequest
 import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.service.RbacService
-import kcrud.access.rbac.views.RbacAdminView
-import kcrud.access.rbac.views.RbacLoginView
+import kcrud.access.rbac.view.RbacAdminView
+import kcrud.access.rbac.view.RbacLoginView
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kcrud.base.env.SessionContext

@@ -12,7 +12,7 @@ import io.ktor.server.response.*
 import io.ktor.server.sessions.*
 import kcrud.access.actor.service.DefaultActorFactory
 import kcrud.access.rbac.plugin.annotation.RbacAPI
-import kcrud.access.rbac.views.RbacLoginView
+import kcrud.access.rbac.view.RbacLoginView
 import kcrud.access.system.SessionContextFactory
 import kcrud.base.env.SessionContext
 

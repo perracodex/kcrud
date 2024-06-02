@@ -11,7 +11,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import kcrud.access.rbac.plugin.annotation.RbacAPI
-import kcrud.access.rbac.views.RbacLoginView
+import kcrud.access.rbac.view.RbacLoginView
 import kcrud.base.env.SessionContext
 
 /**
