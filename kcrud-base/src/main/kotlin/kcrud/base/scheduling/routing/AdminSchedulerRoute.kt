@@ -7,9 +7,12 @@
 package kcrud.base.scheduling.routing
 
 import io.ktor.server.routing.*
-import kcrud.base.scheduling.routing.routes.deleteAllNotificationRoute
-import kcrud.base.scheduling.routing.routes.deleteNotificationRoute
-import kcrud.base.scheduling.routing.routes.listAllNotificationRoute
+import kcrud.base.scheduling.routing.delete.deleteAllScheduledJobsRoute
+import kcrud.base.scheduling.routing.delete.deleteScheduledJobRoute
+import kcrud.base.scheduling.routing.get.getScheduledJobGroupRoute
+import kcrud.base.scheduling.routing.get.getScheduledJobsRoute
+import kcrud.base.scheduling.routing.state.pauseScheduledJobsRoute
+import kcrud.base.scheduling.routing.state.resumeScheduledJobsRoute
 
 /**
  * Route administers all scheduled jobs, allowing to list and delete them.
@@ -17,8 +20,13 @@ import kcrud.base.scheduling.routing.routes.listAllNotificationRoute
 fun Route.adminSchedulerRoutes() {
 
     route("scheduler/jobs") {
-        listAllNotificationRoute()
-        deleteNotificationRoute()
-        deleteAllNotificationRoute()
+        getScheduledJobsRoute()
+        getScheduledJobGroupRoute()
+
+        deleteScheduledJobRoute()
+        deleteAllScheduledJobsRoute()
+
+        pauseScheduledJobsRoute()
+        resumeScheduledJobsRoute()
     }
 }

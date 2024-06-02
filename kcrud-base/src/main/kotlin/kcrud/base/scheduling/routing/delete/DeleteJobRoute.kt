@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package kcrud.base.scheduling.routing.routes
+package kcrud.base.scheduling.routing.delete
 
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -13,11 +13,11 @@ import io.ktor.server.routing.*
 import kcrud.base.scheduling.service.JobSchedulerService
 
 /**
- * Deletes a concrete scheduled notification.
+ * Deletes a concrete scheduled job.
  */
-fun Route.deleteNotificationRoute() {
+fun Route.deleteScheduledJobRoute() {
     route("{name}/{group}") {
-        // Delete a concrete scheduled notifications.
+        // Delete a concrete scheduled job.
         delete {
             val name: String = call.parameters["name"]!!
             val group: String = call.parameters["group"]!!

@@ -10,10 +10,12 @@ import io.ktor.server.application.*
 import kcrud.base.env.Tracer
 import kcrud.base.scheduling.annotation.JobSchedulerAPI
 import kcrud.base.scheduling.entity.JobScheduleEntity
+import kcrud.base.scheduling.entity.JobScheduleStateChangeEntity
 import kcrud.base.scheduling.listener.KcrudJobListener
 import kcrud.base.scheduling.listener.KcrudTriggerListener
 import kcrud.base.settings.AppSettings
 import org.quartz.*
+import org.quartz.Trigger.TriggerState
 import org.quartz.impl.StdSchedulerFactory
 import org.quartz.impl.matchers.GroupMatcher
 import java.io.InputStream
@@ -145,30 +147,136 @@ object JobSchedulerService {
      */
     fun deleteAll(): Int {
         tracer.debug("Deleting all jobs.")
-        var count = 0
-        scheduler.getJobKeys(GroupMatcher.anyGroup()).map { jobKey ->
-            if (scheduler.deleteJob(jobKey))
-                count++
+        return scheduler.getJobKeys(GroupMatcher.anyGroup()).count { jobKey ->
+            scheduler.deleteJob(jobKey)
         }
-        return count
+    }
+
+    /**
+     * Returns a list of all job groups currently scheduled in the job scheduler.
+     */
+    fun getGroups(): List<String> {
+        return scheduler.jobGroupNames
     }
 
     /**
      * Returns a snapshot list of all actual jobs currently scheduled in the job scheduler.
+     *
+     * @param executing True if only actively executing jobs should be returned; false to return all jobs.
+     * @return A list of [JobScheduleEntity] objects representing the scheduled jobs.
      */
-    fun getJobs(): List<JobScheduleEntity> {
-        return scheduler.getJobKeys(GroupMatcher.anyGroup()).map { jobKey ->
-            val jobDetail: JobDetail = scheduler.getJobDetail(jobKey)
+    fun getJobs(executing: Boolean = false): List<JobScheduleEntity> {
+        return if (executing) {
+            scheduler.currentlyExecutingJobs.map { createJobScheduleEntity(it.jobDetail) }
+        } else {
+            scheduler.getJobKeys(GroupMatcher.anyGroup()).map { jobKey ->
+                createJobScheduleEntity(scheduler.getJobDetail(jobKey))
+            }
+        }
+    }
 
-            JobScheduleEntity(
-                name = jobKey.name,
-                group = jobKey.group,
-                className = jobDetail.jobClass.simpleName,
-                description = jobDetail.description,
-                isDurable = jobDetail.isDurable,
-                shouldRecover = jobDetail.requestsRecovery(),
-                dataMap = jobDetail.jobDataMap.toList().toString()
-            )
+    /**
+     * Helper method to create a [JobScheduleEntity] from a [JobDetail] including the next fire time.
+     *
+     * @param jobDetail The job detail from which to create the [JobScheduleEntity].
+     * @return The constructed [JobScheduleEntity].
+     */
+    private fun createJobScheduleEntity(jobDetail: JobDetail): JobScheduleEntity {
+        val jobKey: JobKey = jobDetail.key
+        val triggers: List<Trigger> = scheduler.getTriggersOfJob(jobKey)
+        val nextFireTime: Date? = triggers.mapNotNull { it.nextFireTime }.minOrNull()
+
+        // Get the most restrictive state from the list of trigger states.
+        val triggerStates: List<TriggerState> = triggers.map { scheduler.getTriggerState(it.key) }
+        val mostRestrictiveState: TriggerState = when {
+            triggerStates.any { it == TriggerState.PAUSED } -> TriggerState.PAUSED
+            triggerStates.any { it == TriggerState.BLOCKED } -> TriggerState.BLOCKED
+            triggerStates.any { it == TriggerState.ERROR } -> TriggerState.ERROR
+            triggerStates.any { it == TriggerState.COMPLETE } -> TriggerState.COMPLETE
+            else -> TriggerState.NORMAL  // Assuming NORMAL as default if no other states are found.
+        }
+
+        return JobScheduleEntity(
+            name = jobKey.name,
+            group = jobKey.group,
+            className = jobDetail.jobClass.simpleName,
+            nextFireTime = nextFireTime?.toString() ?: "Not scheduled",
+            state = mostRestrictiveState.name,
+            isDurable = jobDetail.isDurable,
+            shouldRecover = jobDetail.requestsRecovery(),
+            dataMap = jobDetail.jobDataMap.toList().toString(),
+        )
+    }
+
+    /**
+     * Pauses all jobs currently scheduled in the job scheduler.
+     *
+     * @return [JobScheduleStateChangeEntity] containing details of the operation.
+     */
+    fun pause(): JobScheduleStateChangeEntity {
+        return changeJobState(TriggerState.PAUSED) { scheduler.pauseAll() }
+    }
+
+    /**
+     * Resumes all jobs currently paused in the job scheduler.
+     *
+     * @return [JobScheduleStateChangeEntity] containing details of the operation.
+     */
+    fun resume(): JobScheduleStateChangeEntity {
+        return changeJobState(TriggerState.NORMAL) { scheduler.resumeAll() }
+    }
+
+    /**
+     * Changes the state of all jobs (either pausing or resuming them) and returns detailed results of the change.
+     *
+     * @param targetState The expected state of jobs after the operation.
+     * @param action The lambda function that executes the state change.
+     * @return JobScheduleStateChangeEntity detailing the affected job counts.
+     */
+    private fun changeJobState(targetState: TriggerState, action: () -> Unit): JobScheduleStateChangeEntity {
+        // Retrieve the states of all jobs before and after performing the state change action.
+        val beforeStates: Map<JobKey, TriggerState> = getAllJobStates()
+        action()
+        val afterStates: Map<JobKey, TriggerState> = getAllJobStates()
+
+        // Count the total number of jobs that were affected by the action.
+        // A job is considered affected if it was not already in the target
+        // state and has changed to the target state.
+        val totalAffected: Int = afterStates.count { (key, state) ->
+            state == targetState && beforeStates[key]?.let { it != state } ?: true
+        }
+
+        // Count the total number of jobs that remained in the target state both
+        // before and after the action. This includes jobs that were already in the
+        // target state and were unaffected by the action.
+        val alreadyInState: Int = afterStates.count { (key, state) ->
+            state == targetState && beforeStates[key]?.let { it == state } ?: false
+        }
+
+        return JobScheduleStateChangeEntity(
+            totalAffected = totalAffected,
+            alreadyInState = alreadyInState,
+            totalJobs = afterStates.size
+        )
+    }
+
+    /**
+     * Retrieves the state of all jobs currently scheduled in the job scheduler,
+     * by compiling a map where each job key is associated with its most
+     * restrictive (or most significant) trigger state.
+     *
+     * @return A map of JobKeys to their respective TriggerStates.
+     */
+    private fun getAllJobStates(): Map<JobKey, TriggerState> {
+        // 1. Fetch all job keys across all job groups within the scheduler.
+        // 2. For each job key, retrieve all associated triggers.
+        // 3. For each trigger, obtain its current state.
+        // 4. From the list of trigger states, find the one with the highest priority (lowest ordinal value).
+        // 5. If no triggers are found, or all are null, default to TriggerState.NONE.
+        return scheduler.getJobKeys(GroupMatcher.anyGroup()).associateWith { jobKey ->
+            scheduler.getTriggersOfJob(jobKey).mapNotNull { trigger ->
+                scheduler.getTriggerState(trigger.key)
+            }.minByOrNull { it.ordinal } ?: TriggerState.NONE
         }
     }
 }

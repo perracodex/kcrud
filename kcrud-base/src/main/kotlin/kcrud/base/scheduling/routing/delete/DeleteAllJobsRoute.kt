@@ -4,7 +4,7 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package kcrud.base.scheduling.routing.routes
+package kcrud.base.scheduling.routing.delete
 
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -13,10 +13,10 @@ import io.ktor.server.routing.*
 import kcrud.base.scheduling.service.JobSchedulerService
 
 /**
- * Deletes all scheduled notifications.
+ * Deletes all scheduled jobs.
  */
-fun Route.deleteAllNotificationRoute() {
-    // Delete all scheduled notifications.
+fun Route.deleteAllScheduledJobsRoute() {
+    // Delete all scheduled jobs.
     delete {
         val jobs: Int = JobSchedulerService.deleteAll()
 

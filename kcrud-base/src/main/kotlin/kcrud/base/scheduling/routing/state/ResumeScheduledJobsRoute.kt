@@ -4,27 +4,27 @@
  * For a copy, see <https://opensource.org/licenses/MIT>
  */
 
-package kcrud.base.scheduling.routing.routes
+package kcrud.base.scheduling.routing.state
 
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.base.scheduling.entity.JobScheduleEntity
+import kcrud.base.scheduling.entity.JobScheduleStateChangeEntity
 import kcrud.base.scheduling.service.JobSchedulerService
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 /**
- * Deletes all scheduled notifications.
+ * Resume all scheduled jobs.
  */
-fun Route.listAllNotificationRoute() {
-    // Route to display all scheduled jobs.
-    get {
-        val jobs: List<JobScheduleEntity> = JobSchedulerService.getJobs()
+fun Route.resumeScheduledJobsRoute() {
+    // Resume all scheduled jobs.
+    post("/resume") {
+        val state: JobScheduleStateChangeEntity = JobSchedulerService.resume()
 
         call.respondText(
-            text = Json.encodeToString(value = jobs),
+            text = Json.encodeToString(value = state),
             contentType = ContentType.Application.Json
         )
     }
