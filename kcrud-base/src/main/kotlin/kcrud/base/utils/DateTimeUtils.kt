@@ -10,6 +10,7 @@ package kcrud.base.utils
 
 import kotlinx.datetime.*
 import kotlinx.datetime.TimeZone
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.time.Duration
@@ -114,6 +115,17 @@ object DateTimeUtils {
         return JavaInstant.ofEpochMilli(
             System.currentTimeMillis() + this.toLong(unit = DurationUnit.MILLISECONDS)
         )
+    }
+
+    /**
+     * Converts a Java [Date] to a Kotlin [LocalDateTime].
+     */
+    fun javaDateToLocalDateTime(datetime: Date, zoneId: ZoneId = ZoneId.systemDefault()): KLocalDateTime {
+        val localDateTime: java.time.LocalDateTime = datetime.toInstant()
+            .atZone(zoneId)
+            .toLocalDateTime()
+
+        return localDateTime.toKotlinLocalDateTime()
     }
 
     /**

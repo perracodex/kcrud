@@ -14,6 +14,7 @@ import kcrud.base.scheduling.entity.JobScheduleStateChangeEntity
 import kcrud.base.scheduling.listener.KcrudJobListener
 import kcrud.base.scheduling.listener.KcrudTriggerListener
 import kcrud.base.settings.AppSettings
+import kcrud.base.utils.DateTimeUtils
 import org.quartz.*
 import org.quartz.Trigger.TriggerState
 import org.quartz.impl.StdSchedulerFactory
@@ -166,13 +167,17 @@ object JobSchedulerService {
      * @return A list of [JobScheduleEntity] objects representing the scheduled jobs.
      */
     fun getJobs(executing: Boolean = false): List<JobScheduleEntity> {
-        return if (executing) {
-            scheduler.currentlyExecutingJobs.map { createJobScheduleEntity(it.jobDetail) }
+        val jobList: List<JobScheduleEntity> = if (executing) {
+            scheduler.currentlyExecutingJobs.map { createJobScheduleEntity(jobDetail = it.jobDetail) }
         } else {
             scheduler.getJobKeys(GroupMatcher.anyGroup()).map { jobKey ->
-                createJobScheduleEntity(scheduler.getJobDetail(jobKey))
+                createJobScheduleEntity(jobDetail = scheduler.getJobDetail(jobKey))
             }
         }
+
+        // Sort the job list by nextFireTime.
+        // Jobs without a nextFireTime will be placed at the end of the list.
+        return jobList.sortedBy { it.nextFireTime }
     }
 
     /**
@@ -200,7 +205,7 @@ object JobSchedulerService {
             name = jobKey.name,
             group = jobKey.group,
             className = jobDetail.jobClass.simpleName,
-            nextFireTime = nextFireTime?.toString() ?: "Not scheduled",
+            nextFireTime = nextFireTime?.let { DateTimeUtils.javaDateToLocalDateTime(datetime = it) },
             state = mostRestrictiveState.name,
             isDurable = jobDetail.isDurable,
             shouldRecover = jobDetail.requestsRecovery(),
