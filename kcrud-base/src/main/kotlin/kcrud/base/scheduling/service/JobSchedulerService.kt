@@ -223,12 +223,38 @@ object JobSchedulerService {
     }
 
     /**
+     * Pauses a concrete job currently scheduled in the job scheduler.
+     *
+     * @param name The name of the job to pause.
+     * @param group The group of the job to pause.
+     * @return True if the job was paused, false otherwise.
+     */
+    fun pauseJob(name: String, group: String): Boolean {
+        return changeJobState(targetState = TriggerState.PAUSED) {
+            scheduler.pauseJob(JobKey.jobKey(name, group))
+        }.totalAffected > 0
+    }
+
+    /**
      * Resumes all jobs currently paused in the job scheduler.
      *
      * @return [JobScheduleStateChangeEntity] containing details of the operation.
      */
     fun resume(): JobScheduleStateChangeEntity {
         return changeJobState(targetState = TriggerState.NORMAL) { scheduler.resumeAll() }
+    }
+
+    /**
+     * Resumes a concrete job currently scheduled in the job scheduler.
+     *
+     * @param name The name of the job to resume.
+     * @param group The group of the job to resume.
+     * @return True if the job was resume, false otherwise.
+     */
+    fun resumeJob(name: String, group: String): Boolean {
+        return changeJobState(targetState = TriggerState.NORMAL) {
+            scheduler.resumeJob(JobKey.jobKey(name, group))
+        }.totalAffected > 0
     }
 
     /**

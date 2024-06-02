@@ -11,8 +11,10 @@ import kcrud.base.scheduling.routing.delete.deleteAllScheduledJobsRoute
 import kcrud.base.scheduling.routing.delete.deleteScheduledJobRoute
 import kcrud.base.scheduling.routing.get.getScheduledJobGroupRoute
 import kcrud.base.scheduling.routing.get.getScheduledJobsRoute
-import kcrud.base.scheduling.routing.state.pauseScheduledJobsRoute
-import kcrud.base.scheduling.routing.state.resumeScheduledJobsRoute
+import kcrud.base.scheduling.routing.state.pauseAllScheduledJobsRoute
+import kcrud.base.scheduling.routing.state.pauseScheduledJobRoute
+import kcrud.base.scheduling.routing.state.resumeAllScheduledJobsRoute
+import kcrud.base.scheduling.routing.state.resumeScheduledJobRoute
 import kcrud.base.scheduling.routing.view.schedulerDashboardRoute
 
 /**
@@ -29,7 +31,10 @@ fun Route.schedulerRoutes() {
         deleteScheduledJobRoute()
         deleteAllScheduledJobsRoute()
 
-        pauseScheduledJobsRoute()
-        resumeScheduledJobsRoute()
+        pauseAllScheduledJobsRoute()
+        pauseScheduledJobRoute()
+
+        resumeAllScheduledJobsRoute()
+        resumeScheduledJobRoute()
     }
 }

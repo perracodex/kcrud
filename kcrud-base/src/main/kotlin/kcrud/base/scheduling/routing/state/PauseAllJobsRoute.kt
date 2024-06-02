@@ -16,7 +16,7 @@ import kcrud.base.scheduling.service.JobSchedulerService
 /**
  * Pauses all scheduled jobs.
  */
-fun Route.pauseScheduledJobsRoute() {
+fun Route.pauseAllScheduledJobsRoute() {
     // Pauses all scheduled jobs.
     post("/pause") {
         val state: JobScheduleStateChangeEntity = JobSchedulerService.pause()

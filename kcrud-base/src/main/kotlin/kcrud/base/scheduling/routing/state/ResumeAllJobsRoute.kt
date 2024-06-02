@@ -16,7 +16,7 @@ import kcrud.base.scheduling.service.JobSchedulerService
 /**
  * Resume all scheduled jobs.
  */
-fun Route.resumeScheduledJobsRoute() {
+fun Route.resumeAllScheduledJobsRoute() {
     // Resume all scheduled jobs.
     post("/resume") {
         val state: JobScheduleStateChangeEntity = JobSchedulerService.resume()
