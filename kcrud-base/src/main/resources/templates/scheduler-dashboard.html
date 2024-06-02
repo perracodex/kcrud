@@ -1,0 +1,199 @@
+<!--
+ Copyright (c) 2024-Present Perracodex. All rights reserved.
+ This work is licensed under the terms of the MIT license.
+ For a copy, see <https://opensource.org/licenses/MIT>
+-->
+<!DOCTYPE html>
+<!--suppress ThymeleafVariablesResolveInspection -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scheduled Jobs</title>
+    <style>
+        body {
+            background-color: #1c1e26;
+            color: #d5d6db;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #336699;
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .buttons-container {
+            position: absolute;
+            top: 0;
+            right: 0;
+            margin-top: 20px;
+            margin-right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1fr 1fr auto;
+            padding: 10px;
+            border-radius: 6px;
+            align-items: center; /* Ensures items are centered vertically */
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1fr 1fr auto;
+            align-items: center; /* Ensures items are centered vertically */
+        }
+
+        .table-header {
+            background-color: #333648;
+            color: #649ee0;
+        }
+
+        .table-container {
+            background-color: #383a48;
+            margin-top: 6px;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        .table-container:hover {
+            border: 1px solid #649ee0;
+        }
+
+        .table-sub-row {
+            background-color: #484d60;
+            color: #cfd0d5;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 5px;
+        }
+
+        .table-header span, .table-row span {
+            text-align: left;
+            padding: 8px 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .table-sub-row span {
+            text-align: left;
+            padding: 8px 8px;
+            white-space: normal;
+            overflow: visible;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            white-space: nowrap; /* Prevents text from wrapping */
+            flex-shrink: 0; /* Prevents the button from shrinking */
+            height: 40px; /* Ensures consistent button height */
+        }
+
+        .refresh {
+            color: #ffffff;
+            background-color: #33632f;
+        }
+
+        .refresh:hover {
+            background-color: #2a5028;
+        }
+
+        .delete-records {
+            color: #ffffff;
+            background-color: #9b4656;
+        }
+
+        .delete-records:hover {
+            background-color: #732b38;
+        }
+
+        .table-row button {
+            background-color: #9b4656;
+            color: #ffffff;
+        }
+
+        .table-row button:hover {
+            background-color: #732b38;
+        }
+    </style>
+</head>
+<body>
+<h1>Scheduled Jobs</h1>
+<div class="buttons-container">
+    <button class="refresh" onclick="refreshPage()">Refresh</button>
+    <button class="delete-records" onclick="deleteAll()">Delete All</button>
+</div>
+<div class="table-header">
+    <span>Name</span>
+    <span>Group</span>
+    <span>Class Name</span>
+    <span>Next Fire Time</span>
+    <span>State</span>
+    <span>Durable</span>
+    <span>Should Recover</span>
+    <span>Action</span>
+</div>
+<div class="table-content">
+    <div th:each="item : ${data}" class="table-container">
+        <div class="table-row">
+            <span th:text="${item.name}">Job Name</span>
+            <span th:text="${item.group}">Job Group</span>
+            <span th:text="${item.className}">Class Name</span>
+            <span th:text="${item.nextFireTime}">Next Fire Time</span>
+            <span th:text="${item.state}">State</span>
+            <span th:text="${item.isDurable ? 'Yes' : 'No'}">Durable</span>
+            <span th:text="${item.shouldRecover ? 'Yes' : 'No'}">Should Recover</span>
+            <button th:attr="onclick='deleteRecord(\'' + ${item.name} + '\', \'' + ${item.group} + '\')'">Delete</button>
+        </div>
+        <div class="table-sub-row">
+            <span th:text="${item.dataMap}">Data Map Content</span>
+        </div>
+    </div>
+</div>
+<script>
+    function refreshPage() {
+        location.reload();
+    }
+
+    function deleteAll() {
+        fetch(`/scheduler/jobs`, {method: 'DELETE'})
+            .then(response => {
+                if (response.ok) {
+                    console.log('All records deleted successfully');
+                    window.location.reload();
+                } else {
+                    console.error('Failed to delete all records');
+                    alert("Failed to delete all records.");
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // noinspection JSUnusedGlobalSymbols
+    function deleteRecord(itemName, itemGroup) {
+        fetch(`/scheduler/jobs/${encodeURIComponent(itemName)}/${encodeURIComponent(itemGroup)}`, {method: 'DELETE'})
+            .then(response => {
+                if (response.ok) {
+                    console.log('Record deleted successfully');
+                    window.location.reload();
+                } else {
+                    console.error('Failed to delete record');
+                    alert("Failed to delete record.");
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
+</body>
+</html>

@@ -84,5 +84,7 @@ fun Application.kcrudModule() {
 
     configureJobScheduler()
 
+    configureThymeleaf()
+
     ApplicationsUtils.watchServer(environment = this.environment)
 }
