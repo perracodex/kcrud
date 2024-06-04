@@ -155,10 +155,10 @@ object SchedulerService {
      */
     fun getTasks(executing: Boolean = false): List<TaskScheduleEntity> {
         val taskList: List<TaskScheduleEntity> = if (executing) {
-            scheduler.currentlyExecutingJobs.map { createTaskScheduleEntity(taskDetail = it.jobDetail) }
+            scheduler.currentlyExecutingJobs.map { task -> createTaskScheduleEntity(taskDetail = task.jobDetail) }
         } else {
-            scheduler.getJobKeys(GroupMatcher.anyGroup()).map { jobKey ->
-                createTaskScheduleEntity(taskDetail = scheduler.getJobDetail(jobKey))
+            scheduler.getJobKeys(GroupMatcher.anyGroup()).mapNotNull { jobKey ->
+                scheduler.getJobDetail(jobKey)?.let { detail -> createTaskScheduleEntity(taskDetail = detail) }
             }
         }
 
