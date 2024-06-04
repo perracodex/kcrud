@@ -1,7 +1,5 @@
 /*
- * Copyright (c) 2024-Present Perracodex. All rights reserved.
- * This work is licensed under the terms of the MIT license.
- * For a copy, see <https://opensource.org/licenses/MIT>
+ * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
 package kcrud.base.settings.config.sections.security.sections
@@ -13,11 +11,13 @@ import kotlinx.serialization.Serializable
  * Security constraints settings.
  *
  * @property publicApi Rate limit specification for the Public API endpoints.
+ * @property privateApi Rate limit specification for the Private API endpoints.
  * @property newToken Rate limit specification for the New Authentication Token generation endpoint.
  */
 @Serializable
 data class ConstraintsSettings(
     val publicApi: LimitSpec,
+    val privateApi: LimitSpec,
     val newToken: LimitSpec
 ) : IConfigSection {
 

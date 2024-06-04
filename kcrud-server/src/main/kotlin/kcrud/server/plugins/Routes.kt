@@ -1,7 +1,5 @@
 /*
- * Copyright (c) 2023-Present Perracodex. All rights reserved.
- * This work is licensed under the terms of the MIT license.
- * For a copy, see <https://opensource.org/licenses/MIT>
+ * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
 package kcrud.server.plugins
@@ -16,7 +14,7 @@ import kcrud.access.token.accessTokenRoute
 import kcrud.base.env.SessionContext
 import kcrud.base.env.health.routing.healthCheckRoute
 import kcrud.base.plugins.RateLimitScope
-import kcrud.base.scheduling.routing.schedulerRoutes
+import kcrud.base.scheduler.routing.schedulerRoutes
 import kcrud.base.security.snowflake.snowflakeRoute
 import kcrud.base.settings.AppSettings
 import kcrud.domain.employee.routing.employeeRoute

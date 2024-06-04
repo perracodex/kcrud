@@ -1,7 +1,5 @@
 /*
- * Copyright (c) 2023-Present Perracodex. All rights reserved.
- * This work is licensed under the terms of the MIT license.
- * For a copy, see <https://opensource.org/licenses/MIT>
+ * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
 package kcrud.base.plugins
@@ -35,7 +33,7 @@ import kotlin.time.Duration.Companion.milliseconds
 fun Application.configureRateLimit() {
 
     install(plugin = RateLimit) {
-        // Example scope for the public API rate limit.
+        // Register the public API rate limit.
         register(RateLimitName(name = RateLimitScope.PUBLIC_API.key)) {
             rateLimiter(
                 limit = AppSettings.security.constraints.publicApi.limit,
@@ -43,7 +41,15 @@ fun Application.configureRateLimit() {
             )
         }
 
-        // Example scope for new token generation rate limit.
+        // Register the private API rate limit.
+        register(RateLimitName(name = RateLimitScope.PRIVATE_API.key)) {
+            rateLimiter(
+                limit = AppSettings.security.constraints.privateApi.limit,
+                refillPeriod = AppSettings.security.constraints.privateApi.refillMs.milliseconds
+            )
+        }
+
+        // Register the token generation rate limit.
         register(RateLimitName(name = RateLimitScope.NEW_AUTH_TOKEN.key)) {
             rateLimiter(
                 limit = AppSettings.security.constraints.newToken.limit,
@@ -63,5 +69,8 @@ enum class RateLimitScope(val key: String) {
     NEW_AUTH_TOKEN(key = "new_auth_token"),
 
     /** Scope key for the public API. */
-    PUBLIC_API(key = "public_api")
+    PUBLIC_API(key = "public_api"),
+
+    /** Scope key for the private API. */
+    PRIVATE_API(key = "private_api")
 }

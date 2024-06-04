@@ -1,7 +1,5 @@
 /*
- * Copyright (c) 2024-Present Perracodex. All rights reserved.
- * This work is licensed under the terms of the MIT license.
- * For a copy, see <https://opensource.org/licenses/MIT>
+ * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
 package kcrud.base.database.service
@@ -201,12 +199,20 @@ object DatabaseService {
     }
 
     /**
-     * Builds the database location directory.
+     * Builds the database location directory if the database is a local file.
      */
     private fun buildDatabase(settings: DatabaseSettings) {
-        val currentWorkingPath: Path = Paths.get("").toAbsolutePath()
-        val targetPath: Path = currentWorkingPath.resolve(settings.path)
-        Files.createDirectories(targetPath)
+        if (settings.path.isBlank()) {
+            throw IllegalArgumentException("Database path is required.")
+        }
+
+        if (settings.isLocalFile) {
+            val currentWorkingPath: Path = Paths.get("").toAbsolutePath()
+            val targetPath: Path = currentWorkingPath.resolve(settings.path)
+            Files.createDirectories(targetPath)
+        } else {
+            tracer.debug("Database is not a local file. Path: ${settings.path}")
+        }
     }
 
     /**

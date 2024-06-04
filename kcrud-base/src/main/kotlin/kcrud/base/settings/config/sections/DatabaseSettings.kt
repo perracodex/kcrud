@@ -1,7 +1,5 @@
 /*
- * Copyright (c) 2024-Present Perracodex. All rights reserved.
- * This work is licensed under the terms of the MIT license.
- * For a copy, see <https://opensource.org/licenses/MIT>
+ * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
 package kcrud.base.settings.config.sections
@@ -15,6 +13,7 @@ import kotlinx.serialization.Serializable
  *
  * @property name The name of the database.
  * @property path The database file location.
+ * @property isLocalFile Whether the database is a local file, for example an H2 embedded database.
  * @property jdbcUrl The JDBC url database connection.
  * @property jdbcDriver The JDBC driver class name.
  * @property transactionMaxAttempts Max retries inside a transaction if a SQLException happens. Overridable per-transaction level.
@@ -32,6 +31,7 @@ import kotlinx.serialization.Serializable
 data class DatabaseSettings(
     val name: String,
     val path: String,
+    val isLocalFile: Boolean,
     val jdbcUrl: String,
     val jdbcDriver: String,
     val transactionMaxAttempts: Int,

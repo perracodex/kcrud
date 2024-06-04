@@ -1,15 +1,11 @@
-<!--
- Copyright (c) 2024-Present Perracodex. All rights reserved.
- This work is licensed under the terms of the MIT license.
- For a copy, see <https://opensource.org/licenses/MIT>
--->
+<!-- Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license -->
 <!DOCTYPE html>
 <!--suppress ThymeleafVariablesResolveInspection -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scheduled Jobs</title>
+    <title>Task Scheduler</title>
     <style>
         body {
             background-color: #1c1e26;
@@ -160,13 +156,13 @@
 </head>
 <body>
 <div>
-    <h1>Scheduled Jobs</h1>
+    <h1>Scheduled Tasks</h1>
 </div>
 <div class="buttons-container">
     <div class="left-buttons">
-        <button class="refresh" onclick="refreshPage()">Refresh</button>
-        <button class="pause" onclick="pause()">Pause All</button>
-        <button class="resume" onclick="resume()">Resume All</button>
+        <button class="refresh" onclick="refreshPage()">Refresh Tasks</button>
+        <button class="pause" onclick="pause()">Pause Scheduler</button>
+        <button class="resume" onclick="resume()">Resume Scheduler</button>
     </div>
     <button class="delete" onclick="deleteAll()">Delete All</button>
 </div>
@@ -183,8 +179,8 @@
 <div class="table-content">
     <div th:each="item : ${data}" class="table-container">
         <div class="table-row">
-            <span th:text="${item.name}">Job Name</span>
-            <span th:text="${item.group}">Job Group</span>
+            <span th:text="${item.name}">Task Name</span>
+            <span th:text="${item.group}">Task Group</span>
             <span th:text="${item.className}">Class Name</span>
             <span th:text="${item.nextFireTime}">Next Fire Time</span>
             <span th:text="${item.state}">State</span>
@@ -215,7 +211,7 @@
     }
 
     function pause() {
-        fetch(`/scheduler/jobs/pause`, {method: 'POST'})
+        fetch(`/scheduler/tasks/pause`, {method: 'POST'})
             .then(response => {
                 if (response.ok) {
                     console.log('Scheduler paused successfully');
@@ -229,7 +225,7 @@
     }
 
     function resume() {
-        fetch(`/scheduler/jobs/resume`, {method: 'POST'})
+        fetch(`/scheduler/tasks/resume`, {method: 'POST'})
             .then(response => {
                 if (response.ok) {
                     console.log('Scheduler resumed successfully');
@@ -243,7 +239,7 @@
     }
 
     function deleteAll() {
-        fetch(`/scheduler/jobs`, {method: 'DELETE'})
+        fetch(`/scheduler/tasks`, {method: 'DELETE'})
             .then(response => {
                 if (response.ok) {
                     console.log('All records deleted successfully');
@@ -258,14 +254,14 @@
 
     // noinspection JSUnusedGlobalSymbols
     function togglePauseResume(action, itemName, itemGroup) {
-        fetch(`/scheduler/jobs/${action}/${encodeURIComponent(itemName)}/${encodeURIComponent(itemGroup)}`, {method: 'POST'})
+        fetch(`/scheduler/tasks/${action}/${encodeURIComponent(itemName)}/${encodeURIComponent(itemGroup)}`, {method: 'POST'})
             .then(response => {
                 if (response.ok) {
-                    console.log('Job paused successfully');
+                    console.log('Task paused successfully');
                     window.location.reload();
                 } else {
-                    console.error('Failed to pause job');
-                    alert("Failed to pause job.");
+                    console.error('Failed to pause task');
+                    alert("Failed to pause task.");
                 }
             })
             .catch(error => console.error('Error:', error));
@@ -273,7 +269,7 @@
 
     // noinspection JSUnusedGlobalSymbols
     function deleteRecord(itemName, itemGroup) {
-        fetch(`/scheduler/jobs/${encodeURIComponent(itemName)}/${encodeURIComponent(itemGroup)}`, {method: 'DELETE'})
+        fetch(`/scheduler/tasks/${encodeURIComponent(itemName)}/${encodeURIComponent(itemGroup)}`, {method: 'DELETE'})
             .then(response => {
                 if (response.ok) {
                     console.log('Record deleted successfully');

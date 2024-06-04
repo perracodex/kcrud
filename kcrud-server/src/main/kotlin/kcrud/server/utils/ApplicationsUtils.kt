@@ -1,7 +1,5 @@
 /*
- * Copyright (c) 2024-Present Perracodex. All rights reserved.
- * This work is licensed under the terms of the MIT license.
- * For a copy, see <https://opensource.org/licenses/MIT>
+ * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
 package kcrud.server.utils
@@ -56,7 +54,7 @@ internal object ApplicationsUtils {
             NetworkUtils.logEndpoints(reason = "Healthcheck", endpoints = listOf("health"))
             NetworkUtils.logEndpoints(reason = "Snowflake", endpoints = listOf("snowflake/${SnowflakeFactory.nextId()}"))
             NetworkUtils.logEndpoints(reason = "RBAC", endpoints = listOf("rbac/login"))
-            NetworkUtils.logEndpoints(reason = "Scheduled Jobs", endpoints = listOf("scheduler/jobs/dashboard"))
+            NetworkUtils.logEndpoints(reason = "Scheduler", endpoints = listOf("scheduler/tasks/dashboard"))
             NetworkUtils.logEndpoints(reason = "Micrometer Metrics", endpoints = listOf("metrics"))
             NetworkUtils.logEndpoints(
                 reason = "Swagger, Redoc, OpenApi",

@@ -1,13 +1,12 @@
 /*
- * Copyright (c) 2024-Present Perracodex. All rights reserved.
- * This work is licensed under the terms of the MIT license.
- * For a copy, see <https://opensource.org/licenses/MIT>
+ * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
 package kcrud.base.env.health.checks
 
 import kcrud.base.env.health.annotation.HealthCheckAPI
 import kcrud.base.settings.AppSettings
+import kcrud.base.settings.config.sections.security.sections.ConstraintsSettings.LimitSpec
 import kotlinx.serialization.Serializable
 
 /**
@@ -16,10 +15,9 @@ import kotlinx.serialization.Serializable
  * @property errors List of errors found during the health check.
  * @property isEnabled Flag indicating if security (JWT, Basic, etc.) is enabled, if not, the application is not secure.
  * @property useSecureConnection Flag indicating if secure connections are used.
- * @property publicApiRateLimit Rate limit specification for the public API endpoints.
- * @property publicApiRateRefillMs The rate refill time for public API endpoints, in milliseconds
- * @property newTokenRateLimit Rate limit specification for the New Authentication Token generation endpoint.
- * @property newTokenRateRefillMs The rate refill time for the New Authentication Token generation endpoint, in milliseconds.
+ * @property publicApi The rate limit specification for public API endpoints.
+ * @property privateApi The rate limit specification for private API endpoints.
+ * @property newToken The rate limit specification for the new authentication token generation endpoint.
  */
 @HealthCheckAPI
 @Serializable
@@ -27,19 +25,17 @@ data class SecurityCheck(
     val errors: MutableList<String>,
     val isEnabled: Boolean,
     val useSecureConnection: Boolean,
-    val publicApiRateLimit: Int,
-    val publicApiRateRefillMs: Long,
-    val newTokenRateLimit: Int,
-    val newTokenRateRefillMs: Long,
+    val publicApi: LimitSpec,
+    val privateApi: LimitSpec,
+    val newToken: LimitSpec,
 ) {
     constructor() : this(
         errors = mutableListOf(),
         isEnabled = AppSettings.security.isEnabled,
         useSecureConnection = AppSettings.security.useSecureConnection,
-        publicApiRateLimit = AppSettings.security.constraints.publicApi.limit,
-        publicApiRateRefillMs = AppSettings.security.constraints.publicApi.refillMs,
-        newTokenRateLimit = AppSettings.security.constraints.newToken.limit,
-        newTokenRateRefillMs = AppSettings.security.constraints.newToken.refillMs
+        publicApi = AppSettings.security.constraints.publicApi,
+        privateApi = AppSettings.security.constraints.privateApi,
+        newToken = AppSettings.security.constraints.newToken
     ) {
         if (!isEnabled) {
             errors.add("${this::class.simpleName}. Security is disabled.")
