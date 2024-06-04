@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
  * @property reason An optional human-readable reason for the exception, providing more context.
  * @param cause The underlying cause of the exception, if any.
  */
-class KcrudException(
+class AppException(
     val error: BaseError,
     private val reason: String? = null,
     cause: Throwable? = null

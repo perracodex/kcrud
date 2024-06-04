@@ -19,12 +19,12 @@ abstract class BaseError(
     val description: String
 ) {
     /**
-     * Throw a [KcrudException].
+     * Throw a [AppException].
      *
      * @param reason An optional human-readable reason for the error, providing more context.
      * @param cause An optional underlying cause of the error, if any.
      */
     fun raise(reason: String? = null, cause: Throwable? = null): Nothing {
-        throw KcrudException(error = this, reason = reason, cause = cause)
+        throw AppException(error = this, reason = reason, cause = cause)
     }
 }

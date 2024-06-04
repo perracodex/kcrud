@@ -25,6 +25,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class ContactRequest(
-    val email: EmailString,
+    val email: String,
     val phone: String
 )

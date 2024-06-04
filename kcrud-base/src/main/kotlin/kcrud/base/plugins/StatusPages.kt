@@ -10,7 +10,7 @@ import io.ktor.server.plugins.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
 import kcrud.base.env.Tracer
-import kcrud.base.errors.KcrudException
+import kcrud.base.errors.AppException
 import kcrud.base.settings.AppSettings
 import kotlinx.serialization.json.Json
 
@@ -33,7 +33,7 @@ private fun StatusPagesConfig.setup() {
     val tracer = Tracer<Application>()
 
     // Custom application exceptions.
-    exception<KcrudException> { call: ApplicationCall, cause ->
+    exception<AppException> { call: ApplicationCall, cause ->
         tracer.error(message = cause.messageDetail(), throwable = cause)
         call.respondError(cause = cause)
     }
@@ -82,13 +82,13 @@ private fun StatusPagesConfig.setup() {
 /**
  * Used to notify custom exceptions to the client.
  */
-private suspend fun ApplicationCall.respondError(cause: KcrudException) {
+private suspend fun ApplicationCall.respondError(cause: AppException) {
     // Set the ETag header with the error code.
     this.response.header(name = HttpHeaders.ETag, value = cause.error.code)
 
     // Serialize the error response.
     val json: String = Json.encodeToString(
-        serializer = KcrudException.ErrorResponse.serializer(),
+        serializer = AppException.ErrorResponse.serializer(),
         value = cause.toErrorResponse()
     )
 

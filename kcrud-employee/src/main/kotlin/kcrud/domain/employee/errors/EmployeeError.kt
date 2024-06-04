@@ -34,7 +34,7 @@ sealed class EmployeeError(
     )
 
     /**
-     * Error for when an employee is already registered.
+     * Error for when an email has an invalid format.
      *
      * @property employeeId The affected employee id.
      * @property email The email that is already registered.
@@ -46,7 +46,7 @@ sealed class EmployeeError(
     )
 
     /**
-     * Error for when an employee phone has an invalid format.
+     * Error for when a phone has an invalid format.
      *
      * @property employeeId The affected employee id.
      * @property phone The phone value with the invalid format.
