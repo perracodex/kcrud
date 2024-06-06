@@ -53,17 +53,23 @@ internal object ApplicationsUtils {
             NetworkUtils.logEndpoints(reason = "Demo", endpoints = listOf("demo"))
             NetworkUtils.logEndpoints(reason = "Healthcheck", endpoints = listOf("health"))
             NetworkUtils.logEndpoints(reason = "Snowflake", endpoints = listOf("snowflake/${SnowflakeFactory.nextId()}"))
-            NetworkUtils.logEndpoints(reason = "RBAC", endpoints = listOf("rbac/login"))
             NetworkUtils.logEndpoints(reason = "Scheduler", endpoints = listOf("scheduler/tasks/dashboard"))
             NetworkUtils.logEndpoints(reason = "Micrometer Metrics", endpoints = listOf("metrics"))
-            NetworkUtils.logEndpoints(
-                reason = "Swagger, Redoc, OpenApi",
-                endpoints = listOf(
-                    AppSettings.apiSchema.swaggerEndpoint,
-                    AppSettings.apiSchema.redocEndpoint,
-                    AppSettings.apiSchema.openApiEndpoint,
+
+            if (AppSettings.security.rbac.isEnabled) {
+                NetworkUtils.logEndpoints(reason = "RBAC", endpoints = listOf("rbac/login"))
+            }
+
+            if (AppSettings.apiSchema.environments.contains(AppSettings.runtime.environment)) {
+                NetworkUtils.logEndpoints(
+                    reason = "Swagger, Redoc, OpenApi",
+                    endpoints = listOf(
+                        AppSettings.apiSchema.swaggerEndpoint,
+                        AppSettings.apiSchema.redocEndpoint,
+                        AppSettings.apiSchema.openApiEndpoint,
+                    )
                 )
-            )
+            }
 
             // Log the server readiness.
             tracer.withSeverity("Development Mode Enabled: ${environment.developmentMode}.")
