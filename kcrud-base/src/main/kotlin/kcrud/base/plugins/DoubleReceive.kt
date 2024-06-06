@@ -7,6 +7,7 @@ package kcrud.base.plugins
 import io.ktor.server.application.*
 import io.ktor.server.plugins.doublereceive.*
 import io.ktor.server.request.*
+import kcrud.base.env.Tracer
 import kcrud.base.settings.AppSettings
 
 /**
@@ -26,9 +27,11 @@ import kcrud.base.settings.AppSettings
  * See: [DoubleReceive](https://ktor.io/docs/server-double-receive.html).
  */
 fun Application.configureDoubleReceive() {
-    if (!AppSettings.runtime.doubleReceive) {
+    if (!AppSettings.runtime.doubleReceiveEnvironments.contains(AppSettings.runtime.environment)) {
         return
     }
+
+    Tracer(ref = Application::configureCors).debug("Configuring DoubleReceive plugin.")
 
     install(plugin = DoubleReceive) {
         cacheRawRequest = true

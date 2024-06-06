@@ -13,13 +13,13 @@ import kotlinx.serialization.Serializable
  *
  * @property machineId The unique machine ID. Used for generating unique IDs for call traceability.
  * @property environment The environment type. Not to be confused with the development mode flag.
- * @property doubleReceive Whether to enable the DoubleReceive plugin.
+ * @property doubleReceiveEnvironments The list of environments where the double receive plugin is enabled.
  * @property workingDir The working directory where files are stored.
  */
 @Serializable
 data class RuntimeSettings(
     val machineId: Int,
     val environment: EnvironmentType,
-    val doubleReceive: Boolean,
+    val doubleReceiveEnvironments: List<EnvironmentType>,
     val workingDir: String
 ) : IConfigSection
