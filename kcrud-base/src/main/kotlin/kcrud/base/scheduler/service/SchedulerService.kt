@@ -19,6 +19,9 @@ import org.quartz.impl.StdSchedulerFactory
 import org.quartz.impl.matchers.GroupMatcher
 import java.io.InputStream
 import java.util.*
+import kotlin.time.Duration
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 /**
  * Configures the task scheduler for scheduling tasks.
@@ -188,14 +191,24 @@ object SchedulerService {
             else -> TriggerState.NORMAL  // Assuming NORMAL as default if no other states are found.
         }
 
+        // Resolve the interval metrics.
+        val (interval, runs) = triggers.firstOrNull()?.let { trigger ->
+            if (trigger is SimpleTrigger) {
+                val repeatInterval: Duration = trigger.repeatInterval.toDuration(DurationUnit.MILLISECONDS)
+                DateTimeUtils.formatDuration(duration = repeatInterval) to trigger.timesTriggered
+            } else {
+                null to null
+            }
+        } ?: (null to null)
+
         return TaskScheduleEntity(
             name = jobKey.name,
             group = jobKey.group,
             className = taskDetail.jobClass.simpleName,
             nextFireTime = nextFireTime?.let { DateTimeUtils.javaDateToLocalDateTime(datetime = it) },
             state = mostRestrictiveState.name,
-            isDurable = taskDetail.isDurable,
-            shouldRecover = taskDetail.requestsRecovery(),
+            interval = interval,
+            runs = runs ?: 0,
             dataMap = taskDetail.jobDataMap.toList().toString(),
         )
     }

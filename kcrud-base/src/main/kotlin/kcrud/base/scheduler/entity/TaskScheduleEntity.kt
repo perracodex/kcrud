@@ -15,8 +15,8 @@ import kotlinx.serialization.Serializable
  * @property className the instance of task that is executed.
  * @property nextFireTime The next time the task is scheduled to be executed. Or null if it is not scheduled.
  * @property state The state of the task, eg: 'PAUSED', 'NORMAL', etc.
- * @property isDurable Whether the task should remain stored after it is orphaned (no Triggers point to it).
- * @property shouldRecover Whether the task should be re-executed if a 'recovery' or 'fail-over' situation is encountered.
+ * @property interval The interval at which the task should repeat.
+ * @property runs The number of times the task has been triggered.
  * @property dataMap Concrete state information for a Task instance.
  */
 @Serializable
@@ -26,7 +26,7 @@ data class TaskScheduleEntity(
     val className: String,
     val nextFireTime: KLocalDateTime?,
     val state: String,
-    val isDurable: Boolean,
-    val shouldRecover: Boolean,
+    val interval: String?,
+    val runs: Int,
     val dataMap: String,
 )

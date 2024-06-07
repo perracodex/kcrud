@@ -16,15 +16,13 @@ import java.util.*
  *
  * @property taskClass The class of the task to be scheduled.
  * @property startAt The time at which the task should start.
- * @property repeatIntervalInSeconds The interval at which the task should repeat.
- * @property repeatCount The number of times the task should repeat.
+ * @property interval Optional interval at which the task should repeat. In Minutes.
  * @property parameters Optional parameters to be passed to the task class.
  */
 data class SchedulerRequest(
     var taskClass: Class<out SchedulerTask>,
     var startAt: TaskStartAt = TaskStartAt.Immediate,
-    var repeatIntervalInSeconds: Int? = null,
-    var repeatCount: Int? = null,
+    var interval: UInt? = null,
     var parameters: Map<String, Any> = emptyMap()
 ) {
     companion object {
@@ -71,14 +69,14 @@ data class SchedulerRequest(
             val scheduleBuilder: SimpleScheduleBuilder = SimpleScheduleBuilder.simpleSchedule()
                 .withMisfireHandlingInstructionFireNow()
 
-            // Apply repeat interval and count if specified.
-            // If repeat count is null, set to repeat forever.
-            config.repeatIntervalInSeconds?.let { repeatIntervalInSeconds ->
-                scheduleBuilder.withIntervalInSeconds(repeatIntervalInSeconds)
-                config.repeatCount?.let { repeatCount ->
-                    scheduleBuilder.withRepeatCount(repeatCount)
-                } ?: scheduleBuilder.repeatForever()
+            // Apply repeat interval at which the task should repeat.
+            config.interval?.let { interval ->
+                scheduleBuilder.withIntervalInMinutes(interval.toInt())
+                scheduleBuilder.repeatForever()
             }
+
+            // When misfired reschedule to the next possible time.
+            scheduleBuilder.withMisfireHandlingInstructionNextWithExistingCount()
 
             // Build the trigger with the schedule
             val trigger: SimpleTrigger = triggerBuilder.withSchedule(scheduleBuilder).build() as SimpleTrigger

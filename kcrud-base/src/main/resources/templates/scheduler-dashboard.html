@@ -1,6 +1,4 @@
-<!-- Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license -->
 <!DOCTYPE html>
-<!--suppress ThymeleafVariablesResolveInspection -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -34,29 +32,29 @@
             gap: 10px;
         }
 
-        .table-header {
+        .table-header,
+        .table-row {
             display: grid;
-            grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1fr 1fr auto;
+            grid-template-columns: 1.5fr 1.5fr 1fr 1.25fr 0.5fr 0.7fr 0.5fr 0.5fr;
+            font-size: 0.9em;
+            align-items: center;
+        }
+
+        .table-header {
             padding: 10px;
             border-radius: 6px;
-            align-items: center; /* Ensures items are centered vertically */
+            margin-top: 9px;
+            background-color: #333648;
+            color: #649ee0;
         }
 
         .table-row {
-            display: grid;
-            grid-template-columns: 2fr 2fr 1fr 1fr 1fr 1fr 1fr auto;
-            align-items: center; /* Ensures items are centered vertically */
-        }
-
-        .table-header {
-            background-color: #333648;
-            color: #649ee0;
+            padding: 10px;
         }
 
         .table-container {
             background-color: #383a48;
             margin-top: 6px;
-            padding: 10px;
             border-radius: 6px;
             border: 1px solid transparent;
         }
@@ -73,9 +71,10 @@
             margin-top: 5px;
         }
 
-        .table-header span, .table-row span {
+        .table-header span,
+        .table-row span {
             text-align: left;
-            padding: 8px 8px;
+            padding: 8px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -83,7 +82,7 @@
 
         .table-sub-row span {
             text-align: left;
-            padding: 8px 8px;
+            padding: 8px;
             white-space: normal;
             overflow: visible;
         }
@@ -94,9 +93,9 @@
             border-radius: 6px;
             cursor: pointer;
             transition: background-color 0.3s;
-            white-space: nowrap; /* Prevents text from wrapping */
-            flex-shrink: 0; /* Prevents the button from shrinking */
-            height: 40px; /* Ensures consistent button height */
+            white-space: nowrap;
+            flex-shrink: 0;
+            height: 40px;
         }
 
         .refresh {
@@ -172,8 +171,8 @@
     <span>Class Name</span>
     <span>Next Fire Time</span>
     <span>State</span>
-    <span>Durable</span>
-    <span>Should Recover</span>
+    <span>Interval</span>
+    <span>Runs</span>
     <span>Action</span>
 </div>
 <div class="table-content">
@@ -184,8 +183,8 @@
             <span th:text="${item.className}">Class Name</span>
             <span th:text="${item.nextFireTime}">Next Fire Time</span>
             <span th:text="${item.state}">State</span>
-            <span th:text="${item.isDurable ? 'Yes' : 'No'}">Durable</span>
-            <span th:text="${item.shouldRecover ? 'Yes' : 'No'}">Should Recover</span>
+            <span th:text="${item.interval}">Interval</span>
+            <span th:text="${item.runs}">runs</span>
             <div>
                 <button class="icon-button"
                         th:attr="onclick='togglePauseResume(\'' + ${item.name} + '\', \'' + ${item.group} + '\', \'' + (${item.state} == 'PAUSED' ? 'resume' : 'pause') + '\')'"

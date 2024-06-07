@@ -155,4 +155,19 @@ object DateTimeUtils {
             nanosecond = 999999999
         )
     }
+
+    /**
+     * Converts the given [Duration] to a human-readable format.
+     */
+    fun formatDuration(duration: Duration): String {
+        val days: Long = duration.inWholeDays
+        val hours: Long = duration.inWholeHours % 24
+        val minutes: Long = duration.inWholeMinutes % 60
+
+        return when {
+            days > 0 -> "${days}d ${hours}h ${minutes}m"
+            hours > 0 -> "${hours}h ${minutes}m"
+            else -> "${minutes}m"
+        }
+    }
 }
