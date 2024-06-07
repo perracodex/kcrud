@@ -13,84 +13,155 @@ import org.quartz.*
 import java.util.*
 
 /**
- * Data class to build a new task schedule request.
+ * Class to send a scheduling request for a task.
+ * It supports both simple intervals and cron-based scheduling.
  *
+ * @property taskId The ID of the task to be scheduled.
  * @property taskClass The class of the task to be scheduled.
- * @property startAt The time at which the task should start.
- * @property interval Optional interval at which the task should repeat.
+ * @property startAt Specifies when the task should start. Defaults to immediate execution.
  * @property parameters Optional parameters to be passed to the task class.
  */
-data class SchedulerRequest(
-    var taskClass: Class<out SchedulerTask>,
+@Suppress("MemberVisibilityCanBePrivate", "unused")
+class SchedulerRequest(
+    val taskId: SUUID,
+    val taskClass: Class<out SchedulerTask>,
     var startAt: TaskStartAt = TaskStartAt.Immediate,
-    var interval: DateTimeUtils.Interval? = null,
     var parameters: Map<String, Any> = emptyMap()
 ) {
-    companion object {
-        /**
-         * Creates a new task schedule request.
-         *
-         * @param taskId The ID of the task to be scheduled.
-         * @param taskClass The class of the task to be scheduled.
-         * @param configuration The configuration for the task schedule request.
-         * @return The [JobKey] of the scheduled task.
-         */
-        fun send(taskId: SUUID, taskClass: Class<out SchedulerTask>, configuration: SchedulerRequest.() -> Unit): JobKey {
-            val snowflake: String = SnowflakeFactory.nextId()
-            val taskName = "task-${snowflake}-${System.nanoTime()}"
-            val groupName: String = taskId.toString()
+    /**
+     * Schedule the task to be executed immediately or at a specified [startAt] time.
+     */
+    fun send(): JobKey {
+        val job: BasicJob = buildJob()
 
-            val config: SchedulerRequest = SchedulerRequest(
-                taskClass = taskClass
-            ).apply(configuration)
+        // Define the schedule builder and set misfire instructions to
+        // handle cases where the trigger misses its scheduled time,
+        // in which case the task will be executed immediately.
+        val scheduleBuilder: SimpleScheduleBuilder = SimpleScheduleBuilder.simpleSchedule()
+            .withMisfireHandlingInstructionFireNow()
 
-            val jobKey: JobKey = JobKey.jobKey(taskName, groupName)
-            val jobDataMap = JobDataMap(config.parameters)
+        // Send the task to the scheduler.
+        val trigger: SimpleTrigger = job.triggerBuilder.withSchedule(scheduleBuilder).build()
+        SchedulerService.newTask(task = job.jobDetail, trigger = trigger)
 
-            val jobDetail: JobDetail = JobBuilder
-                .newJob(config.taskClass)
-                .withIdentity(jobKey)
-                .usingJobData(jobDataMap)
-                .build()
+        return job.jobKey
+    }
 
-            // Set the trigger name and start time based on task start configuration.
-            val triggerBuilder: TriggerBuilder<Trigger> = TriggerBuilder.newTrigger()
-                .withIdentity("${taskName}-trigger", groupName)
-                .apply {
-                    when (val startDateTime: TaskStartAt = config.startAt) {
-                        is TaskStartAt.Immediate -> startNow()
-                        is TaskStartAt.AtDateTime -> startDateTime.datetime.toJavaDate().let { startAt(it) }
-                        is TaskStartAt.AfterDuration -> startDateTime.duration.toJavaInstant().let { startAt(Date.from((it))) }
-                    }
-                }
+    /**
+     * Schedule the task to be repeated at specified intervals.
+     *
+     * @param interval The interval at which the task should be repeated.
+     */
+    fun send(interval: DateTimeUtils.Interval): JobKey {
+        val job: BasicJob = buildJob()
 
-            // Define the schedule builder and set misfire instructions to
-            // handle cases where the trigger misses its scheduled time,
-            // in which case the task will be executed immediately.
-            val scheduleBuilder: SimpleScheduleBuilder = SimpleScheduleBuilder.simpleSchedule()
-                .withMisfireHandlingInstructionFireNow()
+        // Define the schedule builder and set misfire instructions to
+        // handle cases where the trigger misses its scheduled time,
+        // in which case the task will be executed immediately.
+        val scheduleBuilder: SimpleScheduleBuilder = SimpleScheduleBuilder.simpleSchedule()
+            .withMisfireHandlingInstructionFireNow()
 
-            // Apply repeat interval at which the task should repeat.
-            // Apply repeat interval at which the task should repeat.
-            config.interval?.let { interval ->
-                val intervalInMinutes: UInt = interval.toTotalMinutes()
-                if (intervalInMinutes > 0u) {
-                    scheduleBuilder.withIntervalInMinutes(intervalInMinutes.toInt())
-                    scheduleBuilder.repeatForever()
-                }
-
-                // When misfired reschedule to the next possible time. Only if the interval is set.
-                scheduleBuilder.withMisfireHandlingInstructionNextWithExistingCount()
+        // Apply repeat interval at which the task should repeat.
+        interval.let {
+            val intervalInMinutes: UInt = it.toTotalMinutes()
+            if (intervalInMinutes > 0u) {
+                scheduleBuilder.withIntervalInMinutes(intervalInMinutes.toInt())
+                scheduleBuilder.repeatForever()
             }
 
-            // When misfired reschedule to the next possible time.
+            // When misfired reschedule to the next possible time. Only if the interval is set.
             scheduleBuilder.withMisfireHandlingInstructionNextWithExistingCount()
-
-            // Build the trigger with the schedule
-            val trigger: SimpleTrigger = triggerBuilder.withSchedule(scheduleBuilder).build() as SimpleTrigger
-            SchedulerService.newTask(task = jobDetail, trigger = trigger)
-
-            return jobKey
         }
+
+        // Send the task to the scheduler.
+        val trigger: SimpleTrigger = job.triggerBuilder.withSchedule(scheduleBuilder).build()
+        SchedulerService.newTask(task = job.jobDetail, trigger = trigger)
+
+        return job.jobKey
     }
+
+    /**
+     * Schedule the task to be executed at a specified cron expression.
+     *
+     * The cron expression is composed of the following fields:
+     * ```
+     * ┌───────────── second (0-59)
+     * │ ┌───────────── minute (0-59)
+     * │ │ ┌───────────── hour (0-23)
+     * │ │ │ ┌───────────── day of month (1-31)
+     * │ │ │ │ ┌───────────── month (1-12 or JAN-DEC)
+     * │ │ │ │ │ ┌───────────── day of week (0-7, SUN-SAT. Both 0 & 7 = Sunday)
+     * │ │ │ │ │ │ ┌───────────── year (optional)
+     * │ │ │ │ │ │ │
+     * │ │ │ │ │ │ │
+     * * * * * * * *
+     * ```
+     *
+     * ```
+     * Sample cron expressions:
+     *   - "0 0 0 * * ?" - At midnight every day.
+     *   - "0 0 12 ? * MON-FRI" - At noon every weekday.
+     *   - "0 0/30 9-17 * * ?" - Every 30 minutes between 9 AM to 5 PM.
+     *   - "0 0 0 1 * ?" - At midnight on the first day of every month.
+     *   - "0 0 6 ? * SUN" - At 6 AM every Sunday.
+     *   - "0 0 14 * * ?" - At 2 PM every day.
+     *   - "0 15 10 ? * *" - At 10:15 AM every day.
+     *   - "0 0/15 * * * ?" - Every 15 minutes.
+     *   - "0 0 0 ? * MON#1" - At midnight on the first Monday of every month.
+     *   - "30 0 0 * * ?" - At 00:00:30 (30 seconds past midnight) every day.
+     *   - "0 * * * * ?" - Every minute.
+     * ```
+     *
+     * @param cronExpression The cron expression at which the task should be executed.
+     */
+    @Suppress("unused")
+    fun send(cronExpression: String): JobKey {
+        val job: BasicJob = buildJob()
+
+        val trigger: CronTrigger = job.triggerBuilder
+            .withSchedule(CronScheduleBuilder.cronSchedule(cronExpression))
+            .build()
+
+        // Send the task to the scheduler.
+        SchedulerService.newTask(task = job.jobDetail, trigger = trigger)
+
+        return job.jobKey
+    }
+
+    /**
+     * Build the job details and trigger builder for the task.
+     */
+    private fun buildJob(): BasicJob {
+        val snowflake: String = SnowflakeFactory.nextId()
+        val taskName = "task-${snowflake}-${System.nanoTime()}"
+        val groupName: String = taskId.toString()
+
+        val jobKey: JobKey = JobKey.jobKey(taskName, groupName)
+        val jobDataMap = JobDataMap(parameters)
+
+        val jobDetail: JobDetail = JobBuilder
+            .newJob(taskClass)
+            .withIdentity(jobKey)
+            .usingJobData(jobDataMap)
+            .build()
+
+        // Set the trigger name and start time based on task start configuration.
+        val triggerBuilder: TriggerBuilder<Trigger> = TriggerBuilder.newTrigger()
+            .withIdentity("${taskName}-trigger", groupName)
+            .apply {
+                when (val startDateTime: TaskStartAt = startAt) {
+                    is TaskStartAt.Immediate -> startNow()
+                    is TaskStartAt.AtDateTime -> startDateTime.datetime.toJavaDate().let { startAt(it) }
+                    is TaskStartAt.AfterDuration -> startDateTime.duration.toJavaInstant().let { startAt(Date.from((it))) }
+                }
+            }
+
+        return BasicJob(jobKey = jobKey, jobDetail = jobDetail, triggerBuilder = triggerBuilder)
+    }
+
+    private data class BasicJob(
+        val jobKey: JobKey,
+        val jobDetail: JobDetail,
+        val triggerBuilder: TriggerBuilder<Trigger>
+    )
 }

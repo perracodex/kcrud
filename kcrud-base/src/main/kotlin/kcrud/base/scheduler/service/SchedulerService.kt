@@ -199,6 +199,8 @@ object SchedulerService {
                 if (totalMinutes != 0L) {
                     DateTimeUtils.formatDuration(duration = repeatInterval) to trigger.timesTriggered
                 } else null
+            } else if (trigger is CronTrigger) {
+                trigger.cronExpression to null
             } else null
         } ?: (null to null)
 
@@ -209,7 +211,7 @@ object SchedulerService {
             nextFireTime = nextFireTime?.let { DateTimeUtils.javaDateToLocalDateTime(datetime = it) },
             state = mostRestrictiveState.name,
             interval = interval,
-            runs = runs ?: 0,
+            runs = runs,
             dataMap = taskDetail.jobDataMap.toList().toString(),
         )
     }

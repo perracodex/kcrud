@@ -27,6 +27,6 @@ data class TaskScheduleEntity(
     val nextFireTime: KLocalDateTime?,
     val state: String,
     val interval: String?,
-    val runs: Int,
+    val runs: Int?,
     val dataMap: String,
 )

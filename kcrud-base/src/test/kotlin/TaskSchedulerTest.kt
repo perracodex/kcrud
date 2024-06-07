@@ -7,7 +7,6 @@ import kcrud.base.persistence.serializers.SUUID
 import kcrud.base.scheduler.service.SchedulerRequest
 import kcrud.base.scheduler.service.SchedulerService
 import kcrud.base.scheduler.service.SchedulerTask
-import kcrud.base.scheduler.service.TaskStartAt
 import kcrud.base.utils.TestUtils
 import kotlinx.coroutines.delay
 import org.quartz.*
@@ -40,10 +39,11 @@ class SchedulerServiceTest {
         val uniqueTestKey = "uniqueTestTask_${System.nanoTime()}"
 
         val taskId: SUUID = SUUID.randomUUID()
-        val jobKey: JobKey = SchedulerRequest.send(taskId = taskId, taskClass = SimpleTestTask::class.java) {
-            startAt = TaskStartAt.Immediate
+        val jobKey: JobKey = SchedulerRequest(
+            taskId = taskId,
+            taskClass = SimpleTestTask::class.java,
             parameters = mapOf("uniqueKey" to uniqueTestKey)
-        }
+        ).send()
 
         // Wait for enough time to allow the task to execute.
         delay(timeMillis = 3000L)
