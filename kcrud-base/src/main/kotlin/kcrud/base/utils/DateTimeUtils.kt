@@ -8,6 +8,7 @@ package kcrud.base.utils
 
 import kotlinx.datetime.*
 import kotlinx.datetime.TimeZone
+import kotlinx.serialization.Serializable
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -43,6 +44,23 @@ object DateTimeUtils {
 
         /** Format: yyyy-MMM-dd, e.g. 2024-APR-01 */
         YYYY_MMM_DD("yyyy-MMM-dd")
+    }
+
+    /**
+     * Represents a time interval.
+     *
+     * @property days The number of days in the interval.
+     * @property hours The number of hours in the interval.
+     * @property minutes The number of minutes in the interval.
+     */
+    @Serializable
+    data class Interval(val days: UInt = 0u, val hours: UInt = 0u, val minutes: UInt = 0u) {
+        /**
+         * Converts the overall interval into a total number of minutes.
+         */
+        fun toTotalMinutes(): UInt {
+            return (days * 24u * 60u) + (hours * 60u) + minutes
+        }
     }
 
     /**

@@ -195,10 +195,11 @@ object SchedulerService {
         val (interval, runs) = triggers.firstOrNull()?.let { trigger ->
             if (trigger is SimpleTrigger) {
                 val repeatInterval: Duration = trigger.repeatInterval.toDuration(DurationUnit.MILLISECONDS)
-                DateTimeUtils.formatDuration(duration = repeatInterval) to trigger.timesTriggered
-            } else {
-                null to null
-            }
+                val totalMinutes: Long = repeatInterval.inWholeMinutes
+                if (totalMinutes != 0L) {
+                    DateTimeUtils.formatDuration(duration = repeatInterval) to trigger.timesTriggered
+                } else null
+            } else null
         } ?: (null to null)
 
         return TaskScheduleEntity(

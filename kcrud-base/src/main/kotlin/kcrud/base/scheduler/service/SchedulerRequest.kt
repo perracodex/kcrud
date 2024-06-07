@@ -6,6 +6,7 @@ package kcrud.base.scheduler.service
 
 import kcrud.base.persistence.serializers.SUUID
 import kcrud.base.security.snowflake.SnowflakeFactory
+import kcrud.base.utils.DateTimeUtils
 import kcrud.base.utils.DateTimeUtils.toJavaDate
 import kcrud.base.utils.DateTimeUtils.toJavaInstant
 import org.quartz.*
@@ -16,13 +17,13 @@ import java.util.*
  *
  * @property taskClass The class of the task to be scheduled.
  * @property startAt The time at which the task should start.
- * @property interval Optional interval at which the task should repeat. In Minutes.
+ * @property interval Optional interval at which the task should repeat.
  * @property parameters Optional parameters to be passed to the task class.
  */
 data class SchedulerRequest(
     var taskClass: Class<out SchedulerTask>,
     var startAt: TaskStartAt = TaskStartAt.Immediate,
-    var interval: UInt? = null,
+    var interval: DateTimeUtils.Interval? = null,
     var parameters: Map<String, Any> = emptyMap()
 ) {
     companion object {
@@ -70,9 +71,16 @@ data class SchedulerRequest(
                 .withMisfireHandlingInstructionFireNow()
 
             // Apply repeat interval at which the task should repeat.
+            // Apply repeat interval at which the task should repeat.
             config.interval?.let { interval ->
-                scheduleBuilder.withIntervalInMinutes(interval.toInt())
-                scheduleBuilder.repeatForever()
+                val intervalInMinutes: UInt = interval.toTotalMinutes()
+                if (intervalInMinutes > 0u) {
+                    scheduleBuilder.withIntervalInMinutes(intervalInMinutes.toInt())
+                    scheduleBuilder.repeatForever()
+                }
+
+                // When misfired reschedule to the next possible time. Only if the interval is set.
+                scheduleBuilder.withMisfireHandlingInstructionNextWithExistingCount()
             }
 
             // When misfired reschedule to the next possible time.
