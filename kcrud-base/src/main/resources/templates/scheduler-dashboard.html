@@ -35,7 +35,7 @@
         .table-header,
         .table-row {
             display: grid;
-            grid-template-columns: 1.5fr 1.5fr 1fr 1.25fr 0.5fr 0.7fr 0.5fr 0.5fr;
+            grid-template-columns: 1.5fr 1.5fr 1fr 1.2fr 0.5fr 0.7fr 0.4fr 0.5fr;
             font-size: 0.9em;
             align-items: center;
         }
@@ -48,8 +48,10 @@
             color: #649ee0;
         }
 
-        .table-row {
-            padding: 10px;
+        .table-row > div {
+            display: flex;
+            gap: 10px;
+            white-space: nowrap;
         }
 
         .table-container {
