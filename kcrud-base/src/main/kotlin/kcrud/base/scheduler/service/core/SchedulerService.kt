@@ -264,7 +264,7 @@ object SchedulerService {
         }
 
         companion object {
-            fun create(scheduler: Scheduler): Tasks {
+            internal fun create(scheduler: Scheduler): Tasks {
                 return Tasks(scheduler = scheduler)
             }
         }
