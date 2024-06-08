@@ -112,14 +112,14 @@ class SchedulerRequest(
      *   - "0 * * * * ?" - Every minute.
      * ```
      *
-     * @param cronExpression The cron expression at which the task should be executed.
+     * @param cron The cron expression at which the task should be executed.
      */
     @Suppress("unused")
-    fun send(cronExpression: String): JobKey {
+    fun send(cron: String): JobKey {
         val job: BasicJob = buildJob()
 
         val trigger: CronTrigger = job.triggerBuilder
-            .withSchedule(CronScheduleBuilder.cronSchedule(cronExpression))
+            .withSchedule(CronScheduleBuilder.cronSchedule(cron))
             .build()
 
         // Send the task to the scheduler.

@@ -124,11 +124,11 @@ object SchedulerService {
      *
      * @param name The name of the task to be deleted.
      * @param group The group of the task to be deleted.
-     * @return True if the task was deleted, false otherwise.
+     * @return The number of tasks deleted.
      */
-    fun deleteTask(name: String, group: String): Boolean {
+    fun deleteTask(name: String, group: String): Int {
         tracer.debug("Deleting task. Name: $name. Group: $group.")
-        return scheduler.deleteJob(JobKey.jobKey(name, group))
+        return if (scheduler.deleteJob(JobKey.jobKey(name, group))) 1 else 0
     }
 
     /**
@@ -230,12 +230,12 @@ object SchedulerService {
      *
      * @param name The name of the task to pause.
      * @param group The group of the task to pause.
-     * @return True if the task was paused, false otherwise.
+     * @return [TaskStateChangeEntity] containing details of the operation.
      */
-    fun pauseTask(name: String, group: String): Boolean {
+    fun pauseTask(name: String, group: String): TaskStateChangeEntity {
         return changeTaskState(targetState = TriggerState.PAUSED) {
             scheduler.pauseJob(JobKey.jobKey(name, group))
-        }.totalAffected > 0
+        }
     }
 
     /**
@@ -252,12 +252,12 @@ object SchedulerService {
      *
      * @param name The name of the task to resume.
      * @param group The group of the task to resume.
-     * @return True if the task was resume, false otherwise.
+     * @return [TaskStateChangeEntity] containing details of the operation.
      */
-    fun resumeTask(name: String, group: String): Boolean {
+    fun resumeTask(name: String, group: String): TaskStateChangeEntity {
         return changeTaskState(targetState = TriggerState.NORMAL) {
             scheduler.resumeJob(JobKey.jobKey(name, group))
-        }.totalAffected > 0
+        }
     }
 
     /**

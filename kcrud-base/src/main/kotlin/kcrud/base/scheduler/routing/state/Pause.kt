@@ -8,6 +8,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kcrud.base.scheduler.entity.TaskStateChangeEntity
 import kcrud.base.scheduler.service.SchedulerService
 
 /**
@@ -19,12 +20,8 @@ fun Route.pauseSchedulerTaskRoute() {
         post {
             val name: String = call.parameters["name"]!!
             val group: String = call.parameters["group"]!!
-            val success: Boolean = SchedulerService.pauseTask(name = name, group = group)
-
-            call.respond(
-                status = if (success) HttpStatusCode.OK else HttpStatusCode.NotFound,
-                message = success
-            )
+            val state: TaskStateChangeEntity = SchedulerService.pauseTask(name = name, group = group)
+            call.respond(status = HttpStatusCode.OK, message = state)
         }
     }
 }
