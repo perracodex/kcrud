@@ -181,11 +181,13 @@ object DateTimeUtils {
         val days: Long = duration.inWholeDays
         val hours: Long = duration.inWholeHours % 24
         val minutes: Long = duration.inWholeMinutes % 60
+        val seconds: Long = duration.inWholeSeconds % 60
 
         return when {
-            days > 0 -> "${days}d ${hours}h ${minutes}m"
-            hours > 0 -> "${hours}h ${minutes}m"
-            else -> "${minutes}m"
+            days > 0 -> "${days}d ${hours}h ${minutes}m ${seconds}s"
+            hours > 0 -> "${hours}h ${minutes}m ${seconds}s"
+            minutes > 0 -> "${minutes}m ${seconds}s"
+            else -> "${seconds}s"
         }
     }
 }

@@ -214,9 +214,9 @@ object SchedulerService {
         val (interval, runs) = triggers.firstOrNull()?.let { trigger ->
             if (trigger is SimpleTrigger) {
                 val repeatInterval: Duration = trigger.repeatInterval.toDuration(unit = DurationUnit.MILLISECONDS)
-                val totalMinutes: Long = repeatInterval.inWholeMinutes
+                val totalSeconds: Long = repeatInterval.inWholeSeconds
 
-                if (totalMinutes != 0L) {
+                if (totalSeconds != 0L) {
                     DateTimeUtils.formatDuration(duration = repeatInterval) to trigger.timesTriggered
                 } else null
             } else if (trigger is CronTrigger) {
