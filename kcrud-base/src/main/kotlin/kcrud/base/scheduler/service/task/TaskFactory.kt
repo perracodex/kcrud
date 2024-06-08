@@ -2,9 +2,10 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.base.scheduler.service
+package kcrud.base.scheduler.service.task
 
 import kcrud.base.scheduler.annotation.SchedulerAPI
+import kcrud.base.scheduler.service.core.SchedulerService
 import kcrud.base.settings.AppSettings
 import org.quartz.Job
 import org.quartz.Scheduler

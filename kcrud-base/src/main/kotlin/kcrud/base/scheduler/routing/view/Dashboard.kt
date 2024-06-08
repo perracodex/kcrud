@@ -10,7 +10,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.thymeleaf.*
 import kcrud.base.scheduler.entity.TaskScheduleEntity
-import kcrud.base.scheduler.service.SchedulerService
+import kcrud.base.scheduler.service.core.SchedulerService
 
 /**
  * The scheduler dashboard route.

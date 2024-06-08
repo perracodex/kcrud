@@ -6,7 +6,7 @@ package kcrud.base.plugins
 
 import io.ktor.server.application.*
 import kcrud.base.scheduler.plugin.SchedulerPlugin
-import kcrud.base.scheduler.service.SchedulerService
+import kcrud.base.scheduler.service.core.SchedulerService
 
 /**
  * Configures the task scheduler for scheduling tasks.

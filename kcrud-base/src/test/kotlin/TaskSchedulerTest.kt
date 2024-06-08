@@ -4,11 +4,11 @@
 
 import io.ktor.test.dispatcher.*
 import kcrud.base.persistence.serializers.SUUID
-import kcrud.base.scheduler.service.SchedulerRequest
-import kcrud.base.scheduler.service.SchedulerService
-import kcrud.base.scheduler.service.SchedulerTask
-import kcrud.base.scheduler.service.TaskStartAt
+import kcrud.base.scheduler.service.core.SchedulerService
+import kcrud.base.scheduler.service.request.SchedulerRequest
 import kcrud.base.scheduler.service.schedule.Schedule
+import kcrud.base.scheduler.service.schedule.TaskStartAt
+import kcrud.base.scheduler.service.task.SchedulerTask
 import kcrud.base.utils.TestUtils
 import kotlinx.coroutines.delay
 import org.quartz.*

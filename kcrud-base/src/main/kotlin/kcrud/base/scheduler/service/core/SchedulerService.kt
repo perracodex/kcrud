@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.base.scheduler.service
+package kcrud.base.scheduler.service.core
 
 import io.ktor.server.application.*
 import kcrud.base.env.Tracer
@@ -11,6 +11,7 @@ import kcrud.base.scheduler.entity.TaskScheduleEntity
 import kcrud.base.scheduler.entity.TaskStateChangeEntity
 import kcrud.base.scheduler.listener.TaskListener
 import kcrud.base.scheduler.listener.TaskTriggerListener
+import kcrud.base.scheduler.service.task.TaskFactory
 import kcrud.base.settings.AppSettings
 import kcrud.base.utils.DateTimeUtils
 import org.quartz.*
@@ -24,11 +25,7 @@ import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
 /**
- * Configures the task scheduler for scheduling tasks.
- *
- * Although tasks can be done via coroutines, this scheduler is a more robust solution for
- * tasks that need to be executed at specific times or intervals, or need to ensure execution
- * even if the server is restarted.
+ * Core task scheduler service that manages the scheduling and execution of tasks.
  *
  * See: [Quartz Scheduler Documentation](https://github.com/quartz-scheduler/quartz/blob/main/docs/index.adoc)
  *

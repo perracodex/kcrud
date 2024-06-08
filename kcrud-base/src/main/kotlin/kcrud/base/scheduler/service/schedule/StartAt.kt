@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.base.scheduler.service
+package kcrud.base.scheduler.service.schedule
 
 import kcrud.base.utils.KLocalDateTime
 import kotlin.time.Duration
