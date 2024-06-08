@@ -77,7 +77,7 @@ sealed class Schedule {
      * │ │ ┌───────────── hour (0-23)
      * │ │ │ ┌───────────── day of month (1-31)
      * │ │ │ │ ┌───────────── month (1-12 or JAN-DEC)
-     * │ │ │ │ │ ┌───────────── day of week (0-7, SUN-SAT. Both 0 & 7 = Sunday)
+     * │ │ │ │ │ ┌───────────── weekday (0-7, SUN-SAT. Both 0 and 7 mean Sunday)
      * │ │ │ │ │ │ ┌───────────── year (optional)
      * │ │ │ │ │ │ │
      * │ │ │ │ │ │ │

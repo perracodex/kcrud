@@ -27,13 +27,13 @@ class SchedulerServiceTest {
     fun setUp() {
         TestUtils.loadSettings()
         TestUtils.setupDatabase()
-        SchedulerService.start()
+        SchedulerService.startScheduler()
     }
 
     @AfterTest
     fun tearDown() {
         TestUtils.tearDown()
-        SchedulerService.stop()
+        SchedulerService.stopScheduler()
     }
 
     @Test

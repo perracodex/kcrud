@@ -17,7 +17,7 @@ import kcrud.base.scheduler.service.core.SchedulerService
 fun Route.resumeAllSchedulerTasksRoute() {
     // Resume all the scheduler tasks.
     post("/resume") {
-        val state: TaskStateChangeEntity = SchedulerService.resume()
+        val state: TaskStateChangeEntity = SchedulerService.resumeScheduler()
         call.respond(status = HttpStatusCode.OK, message = state)
     }
 }

@@ -12,13 +12,12 @@ import kcrud.base.scheduler.entity.TaskStateChangeEntity
 import kcrud.base.scheduler.listener.TaskListener
 import kcrud.base.scheduler.listener.TaskTriggerListener
 import kcrud.base.scheduler.service.task.TaskFactory
-import kcrud.base.settings.AppSettings
+import kcrud.base.scheduler.service.task.TaskState
 import kcrud.base.utils.DateTimeUtils
 import org.quartz.*
 import org.quartz.Trigger.TriggerState
 import org.quartz.impl.StdSchedulerFactory
 import org.quartz.impl.matchers.GroupMatcher
-import java.io.InputStream
 import java.util.*
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
@@ -38,25 +37,14 @@ object SchedulerService {
     /** The key used to store the application settings in the task data map. */
     const val APP_SETTINGS_KEY: String = "APP_SETTINGS"
 
-    private const val PROPERTIES_FILE: String = "quartz.properties"
     private val scheduler: Scheduler
 
     init {
         tracer.debug("Configuring the task scheduler.")
 
-        // Load the configuration properties from the quartz.properties file.
-        val schema: Properties = loadConfigurationFile()
-        val dataSourceName: String = schema["org.quartz.jobStore.dataSource"].toString()
-
-        // Set the database connection properties.
-        schema["org.quartz.dataSource.$dataSourceName.driver"] = AppSettings.database.jdbcDriver
-        schema["org.quartz.dataSource.$dataSourceName.URL"] = AppSettings.database.jdbcUrl
-        schema["org.quartz.dataSource.$dataSourceName.user"] = AppSettings.database.username ?: ""
-        schema["org.quartz.dataSource.$dataSourceName.password"] = AppSettings.database.password ?: ""
-        schema["org.quartz.dataSource.$dataSourceName.maxConnections"] = AppSettings.database.connectionPoolSize
-
-        // Create the scheduler and configure it with the properties.
+        val schema: Properties = SchedulerConfig.get()
         val schedulerFactory: SchedulerFactory = StdSchedulerFactory(schema)
+
         scheduler = schedulerFactory.scheduler
         scheduler.setJobFactory(TaskFactory())
 
@@ -64,34 +52,20 @@ object SchedulerService {
     }
 
     /**
-     * Loads the configuration properties from the quartz.properties file.
-     */
-    private fun loadConfigurationFile(): Properties {
-        val properties = Properties()
-        val inputStream: InputStream? = Thread.currentThread().contextClassLoader.getResourceAsStream(PROPERTIES_FILE)
-        inputStream?.use { properties.load(it) }
-        return properties
-    }
-
-    /**
      * Starts the task scheduler.
      */
-    fun start() {
+    fun startScheduler() {
         tracer.info("Starting task scheduler.")
-        hookListeners()
-        scheduler.start()
-        tracer.info("Task scheduler started.")
-    }
-
-    private fun hookListeners() {
         scheduler.listenerManager.addJobListener(TaskListener())
         scheduler.listenerManager.addTriggerListener(TaskTriggerListener())
+        scheduler.start()
+        tracer.info("Task scheduler started.")
     }
 
     /**
      * Configures the task scheduler to shut down when the application is stopped.
      */
-    fun configure(environment: ApplicationEnvironment) {
+    fun configureScheduler(environment: ApplicationEnvironment) {
         // Add a shutdown hook to stop the scheduler when the application is stopped.
         environment.monitor.subscribe(ApplicationStopping) {
             tracer.info("Shutting down task scheduler.")
@@ -103,7 +77,7 @@ object SchedulerService {
     /**
      * Stops the task scheduler.
      */
-    fun stop() {
+    fun stopScheduler() {
         tracer.info("Stopping task scheduler.")
         scheduler.shutdown()
     }
@@ -133,7 +107,7 @@ object SchedulerService {
      *
      * @return The number of tasks deleted.
      */
-    fun deleteAll(): Int {
+    fun deleteAllTasks(): Int {
         tracer.debug("Deleting all tasks.")
         return scheduler.getJobKeys(GroupMatcher.anyGroup()).count { jobKey ->
             scheduler.deleteJob(jobKey)
@@ -168,6 +142,54 @@ object SchedulerService {
     }
 
     /**
+     * Pauses all tasks currently scheduled in the scheduler.
+     *
+     * @return [TaskStateChangeEntity] containing details of the operation.
+     */
+    fun pauseScheduler(): TaskStateChangeEntity {
+        return TaskState.change(scheduler = scheduler, targetState = TriggerState.PAUSED) {
+            scheduler.pauseAll()
+        }
+    }
+
+    /**
+     * Pauses a concrete task currently scheduled in the scheduler.
+     *
+     * @param name The name of the task to pause.
+     * @param group The group of the task to pause.
+     * @return [TaskStateChangeEntity] containing details of the operation.
+     */
+    fun pauseTask(name: String, group: String): TaskStateChangeEntity {
+        return TaskState.change(scheduler = scheduler, targetState = TriggerState.PAUSED) {
+            scheduler.pauseJob(JobKey.jobKey(name, group))
+        }
+    }
+
+    /**
+     * Resumes all tasks currently paused in the scheduler.
+     *
+     * @return [TaskStateChangeEntity] containing details of the operation.
+     */
+    fun resumeScheduler(): TaskStateChangeEntity {
+        return TaskState.change(scheduler = scheduler, targetState = TriggerState.NORMAL) {
+            scheduler.resumeAll()
+        }
+    }
+
+    /**
+     * Resumes a concrete task currently scheduled in the scheduler.
+     *
+     * @param name The name of the task to resume.
+     * @param group The group of the task to resume.
+     * @return [TaskStateChangeEntity] containing details of the operation.
+     */
+    fun resumeTask(name: String, group: String): TaskStateChangeEntity {
+        return TaskState.change(scheduler = scheduler, targetState = TriggerState.NORMAL) {
+            scheduler.resumeJob(JobKey.jobKey(name, group))
+        }
+    }
+
+    /**
      * Helper method to create a [TaskScheduleEntity] from a [JobDetail] including the next fire time.
      *
      * @param taskDetail The task detail from which to create the [TaskScheduleEntity].
@@ -193,6 +215,7 @@ object SchedulerService {
             if (trigger is SimpleTrigger) {
                 val repeatInterval: Duration = trigger.repeatInterval.toDuration(unit = DurationUnit.MILLISECONDS)
                 val totalMinutes: Long = repeatInterval.inWholeMinutes
+
                 if (totalMinutes != 0L) {
                     DateTimeUtils.formatDuration(duration = repeatInterval) to trigger.timesTriggered
                 } else null
@@ -211,103 +234,5 @@ object SchedulerService {
             runs = runs,
             dataMap = taskDetail.jobDataMap.toList().toString(),
         )
-    }
-
-    /**
-     * Pauses all tasks currently scheduled in the scheduler.
-     *
-     * @return [TaskStateChangeEntity] containing details of the operation.
-     */
-    fun pause(): TaskStateChangeEntity {
-        return changeTaskState(targetState = TriggerState.PAUSED) { scheduler.pauseAll() }
-    }
-
-    /**
-     * Pauses a concrete task currently scheduled in the scheduler.
-     *
-     * @param name The name of the task to pause.
-     * @param group The group of the task to pause.
-     * @return [TaskStateChangeEntity] containing details of the operation.
-     */
-    fun pauseTask(name: String, group: String): TaskStateChangeEntity {
-        return changeTaskState(targetState = TriggerState.PAUSED) {
-            scheduler.pauseJob(JobKey.jobKey(name, group))
-        }
-    }
-
-    /**
-     * Resumes all tasks currently paused in the scheduler.
-     *
-     * @return [TaskStateChangeEntity] containing details of the operation.
-     */
-    fun resume(): TaskStateChangeEntity {
-        return changeTaskState(targetState = TriggerState.NORMAL) { scheduler.resumeAll() }
-    }
-
-    /**
-     * Resumes a concrete task currently scheduled in the scheduler.
-     *
-     * @param name The name of the task to resume.
-     * @param group The group of the task to resume.
-     * @return [TaskStateChangeEntity] containing details of the operation.
-     */
-    fun resumeTask(name: String, group: String): TaskStateChangeEntity {
-        return changeTaskState(targetState = TriggerState.NORMAL) {
-            scheduler.resumeJob(JobKey.jobKey(name, group))
-        }
-    }
-
-    /**
-     * Changes the state of all tasks (either pausing or resuming them) and returns detailed results of the change.
-     *
-     * @param targetState The expected state of tasks after the operation.
-     * @param action The lambda function that executes the state change.
-     * @return [TaskStateChangeEntity] detailing the affected task counts.
-     */
-    private fun changeTaskState(targetState: TriggerState, action: () -> Unit): TaskStateChangeEntity {
-        // Retrieve the states of all tasks before and after performing the state change action.
-        val beforeStates: Map<JobKey, TriggerState> = getAllTaskStates()
-        action()
-        val afterStates: Map<JobKey, TriggerState> = getAllTaskStates()
-
-        // Count the total number of tasks that were affected by the action.
-        // A task is considered affected if it was not already in the target
-        // state and has changed to the target state.
-        val totalAffected: Int = afterStates.count { (key, state) ->
-            state == targetState && beforeStates[key]?.let { it != state } ?: true
-        }
-
-        // Count the total number of tasks that remained in the target state both
-        // before and after the action. This includes tasks that were already in
-        // the target state and were unaffected by the action.
-        val alreadyInState: Int = afterStates.count { (key, state) ->
-            state == targetState && beforeStates[key]?.let { it == state } ?: false
-        }
-
-        return TaskStateChangeEntity(
-            totalAffected = totalAffected,
-            alreadyInState = alreadyInState,
-            totalTasks = afterStates.size
-        )
-    }
-
-    /**
-     * Retrieves the state of all tasks currently scheduled in the scheduler,
-     * by compiling a map where each task key is associated with its most
-     * restrictive (or most significant) trigger state.
-     *
-     * @return A map of JobKeys to their respective TriggerStates.
-     */
-    private fun getAllTaskStates(): Map<JobKey, TriggerState> {
-        // 1. Fetch all task keys across all task groups within the scheduler.
-        // 2. For each task key, retrieve all associated triggers.
-        // 3. For each trigger, obtain its current state.
-        // 4. From the list of trigger states, find the one with the highest priority (lowest ordinal value).
-        // 5. If no triggers are found, or all are null, default to TriggerState.NONE.
-        return scheduler.getJobKeys(GroupMatcher.anyGroup()).associateWith { jobKey ->
-            scheduler.getTriggersOfJob(jobKey).mapNotNull { trigger ->
-                scheduler.getTriggerState(trigger.key)
-            }.minByOrNull { it.ordinal } ?: TriggerState.NONE
-        }
     }
 }
