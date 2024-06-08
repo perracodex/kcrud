@@ -84,7 +84,11 @@ object SchedulerService {
     }
 
     /**
-     * Returns whether the task scheduler is paused.
+     * Determines if the task scheduler is currently paused.
+     *
+     * @return true if the scheduler has any paused trigger groups, false otherwise
+     *
+     * @see [pause]
      */
     fun isPaused(): Boolean {
         return scheduler.pausedTriggerGroups.isNotEmpty()
@@ -105,7 +109,13 @@ object SchedulerService {
     }
 
     /**
-     * Pauses all tasks currently scheduled in the scheduler.
+     * Pauses the scheduler and all currently scheduled tasks.
+     *
+     * While the scheduler is paused, new tasks can still be scheduled.
+     * These tasks will only execute after the scheduler is resumed.
+     * It is also possible to resume individual tasks independently
+     * of the overall scheduler state. Thus, individual tasks can be
+     * actively executing even when the scheduler is paused.
      *
      * @return [TaskStateChangeEntity] containing details of the operation.
      */
