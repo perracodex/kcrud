@@ -7,6 +7,8 @@ import kcrud.base.persistence.serializers.SUUID
 import kcrud.base.scheduler.service.SchedulerRequest
 import kcrud.base.scheduler.service.SchedulerService
 import kcrud.base.scheduler.service.SchedulerTask
+import kcrud.base.scheduler.service.TaskStartAt
+import kcrud.base.scheduler.service.schedule.Schedule
 import kcrud.base.utils.TestUtils
 import kotlinx.coroutines.delay
 import org.quartz.*
@@ -35,15 +37,60 @@ class SchedulerServiceTest {
     }
 
     @Test
-    fun testEntity(): Unit = testSuspend {
+    fun testImmediate(): Unit = testSuspend {
         val uniqueTestKey = "uniqueTestTask_${System.nanoTime()}"
 
         val taskId: SUUID = SUUID.randomUUID()
         val jobKey: JobKey = SchedulerRequest(
             taskId = taskId,
             taskClass = SimpleTestTask::class.java,
+            startAt = TaskStartAt.Immediate,
             parameters = mapOf("uniqueKey" to uniqueTestKey)
         ).send()
+
+        // Wait for enough time to allow the task to execute.
+        delay(timeMillis = 3000L)
+
+        assertTrue(actual = testResults.contains(uniqueTestKey))
+
+        // Clean up by un-scheduling the task.
+        SchedulerService.deleteTask(name = jobKey.name, group = jobKey.group)
+    }
+
+    @Test
+    fun testInterval(): Unit = testSuspend {
+        val uniqueTestKey = "uniqueTestTask_${System.nanoTime()}"
+
+        val interval: Schedule.Interval = Schedule.Interval(days = 0u, hours = 0u, minutes = 0u, seconds = 1u)
+        val taskId: SUUID = SUUID.randomUUID()
+        val jobKey: JobKey = SchedulerRequest(
+            taskId = taskId,
+            taskClass = SimpleTestTask::class.java,
+            startAt = TaskStartAt.Immediate,
+            parameters = mapOf("uniqueKey" to uniqueTestKey)
+        ).send(schedule = interval)
+
+        // Wait for enough time to allow the task to execute.
+        delay(timeMillis = 3000L)
+
+        assertTrue(actual = testResults.contains(uniqueTestKey))
+
+        // Clean up by un-scheduling the task.
+        SchedulerService.deleteTask(name = jobKey.name, group = jobKey.group)
+    }
+
+    @Test
+    fun testCron(): Unit = testSuspend {
+        val uniqueTestKey = "uniqueTestTask_${System.nanoTime()}"
+
+        val cron: Schedule.Cron = Schedule.Cron(cron = "0/1 * * * * ?")
+        val taskId: SUUID = SUUID.randomUUID()
+        val jobKey: JobKey = SchedulerRequest(
+            taskId = taskId,
+            taskClass = SimpleTestTask::class.java,
+            startAt = TaskStartAt.Immediate,
+            parameters = mapOf("uniqueKey" to uniqueTestKey)
+        ).send(schedule = cron)
 
         // Wait for enough time to allow the task to execute.
         delay(timeMillis = 3000L)

@@ -4,6 +4,7 @@
 
 package kcrud.base.security.snowflake
 
+import kcrud.base.env.Tracer
 import kcrud.base.utils.DateTimeUtils
 import kcrud.base.utils.KInstant
 import kcrud.base.utils.KLocalDateTime
@@ -21,6 +22,9 @@ import kotlin.time.Duration.Companion.nanoseconds
  * See: [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)
  */
 object SnowflakeFactory {
+    private val tracer = Tracer<SnowflakeFactory>()
+
+    private const val NO_MACHINE_ID: Int = Int.MIN_VALUE
 
     /**
      * The machine ID used to generate the Snowflake ID.
@@ -132,6 +136,12 @@ object SnowflakeFactory {
                 } while (currentTimestampMs <= lastTimestampMs)
                 lastTimestampMs = currentTimestampMs
             }
+        }
+
+        // Verify the machine ID is set.
+        if (machineId == null) {
+            tracer.warning("Machine ID not set.")
+            machineId = NO_MACHINE_ID
         }
 
         // Construct the ID.
