@@ -23,9 +23,9 @@ val SchedulerPlugin: ApplicationPlugin<SchedulerPluginConfig> = createApplicatio
     name = "SchedulerPlugin",
     ::SchedulerPluginConfig
 ) {
-    SchedulerService.configureScheduler(environment = application.environment)
+    SchedulerService.configure(environment = application.environment)
 
     if (pluginConfig.autoStart) {
-        SchedulerService.startScheduler()
+        SchedulerService.start()
     }
 }

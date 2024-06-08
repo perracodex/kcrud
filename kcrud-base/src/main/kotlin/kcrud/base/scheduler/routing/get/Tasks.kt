@@ -17,7 +17,7 @@ import kcrud.base.scheduler.service.core.SchedulerService
 fun Route.getSchedulerTasksRoute() {
     // Gets all scheduler tasks.
     get {
-        val tasks: List<TaskScheduleEntity> = SchedulerService.getTasks()
+        val tasks: List<TaskScheduleEntity> = SchedulerService.tasks.all()
         call.respond(status = HttpStatusCode.OK, message = tasks)
     }
 }

@@ -20,7 +20,7 @@ fun Route.resumeSchedulerTaskRoute() {
         post {
             val name: String = call.parameters["name"]!!
             val group: String = call.parameters["group"]!!
-            val state: TaskStateChangeEntity = SchedulerService.resumeTask(name = name, group = group)
+            val state: TaskStateChangeEntity = SchedulerService.tasks.resume(name = name, group = group)
             call.respond(status = HttpStatusCode.OK, message = state)
         }
     }

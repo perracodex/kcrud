@@ -20,7 +20,7 @@ fun Route.pauseSchedulerTaskRoute() {
         post {
             val name: String = call.parameters["name"]!!
             val group: String = call.parameters["group"]!!
-            val state: TaskStateChangeEntity = SchedulerService.pauseTask(name = name, group = group)
+            val state: TaskStateChangeEntity = SchedulerService.tasks.pause(name = name, group = group)
             call.respond(status = HttpStatusCode.OK, message = state)
         }
     }

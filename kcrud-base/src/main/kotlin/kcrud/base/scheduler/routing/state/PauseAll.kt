@@ -17,7 +17,7 @@ import kcrud.base.scheduler.service.core.SchedulerService
 fun Route.pauseAllSchedulerTasksRoute() {
     // Pauses all the scheduler tasks.
     post("/pause") {
-        val state: TaskStateChangeEntity = SchedulerService.pauseScheduler()
+        val state: TaskStateChangeEntity = SchedulerService.pause()
         call.respond(status = HttpStatusCode.OK, message = state)
     }
 }

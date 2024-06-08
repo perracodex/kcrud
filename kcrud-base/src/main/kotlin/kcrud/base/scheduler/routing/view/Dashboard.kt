@@ -20,7 +20,7 @@ fun Route.schedulerDashboardRoute() {
 
     // The scheduler dashboard route.
     get("dashboard") {
-        val tasks: List<TaskScheduleEntity> = SchedulerService.getTasks()
+        val tasks: List<TaskScheduleEntity> = SchedulerService.tasks.all()
         val content = ThymeleafContent(template = "scheduler-dashboard", model = mapOf("data" to tasks))
         call.respond(message = content)
     }

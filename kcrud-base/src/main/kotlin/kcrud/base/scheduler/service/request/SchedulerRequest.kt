@@ -44,7 +44,7 @@ class SchedulerRequest(
 
         // Send the task to the scheduler.
         val trigger: SimpleTrigger = job.triggerBuilder.withSchedule(scheduleBuilder).build()
-        SchedulerService.newTask(task = job.jobDetail, trigger = trigger)
+        SchedulerService.tasks.schedule(task = job.jobDetail, trigger = trigger)
 
         return job.jobKey
     }
@@ -92,7 +92,7 @@ class SchedulerRequest(
 
         // Send the task to the scheduler.
         val trigger: SimpleTrigger = job.triggerBuilder.withSchedule(scheduleBuilder).build()
-        SchedulerService.newTask(task = job.jobDetail, trigger = trigger)
+        SchedulerService.tasks.schedule(task = job.jobDetail, trigger = trigger)
 
         return job.jobKey
     }
@@ -111,7 +111,7 @@ class SchedulerRequest(
             .build()
 
         // Send the task to the scheduler.
-        SchedulerService.newTask(task = job.jobDetail, trigger = trigger)
+        SchedulerService.tasks.schedule(task = job.jobDetail, trigger = trigger)
 
         return job.jobKey
     }

@@ -27,13 +27,13 @@ class SchedulerServiceTest {
     fun setUp() {
         TestUtils.loadSettings()
         TestUtils.setupDatabase()
-        SchedulerService.startScheduler()
+        SchedulerService.start()
     }
 
     @AfterTest
     fun tearDown() {
         TestUtils.tearDown()
-        SchedulerService.stopScheduler()
+        SchedulerService.stop()
     }
 
     @Test
@@ -54,7 +54,7 @@ class SchedulerServiceTest {
         assertTrue(actual = testResults.contains(uniqueTestKey))
 
         // Clean up by un-scheduling the task.
-        SchedulerService.deleteTask(name = jobKey.name, group = jobKey.group)
+        SchedulerService.tasks.delete(name = jobKey.name, group = jobKey.group)
     }
 
     @Test
@@ -76,7 +76,7 @@ class SchedulerServiceTest {
         assertTrue(actual = testResults.contains(uniqueTestKey))
 
         // Clean up by un-scheduling the task.
-        SchedulerService.deleteTask(name = jobKey.name, group = jobKey.group)
+        SchedulerService.tasks.delete(name = jobKey.name, group = jobKey.group)
     }
 
     @Test
@@ -98,7 +98,7 @@ class SchedulerServiceTest {
         assertTrue(actual = testResults.contains(uniqueTestKey))
 
         // Clean up by un-scheduling the task.
-        SchedulerService.deleteTask(name = jobKey.name, group = jobKey.group)
+        SchedulerService.tasks.delete(name = jobKey.name, group = jobKey.group)
     }
 
     @Test
@@ -118,7 +118,7 @@ class SchedulerServiceTest {
             ) // Set misfire instruction.
             .build()
 
-        SchedulerService.newTask(task = jobDetail, trigger = trigger)
+        SchedulerService.tasks.schedule(task = jobDetail, trigger = trigger)
 
         // Wait enough time to ensure the task has time to misfire plus some buffer.
         delay(timeMillis = 4000L)
@@ -127,7 +127,7 @@ class SchedulerServiceTest {
         assertTrue(actual = testResults.contains(MisfireTestTask.MISFIRE_MESSAGE))
 
         // Clean up
-        SchedulerService.deleteTask(name = jobKey.name, group = jobKey.group)
+        SchedulerService.tasks.delete(name = jobKey.name, group = jobKey.group)
     }
 
     class MisfireTestTask : Job {

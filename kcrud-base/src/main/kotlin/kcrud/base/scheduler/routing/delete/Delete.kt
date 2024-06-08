@@ -19,7 +19,7 @@ fun Route.deleteSchedulerTaskRoute() {
         delete {
             val name: String = call.parameters["name"]!!
             val group: String = call.parameters["group"]!!
-            val deletedCount: Int = SchedulerService.deleteTask(name = name, group = group)
+            val deletedCount: Int = SchedulerService.tasks.delete(name = name, group = group)
             call.respond(status = HttpStatusCode.OK, message = deletedCount)
         }
     }
