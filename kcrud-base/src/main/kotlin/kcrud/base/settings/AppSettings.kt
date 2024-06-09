@@ -14,6 +14,7 @@ import kcrud.base.settings.config.parser.IConfigSection
 import kcrud.base.settings.config.sections.*
 import kcrud.base.settings.config.sections.security.SecuritySettings
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlin.system.measureTimeMillis
 
@@ -91,21 +92,15 @@ object AppSettings {
      * @return The JSON string representation of the current settings.
      */
     fun serialize(): String {
-        return Json.encodeToString(
-            serializer = ConfigurationCatalog.serializer(),
-            value = configuration
-        )
+        return Json.encodeToString<ConfigurationCatalog>(value = configuration)
     }
 
     /**
      * Deserializes the provided JSON string into the current settings.
      *
-     * @param jsonString The JSON string to deserialize.
+     * @param string The JSON string to deserialize.
      */
-    fun deserialize(jsonString: String) {
-        configuration = Json.decodeFromString(
-            deserializer = ConfigurationCatalog.serializer(),
-            string = jsonString
-        )
+    fun deserialize(string: String) {
+        configuration = Json.decodeFromString<ConfigurationCatalog>(string = string)
     }
 }

@@ -17,6 +17,7 @@ import kcrud.base.env.SessionContext
 import kcrud.base.env.Tracer
 import kcrud.base.settings.AppSettings
 import kcrud.base.settings.config.sections.security.sections.JwtSettings
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.util.*
 import kotlin.time.Duration.Companion.seconds
@@ -94,10 +95,7 @@ object AuthenticationTokenService {
         val jwtSettings: JwtSettings = AppSettings.security.jwt
         val tokenLifetimeSec: Long = jwtSettings.tokenLifetimeSec
         val expirationDate = Date(System.currentTimeMillis() + tokenLifetimeSec.seconds.inWholeMilliseconds)
-        val sessionContextJson: String = Json.encodeToString(
-            serializer = SessionContext.serializer(),
-            value = sessionContext
-        )
+        val sessionContextJson: String = Json.encodeToString<SessionContext>(value = sessionContext)
 
         tracer.debug("Generating new authorization token. Expiration: $expirationDate.")
 

@@ -28,6 +28,7 @@ import kcrud.domain.contact.entity.ContactRequest
 import kcrud.domain.employee.entity.EmployeeEntity
 import kcrud.domain.employee.entity.EmployeeRequest
 import kcrud.domain.employee.service.EmployeeService
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -68,9 +69,7 @@ class RbacTest : KoinComponent {
                 phone = "+34-611-222-333"
             )
         )
-        val employeeRequestJson: String = Json.encodeToString(
-            serializer = EmployeeRequest.serializer(), value = employeeRequest
-        )
+        val employeeRequestJson: String = Json.encodeToString<EmployeeRequest>(value = employeeRequest)
 
         // List defining the expected outcomes for various operations based on different RBAC levels.
         // Placeholder {employee_id} will be replaced with an actual employee's ID during tests.

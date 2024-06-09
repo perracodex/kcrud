@@ -27,7 +27,7 @@ class AppSettingsTest {
         val serializedSettings: String = AppSettings.serialize()
 
         // Deserialize the JSON string back into AppSettings, updating its state.
-        AppSettings.deserialize(jsonString = serializedSettings)
+        AppSettings.deserialize(string = serializedSettings)
 
         // Serialize AppSettings again to compare with the original JSON string.
         val newSerializedSettings: String = AppSettings.serialize()

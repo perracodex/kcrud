@@ -23,7 +23,7 @@ abstract class SchedulerTask : Job {
         // This step is crucial as each classloader has its isolated instance of AppSettings.
         val appSettings: String? = jobDataMap?.get(SchedulerService.APP_SETTINGS_KEY) as String?
         appSettings?.let {
-            AppSettings.deserialize(jsonString = it)
+            AppSettings.deserialize(string = it)
         }
 
         // Convert the bundled data into a map of properties.

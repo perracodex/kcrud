@@ -54,7 +54,7 @@ object SessionContextFactory : KoinComponent {
         }
 
         return payload.let {
-            Json.decodeFromString(deserializer = SessionContext.serializer(), string = it).run {
+            Json.decodeFromString<SessionContext>(string = it).run {
                 SessionContext(
                     actorId = actorId,
                     username = username,

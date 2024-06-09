@@ -19,6 +19,7 @@ import kcrud.base.utils.TestUtils
 import kcrud.domain.contact.entity.ContactRequest
 import kcrud.domain.employee.entity.EmployeeRequest
 import kotlinx.coroutines.*
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonObject
@@ -83,8 +84,7 @@ class BackPressureTest : KoinComponent {
                             val operationType: String = operationMix[index % operationMix.size]
 
                             if (operationType == "write") {
-                                val employeeRequestJson = Json.encodeToString(
-                                    serializer = EmployeeRequest.serializer(),
+                                val employeeRequestJson = Json.encodeToString<EmployeeRequest>(
                                     value = createEmployeeRequest()
                                 )
 
@@ -153,10 +153,7 @@ class BackPressureTest : KoinComponent {
 
         // Prepare the employee request.
         val employeeRequest = createEmployeeRequest()
-        val employeeRequestJson: String = Json.encodeToString(
-            serializer = EmployeeRequest.serializer(),
-            value = employeeRequest
-        )
+        val employeeRequestJson: String = Json.encodeToString<EmployeeRequest>(value = employeeRequest)
 
         // Get the admin Actor to be used for the session context and the request.
         val actorService: ActorService by inject()
@@ -220,10 +217,7 @@ class BackPressureTest : KoinComponent {
 
         // Prepare the employee request.
         val employeeRequest = createEmployeeRequest()
-        val employeeRequestJson: String = Json.encodeToString(
-            serializer = EmployeeRequest.serializer(),
-            value = employeeRequest
-        )
+        val employeeRequestJson: String = Json.encodeToString<EmployeeRequest>(value = employeeRequest)
 
         // Get the admin Actor to be used for the session context and the request.
         val actorService: ActorService by inject()
@@ -295,10 +289,7 @@ class BackPressureTest : KoinComponent {
                     async {
                         // Prepare a unique employee request for write operations.
                         val employeeRequest = createEmployeeRequest()
-                        val employeeRequestJson = Json.encodeToString(
-                            serializer = EmployeeRequest.serializer(),
-                            value = employeeRequest
-                        )
+                        val employeeRequestJson = Json.encodeToString<EmployeeRequest>(value = employeeRequest)
                         val writeResponse: HttpResponse = client.post("/v1/employees") {
                             header(key = HttpHeaders.Authorization, value = "Bearer $authToken")
                             contentType(type = ContentType.Application.Json)
