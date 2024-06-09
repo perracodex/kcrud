@@ -267,7 +267,7 @@ object SchedulerService {
             return TaskScheduleEntity(
                 name = jobKey.name,
                 group = jobKey.group,
-                className = taskDetail.jobClass.simpleName,
+                consumer = taskDetail.jobClass.simpleName,
                 nextFireTime = nextFireTime?.let { DateTimeUtils.javaDateToLocalDateTime(datetime = it) },
                 state = mostRestrictiveState.name,
                 interval = interval,

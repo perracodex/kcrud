@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
  *
  * @property name The name of the task.
  * @property group The group of the task.
- * @property className the instance of task that is executed.
+ * @property consumer The consumer that will execute the task.
  * @property nextFireTime The next time the task is scheduled to be executed. Or null if it is not scheduled.
  * @property state The state of the task, eg: 'PAUSED', 'NORMAL', etc.
  * @property interval The interval at which the task should repeat.
@@ -23,7 +23,7 @@ import kotlinx.serialization.Serializable
 data class TaskScheduleEntity(
     val name: String,
     val group: String,
-    val className: String,
+    val consumer: String,
     val nextFireTime: KLocalDateTime?,
     val state: String,
     val interval: String?,
