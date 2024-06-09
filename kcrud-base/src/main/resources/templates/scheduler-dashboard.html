@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--suppress ThymeleafVariablesResolveInspection -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -68,7 +69,7 @@
         .table-sub-row {
             background-color: #484d60;
             color: #cfd0d5;
-            padding: 10px;
+            padding: 4px;
             border-radius: 6px;
             margin-top: 5px;
         }
@@ -80,13 +81,6 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-        }
-
-        .table-sub-row span {
-            text-align: left;
-            padding: 8px;
-            white-space: normal;
-            overflow: visible;
         }
 
         button {
@@ -204,7 +198,9 @@
             </div>
         </div>
         <div class="table-sub-row">
-            <span th:text="${item.dataMap}">Data Map Content</span>
+            <ul>
+                <li th:each="entry : ${item.dataMap}" th:text="${entry}">Data Map Entry</li>
+            </ul>
         </div>
     </div>
 </div>

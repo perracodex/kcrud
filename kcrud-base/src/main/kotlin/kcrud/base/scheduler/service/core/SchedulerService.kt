@@ -261,6 +261,9 @@ object SchedulerService {
                 } else null
             } ?: (null to null)
 
+            // Resolve the concrete parameters of the task.
+            val dataMap: List<String> = taskDetail.jobDataMap.entries.map { (key, value) -> "$key: $value" }
+
             return TaskScheduleEntity(
                 name = jobKey.name,
                 group = jobKey.group,
@@ -269,7 +272,7 @@ object SchedulerService {
                 state = mostRestrictiveState.name,
                 interval = interval,
                 runs = runs,
-                dataMap = taskDetail.jobDataMap.toList().toString(),
+                dataMap = dataMap,
             )
         }
 

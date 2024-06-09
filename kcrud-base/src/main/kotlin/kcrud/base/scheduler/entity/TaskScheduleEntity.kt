@@ -17,7 +17,7 @@ import kotlinx.serialization.Serializable
  * @property state The state of the task, eg: 'PAUSED', 'NORMAL', etc.
  * @property interval The interval at which the task should repeat.
  * @property runs The number of times the task has been triggered.
- * @property dataMap Concrete state information for a Task instance.
+ * @property dataMap Concrete parameters of the task.
  */
 @Serializable
 data class TaskScheduleEntity(
@@ -28,5 +28,5 @@ data class TaskScheduleEntity(
     val state: String,
     val interval: String?,
     val runs: Int?,
-    val dataMap: String,
+    val dataMap: List<String>,
 )
