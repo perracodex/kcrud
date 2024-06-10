@@ -55,7 +55,7 @@ object DatabaseService {
         settings: DatabaseSettings,
         isolationLevel: IsolationLevel = IsolationLevel.TRANSACTION_REPEATABLE_READ,
         micrometerRegistry: PrometheusMeterRegistry? = null,
-        schemaSetup: (SchemaBuilder.() -> Unit)? = null
+        schemaSetup: (SchemaBuilder.() -> Unit)? = {}
     ) {
         buildDatabase(settings = settings)
 
