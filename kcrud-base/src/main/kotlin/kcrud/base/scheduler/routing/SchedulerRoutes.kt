@@ -6,6 +6,7 @@ package kcrud.base.scheduler.routing
 
 import io.ktor.server.routing.*
 import kcrud.base.scheduler.routing.scheduler.pauseSchedulerRoute
+import kcrud.base.scheduler.routing.scheduler.restartSchedulerRoute
 import kcrud.base.scheduler.routing.scheduler.resumeSchedulerRoute
 import kcrud.base.scheduler.routing.scheduler.schedulerStateRoute
 import kcrud.base.scheduler.routing.tasks.delete.deleteAllSchedulerTasksRoute
@@ -26,6 +27,7 @@ fun Route.schedulerRoutes() {
         schedulerStateRoute()
         pauseSchedulerRoute()
         resumeSchedulerRoute()
+        restartSchedulerRoute()
 
         route("task") {
             getSchedulerTasksRoute()

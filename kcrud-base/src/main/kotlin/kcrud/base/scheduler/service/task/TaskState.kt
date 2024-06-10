@@ -6,8 +6,10 @@ package kcrud.base.scheduler.service.task
 
 import kcrud.base.scheduler.annotation.SchedulerAPI
 import kcrud.base.scheduler.entity.TaskStateChangeEntity
+import org.quartz.JobDetail
 import org.quartz.JobKey
 import org.quartz.Scheduler
+import org.quartz.Trigger
 import org.quartz.Trigger.TriggerState
 import org.quartz.impl.matchers.GroupMatcher
 
@@ -25,10 +27,10 @@ object TaskState {
      * @param action The lambda function that executes the state change.
      * @return [TaskStateChangeEntity] detailing the affected task counts.
      */
-    fun change(scheduler: Scheduler, targetState: TriggerState, action: () -> Unit): TaskStateChangeEntity {
+    fun change(scheduler: Scheduler, targetState: TriggerState, action: () -> String): TaskStateChangeEntity {
         // Retrieve the states of all tasks before and after performing the state change action.
         val beforeStates: Map<JobKey, TriggerState> = getAllStates(scheduler = scheduler)
-        action()
+        val schedulerState: String = action()
         val afterStates: Map<JobKey, TriggerState> = getAllStates(scheduler = scheduler)
 
         // Count the total number of tasks that were affected by the action.
@@ -48,8 +50,54 @@ object TaskState {
         return TaskStateChangeEntity(
             totalAffected = totalAffected,
             alreadyInState = alreadyInState,
-            totalTasks = afterStates.size
+            totalTasks = afterStates.size,
+            state = schedulerState
         )
+    }
+
+    /**
+     * Retrieves the most restrictive state of a task by examining all associated triggers.
+     *
+     * @param scheduler The scheduler instance to use for the state retrieval.
+     * @param jobKey The job key of the task to retrieve the state for.
+     * @return The most restrictive trigger state of the task.
+     */
+    fun getTriggerState(scheduler: Scheduler, jobKey: JobKey): TriggerState {
+        return getMostRestrictiveTriggerState(scheduler, jobKey)
+    }
+
+    /**
+     * Retrieves the most restrictive state of a task by examining all associated triggers.
+     *
+     * @param scheduler The scheduler instance to use for the state retrieval.
+     * @param taskDetail The job detail of the task to retrieve the state for.
+     * @return The most restrictive trigger state of the task.
+     */
+    fun getTriggerState(scheduler: Scheduler, taskDetail: JobDetail): TriggerState {
+        return getMostRestrictiveTriggerState(scheduler, taskDetail.key)
+    }
+
+    /**
+     * Retrieves the most restrictive state of a task by examining all associated triggers.
+     *
+     * @param scheduler The scheduler instance to use for the state retrieval.
+     * @param jobKey The job key of the task to retrieve the state for.
+     * @return The most restrictive trigger state of the task.
+     */
+    private fun getMostRestrictiveTriggerState(scheduler: Scheduler, jobKey: JobKey): TriggerState {
+        val triggers: List<Trigger> = scheduler.getTriggersOfJob(jobKey)
+        if (triggers.isEmpty()) {
+            return TriggerState.NONE
+        }
+
+        val triggerStates: List<TriggerState> = triggers.map { scheduler.getTriggerState(it.key) }
+        return when {
+            triggerStates.any { it == TriggerState.PAUSED } -> TriggerState.PAUSED
+            triggerStates.any { it == TriggerState.BLOCKED } -> TriggerState.BLOCKED
+            triggerStates.any { it == TriggerState.ERROR } -> TriggerState.ERROR
+            triggerStates.any { it == TriggerState.COMPLETE } -> TriggerState.COMPLETE
+            else -> TriggerState.NORMAL  // Assuming NORMAL as default if no other states are found.
+        }
     }
 
     /**

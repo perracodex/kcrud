@@ -12,10 +12,12 @@ import kotlinx.serialization.Serializable
  * @property totalAffected The total number of tasks affected by the operation.
  * @property alreadyInState The number of tasks that were already in the desired state.
  * @property totalTasks The total number of tasks in the system.
+ * @property state The new state after the change operation.
  */
 @Serializable
 data class TaskStateChangeEntity(
     val totalAffected: Int,
     val alreadyInState: Int,
-    val totalTasks: Int
+    val totalTasks: Int,
+    val state: String
 )

@@ -44,12 +44,16 @@ object SchedulerService {
     const val APP_SETTINGS_KEY: String = "APP_SETTINGS"
 
     /** Scheduler instance used to manage tasks. */
-    private val scheduler: Scheduler
+    private lateinit var scheduler: Scheduler
 
     /** Manage tasks in the scheduler. */
-    val tasks: Tasks
+    lateinit var tasks: Tasks
+        private set
 
-    init {
+    /**
+     * Configures the task scheduler.
+     */
+    private fun setup() {
         tracer.debug("Configuring the task scheduler.")
 
         val schema: Properties = SchedulerConfig.get()
@@ -67,6 +71,10 @@ object SchedulerService {
      * Starts the task scheduler.
      */
     fun start() {
+        if (!::scheduler.isInitialized || scheduler.isShutdown) {
+            setup()
+        }
+
         tracer.info("Starting task scheduler.")
         scheduler.listenerManager.addJobListener(TaskListener())
         scheduler.listenerManager.addTriggerListener(TaskTriggerListener())
@@ -78,8 +86,32 @@ object SchedulerService {
      * Stops the task scheduler.
      */
     fun stop() {
-        tracer.info("Stopping task scheduler.")
-        scheduler.shutdown()
+        tracer.info("Shutting down task scheduler.")
+        if (::scheduler.isInitialized) {
+            scheduler.shutdown()
+            tracer.info("Task scheduler shut down.")
+        } else {
+            tracer.warning("SKipping Scheduler Shutdown. Task scheduler is not initialized.")
+        }
+    }
+
+    /**
+     * Restarts the task scheduler.
+     *
+     * @return The current state of the task scheduler.
+     */
+    fun restart(): TaskSchedulerState {
+        tracer.info("Restarting task scheduler.")
+
+        stop()
+        start()
+
+        return state().also {
+            when (it) {
+                TaskSchedulerState.RUNNING -> tracer.info("Task scheduler restarted.")
+                else -> tracer.error("Task scheduler failed to restart.")
+            }
+        }
     }
 
     /**
@@ -87,7 +119,7 @@ object SchedulerService {
      */
     fun state(): TaskSchedulerState {
         return when {
-            !scheduler.isStarted -> TaskSchedulerState.STOPPED
+            !::scheduler.isInitialized || !scheduler.isStarted -> TaskSchedulerState.STOPPED
             isPaused() -> TaskSchedulerState.PAUSED
             else -> TaskSchedulerState.RUNNING
         }
@@ -97,7 +129,7 @@ object SchedulerService {
      * Returns whether the task scheduler is started.
      */
     fun isStarted(): Boolean {
-        return scheduler.isStarted
+        return ::scheduler.isInitialized && scheduler.isStarted
     }
 
     /**
@@ -108,7 +140,7 @@ object SchedulerService {
      * @see [pause]
      */
     fun isPaused(): Boolean {
-        return scheduler.pausedTriggerGroups.isNotEmpty()
+        return ::scheduler.isInitialized && scheduler.pausedTriggerGroups.isNotEmpty()
     }
 
     /**
@@ -119,9 +151,7 @@ object SchedulerService {
     fun configure(environment: ApplicationEnvironment) {
         // Add a shutdown hook to stop the scheduler when the application is stopped.
         environment.monitor.subscribe(ApplicationStopping) {
-            tracer.info("Shutting down task scheduler.")
-            scheduler.shutdown()
-            tracer.info("Task scheduler shut down.")
+            stop()
         }
     }
 
@@ -138,7 +168,48 @@ object SchedulerService {
      */
     fun pause(): TaskStateChangeEntity {
         return TaskState.change(scheduler = scheduler, targetState = TriggerState.PAUSED) {
+            // Attempt to pause all triggers
+            tracer.info("Attempting to pause all triggers...")
             scheduler.pauseAll()
+
+            // Check if there are any non-paused trigger groups after pauseAll.
+            val nonPausedGroups: List<String> = scheduler.jobGroupNames.filter { group ->
+                scheduler.getJobKeys(GroupMatcher.jobGroupEquals(group)).any { jobKey ->
+                    scheduler.getTriggersOfJob(jobKey).any { trigger ->
+                        scheduler.getTriggerState(trigger.key) != TriggerState.PAUSED
+                    }
+                }
+            }
+            tracer.info("Non-paused trigger groups after pauseAll: $nonPausedGroups")
+
+            // If there are non-paused groups, attempt to pause them individually.
+            if (nonPausedGroups.isNotEmpty()) {
+                nonPausedGroups.forEach { group ->
+                    tracer.info("Pausing trigger group: $group")
+                    scheduler.getJobKeys(GroupMatcher.jobGroupEquals(group)).forEach { jobKey ->
+                        scheduler.getTriggersOfJob(jobKey).forEach { trigger ->
+                            scheduler.pauseTrigger(trigger.key)
+                        }
+                    }
+                }
+            }
+
+            // Verify if all triggers have been paused.
+            val remainingNonPausedGroups: List<String> = scheduler.jobGroupNames.filter { group ->
+                scheduler.getJobKeys(GroupMatcher.jobGroupEquals(group)).any { jobKey ->
+                    scheduler.getTriggersOfJob(jobKey).any { trigger ->
+                        scheduler.getTriggerState(trigger.key) != TriggerState.PAUSED
+                    }
+                }
+            }
+            if (remainingNonPausedGroups.isEmpty()) {
+                tracer.info("All triggers have been paused successfully.")
+            } else {
+                tracer.error("The following trigger groups are still not paused: $remainingNonPausedGroups")
+            }
+
+            // Return the current state of the scheduler.
+            state().name
         }
     }
 
@@ -149,8 +220,43 @@ object SchedulerService {
      */
     fun resume(): TaskStateChangeEntity {
         return TaskState.change(scheduler = scheduler, targetState = TriggerState.NORMAL) {
+            // Attempt to resume all triggers.
+            tracer.info("Attempting to resume all triggers.")
             scheduler.resumeAll()
+
+            // Check if there are any paused trigger groups after resumeAll.
+            val pausedGroups: MutableSet<String> = scheduler.pausedTriggerGroups
+            tracer.info("Paused trigger groups after resumeAll: $pausedGroups")
+
+            // If there are paused groups, attempt to resume them individually
+            if (pausedGroups.isNotEmpty()) {
+                pausedGroups.forEach { group ->
+                    tracer.info("Resuming trigger group: $group")
+                    scheduler.resumeTriggers(GroupMatcher.triggerGroupEquals(group))
+                }
+            }
+
+            // Verify if all triggers have been resumed.
+            val remainingPausedGroups: MutableSet<String> = scheduler.pausedTriggerGroups
+            if (remainingPausedGroups.isEmpty()) {
+                tracer.info("All triggers have been resumed successfully.")
+            } else {
+                tracer.error("The following trigger groups are still paused: $remainingPausedGroups")
+            }
+
+            // Return the current state of the scheduler.
+            state().name
         }
+    }
+
+    /**
+     * Returns the total number of tasks currently scheduled in the scheduler.
+     */
+    fun totalTasks(): Int {
+        if (!::scheduler.isInitialized) {
+            return 0
+        }
+        return tasks.all().size
     }
 
     /**
@@ -175,7 +281,9 @@ object SchedulerService {
          */
         fun pause(name: String, group: String): TaskStateChangeEntity {
             return TaskState.change(scheduler = scheduler, targetState = TriggerState.PAUSED) {
+                val jobKey: JobKey = JobKey.jobKey(name, group)
                 scheduler.pauseJob(JobKey.jobKey(name, group))
+                TaskState.getTriggerState(scheduler = scheduler, jobKey = jobKey).name
             }
         }
 
@@ -188,7 +296,9 @@ object SchedulerService {
          */
         fun resume(name: String, group: String): TaskStateChangeEntity {
             return TaskState.change(scheduler = scheduler, targetState = TriggerState.NORMAL) {
-                scheduler.resumeJob(JobKey.jobKey(name, group))
+                val jobKey: JobKey = JobKey.jobKey(name, group)
+                scheduler.resumeJob(jobKey)
+                TaskState.getTriggerState(scheduler = scheduler, jobKey = jobKey).name
             }
         }
 
@@ -252,17 +362,12 @@ object SchedulerService {
         private fun createTaskScheduleEntity(taskDetail: JobDetail): TaskScheduleEntity {
             val jobKey: JobKey = taskDetail.key
             val triggers: List<Trigger> = scheduler.getTriggersOfJob(jobKey)
-            val nextFireTime: Date? = triggers.mapNotNull { it.nextFireTime }.minOrNull()
 
             // Get the most restrictive state from the list of trigger states.
-            val triggerStates: List<TriggerState> = triggers.map { scheduler.getTriggerState(it.key) }
-            val mostRestrictiveState: TriggerState = when {
-                triggerStates.any { it == TriggerState.PAUSED } -> TriggerState.PAUSED
-                triggerStates.any { it == TriggerState.BLOCKED } -> TriggerState.BLOCKED
-                triggerStates.any { it == TriggerState.ERROR } -> TriggerState.ERROR
-                triggerStates.any { it == TriggerState.COMPLETE } -> TriggerState.COMPLETE
-                else -> TriggerState.NORMAL  // Assuming NORMAL as default if no other states are found.
-            }
+            val mostRestrictiveState: TriggerState = TaskState.getTriggerState(
+                scheduler = scheduler,
+                taskDetail = taskDetail
+            )
 
             // Resolve the interval metrics.
             val (interval, runs) = triggers.firstOrNull()?.let { trigger ->
@@ -282,6 +387,9 @@ object SchedulerService {
             val dataMap: List<String> = taskDetail.jobDataMap
                 .entries.map { (key, value) -> "$key: $value" }
                 .sorted()
+
+            // Determine the next fire time of the task.
+            val nextFireTime: Date? = triggers.mapNotNull { it.nextFireTime }.minOrNull()
 
             return TaskScheduleEntity(
                 name = jobKey.name,
