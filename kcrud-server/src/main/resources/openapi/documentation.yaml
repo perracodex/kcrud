@@ -279,9 +279,49 @@ paths:
                 Example#1:
                   description: ""
                   value: "/rbac/login"
-  /scheduler/jobs:
-    delete:
-      description: "Delete all scheduled notifications."
+  /scheduler/dashboard:
+    get:
+      description: "The scheduler dashboard route."
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ThymeleafContent"
+              examples:
+                Example#1:
+                  description: ""
+                  value:
+                    template: "scheduler-dashboard"
+                    model: "null"
+                    etag: "null"
+                    contentType: "null"
+                    locale: "null"
+                    fragments: "null"
+  /scheduler/pause:
+    post:
+      description: "Pauses all the scheduler tasks."
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TaskStateChangeEntity"
+  /scheduler/resume:
+    post:
+      description: "Resume all the scheduler tasks."
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TaskStateChangeEntity"
+  /scheduler/state:
+    get:
+      description: "Returns the state of the task scheduler."
       responses:
         "200":
           description: "OK"
@@ -289,21 +329,31 @@ paths:
             '*/*':
               schema:
                 type: "string"
-              examples:
-                Example#1:
-                  value: ""
-    get:
-      description: "Route to display all scheduled jobs."
+  /scheduler/task:
+    delete:
+      description: "Deletes all scheduler tasks."
       responses:
         "200":
           description: "OK"
           content:
-            application/json:
+            '*/*':
               schema:
-                type: "string"
-  /scheduler/jobs/{name}/{group}:
+                type: "integer"
+                format: "int32"
+    get:
+      description: "Gets all scheduler tasks."
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/TaskScheduleEntity"
+  /scheduler/task/{name}/{group}:
     delete:
-      description: "Delete a concrete scheduled notifications."
+      description: "Deletes a concrete scheduler task."
       parameters:
         - name: "name"
           in: "path"
@@ -321,19 +371,62 @@ paths:
           content:
             '*/*':
               schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: ""
-        "404":
-          description: "Not Found"
+                type: "integer"
+                format: "int32"
+  /scheduler/task/{name}/{group}/pause:
+    post:
+      description: "Pause a concrete scheduler task."
+      parameters:
+        - name: "name"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "group"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
           content:
             '*/*':
               schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: ""
+                $ref: "#/components/schemas/TaskStateChangeEntity"
+  /scheduler/task/{name}/{group}/resume:
+    post:
+      description: "Resume a concrete scheduled task."
+      parameters:
+        - name: "name"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "group"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TaskStateChangeEntity"
+  /scheduler/task/group:
+    get:
+      description: "Gets all scheduler task groups."
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  type: "string"
   /snowflake/{id}:
     get:
       description: "Snowflake parser to read back the components of a snowflake ID."
@@ -658,121 +751,15 @@ components:
           type: "array"
           items:
             type: "object"
-    LocalDateTime:
-      type: "object"
-      properties: { }
-    RuntimeCheck:
+    ApplicationCheck:
       type: "object"
       properties:
         errors:
           type: "array"
           items:
             type: "string"
-        machineId:
-          type: "integer"
-          format: "int32"
-        environment:
-          type: "string"
-          enum:
-            - "DEV"
-            - "PROD"
-            - "STAGING"
-            - "TEST"
-        developmentModeEnabled:
+        apiSchemaEnabled:
           type: "boolean"
-        utc:
-          $ref: "#/components/schemas/LocalDateTime"
-        local:
-          $ref: "#/components/schemas/LocalDateTime"
-      required:
-        - "errors"
-        - "environment"
-        - "utc"
-        - "local"
-    Configured:
-      type: "object"
-      properties:
-        protocol:
-          type: "string"
-        port:
-          type: "integer"
-          format: "int32"
-        sslPort:
-          type: "integer"
-          format: "int32"
-        host:
-          type: "string"
-        allowedHosts:
-          type: "array"
-          items:
-            type: "string"
-      required:
-        - "protocol"
-        - "host"
-        - "allowedHosts"
-    ServerSpec:
-      type: "object"
-      properties:
-        serverHost:
-          type: "string"
-        serverPort:
-          type: "integer"
-          format: "int32"
-        localHost:
-          type: "string"
-        localPort:
-          type: "integer"
-          format: "int32"
-        remoteHostHost:
-          type: "string"
-        remoteAddress:
-          type: "string"
-        remotePort:
-          type: "integer"
-          format: "int32"
-        httpVersion:
-          type: "string"
-        scheme:
-          type: "string"
-    DeploymentCheck:
-      type: "object"
-      properties:
-        errors:
-          type: "array"
-          items:
-            type: "string"
-        configured:
-          $ref: "#/components/schemas/Configured"
-        serverSpec:
-          $ref: "#/components/schemas/ServerSpec"
-        connectors:
-          type: "string"
-      required:
-        - "errors"
-        - "configured"
-        - "serverSpec"
-        - "connectors"
-    SecurityCheck:
-      type: "object"
-      properties:
-        errors:
-          type: "array"
-          items:
-            type: "string"
-        useSecureConnection:
-          type: "boolean"
-        publicApiRateLimit:
-          type: "integer"
-          format: "int32"
-        publicApiRateRefillMs:
-          type: "integer"
-          format: "int64"
-        newTokenRateLimit:
-          type: "integer"
-          format: "int32"
-        newTokenRateRefillMs:
-          type: "integer"
-          format: "int64"
       required:
         - "errors"
     Datasource:
@@ -873,17 +860,141 @@ components:
         - "errors"
         - "configuration"
         - "tables"
-    ApplicationCheck:
+    Configured:
+      type: "object"
+      properties:
+        protocol:
+          type: "string"
+        port:
+          type: "integer"
+          format: "int32"
+        sslPort:
+          type: "integer"
+          format: "int32"
+        host:
+          type: "string"
+        allowedHosts:
+          type: "array"
+          items:
+            type: "string"
+      required:
+        - "protocol"
+        - "host"
+        - "allowedHosts"
+    ServerSpec:
+      type: "object"
+      properties:
+        serverHost:
+          type: "string"
+        serverPort:
+          type: "integer"
+          format: "int32"
+        localHost:
+          type: "string"
+        localPort:
+          type: "integer"
+          format: "int32"
+        remoteHostHost:
+          type: "string"
+        remoteAddress:
+          type: "string"
+        remotePort:
+          type: "integer"
+          format: "int32"
+        httpVersion:
+          type: "string"
+        scheme:
+          type: "string"
+    DeploymentCheck:
       type: "object"
       properties:
         errors:
           type: "array"
           items:
             type: "string"
-        apiSchemaEnabled:
-          type: "boolean"
+        configured:
+          $ref: "#/components/schemas/Configured"
+        serverSpec:
+          $ref: "#/components/schemas/ServerSpec"
+        connectors:
+          type: "string"
       required:
         - "errors"
+        - "configured"
+        - "serverSpec"
+        - "connectors"
+    LocalDateTime:
+      type: "object"
+      properties: { }
+    RuntimeCheck:
+      type: "object"
+      properties:
+        errors:
+          type: "array"
+          items:
+            type: "string"
+        machineId:
+          type: "integer"
+          format: "int32"
+        environment:
+          type: "string"
+          enum:
+            - "DEV"
+            - "PROD"
+            - "STAGING"
+            - "TEST"
+        developmentModeEnabled:
+          type: "boolean"
+        utc:
+          $ref: "#/components/schemas/LocalDateTime"
+        local:
+          $ref: "#/components/schemas/LocalDateTime"
+      required:
+        - "errors"
+        - "environment"
+        - "utc"
+        - "local"
+    SchedulerCheck:
+      type: "object"
+      properties:
+        errors:
+          type: "array"
+          items:
+            type: "string"
+        totalTasks:
+          type: "integer"
+          format: "int32"
+      required:
+        - "errors"
+    LimitSpec:
+      type: "object"
+      properties:
+        limit:
+          type: "integer"
+          format: "int32"
+        refillMs:
+          type: "integer"
+          format: "int64"
+    SecurityCheck:
+      type: "object"
+      properties:
+        errors:
+          type: "array"
+          items:
+            type: "string"
+        useSecureConnection:
+          type: "boolean"
+        publicApi:
+          $ref: "#/components/schemas/LimitSpec"
+        privateApi:
+          $ref: "#/components/schemas/LimitSpec"
+        newToken:
+          $ref: "#/components/schemas/LimitSpec"
+      required:
+        - "errors"
+        - "publicApi"
+        - "privateApi"
+        - "newToken"
     SnowflakeData:
       type: "object"
       properties:
@@ -926,31 +1037,127 @@ components:
           type: "array"
           items:
             type: "string"
-        runtime:
-          $ref: "#/components/schemas/RuntimeCheck"
-        deployment:
-          $ref: "#/components/schemas/DeploymentCheck"
-        security:
-          $ref: "#/components/schemas/SecurityCheck"
-        database:
-          $ref: "#/components/schemas/DatabaseCheck"
         application:
           $ref: "#/components/schemas/ApplicationCheck"
-        snowflake:
-          $ref: "#/components/schemas/SnowflakeCheck"
+        database:
+          $ref: "#/components/schemas/DatabaseCheck"
+        deployment:
+          $ref: "#/components/schemas/DeploymentCheck"
         endpoints:
           type: "array"
           items:
             type: "string"
+        runtime:
+          $ref: "#/components/schemas/RuntimeCheck"
+        scheduler:
+          $ref: "#/components/schemas/SchedulerCheck"
+        security:
+          $ref: "#/components/schemas/SecurityCheck"
+        snowflake:
+          $ref: "#/components/schemas/SnowflakeCheck"
       required:
         - "health"
-        - "runtime"
-        - "deployment"
-        - "security"
-        - "database"
         - "application"
-        - "snowflake"
+        - "database"
+        - "deployment"
         - "endpoints"
+        - "runtime"
+        - "scheduler"
+        - "security"
+        - "snowflake"
+    HeaderValueParam:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        value:
+          type: "string"
+        escapeValue:
+          type: "boolean"
+      required:
+        - "name"
+        - "value"
+    ContentType:
+      type: "object"
+      properties:
+        contentType:
+          type: "string"
+        contentSubtype:
+          type: "string"
+        parameters:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/HeaderValueParam"
+      required:
+        - "contentType"
+        - "contentSubtype"
+        - "parameters"
+    Locale:
+      type: "object"
+      properties: { }
+    ThymeleafContent:
+      type: "object"
+      properties:
+        template:
+          type: "string"
+        model:
+          type: "string"
+        etag:
+          type: "string"
+        contentType:
+          $ref: "#/components/schemas/ContentType"
+        locale:
+          $ref: "#/components/schemas/Locale"
+        fragments:
+          type: "array"
+          items:
+            type: "string"
+      required:
+        - "template"
+        - "model"
+        - "contentType"
+        - "locale"
+        - "fragments"
+    TaskStateChangeEntity:
+      type: "object"
+      properties:
+        totalAffected:
+          type: "integer"
+          format: "int32"
+        alreadyInState:
+          type: "integer"
+          format: "int32"
+        totalTasks:
+          type: "integer"
+          format: "int32"
+    TaskScheduleEntity:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        group:
+          type: "string"
+        consumer:
+          type: "string"
+        nextFireTime:
+          $ref: "#/components/schemas/LocalDateTime"
+        state:
+          type: "string"
+        interval:
+          type: "string"
+        runs:
+          type: "integer"
+          format: "int32"
+        dataMap:
+          type: "array"
+          items:
+            type: "string"
+      required:
+        - "name"
+        - "group"
+        - "consumer"
+        - "state"
+        - "dataMap"
     Page_? extends EmployeeEntity:
       type: "object"
       properties:

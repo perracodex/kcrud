@@ -22,4 +22,3 @@ fun Route.rbacLogoutRoute() {
         call.respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
     }
 }
-
