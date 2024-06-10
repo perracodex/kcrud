@@ -17,11 +17,9 @@ import kcrud.base.env.SessionContext
  */
 @RbacAPI
 fun Route.rbacLogoutRoute() {
-    route("/rbac/logout") {
-        post {
-            call.sessions.clear(name = SessionContext.SESSION_NAME)
-            call.respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
-        }
+    post("rbac/logout") {
+        call.sessions.clear(name = SessionContext.SESSION_NAME)
+        call.respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
     }
 }
 
