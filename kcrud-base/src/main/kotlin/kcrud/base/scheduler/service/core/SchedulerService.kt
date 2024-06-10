@@ -34,6 +34,12 @@ import kotlin.time.toDuration
 object SchedulerService {
     private val tracer = Tracer<SchedulerService>()
 
+    enum class TaskSchedulerState {
+        RUNNING,
+        PAUSED,
+        STOPPED
+    }
+
     /** The key used to store the application settings in the task data map. */
     const val APP_SETTINGS_KEY: String = "APP_SETTINGS"
 
@@ -74,6 +80,17 @@ object SchedulerService {
     fun stop() {
         tracer.info("Stopping task scheduler.")
         scheduler.shutdown()
+    }
+
+    /**
+     * Returns the current state of the task scheduler.
+     */
+    fun state(): TaskSchedulerState {
+        return when {
+            !scheduler.isStarted -> TaskSchedulerState.STOPPED
+            isPaused() -> TaskSchedulerState.PAUSED
+            else -> TaskSchedulerState.RUNNING
+        }
     }
 
     /**
@@ -262,7 +279,9 @@ object SchedulerService {
             } ?: (null to null)
 
             // Resolve the concrete parameters of the task.
-            val dataMap: List<String> = taskDetail.jobDataMap.entries.map { (key, value) -> "$key: $value" }
+            val dataMap: List<String> = taskDetail.jobDataMap
+                .entries.map { (key, value) -> "$key: $value" }
+                .sorted()
 
             return TaskScheduleEntity(
                 name = jobKey.name,

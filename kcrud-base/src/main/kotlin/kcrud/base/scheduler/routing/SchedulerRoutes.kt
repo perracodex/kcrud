@@ -4,17 +4,16 @@
 
 package kcrud.base.scheduler.routing
 
-import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.routing.*
-import kcrud.base.plugins.RateLimitScope
-import kcrud.base.scheduler.routing.delete.deleteAllSchedulerTasksRoute
-import kcrud.base.scheduler.routing.delete.deleteSchedulerTaskRoute
-import kcrud.base.scheduler.routing.get.getSchedulerTaskGroupsRoute
-import kcrud.base.scheduler.routing.get.getSchedulerTasksRoute
-import kcrud.base.scheduler.routing.state.pauseAllSchedulerTasksRoute
-import kcrud.base.scheduler.routing.state.pauseSchedulerTaskRoute
-import kcrud.base.scheduler.routing.state.resumeAllSchedulerTasksRoute
-import kcrud.base.scheduler.routing.state.resumeSchedulerTaskRoute
+import kcrud.base.scheduler.routing.scheduler.pauseSchedulerRoute
+import kcrud.base.scheduler.routing.scheduler.resumeSchedulerRoute
+import kcrud.base.scheduler.routing.scheduler.schedulerStateRoute
+import kcrud.base.scheduler.routing.tasks.delete.deleteAllSchedulerTasksRoute
+import kcrud.base.scheduler.routing.tasks.delete.deleteSchedulerTaskRoute
+import kcrud.base.scheduler.routing.tasks.get.getSchedulerTaskGroupsRoute
+import kcrud.base.scheduler.routing.tasks.get.getSchedulerTasksRoute
+import kcrud.base.scheduler.routing.tasks.state.pauseSchedulerTaskRoute
+import kcrud.base.scheduler.routing.tasks.state.resumeSchedulerTaskRoute
 import kcrud.base.scheduler.routing.view.schedulerDashboardRoute
 
 /**
@@ -22,20 +21,20 @@ import kcrud.base.scheduler.routing.view.schedulerDashboardRoute
  */
 fun Route.schedulerRoutes() {
 
-    rateLimit(configuration = RateLimitName(name = RateLimitScope.PRIVATE_API.key)) {
-        route("scheduler/tasks") {
-            schedulerDashboardRoute()
+    route("scheduler") {
+        schedulerDashboardRoute()
+        schedulerStateRoute()
+        pauseSchedulerRoute()
+        resumeSchedulerRoute()
 
+        route("task") {
             getSchedulerTasksRoute()
             getSchedulerTaskGroupsRoute()
 
             deleteSchedulerTaskRoute()
             deleteAllSchedulerTasksRoute()
 
-            pauseAllSchedulerTasksRoute()
             pauseSchedulerTaskRoute()
-
-            resumeAllSchedulerTasksRoute()
             resumeSchedulerTaskRoute()
         }
     }

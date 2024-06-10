@@ -53,6 +53,8 @@
             display: flex;
             gap: 10px;
             white-space: nowrap;
+            align-items: center;
+            justify-content: flex-start; /* Ensure text is left-aligned */
         }
 
         .table-container {
@@ -76,7 +78,7 @@
 
         .table-header span,
         .table-row span {
-            text-align: left;
+            text-align: left; /* Ensure text is left-aligned */
             padding: 8px;
             white-space: nowrap;
             overflow: hidden;
@@ -97,33 +99,28 @@
         .refresh {
             background-color: #357a38;
             color: #ffffff;
+            width: 150px;
         }
 
         .refresh:hover {
             background-color: #2a5d2c;
         }
 
-        .pause {
+        .pause-resume {
             background-color: #c87f2d;
             color: #ffffff;
+            width: 150px;
+            text-align: center;
         }
 
-        .pause:hover {
+        .pause-resume:hover {
             background-color: #a56923;
-        }
-
-        .resume {
-            background-color: #357a87;
-            color: #ffffff;
-        }
-
-        .resume:hover {
-            background-color: #2a5d67;
         }
 
         .delete {
             color: #ffffff;
             background-color: #9b4656;
+            width: 150px;
         }
 
         .delete:hover {
@@ -156,8 +153,7 @@
 <div class="buttons-container">
     <div class="left-buttons">
         <button class="refresh" onclick="refreshPage()">Refresh Tasks</button>
-        <button class="pause" onclick="pause()">Pause Scheduler</button>
-        <button class="resume" onclick="resume()">Resume Scheduler</button>
+        <button class="pause-resume" id="pauseResumeButton" onclick="toggleScheduler()">Pause Scheduler</button>
     </div>
     <button class="delete" onclick="deleteAll()">Delete All</button>
 </div>
@@ -205,40 +201,17 @@
     </div>
 </div>
 <script>
+    // noinspection JSUnusedLocalSymbols
+    document.addEventListener('DOMContentLoaded', (event) => {
+        updateSchedulerPauseResumeButton();
+    });
+
     function refreshPage() {
         location.reload();
     }
 
-    function pause() {
-        fetch(`/scheduler/tasks/pause`, {method: 'POST'})
-            .then(response => {
-                if (response.ok) {
-                    console.log('Scheduler paused successfully');
-                    window.location.reload();
-                } else {
-                    console.error('Failed to pause scheduler');
-                    alert("Failed to pause scheduler.");
-                }
-            })
-            .catch(error => console.error('Error:', error));
-    }
-
-    function resume() {
-        fetch(`/scheduler/tasks/resume`, {method: 'POST'})
-            .then(response => {
-                if (response.ok) {
-                    console.log('Scheduler resumed successfully');
-                    window.location.reload();
-                } else {
-                    console.error('Failed to resume scheduler');
-                    alert("Failed to resume scheduler.");
-                }
-            })
-            .catch(error => console.error('Error:', error));
-    }
-
     function deleteAll() {
-        fetch(`/scheduler/tasks`, {method: 'DELETE'})
+        fetch(`/scheduler/task`, {method: 'DELETE'})
             .then(response => {
                 if (response.ok) {
                     console.log('All records deleted successfully');
@@ -252,15 +225,15 @@
     }
 
     // noinspection JSUnusedGlobalSymbols
-    function togglePauseResume(action, itemName, itemGroup) {
-        fetch(`/scheduler/tasks/${action}/${encodeURIComponent(itemName)}/${encodeURIComponent(itemGroup)}`, {method: 'POST'})
+    function togglePauseResume(itemName, itemGroup, action) {
+        fetch(`/scheduler/task/${encodeURIComponent(itemName)}/${encodeURIComponent(itemGroup)}/${action}`, {method: 'POST'})
             .then(response => {
                 if (response.ok) {
-                    console.log('Task paused successfully');
+                    console.log('Task paused/resumed successfully');
                     window.location.reload();
                 } else {
-                    console.error('Failed to pause task');
-                    alert("Failed to pause task.");
+                    console.error('Failed to pause/resume task');
+                    alert("Failed to pause/resume task.");
                 }
             })
             .catch(error => console.error('Error:', error));
@@ -268,7 +241,7 @@
 
     // noinspection JSUnusedGlobalSymbols
     function deleteRecord(itemName, itemGroup) {
-        fetch(`/scheduler/tasks/${encodeURIComponent(itemName)}/${encodeURIComponent(itemGroup)}`, {method: 'DELETE'})
+        fetch(`/scheduler/task/${encodeURIComponent(itemName)}/${encodeURIComponent(itemGroup)}`, {method: 'DELETE'})
             .then(response => {
                 if (response.ok) {
                     console.log('Record deleted successfully');
@@ -279,6 +252,103 @@
                 }
             })
             .catch(error => console.error('Error:', error));
+    }
+
+    function toggleScheduler() {
+        checkSchedulerState(function (state) {
+            if (state.trim() === 'RUNNING') {
+                pauseScheduler(confirmAndRefreshState);
+            } else if (state.trim() === 'PAUSED') {
+                resumeScheduler(confirmAndRefreshState);
+            }
+        });
+    }
+
+    function checkSchedulerState(callback) {
+        console.log("Fetching scheduler state...");
+        fetch('/scheduler/state', {
+            method: 'GET',
+            headers: {
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(state => {
+                console.log('Scheduler state:', state);
+                callback(state);
+            })
+            .catch(error => {
+                console.error('Error fetching scheduler state:', error);
+                alert('Error fetching scheduler state. Check console for details.');
+            });
+    }
+
+    function pauseScheduler(callback) {
+        fetch('/scheduler/pause', {method: 'POST'})
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to pause scheduler');
+                }
+                console.log('Paused scheduler');
+                callback();
+            })
+            .catch(error => {
+                console.error('Error pausing scheduler:', error);
+                alert('Error pausing scheduler. Check console for details.');
+            });
+    }
+
+    function resumeScheduler(callback) {
+        fetch('/scheduler/resume', {method: 'POST'})
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to resume scheduler');
+                }
+                console.log('Resumed scheduler');
+                callback();
+            })
+            .catch(error => {
+                console.error('Error resuming scheduler:', error);
+                alert('Error resuming scheduler. Check console for details.');
+            });
+    }
+
+    function confirmAndRefreshState() {
+        checkSchedulerState(function (state) {
+            setSchedulerButtonState(state);
+            window.location.reload(); // Reload the page after state has been committed
+        });
+    }
+
+    function setSchedulerButtonState(state) {
+        const button = document.getElementById('pauseResumeButton');
+        console.log('Setting button state for:', state); // Debug log
+
+        if (state.trim() === 'RUNNING') {
+            button.textContent = 'Pause Scheduler';
+            button.classList.add('pause');
+            button.classList.remove('resume');
+        } else if (state.trim() === 'PAUSED') {
+            button.textContent = 'Resume Scheduler';
+            button.classList.add('resume');
+            button.classList.remove('pause');
+        } else if (state.trim() === 'STOPPED') {
+            button.textContent = 'Scheduler Stopped';
+            button.disabled = true;
+        }
+    }
+
+    function updateSchedulerPauseResumeButton() {
+        checkSchedulerState(function (state) {
+            setSchedulerButtonState(state);
+        });
     }
 </script>
 </body>
