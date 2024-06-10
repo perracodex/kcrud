@@ -26,7 +26,7 @@ object TestUtils {
      * Loads the application settings for testing.
      */
     fun loadSettings() {
-        val testConfig = ApplicationConfig(configPath = "config/config_application.conf")
+        val testConfig = ApplicationConfig(configPath = "config/config.conf")
 
         runBlocking {
             AppSettings.load(applicationConfig = testConfig)
