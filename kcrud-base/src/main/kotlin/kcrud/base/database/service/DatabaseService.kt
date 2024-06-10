@@ -55,7 +55,7 @@ object DatabaseService {
         settings: DatabaseSettings,
         isolationLevel: IsolationLevel = IsolationLevel.TRANSACTION_REPEATABLE_READ,
         micrometerRegistry: PrometheusMeterRegistry? = null,
-        schemaSetup: (SchemaBuilder.() -> Unit)? = {}
+        schemaSetup: (SchemaBuilder.() -> Unit) = {}
     ) {
         buildDatabase(settings = settings)
 
@@ -74,7 +74,7 @@ object DatabaseService {
             connectDatabase(settings = settings, isolationLevel = isolationLevel)
         }
 
-        schemaSetup?.let {
+        schemaSetup.let {
             tracer.info("Setting database schema.")
             val schemaBuilder = SchemaBuilder()
             schemaSetup.invoke(schemaBuilder)
