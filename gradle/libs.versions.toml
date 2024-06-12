@@ -19,7 +19,7 @@ logback = "1.5.6"                       # https://github.com/qos-ch/logback/tags
 mockk = "1.13.11"                       # https://github.com/mockk/mockk/releases
 mockito-kotlin = "5.3.1"                # https://github.com/mockito/mockito-kotlin/releases
 quartz-scheduler = "2.4.0-rc2"          # https://github.com/quartz-scheduler/quartz/releases
-prometheus = "1.13.0"                   # https://github.com/micrometer-metrics/micrometer/releases
+prometheus = "1.13.1"                   # https://github.com/micrometer-metrics/micrometer/releases
 swagger-generators = "1.0.50"           # https://github.com/swagger-api/swagger-codegen-generators/releases
 typesafe-config = "1.4.3"               # https://github.com/lightbend/config/releases
 
