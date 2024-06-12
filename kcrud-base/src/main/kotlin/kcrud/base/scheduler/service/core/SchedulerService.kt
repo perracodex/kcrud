@@ -84,11 +84,13 @@ object SchedulerService {
 
     /**
      * Stops the task scheduler.
+     *
+     * @param interrupt Whether the scheduler should interrupt all actively executing tasks.
      */
-    fun stop() {
+    fun stop(interrupt: Boolean) {
         tracer.info("Shutting down task scheduler.")
         if (::scheduler.isInitialized) {
-            scheduler.shutdown()
+            scheduler.shutdown(!interrupt)
             tracer.info("Task scheduler shut down.")
         } else {
             tracer.warning("SKipping Scheduler Shutdown. Task scheduler is not initialized.")
@@ -98,12 +100,13 @@ object SchedulerService {
     /**
      * Restarts the task scheduler.
      *
+     * @param interrupt Whether the scheduler should interrupt all actively executing tasks.
      * @return The current state of the task scheduler.
      */
-    fun restart(): TaskSchedulerState {
+    fun restart(interrupt: Boolean): TaskSchedulerState {
         tracer.info("Restarting task scheduler.")
 
-        stop()
+        stop(interrupt = interrupt)
         start()
 
         return state().also {
@@ -151,7 +154,7 @@ object SchedulerService {
     fun configure(environment: ApplicationEnvironment) {
         // Add a shutdown hook to stop the scheduler when the application is stopped.
         environment.monitor.subscribe(ApplicationStopping) {
-            stop()
+            stop(interrupt = false)
         }
     }
 

@@ -33,7 +33,7 @@ class SchedulerServiceTest {
     @AfterTest
     fun tearDown() {
         TestUtils.tearDown()
-        SchedulerService.stop()
+        SchedulerService.stop(interrupt = true)
     }
 
     @Test

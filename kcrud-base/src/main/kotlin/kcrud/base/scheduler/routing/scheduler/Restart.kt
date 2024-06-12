@@ -16,7 +16,8 @@ import kcrud.base.scheduler.service.core.SchedulerService
 fun Route.restartSchedulerRoute() {
     // Restart the task scheduler.
     post("restart") {
-        val state: SchedulerService.TaskSchedulerState = SchedulerService.restart()
+        val interrupt: Boolean = call.parameters["interrupt"]?.toBoolean() ?: false
+        val state: SchedulerService.TaskSchedulerState = SchedulerService.restart(interrupt = interrupt)
         call.respond(status = HttpStatusCode.OK, message = state.name)
     }
 }
