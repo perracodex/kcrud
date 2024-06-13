@@ -9,7 +9,7 @@ services:
       context: .
       dockerfile: docker-full-build.Dockerfile
     image: kcrud-image:latest
-    container_name: v1
+    container_name: kcrud-container
     ports:
       - "8080:8080"
       - "8443:8443"
