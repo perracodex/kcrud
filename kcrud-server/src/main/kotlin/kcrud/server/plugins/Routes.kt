@@ -13,6 +13,7 @@ import kcrud.access.rbac.routing.rbacRoute
 import kcrud.access.token.accessTokenRoute
 import kcrud.base.env.SessionContext
 import kcrud.base.env.health.routing.healthCheckRoute
+import kcrud.base.events.sseRoute
 import kcrud.base.plugins.RateLimitScope
 import kcrud.base.scheduler.routing.schedulerRoutes
 import kcrud.base.security.snowflake.snowflakeRoute
@@ -57,6 +58,7 @@ fun Application.configureRoutes() {
         snowflakeRoute()
         rbacRoute()
         schedulerRoutes()
+        sseRoute()
 
         // Server root endpoint.
         get("/") {
