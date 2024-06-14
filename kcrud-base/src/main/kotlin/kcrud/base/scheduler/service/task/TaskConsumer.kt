@@ -11,9 +11,13 @@ import org.quartz.JobDataMap
 import org.quartz.JobExecutionContext
 
 /**
- * Abstract class representing a task that can be executed by the scheduler.
+ * Abstract class representing a scheduled task.
+ * This class provides the mechanism to consume task parameters
+ * and execute the task.
+ *
+ * Subclasses must implement the [start] method to define the task's behavior.
  */
-abstract class SchedulerTask : Job {
+abstract class TaskConsumer : Job {
 
     override fun execute(context: JobExecutionContext?) {
         val jobDataMap: JobDataMap? = context?.mergedJobDataMap

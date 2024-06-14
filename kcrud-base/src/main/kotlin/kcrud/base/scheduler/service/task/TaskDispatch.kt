@@ -2,13 +2,12 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.base.scheduler.service.request
+package kcrud.base.scheduler.service.task
 
 import kcrud.base.persistence.serializers.SUUID
 import kcrud.base.scheduler.service.core.SchedulerService
 import kcrud.base.scheduler.service.schedule.Schedule
 import kcrud.base.scheduler.service.schedule.TaskStartAt
-import kcrud.base.scheduler.service.task.SchedulerTask
 import kcrud.base.security.snowflake.SnowflakeFactory
 import kcrud.base.utils.DateTimeUtils.toJavaDate
 import kcrud.base.utils.DateTimeUtils.toJavaInstant
@@ -16,17 +15,17 @@ import org.quartz.*
 import java.util.*
 
 /**
- * Class to send a scheduling request for a task.
+ * Class to create and send a scheduling request for a task.
  * It supports both simple intervals and cron-based scheduling.
  *
  * @property taskId The ID of the task to be scheduled.
- * @property taskClass The class of the task to be scheduled.
+ * @property taskConsumerClass The class of the task consumer to be scheduled.
  * @property startAt Specifies when the task should start. Defaults to immediate execution.
  * @property parameters Optional parameters to be passed to the task class.
  */
-class SchedulerRequest(
+class TaskDispatch(
     val taskId: SUUID,
-    val taskClass: Class<out SchedulerTask>,
+    val taskConsumerClass: Class<out TaskConsumer>,
     var startAt: TaskStartAt = TaskStartAt.Immediate,
     var parameters: Map<String, Any> = emptyMap()
 ) {
@@ -128,7 +127,7 @@ class SchedulerRequest(
         val jobDataMap = JobDataMap(parameters)
 
         val jobDetail: JobDetail = JobBuilder
-            .newJob(taskClass)
+            .newJob(taskConsumerClass)
             .withIdentity(jobKey)
             .usingJobData(jobDataMap)
             .build()

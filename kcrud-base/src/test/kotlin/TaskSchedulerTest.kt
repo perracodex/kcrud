@@ -5,10 +5,10 @@
 import io.ktor.test.dispatcher.*
 import kcrud.base.persistence.serializers.SUUID
 import kcrud.base.scheduler.service.core.SchedulerService
-import kcrud.base.scheduler.service.request.SchedulerRequest
 import kcrud.base.scheduler.service.schedule.Schedule
 import kcrud.base.scheduler.service.schedule.TaskStartAt
-import kcrud.base.scheduler.service.task.SchedulerTask
+import kcrud.base.scheduler.service.task.TaskConsumer
+import kcrud.base.scheduler.service.task.TaskDispatch
 import kcrud.base.utils.TestUtils
 import kotlinx.coroutines.delay
 import org.quartz.*
@@ -41,9 +41,9 @@ class SchedulerServiceTest {
         val uniqueTestKey = "uniqueTestTask_${System.nanoTime()}"
 
         val taskId: SUUID = SUUID.randomUUID()
-        val jobKey: JobKey = SchedulerRequest(
+        val jobKey: JobKey = TaskDispatch(
             taskId = taskId,
-            taskClass = SimpleTestTask::class.java,
+            taskConsumerClass = SimpleTestConsumer::class.java,
             startAt = TaskStartAt.Immediate,
             parameters = mapOf("uniqueKey" to uniqueTestKey)
         ).send()
@@ -63,9 +63,9 @@ class SchedulerServiceTest {
 
         val interval: Schedule.Interval = Schedule.Interval(days = 0u, hours = 0u, minutes = 0u, seconds = 1u)
         val taskId: SUUID = SUUID.randomUUID()
-        val jobKey: JobKey = SchedulerRequest(
+        val jobKey: JobKey = TaskDispatch(
             taskId = taskId,
-            taskClass = SimpleTestTask::class.java,
+            taskConsumerClass = SimpleTestConsumer::class.java,
             startAt = TaskStartAt.Immediate,
             parameters = mapOf("uniqueKey" to uniqueTestKey)
         ).send(schedule = interval)
@@ -85,9 +85,9 @@ class SchedulerServiceTest {
 
         val cron: Schedule.Cron = Schedule.Cron(cron = "0/1 * * * * ?")
         val taskId: SUUID = SUUID.randomUUID()
-        val jobKey: JobKey = SchedulerRequest(
+        val jobKey: JobKey = TaskDispatch(
             taskId = taskId,
-            taskClass = SimpleTestTask::class.java,
+            taskConsumerClass = SimpleTestConsumer::class.java,
             startAt = TaskStartAt.Immediate,
             parameters = mapOf("uniqueKey" to uniqueTestKey)
         ).send(schedule = cron)
@@ -150,7 +150,7 @@ class SchedulerServiceTest {
         }
     }
 
-    class SimpleTestTask : SchedulerTask() {
+    class SimpleTestConsumer : TaskConsumer() {
         override fun start(properties: Map<String, Any>) {
             val uniqueKey: String = (properties["uniqueKey"] ?: "defaultKey") as String
             testResults.add(uniqueKey)
