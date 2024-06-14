@@ -5,6 +5,7 @@
 package kcrud.base.scheduler.service.task
 
 import kcrud.base.persistence.serializers.SUUID
+import kcrud.base.scheduler.annotation.SchedulerAPI
 import kcrud.base.scheduler.service.core.SchedulerService
 import kcrud.base.scheduler.service.schedule.Schedule
 import kcrud.base.scheduler.service.schedule.TaskStartAt
@@ -23,6 +24,7 @@ import java.util.*
  * @property startAt Specifies when the task should start. Defaults to immediate execution.
  * @property parameters Optional parameters to be passed to the task class.
  */
+@OptIn(SchedulerAPI::class)
 class TaskDispatch(
     val taskId: SUUID,
     val taskConsumerClass: Class<out TaskConsumer>,
@@ -32,7 +34,7 @@ class TaskDispatch(
     /**
      * Schedule the task to be executed immediately or at a specified [startAt] time.
      */
-    fun send(): JobKey {
+    fun send(): TaskKey {
         val job: BasicJob = buildJob()
 
         // Define the schedule builder and set misfire instructions to
@@ -45,7 +47,7 @@ class TaskDispatch(
         val trigger: SimpleTrigger = job.triggerBuilder.withSchedule(scheduleBuilder).build()
         SchedulerService.tasks.schedule(task = job.jobDetail, trigger = trigger)
 
-        return job.jobKey
+        return TaskKey.fromJobKey(job.jobKey)
     }
 
     /**
@@ -53,7 +55,7 @@ class TaskDispatch(
      *
      * @param schedule The [Schedule] at which the task should be executed.
      */
-    fun send(schedule: Schedule): JobKey {
+    fun send(schedule: Schedule): TaskKey {
         val job: BasicJob = buildJob()
 
         return when (schedule) {
@@ -70,7 +72,7 @@ class TaskDispatch(
      *
      * @see Schedule.Interval
      */
-    private fun send(job: BasicJob, interval: Schedule.Interval): JobKey {
+    private fun send(job: BasicJob, interval: Schedule.Interval): TaskKey {
         // Define the schedule builder and set misfire instructions to
         // handle cases where the trigger misses its scheduled time,
         // in which case the task will be executed immediately.
@@ -93,7 +95,7 @@ class TaskDispatch(
         val trigger: SimpleTrigger = job.triggerBuilder.withSchedule(scheduleBuilder).build()
         SchedulerService.tasks.schedule(task = job.jobDetail, trigger = trigger)
 
-        return job.jobKey
+        return TaskKey.fromJobKey(job.jobKey)
     }
 
     /**
@@ -104,7 +106,7 @@ class TaskDispatch(
      *
      * @see Schedule.Cron
      */
-    private fun send(job: BasicJob, cron: String): JobKey {
+    private fun send(job: BasicJob, cron: String): TaskKey {
         val trigger: CronTrigger = job.triggerBuilder
             .withSchedule(CronScheduleBuilder.cronSchedule(cron))
             .build()
@@ -112,7 +114,7 @@ class TaskDispatch(
         // Send the task to the scheduler.
         SchedulerService.tasks.schedule(task = job.jobDetail, trigger = trigger)
 
-        return job.jobKey
+        return TaskKey.fromJobKey(job.jobKey)
     }
 
     /**

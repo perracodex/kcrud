@@ -9,6 +9,7 @@ import kcrud.base.scheduler.service.schedule.Schedule
 import kcrud.base.scheduler.service.schedule.TaskStartAt
 import kcrud.base.scheduler.service.task.TaskConsumer
 import kcrud.base.scheduler.service.task.TaskDispatch
+import kcrud.base.scheduler.service.task.TaskKey
 import kcrud.base.utils.TestUtils
 import kotlinx.coroutines.delay
 import org.quartz.*
@@ -41,7 +42,7 @@ class SchedulerServiceTest {
         val uniqueTestKey = "uniqueTestTask_${System.nanoTime()}"
 
         val taskId: SUUID = SUUID.randomUUID()
-        val jobKey: JobKey = TaskDispatch(
+        val taskKey: TaskKey = TaskDispatch(
             taskId = taskId,
             taskConsumerClass = SimpleTestConsumer::class.java,
             startAt = TaskStartAt.Immediate,
@@ -54,7 +55,7 @@ class SchedulerServiceTest {
         assertTrue(actual = testResults.contains(uniqueTestKey))
 
         // Clean up by un-scheduling the task.
-        SchedulerService.tasks.delete(name = jobKey.name, group = jobKey.group)
+        SchedulerService.tasks.delete(name = taskKey.name, group = taskKey.group)
     }
 
     @Test
@@ -63,7 +64,7 @@ class SchedulerServiceTest {
 
         val interval: Schedule.Interval = Schedule.Interval(days = 0u, hours = 0u, minutes = 0u, seconds = 1u)
         val taskId: SUUID = SUUID.randomUUID()
-        val jobKey: JobKey = TaskDispatch(
+        val taskKey: TaskKey = TaskDispatch(
             taskId = taskId,
             taskConsumerClass = SimpleTestConsumer::class.java,
             startAt = TaskStartAt.Immediate,
@@ -76,7 +77,7 @@ class SchedulerServiceTest {
         assertTrue(actual = testResults.contains(uniqueTestKey))
 
         // Clean up by un-scheduling the task.
-        SchedulerService.tasks.delete(name = jobKey.name, group = jobKey.group)
+        SchedulerService.tasks.delete(name = taskKey.name, group = taskKey.group)
     }
 
     @Test
@@ -85,7 +86,7 @@ class SchedulerServiceTest {
 
         val cron: Schedule.Cron = Schedule.Cron(cron = "0/1 * * * * ?")
         val taskId: SUUID = SUUID.randomUUID()
-        val jobKey: JobKey = TaskDispatch(
+        val taskKey: TaskKey = TaskDispatch(
             taskId = taskId,
             taskConsumerClass = SimpleTestConsumer::class.java,
             startAt = TaskStartAt.Immediate,
@@ -98,7 +99,7 @@ class SchedulerServiceTest {
         assertTrue(actual = testResults.contains(uniqueTestKey))
 
         // Clean up by un-scheduling the task.
-        SchedulerService.tasks.delete(name = jobKey.name, group = jobKey.group)
+        SchedulerService.tasks.delete(name = taskKey.name, group = taskKey.group)
     }
 
     @Test
