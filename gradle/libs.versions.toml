@@ -8,7 +8,6 @@ dotenv = "6.4.1"                        # https://github.com/cdimascio/dotenv-ko
 exposed = "0.51.1"                      # https://github.com/JetBrains/Exposed/releases
 flyway = "10.15.0"                      # https://github.com/flyway/flyway/releases
 google-phonenumber = "8.13.39"          # https://github.com/google/libphonenumber/releases
-gson = "2.11.0"                         # https://github.com/google/gson/releases/tag/gson-parent-2.10.1
 hikariCP = "5.1.0"                      # https://github.com/brettwooldridge/HikariCP/tags
 koin = "3.5.6"                          # https://github.com/InsertKoinIO/koin/releases
 kotlin = "2.0.0"                        # https://github.com/JetBrains/kotlin/releases
@@ -148,7 +147,6 @@ quartz-scheduler = { module = "org.quartz-scheduler:quartz", version.ref = "quar
 
 # Shared.
 shared-commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec" }
-shared-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 
 # 'Conf' type safety.
 # https://github.com/lightbend/config

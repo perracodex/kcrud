@@ -31,7 +31,6 @@ dependencies {
     implementation(libs.koin.test)
 
     implementation(libs.shared.commons.codec)
-    implementation(libs.shared.gson)
 
     testImplementation(libs.test.kotlin.junit)
     testImplementation(libs.test.mockk)

@@ -16,7 +16,6 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.server.auth)
     implementation(libs.ktor.server.core)
-    implementation(libs.ktor.server.tests)
 
     implementation(libs.exposed.core)
     implementation(libs.exposed.kotlin.datetime)
