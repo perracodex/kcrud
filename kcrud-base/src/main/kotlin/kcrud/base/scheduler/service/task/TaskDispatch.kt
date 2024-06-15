@@ -29,7 +29,7 @@ class TaskDispatch(
     val taskId: SUUID,
     val taskConsumerClass: Class<out TaskConsumer>,
     var startAt: TaskStartAt = TaskStartAt.Immediate,
-    var parameters: Map<String, Any> = emptyMap()
+    var parameters: Map<String, Any?> = emptyMap()
 ) {
     /**
      * Schedule the task to be executed immediately or at a specified [startAt] time.
