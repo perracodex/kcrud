@@ -20,14 +20,14 @@ import java.util.*
  * It supports both simple intervals and cron-based scheduling.
  *
  * @property taskId The ID of the task to be scheduled.
- * @property taskConsumerClass The class of the task consumer to be scheduled.
+ * @property consumerClass The class of the task consumer to be scheduled.
  * @property startAt Specifies when the task should start. Defaults to immediate execution.
  * @property parameters Optional parameters to be passed to the task class.
  */
 @OptIn(SchedulerAPI::class)
 class TaskDispatch(
     val taskId: SUUID,
-    val taskConsumerClass: Class<out TaskConsumer>,
+    val consumerClass: Class<out TaskConsumer>,
     var startAt: TaskStartAt = TaskStartAt.Immediate,
     var parameters: Map<String, Any?> = emptyMap()
 ) {
@@ -129,7 +129,7 @@ class TaskDispatch(
         val jobDataMap = JobDataMap(parameters)
 
         val jobDetail: JobDetail = JobBuilder
-            .newJob(taskConsumerClass)
+            .newJob(consumerClass)
             .withIdentity(jobKey)
             .usingJobData(jobDataMap)
             .build()

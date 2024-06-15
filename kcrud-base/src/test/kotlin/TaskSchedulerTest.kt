@@ -44,7 +44,7 @@ class SchedulerServiceTest {
         val taskId: SUUID = SUUID.randomUUID()
         val taskKey: TaskKey = TaskDispatch(
             taskId = taskId,
-            taskConsumerClass = SimpleTestConsumer::class.java,
+            consumerClass = SimpleTestConsumer::class.java,
             startAt = TaskStartAt.Immediate,
             parameters = mapOf("uniqueKey" to uniqueTestKey)
         ).send()
@@ -66,7 +66,7 @@ class SchedulerServiceTest {
         val taskId: SUUID = SUUID.randomUUID()
         val taskKey: TaskKey = TaskDispatch(
             taskId = taskId,
-            taskConsumerClass = SimpleTestConsumer::class.java,
+            consumerClass = SimpleTestConsumer::class.java,
             startAt = TaskStartAt.Immediate,
             parameters = mapOf("uniqueKey" to uniqueTestKey)
         ).send(schedule = interval)
@@ -88,7 +88,7 @@ class SchedulerServiceTest {
         val taskId: SUUID = SUUID.randomUUID()
         val taskKey: TaskKey = TaskDispatch(
             taskId = taskId,
-            taskConsumerClass = SimpleTestConsumer::class.java,
+            consumerClass = SimpleTestConsumer::class.java,
             startAt = TaskStartAt.Immediate,
             parameters = mapOf("uniqueKey" to uniqueTestKey)
         ).send(schedule = cron)
