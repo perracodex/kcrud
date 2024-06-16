@@ -400,7 +400,7 @@
     function deleteRecord(itemName, itemGroup) {
         fetch(`/scheduler/task/${encodeURIComponent(itemName)}/${encodeURIComponent(itemGroup)}`, {method: 'DELETE'})
             .then(response => {
-                const key = `${window.location.pathname}_${itemName}_${itemGroup}`;
+                const key = `${window.location.pathname}_${itemName}`;
                 deleteCookie(key); // Delete the specific cookie for the record
 
                 if (response.ok) {
