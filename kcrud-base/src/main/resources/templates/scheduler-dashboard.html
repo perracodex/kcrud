@@ -76,6 +76,7 @@
             padding: 4px;
             border-radius: 6px;
             margin-top: 5px;
+            display: none; /* Hide sub-rows by default */
         }
 
         .table-header span,
@@ -184,6 +185,16 @@
             overflow-y: auto;
             margin-bottom: 220px;
         }
+
+        .expandable {
+            cursor: pointer;
+            user-select: none; /* Prevent text selection */
+            outline: none; /* Prevent focus outline */
+        }
+
+        .expandable:focus {
+            outline: none; /* Prevent focus outline */
+        }
     </style>
 </head>
 <body>
@@ -207,7 +218,7 @@
     <span>Action</span>
 </div>
 <div class="table-content">
-    <div th:each="item : ${data}" class="table-container">
+    <div th:each="item : ${data}" class="table-container expandable" onclick="toggleSubRow(this)">
         <div class="table-row">
             <span th:text="${item.name}">Task Name</span>
             <span th:text="${item.group}">Task Group</span>
@@ -434,6 +445,21 @@
             setSchedulerButtonState(state);
         });
     }
+
+    function toggleSubRow(event) {
+        event.preventDefault(); // Prevent any default action.
+        event.stopPropagation(); // Stop the event from bubbling up.
+        const element = event.currentTarget; // Get the clicked element.
+        const subRow = element.querySelector('.table-sub-row');
+        if (subRow) {
+            subRow.style.display = subRow.style.display === 'none' ? 'block' : 'none';
+        }
+    }
+
+    document.querySelectorAll('.expandable').forEach(item => {
+        item.addEventListener('click', toggleSubRow);
+    });
+
 </script>
 </body>
 </html>
