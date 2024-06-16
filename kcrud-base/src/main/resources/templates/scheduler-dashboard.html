@@ -350,26 +350,9 @@
         location.reload();
     }
 
-    function clearPageSpecificCookies() {
-        const pageIdentifier = window.location.pathname;
-        const cookies = document.cookie.split(';');
-        cookies.forEach(cookie => {
-            const cookieName = cookie.split('=')[0].trim();
-            if (cookieName.startsWith(pageIdentifier)) {
-                document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-            }
-        });
-    }
-
-    function deleteCookie(name) {
-        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-    }
-
     function deleteAll() {
         fetch(`/scheduler/task`, {method: 'DELETE'})
             .then(response => {
-                clearPageSpecificCookies();
-
                 if (response.ok) {
                     console.log('All records deleted successfully');
                     window.location.reload();
@@ -400,9 +383,6 @@
     function deleteRecord(itemName, itemGroup) {
         fetch(`/scheduler/task/${encodeURIComponent(itemName)}/${encodeURIComponent(itemGroup)}`, {method: 'DELETE'})
             .then(response => {
-                const key = `${window.location.pathname}_${itemName}`;
-                deleteCookie(key); // Delete the specific cookie for the record
-
                 if (response.ok) {
                     console.log('Record deleted successfully');
                     window.location.reload();
