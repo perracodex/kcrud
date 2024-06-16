@@ -7,21 +7,14 @@
     <title>Task Scheduler</title>
     <style>
         body {
-            background-color: #1c1e26;
-            color: #d5d6db;
+            background-color: #1a1a1a;
+            color: #ececec;
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 20px;
             display: flex;
             flex-direction: column;
             height: 100vh;
-        }
-
-        h1 {
-            color: #336699;
-            text-align: center;
-            margin-bottom: 20px;
-            position: relative;
         }
 
         .buttons-container {
@@ -46,10 +39,10 @@
 
         .table-header {
             padding: 10px;
-            border-radius: 6px;
+            border-radius: 8px;
             margin-top: 9px;
-            background-color: #333648;
-            color: #649ee0;
+            background-color: #282828;
+            color: #7b848c;
         }
 
         .table-row > div {
@@ -60,21 +53,22 @@
         }
 
         .table-container {
-            background-color: #383a48;
+            background-color: #222222;
             margin-top: 6px;
-            border-radius: 6px;
+            border-radius: 8px;
             border: 1px solid transparent;
+            transition: border-color 0.3s;
         }
 
         .table-container:hover {
-            border: 1px solid #649ee0;
+            border: 1px solid #6d747c;
         }
 
         .table-sub-row {
-            background-color: #484d60;
-            color: #cfd0d5;
-            padding: 4px;
-            border-radius: 6px;
+            background-color: #333333;
+            color: #d0d0d0;
+            padding: 6px;
+            border-radius: 8px;
             margin-top: 5px;
             display: none; /* Hide sub-rows by default */
         }
@@ -90,12 +84,13 @@
 
         .table-row span[data-log] {
             cursor: pointer;
+            color: #76c7c0;
         }
 
         button {
             padding: 10px 20px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             transition: background-color 0.3s;
             white-space: nowrap;
@@ -104,45 +99,45 @@
         }
 
         .refresh {
-            background-color: #357a38;
+            background-color: #58af53;
             color: #ffffff;
             width: 150px;
         }
 
         .refresh:hover {
-            background-color: #2a5d2c;
+            background-color: #4b8e47;
         }
 
         .pause-resume {
-            background-color: #c87f2d;
+            background-color: #db6e3e;
             color: #ffffff;
             width: 150px;
             text-align: center;
         }
 
         .pause-resume:hover {
-            background-color: #a56923;
+            background-color: #b3582f;
         }
 
         .audit {
-            background-color: #306eb8;
+            background-color: #4682b4;
             color: #ffffff;
             width: 150px;
             text-align: center;
         }
 
         .audit:hover {
-            background-color: #2a5e9c;
+            background-color: #376c92;
         }
 
         .delete {
             color: #ffffff;
-            background-color: #9b4656;
+            background-color: #b34747;
             width: 150px;
         }
 
         .delete:hover {
-            background-color: #732b38;
+            background-color: #933636;
         }
 
         .icon-button {
@@ -156,11 +151,11 @@
         }
 
         .icon-button:hover {
-            color: #649ee0;
+            color: #6d747c;
         }
 
         .delete-button span {
-            color: #e64e6f;
+            color: #db6e6e;
         }
 
         .events-box {
@@ -169,15 +164,15 @@
             left: 0;
             right: 0;
             height: 150px;
-            background-color: #000;
-            color: #0f0;
+            background-color: #323232;
+            color: #77f377;
             overflow-y: auto;
             padding: 10px;
             margin: 10px;
             font-family: 'Courier New', Courier, monospace;
             font-size: 0.8em;
-            border-radius: 6px;
-            border: 1px solid gray;
+            border-radius: 8px;
+            border: 1px solid #6d747c;
         }
 
         .table-content {
