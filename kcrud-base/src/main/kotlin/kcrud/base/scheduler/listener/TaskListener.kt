@@ -4,8 +4,15 @@
 
 package kcrud.base.scheduler.listener
 
+import io.micrometer.core.instrument.Counter
+import io.micrometer.core.instrument.Timer
 import kcrud.base.env.Tracer
+import kcrud.base.plugins.appMicrometerRegistry
 import kcrud.base.scheduler.annotation.SchedulerAPI
+import kcrud.base.scheduler.audit.AuditRepository
+import kcrud.base.scheduler.audit.entity.AuditRequest
+import kcrud.base.scheduler.service.task.TaskOutcome
+import kcrud.base.utils.DateTimeUtils
 import org.quartz.JobExecutionContext
 import org.quartz.JobExecutionException
 import org.quartz.JobListener
@@ -16,6 +23,18 @@ import org.quartz.JobListener
 @SchedulerAPI
 class TaskListener : JobListener {
     private val tracer = Tracer<TaskListener>()
+
+    private val taskExecutedMetric: Counter = Counter.builder("scheduler_task_total")
+        .description("Total number of tasks executed")
+        .register(appMicrometerRegistry)
+
+    private val taskFailureMetric: Counter = Counter.builder("scheduler_task_failures")
+        .description("Total number of tasks failures")
+        .register(appMicrometerRegistry)
+
+    private val taskRunTimeMetric: Timer = Timer.builder("scheduler_task_duration")
+        .description("Duration of tasks run-time execution")
+        .register(appMicrometerRegistry)
 
     /**
      * The name of the task listener.
@@ -52,6 +71,30 @@ class TaskListener : JobListener {
      * triggered(xx) method has been called.
      */
     override fun jobWasExecuted(context: JobExecutionContext, jobException: JobExecutionException?) {
-        tracer.debug("Task executed: ${context.jobDetail.key}")
+        // Record task execution metrics.
+
+        taskExecutedMetric.increment()
+        taskRunTimeMetric.record(context.jobRunTime, java.util.concurrent.TimeUnit.MILLISECONDS)
+
+        val outcome: TaskOutcome = jobException?.let {
+            taskFailureMetric.increment()
+            TaskOutcome.ERROR
+        } ?: TaskOutcome.SUCCESS
+
+        tracer.debug("Task executed: ${context.jobDetail.key}. Outcome: $outcome")
+
+        // Create audit log for task execution.
+
+        AuditRequest(
+            taskName = context.jobDetail.key.name,
+            taskGroup = context.jobDetail.key.group,
+            fireTime = DateTimeUtils.javaDateToLocalDateTime(datetime = context.fireTime),
+            runTime = context.jobRunTime,
+            outcome = outcome,
+            log = jobException?.message,
+            detail = context.jobDetail.jobDataMap.toMap().toString()
+        ).also { request ->
+            AuditRepository.create(request = request)
+        }
     }
 }

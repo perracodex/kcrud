@@ -132,6 +132,7 @@ class TaskDispatch(
             .newJob(consumerClass)
             .withIdentity(jobKey)
             .usingJobData(jobDataMap)
+            .storeDurably(true) // True to keep the job in the scheduler even after it is completed.
             .build()
 
         // Set the trigger name and start time based on task start configuration.

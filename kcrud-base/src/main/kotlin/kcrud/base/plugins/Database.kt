@@ -13,6 +13,7 @@ import kcrud.base.database.schema.admin.rbac.RbacScopeRuleTable
 import kcrud.base.database.schema.contact.ContactTable
 import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.database.schema.employment.EmploymentTable
+import kcrud.base.database.schema.scheduler.SchedulerAuditTable
 
 /**
  * Configures the custom [DbPlugin].
@@ -37,5 +38,8 @@ fun Application.configureDatabase() {
         tables.add(ContactTable)
         tables.add(EmployeeTable)
         tables.add(EmploymentTable)
+
+        // Scheduler tables.
+        tables.add(SchedulerAuditTable)
     }
 }

@@ -16,13 +16,13 @@ import org.quartz.TriggerListener
  * when a task schedule trigger fires.
  */
 @SchedulerAPI
-class TaskTriggerListener : TriggerListener {
-    private val tracer = Tracer<TaskTriggerListener>()
+class TriggerListener : TriggerListener {
+    private val tracer = Tracer<kcrud.base.scheduler.listener.TriggerListener>()
 
     /**
      * Get the name of the [TriggerListener].
      */
-    override fun getName(): String? = TaskTriggerListener::class.simpleName
+    override fun getName(): String? = TriggerListener::class.simpleName
 
     /**
      * Called by the [org.quartz.Scheduler] when a [Trigger] has fired,
