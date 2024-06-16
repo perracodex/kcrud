@@ -218,7 +218,7 @@
     <span>Action</span>
 </div>
 <div class="table-content">
-    <div th:each="item : ${data}" class="table-container expandable" onclick="toggleSubRow(this)">
+    <div th:each="item : ${data}" class="table-container expandable">
         <div class="table-row">
             <span th:text="${item.name}">Task Name</span>
             <span th:text="${item.group}">Task Group</span>
@@ -239,7 +239,7 @@
                         title="Audit">
                     <span>&#128196;</span>
                 </button>
-                <div th:if="${item.state} != 'COMPLETE'">
+                <div th:if="${item.state} != 'COMPLETE' and ${item.state} != 'NONE'">
                     <button class="icon-button"
                             th:attr="onclick='togglePauseResume(\'' + ${item.name} + '\', \'' + ${item.group} + '\', \'' + (${item.state} == 'PAUSED' ? 'resume' : 'pause') + '\')'"
                             th:title="${item.state} == 'PAUSED' ? 'Resume' : 'Pause'">
@@ -260,6 +260,22 @@
 <script>
     // noinspection JSUnusedLocalSymbols
     document.addEventListener('DOMContentLoaded', (event) => {
+        document.querySelectorAll('.expandable').forEach(item => {
+            item.addEventListener('click', function (event) {
+                // Check if the click is on the 'Outcome' field or part of it.
+                if (event.target.closest('span[data-log], .icon-button')) {
+                    // If the click is on the 'Outcome' or action buttons, do nothing more.
+                    return;
+                }
+                // Proceed with toggling the sub-row display.
+                const subRow = this.querySelector('.table-sub-row');
+                if (subRow) {
+                    // Toggle display state by checking the current state.
+                    subRow.style.display = subRow.style.display === 'block' ? 'none' : 'block';
+                }
+            });
+        });
+
         updateSchedulerPauseResumeButton();
     });
 
@@ -445,21 +461,6 @@
             setSchedulerButtonState(state);
         });
     }
-
-    function toggleSubRow(event) {
-        event.preventDefault(); // Prevent any default action.
-        event.stopPropagation(); // Stop the event from bubbling up.
-        const element = event.currentTarget; // Get the clicked element.
-        const subRow = element.querySelector('.table-sub-row');
-        if (subRow) {
-            subRow.style.display = subRow.style.display === 'none' ? 'block' : 'none';
-        }
-    }
-
-    document.querySelectorAll('.expandable').forEach(item => {
-        item.addEventListener('click', toggleSubRow);
-    });
-
 </script>
 </body>
 </html>

@@ -378,7 +378,7 @@ object SchedulerService {
 
             // Resolve the last execution outcome.
             val mostRecentAudit: AuditEntity? = audit.firstOrNull()
-            val outcome: String = mostRecentAudit?.outcome?.name ?: "--"
+            val outcome: String? = mostRecentAudit?.outcome?.name
 
             // Resolve the interval metrics.
             val interval: String? = triggers.firstOrNull()?.let { trigger ->
