@@ -39,7 +39,7 @@
         .table-header,
         .table-row {
             display: grid;
-            grid-template-columns: 1.5fr 1.5fr 1fr 1.2fr 0.5fr 0.8fr 0.7fr 0.4fr 0.5fr;
+            grid-template-columns: 1.5fr 1.5fr 1fr 1.2fr 0.5fr 0.8fr 0.7fr 0.4fr 0.65fr;
             font-size: 0.9em;
             align-items: center;
         }
@@ -54,7 +54,6 @@
 
         .table-row > div {
             display: flex;
-            gap: 10px;
             white-space: nowrap;
             align-items: center;
             justify-content: flex-start; /* Ensure text is left-aligned */
@@ -86,6 +85,10 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+
+        .table-row span[data-log] {
+            cursor: pointer;
         }
 
         button {
@@ -120,6 +123,17 @@
             background-color: #a56923;
         }
 
+        .audit {
+            background-color: #306eb8;
+            color: #ffffff;
+            width: 150px;
+            text-align: center;
+        }
+
+        .audit:hover {
+            background-color: #2a5e9c;
+        }
+
         .delete {
             color: #ffffff;
             background-color: #9b4656;
@@ -136,7 +150,7 @@
             color: #ffffff;
             cursor: pointer;
             font-size: 1.2em;
-            padding: 8px;
+            padding: 1px;
             transition: color 0.3s;
         }
 
@@ -177,6 +191,7 @@
     <div class="left-buttons">
         <button class="refresh" onclick="refreshPage()">Refresh Tasks</button>
         <button class="pause-resume" id="pauseResumeButton" onclick="toggleScheduler()">Pause Scheduler</button>
+        <button class="audit" id="openAudit" onclick="openAudit()">Audit</button>
     </div>
     <button class="delete" onclick="deleteAll()">Delete All</button>
 </div>
@@ -199,7 +214,7 @@
             <span th:text="${item.consumer}">Consumer</span>
             <span th:text="${item.nextFireTime}">Next Fire Time</span>
             <span th:text="${item.state}">State</span>
-            <span th:text="${item.outcome}" th:attr="data-log=${item.log}" onclick="showLogInNewTab(this)">Outcome</span>
+            <span th:text="${item.outcome}" th:attr="data-log=${item.log}" onclick="openLog(this)" style="cursor: pointer;">Outcome</span>
             <span th:text="${item.interval}">Interval</span>
             <span th:text="${item.runs}">runs</span>
             <div>
@@ -207,6 +222,11 @@
                         th:attr="onclick='deleteRecord(\'' + ${item.name} + '\', \'' + ${item.group} + '\')'"
                         title="Delete">
                     <span>&#x1F5D9;</span>
+                </button>
+                <button class="icon-button"
+                        th:attr="onclick='recordAudit(\'' + ${item.name} + '\', \'' + ${item.group} + '\')'"
+                        title="Audit">
+                    <span>&#128196;</span>
                 </button>
                 <div th:if="${item.state} != 'COMPLETE'">
                     <button class="icon-button"
@@ -241,7 +261,7 @@
         eventsContainer.scrollTop = eventsContainer.scrollHeight; // Auto scroll to bottom.
     }
 
-    function showLogInNewTab(element) {
+    function openLog(element) {
         const log = element.getAttribute('data-log');
         const newWindow = window.open();
         newWindow.document.write(`
@@ -259,6 +279,15 @@
         </html>
     `);
         newWindow.document.close();
+    }
+
+    function openAudit() {
+        window.open('/scheduler/audit', '_blank');
+    }
+
+    // noinspection JSUnusedGlobalSymbols
+    function recordAudit(itemName, itemGroup) {
+        window.open(`/scheduler/audit/${encodeURIComponent(itemName)}/${encodeURIComponent(itemGroup)}`, '_blank');
     }
 
     function refreshPage() {

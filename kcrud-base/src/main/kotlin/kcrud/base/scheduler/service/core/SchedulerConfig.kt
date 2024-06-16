@@ -24,14 +24,16 @@ internal object SchedulerConfig {
     fun get(): Properties {
         // Load the configuration properties from the quartz.properties file.
         val schema: Properties = loadConfigurationFile()
-        val dataSourceName: String = schema["org.quartz.jobStore.dataSource"].toString()
 
         // Set the database connection properties.
-        schema["org.quartz.dataSource.$dataSourceName.driver"] = AppSettings.database.jdbcDriver
-        schema["org.quartz.dataSource.$dataSourceName.URL"] = AppSettings.database.jdbcUrl
-        schema["org.quartz.dataSource.$dataSourceName.user"] = AppSettings.database.username ?: ""
-        schema["org.quartz.dataSource.$dataSourceName.password"] = AppSettings.database.password ?: ""
-        schema["org.quartz.dataSource.$dataSourceName.maxConnections"] = AppSettings.database.connectionPoolSize
+        val dataSourceName: String = schema["org.quartz.jobStore.dataSource"].toString()
+        schema.apply {
+            this["org.quartz.dataSource.$dataSourceName.driver"] = AppSettings.database.jdbcDriver
+            this["org.quartz.dataSource.$dataSourceName.URL"] = AppSettings.database.jdbcUrl
+            this["org.quartz.dataSource.$dataSourceName.user"] = AppSettings.database.username ?: ""
+            this["org.quartz.dataSource.$dataSourceName.password"] = AppSettings.database.password ?: ""
+            this["org.quartz.dataSource.$dataSourceName.maxConnections"] = AppSettings.database.connectionPoolSize
+        }
 
         return schema
     }

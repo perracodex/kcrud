@@ -7,6 +7,7 @@ package kcrud.base.scheduler.audit
 import kcrud.base.database.schema.scheduler.SchedulerAuditTable
 import kcrud.base.scheduler.audit.entity.AuditEntity
 import kcrud.base.scheduler.audit.entity.AuditRequest
+import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.andWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
@@ -40,13 +41,14 @@ internal object AuditRepository {
     }
 
     /**
-     * Finds all the audit entries.
+     * Finds all the audit entries, ordered bby the most recent first.
      *
      * @return The list of [AuditEntity] instances.
      */
     fun findAll(): List<AuditEntity> {
         return transaction {
             SchedulerAuditTable.selectAll()
+                .orderBy(SchedulerAuditTable.createdAt to SortOrder.DESC)
                 .map {
                     AuditEntity.from(row = it)
                 }
@@ -54,17 +56,38 @@ internal object AuditRepository {
     }
 
     /**
-     * Finds a audit entry by task name and task group.
+     * Finds all the audit logs for a concrete task by name and group, ordered by the most recent first.
+     *
+     * @param taskName The name of the task.
+     * @param taskGroup The group of the task.
+     * @return The list of [AuditEntity] instances, or an empty list if none found.
+     */
+    fun find(taskName: String, taskGroup: String): List<AuditEntity> {
+        return transaction {
+            SchedulerAuditTable.selectAll()
+                .where { SchedulerAuditTable.taskName eq taskName }
+                .andWhere { SchedulerAuditTable.taskGroup eq taskGroup }
+                .orderBy(SchedulerAuditTable.createdAt to SortOrder.DESC)
+                .map {
+                    AuditEntity.from(row = it)
+                }
+        }
+    }
+
+    /**
+     * Finds the most recent audit log for concrete task by name and group.
      *
      * @param taskName The name of the task.
      * @param taskGroup The group of the task.
      * @return The found [AuditEntity] instance, or `null` if not found.
      */
-    fun find(taskName: String, taskGroup: String): AuditEntity? {
+    fun findMostRecent(taskName: String, taskGroup: String): AuditEntity? {
         return transaction {
             SchedulerAuditTable.selectAll()
                 .where { SchedulerAuditTable.taskName eq taskName }
                 .andWhere { SchedulerAuditTable.taskGroup eq taskGroup }
+                .orderBy(SchedulerAuditTable.createdAt to SortOrder.DESC)
+                .limit(n = 1)
                 .map {
                     AuditEntity.from(row = it)
                 }

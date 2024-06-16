@@ -375,7 +375,7 @@ object SchedulerService {
             )
 
             // Resolve the last execution outcome.
-            val log: AuditEntity? = AuditRepository.find(taskName = jobKey.name, taskGroup = jobKey.group)
+            val log: AuditEntity? = AuditRepository.findMostRecent(taskName = jobKey.name, taskGroup = jobKey.group)
             val outcome: String = log?.outcome?.name ?: "--"
 
             // Resolve the interval metrics.

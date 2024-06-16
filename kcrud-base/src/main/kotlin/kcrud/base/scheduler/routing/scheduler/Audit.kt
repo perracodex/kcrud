@@ -25,10 +25,12 @@ fun Route.schedulerAuditRoute() {
     get("audit/{name}/{group}") {
         val taskName: String = call.parameters["name"] ?: return@get call.respond(HttpStatusCode.BadRequest)
         val taskGroup: String = call.parameters["group"] ?: return@get call.respond(HttpStatusCode.BadRequest)
-        val audit: AuditEntity? = AuditRepository.find(taskName = taskName, taskGroup = taskGroup)
+        val audit: List<AuditEntity> = AuditRepository.find(taskName = taskName, taskGroup = taskGroup)
 
-        audit?.let {
+        if (audit.isEmpty()) {
+            call.respond(status = HttpStatusCode.NotFound, message = "No audit logs found for the task.")
+        } else {
             call.respond(status = HttpStatusCode.OK, message = audit)
-        } ?: call.respond(HttpStatusCode.NotFound)
+        }
     }
 }
