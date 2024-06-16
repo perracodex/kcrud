@@ -73,25 +73,4 @@ internal object AuditRepository {
                 }
         }
     }
-
-    /**
-     * Finds the most recent audit log for concrete task by name and group.
-     *
-     * @param taskName The name of the task.
-     * @param taskGroup The group of the task.
-     * @return The found [AuditEntity] instance, or `null` if not found.
-     */
-    fun findMostRecent(taskName: String, taskGroup: String): AuditEntity? {
-        return transaction {
-            SchedulerAuditTable.selectAll()
-                .where { SchedulerAuditTable.taskName eq taskName }
-                .andWhere { SchedulerAuditTable.taskGroup eq taskGroup }
-                .orderBy(SchedulerAuditTable.createdAt to SortOrder.DESC)
-                .limit(n = 1)
-                .map {
-                    AuditEntity.from(row = it)
-                }
-                .singleOrNull()
-        }
-    }
 }

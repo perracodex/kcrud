@@ -374,23 +374,25 @@ object SchedulerService {
                 taskDetail = taskDetail
             )
 
+            val audit: List<AuditEntity> = AuditRepository.find(taskName = jobKey.name, taskGroup = jobKey.group)
+
             // Resolve the last execution outcome.
-            val log: AuditEntity? = AuditRepository.findMostRecent(taskName = jobKey.name, taskGroup = jobKey.group)
-            val outcome: String = log?.outcome?.name ?: "--"
+            val mostRecentAudit: AuditEntity? = audit.firstOrNull()
+            val outcome: String = mostRecentAudit?.outcome?.name ?: "--"
 
             // Resolve the interval metrics.
-            val (interval, runs) = triggers.firstOrNull()?.let { trigger ->
+            val interval: String? = triggers.firstOrNull()?.let { trigger ->
                 if (trigger is SimpleTrigger) {
                     val repeatInterval: Duration = trigger.repeatInterval.toDuration(unit = DurationUnit.MILLISECONDS)
                     val totalSeconds: Long = repeatInterval.inWholeSeconds
 
                     if (totalSeconds != 0L) {
-                        DateTimeUtils.formatDuration(duration = repeatInterval) to trigger.timesTriggered
+                        DateTimeUtils.formatDuration(duration = repeatInterval)
                     } else null
                 } else if (trigger is CronTrigger) {
-                    trigger.cronExpression to null
+                    trigger.cronExpression
                 } else null
-            } ?: (null to null)
+            }
 
             // Resolve the concrete parameters of the task.
             val dataMap: List<String> = taskDetail.jobDataMap
@@ -407,9 +409,9 @@ object SchedulerService {
                 nextFireTime = nextFireTime?.let { DateTimeUtils.javaDateToLocalDateTime(datetime = it) },
                 state = mostRestrictiveState.name,
                 outcome = outcome,
-                log = log?.log,
+                log = mostRecentAudit?.log,
                 interval = interval,
-                runs = runs,
+                runs = audit.size,
                 dataMap = dataMap,
             )
         }
