@@ -20,7 +20,7 @@ import kcrud.base.settings.AppSettings
  * external service availability, or other critical component checks.
  */
 fun Route.healthCheckRoute() {
-    authenticate(AppSettings.security.basic.providerName, optional = !AppSettings.security.isEnabled) {
+    authenticate(AppSettings.security.basicAuth.providerName, optional = !AppSettings.security.isEnabled) {
         // Healthcheck providing the current operational status.
         get("/health") {
             val healthCheck = HealthCheck(call = call)

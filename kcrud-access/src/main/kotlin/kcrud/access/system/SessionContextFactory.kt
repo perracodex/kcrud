@@ -34,14 +34,14 @@ object SessionContextFactory : KoinComponent {
     fun from(jwtCredential: JWTCredential): SessionContext? {
         // Check if the JWT audience claim matches the configured audience.
         // This ensures the token is intended for the application.
-        if (!jwtCredential.payload.audience.contains(AppSettings.security.jwt.audience)) {
+        if (!jwtCredential.payload.audience.contains(AppSettings.security.jwtAuth.audience)) {
             tracer.error("Invalid JWT audience: ${jwtCredential.payload.audience}")
             return null
         }
 
         // Check if the JWT issuer matches the configured issuer.
         // This ensures the token was issued by a trusted source.
-        if (jwtCredential.payload.issuer != AppSettings.security.jwt.issuer) {
+        if (jwtCredential.payload.issuer != AppSettings.security.jwtAuth.issuer) {
             tracer.error("Invalid JWT issuer: ${jwtCredential.payload.issuer}")
             return null
         }
@@ -117,12 +117,12 @@ object SessionContextFactory : KoinComponent {
             return null
         }
 
-        if (!AppSettings.security.oauth.authorizeUrl.startsWith(jwt.issuer)) {
+        if (!AppSettings.security.oAuth.authorizeUrl.startsWith(jwt.issuer)) {
             tracer.error("Invalid OAuth issuer: ${jwt.issuer}")
             return null
         }
 
-        if (jwt.audience.isEmpty() || jwt.audience[0] != AppSettings.security.oauth.clientId) {
+        if (jwt.audience.isEmpty() || jwt.audience[0] != AppSettings.security.oAuth.clientId) {
             tracer.error("Invalid OAuth audience: ${jwt.audience}")
             return null
         }

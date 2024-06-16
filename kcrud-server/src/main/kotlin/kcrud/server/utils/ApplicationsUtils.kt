@@ -4,8 +4,6 @@
 
 package kcrud.server.utils
 
-import io.github.cdimascio.dotenv.DotenvException
-import io.github.cdimascio.dotenv.dotenv
 import io.ktor.server.application.*
 import kcrud.base.env.Tracer
 import kcrud.base.security.snowflake.SnowflakeFactory
@@ -17,30 +15,6 @@ import kcrud.base.utils.NetworkUtils
  */
 internal object ApplicationsUtils {
     private val tracer = Tracer<ApplicationsUtils>()
-
-    /**
-     * Loads environment variables from the project `.env` file and sets them as system properties.
-     * This allows the application to seamlessly access these variables without needing explicit
-     * creation at the OS level.
-     *
-     * This method must be called before the server is started to ensure that when [AppSettings]
-     * is initialized, it properly incorporates these environment variables into the server configuration.
-     * This is crucial because the server configuration utilizes placeholders that are replaced by
-     * these environment variables.
-     */
-    fun loadEnvironmentVariables() {
-        tracer.info("Loading environment variables from '.env' file.")
-
-        try {
-            val dotenv = dotenv()
-
-            dotenv.entries().forEach { entry ->
-                System.setProperty(entry.key, entry.value)
-            }
-        } catch (e: DotenvException) {
-            tracer.info("No '.env' file found. Defaulting to system environment variables.")
-        }
-    }
 
     /**
      * Watches the server for readiness and logs the server's endpoints to the console.

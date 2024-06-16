@@ -33,20 +33,20 @@ import kcrud.base.settings.AppSettings
 fun Application.configureOAuthAuthentication() {
 
     authentication {
-        oauth(name = AppSettings.security.oauth.providerName) {
+        oauth(name = AppSettings.security.oAuth.providerName) {
             urlProvider = {
-                AppSettings.security.oauth.redirectCallbackUrl
+                AppSettings.security.oAuth.redirectCallbackUrl
             }
 
             providerLookup = {
                 OAuthServerSettings.OAuth2ServerSettings(
-                    name = AppSettings.security.oauth.providerName,
-                    authorizeUrl = AppSettings.security.oauth.authorizeUrl,
-                    accessTokenUrl = AppSettings.security.oauth.accessTokenUrl,
+                    name = AppSettings.security.oAuth.providerName,
+                    authorizeUrl = AppSettings.security.oAuth.authorizeUrl,
+                    accessTokenUrl = AppSettings.security.oAuth.accessTokenUrl,
                     requestMethod = HttpMethod.Post,
-                    clientId = AppSettings.security.oauth.clientId,
-                    clientSecret = AppSettings.security.oauth.clientSecret,
-                    defaultScopes = AppSettings.security.oauth.defaultScopes
+                    clientId = AppSettings.security.oAuth.clientId,
+                    clientSecret = AppSettings.security.oAuth.clientSecret,
+                    defaultScopes = AppSettings.security.oAuth.defaultScopes
                 )
             }
 
@@ -55,7 +55,7 @@ fun Application.configureOAuthAuthentication() {
     }
 
     routing {
-        authenticate(AppSettings.security.oauth.providerName, optional = !AppSettings.security.isEnabled) {
+        authenticate(AppSettings.security.oAuth.providerName, optional = !AppSettings.security.isEnabled) {
             get("/oauth/callback") {
 
                 call.principal<OAuthAccessTokenResponse.OAuth2>()?.let { principal ->

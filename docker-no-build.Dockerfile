@@ -34,7 +34,6 @@ ENV KCRUD_KTOR_SECURITY_SSL_KEY_STORE="/app/keystore.p12"
 
 # To override more configuration settings at image level add them here.
 # For more settings see the existing 'conf' files in the base project, under the resources folder.
-# Alternatively, the projct '.env' file can be used to override settings at runtime.
 
 #-------------------------------------------------------------------------------------------------
 # Execution entrypoint.

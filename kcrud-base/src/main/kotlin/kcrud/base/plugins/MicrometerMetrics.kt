@@ -50,7 +50,7 @@ fun Application.configureMicroMeterMetrics() {
     }
 
     routing {
-        authenticate(AppSettings.security.basic.providerName, optional = !AppSettings.security.isEnabled) {
+        authenticate(AppSettings.security.basicAuth.providerName, optional = !AppSettings.security.isEnabled) {
             get("/metrics") {
                 call.respond(status = HttpStatusCode.OK, message = appMicrometerRegistry.scrape())
             }

@@ -34,16 +34,16 @@ import kcrud.base.settings.AppSettings
 fun Application.configureJwtAuthentication() {
 
     authentication {
-        jwt(name = AppSettings.security.jwt.providerName) {
-            realm = AppSettings.security.jwt.realm
+        jwt(name = AppSettings.security.jwtAuth.providerName) {
+            realm = AppSettings.security.jwtAuth.realm
 
             verifier(
                 // Configure the JWT verifier used to check the signature of each incoming JWT token.
                 // The signature check ensures that the token was signed with the same secret key
                 // and thus can be trusted as being issued by your application.
-                JWT.require(Algorithm.HMAC256(AppSettings.security.jwt.secretKey))
-                    .withAudience(AppSettings.security.jwt.audience)
-                    .withIssuer(AppSettings.security.jwt.issuer)
+                JWT.require(Algorithm.HMAC256(AppSettings.security.jwtAuth.secretKey))
+                    .withAudience(AppSettings.security.jwtAuth.audience)
+                    .withIssuer(AppSettings.security.jwtAuth.issuer)
                     .build()
             )
 

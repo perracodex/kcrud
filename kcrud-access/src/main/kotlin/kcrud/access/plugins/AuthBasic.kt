@@ -22,8 +22,8 @@ import kcrud.base.settings.AppSettings
 fun Application.configureBasicAuthentication() {
 
     authentication {
-        basic(name = AppSettings.security.basic.providerName) {
-            realm = AppSettings.security.basic.realm
+        basic(name = AppSettings.security.basicAuth.providerName) {
+            realm = AppSettings.security.basicAuth.realm
 
             validate { credential ->
                 SessionContextFactory.from(credential = credential)?.let { sessionContext ->

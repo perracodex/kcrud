@@ -19,15 +19,6 @@ class DbPluginConfig {
 
     /** Optional [PrometheusMeterRegistry] instance for micro-metrics monitoring. */
     var micrometerRegistry: PrometheusMeterRegistry? = null
-
-    /**
-     * Adds a table to the list of tables to be registered with the database.
-     *
-     * @param table The [Table] to be added.
-     */
-    fun addTable(table: Table) {
-        tables.add(table)
-    }
 }
 
 /**

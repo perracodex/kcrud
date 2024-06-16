@@ -16,7 +16,7 @@ import io.ktor.server.application.*
 import kcrud.base.env.SessionContext
 import kcrud.base.env.Tracer
 import kcrud.base.settings.AppSettings
-import kcrud.base.settings.config.sections.security.sections.JwtSettings
+import kcrud.base.settings.config.sections.security.sections.auth.JwtAuthSettings
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.util.*
@@ -51,7 +51,7 @@ object AuthenticationTokenService {
     fun getState(call: ApplicationCall): TokenState {
         return try {
             val token: String = fromHeader(call = call)
-            val algorithm: Algorithm = Algorithm.HMAC256(AppSettings.security.jwt.secretKey)
+            val algorithm: Algorithm = Algorithm.HMAC256(AppSettings.security.jwtAuth.secretKey)
             val verifier: JWTVerifier = JWT.require(algorithm).build()
             val decodedToken = JWT.decode(token)
             verifier.verify(decodedToken)
@@ -92,8 +92,8 @@ object AuthenticationTokenService {
      * @return The generated JWT token.
      */
     fun generate(sessionContext: SessionContext): String {
-        val jwtSettings: JwtSettings = AppSettings.security.jwt
-        val tokenLifetimeSec: Long = jwtSettings.tokenLifetimeSec
+        val jwtAuthSettings: JwtAuthSettings = AppSettings.security.jwtAuth
+        val tokenLifetimeSec: Long = jwtAuthSettings.tokenLifetimeSec
         val expirationDate = Date(System.currentTimeMillis() + tokenLifetimeSec.seconds.inWholeMilliseconds)
         val sessionContextJson: String = Json.encodeToString<SessionContext>(value = sessionContext)
 
@@ -101,9 +101,9 @@ object AuthenticationTokenService {
 
         return JWT.create()
             .withClaim(SessionContext.CLAIM_KEY, sessionContextJson)
-            .withAudience(jwtSettings.audience)
-            .withIssuer(jwtSettings.issuer)
+            .withAudience(jwtAuthSettings.audience)
+            .withIssuer(jwtAuthSettings.issuer)
             .withExpiresAt(expirationDate)
-            .sign(Algorithm.HMAC256(jwtSettings.secretKey))
+            .sign(Algorithm.HMAC256(jwtAuthSettings.secretKey))
     }
 }

@@ -42,14 +42,14 @@ fun Application.configureRoutes() {
 
         // Define domain routes.
         rateLimit(configuration = RateLimitName(name = RateLimitScope.PUBLIC_API.key)) {
-            authenticate(AppSettings.security.jwt.providerName, optional = !AppSettings.security.isEnabled) {
+            authenticate(AppSettings.security.jwtAuth.providerName, optional = !AppSettings.security.isEnabled) {
                 employeeRoute()
                 employmentRoute()
             }
         }
 
         // Demo route.
-        authenticate(AppSettings.security.basic.providerName, optional = !AppSettings.security.isEnabled) {
+        authenticate(AppSettings.security.basicAuth.providerName, optional = !AppSettings.security.isEnabled) {
             employeesDemoRoute()
         }
 

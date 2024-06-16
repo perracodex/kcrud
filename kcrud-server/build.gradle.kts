@@ -14,8 +14,6 @@ dependencies {
 
     implementation(libs.kotlinx.datetime)
 
-    implementation(libs.dotenv)
-
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.server.auth)
     implementation(libs.ktor.server.auth.jwt)

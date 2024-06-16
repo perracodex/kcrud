@@ -16,7 +16,7 @@ import kcrud.base.settings.AppSettings
  */
 fun Route.snowflakeRoute() {
 
-    authenticate(AppSettings.security.basic.providerName, optional = !AppSettings.security.isEnabled) {
+    authenticate(AppSettings.security.basicAuth.providerName, optional = !AppSettings.security.isEnabled) {
         // Snowflake parser to read back the components of a snowflake ID.
         get("/snowflake/{id}") {
             val data: SnowflakeData = SnowflakeFactory.parse(id = call.parameters["id"]!!)

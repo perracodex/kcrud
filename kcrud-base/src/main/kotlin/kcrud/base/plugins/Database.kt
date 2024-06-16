@@ -28,14 +28,14 @@ fun Application.configureDatabase() {
         micrometerRegistry = appMicrometerRegistry
 
         // Default admin tables.
-        addTable(table = RbacFieldRuleTable)
-        addTable(table = RbacScopeRuleTable)
-        addTable(table = RbacRoleTable)
-        addTable(table = ActorTable)
+        tables.add(RbacFieldRuleTable)
+        tables.add(RbacScopeRuleTable)
+        tables.add(RbacRoleTable)
+        tables.add(ActorTable)
 
         // Domain tables.
-        addTable(table = ContactTable)
-        addTable(table = EmployeeTable)
-        addTable(table = EmploymentTable)
+        tables.add(ContactTable)
+        tables.add(EmployeeTable)
+        tables.add(EmploymentTable)
     }
 }

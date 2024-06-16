@@ -25,13 +25,12 @@ A [Ktor](https://ktor.io/) REST server.
 * [Routing](./kcrud-server/src/main/kotlin/kcrud/server/plugins/Routes.kt) organization examples.
 * [Call Logging](https://ktor.io/docs/server-call-logging.html) and [Call ID](https://ktor.io/docs/server-call-id.html) examples for events traceability.
 * [Snowflake](./kcrud-base/src/main/kotlin/kcrud/base/security/snowflake) unique IDs for logging purposes, suitable for distributed systems.
-* [Micrometer Metrics](./kcrud-base/src/main/kotlin/kcrud/base/plugins/MicrometerMetrics.kt) with Prometheus integration. Configuration steps for Prometheus and Grafana are [included](.wiki/11.micrometer-metrics.md).
+* [Micrometer Metrics](./kcrud-base/src/main/kotlin/kcrud/base/plugins/MicrometerMetrics.kt) with Prometheus integration. Configuration steps for Prometheus and Grafana are [included](.wiki/10.micrometer-metrics).
 * [Flyway](https://github.com/flyway/flyway) database migration example.
 * [Schema aware database transactions](./kcrud-base/src/main/kotlin/kcrud/base/database/service/TransactionWithSchema.kt), allowing to execute concrete transactions per schema.
 * Examples for [custom serializers](./kcrud-base/src/main/kotlin/kcrud/base/persistence/serializers), [custom validators](./kcrud-base/src/main/kotlin/kcrud/base/persistence/validators), [custom exceptions](./kcrud-base/src/main/kotlin/kcrud/base/errors), and [custom table column](./kcrud-base/src/main/kotlin/kcrud/base/database/custom_columns) constraints.
-* [Environment variables](.wiki/03.environment-variables.md) management example
-* [Fat Jar building](.wiki/04.fat-jar.md) and execution example.
-* [Docker containerization](.wiki/05.docker.md) example.
+* [Fat Jar building](.wiki/03.fat-jar) and execution example.
+* [Docker containerization](.wiki/04.docker) example.
 
 ---
 
@@ -56,20 +55,18 @@ illustrating custom columns with validation, field level encryption, different w
 
 * ### [Domain Component Design Overview](.wiki/02.domain-component-design.md)
 
-* ### [Environment Variables Management](.wiki/03.environment-variables.md)
+* ### [Building and Executing a Fat JAR](.wiki/03.fat-jar)
 
-* ### [Building and Executing a Fat JAR](.wiki/04.fat-jar.md)
+* ### [Docker Containerization](.wiki/04.docker)
 
-* ### [Docker Containerization](.wiki/05.docker.md)
+* ### [RBAC (Role Based Access Control)](.wiki/05.rbac)
 
-* ### [RBAC (Role Based Access Control)](.wiki/06.rbac.md)
+* ### [Pagination](.wiki/06.pagination)
 
-* ### [Pagination](.wiki/07.pagination.md)
+* ### [Interactive Paginated Demo](.wiki/07.demo)
 
-* ### [Interactive Paginated Demo](.wiki/08.demo.md)
+* ### [Handling Security](.wiki/09.security)
 
-* ### [Handling Security](.wiki/10.security.md)
+* ### [REST endpoints](.wiki/08.rest)
 
-* ### [REST endpoints](.wiki/09.rest.md)
-
-* ### [Micrometer Metrics](.wiki/11.micrometer-metrics.md)
+* ### [Micrometer Metrics](.wiki/10.micrometer-metrics)

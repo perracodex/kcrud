@@ -26,7 +26,6 @@ import kcrud.server.utils.ApplicationsUtils
  * @param args Command line arguments passed to the application.
  */
 fun main(args: Array<String>) {
-    ApplicationsUtils.loadEnvironmentVariables()
     EngineMain.main(args)
 }
 

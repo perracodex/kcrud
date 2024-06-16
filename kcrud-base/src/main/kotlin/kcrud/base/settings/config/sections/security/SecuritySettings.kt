@@ -5,7 +5,12 @@
 package kcrud.base.settings.config.sections.security
 
 import kcrud.base.settings.config.parser.IConfigSection
-import kcrud.base.settings.config.sections.security.sections.*
+import kcrud.base.settings.config.sections.security.sections.ConstraintsSettings
+import kcrud.base.settings.config.sections.security.sections.EncryptionSettings
+import kcrud.base.settings.config.sections.security.sections.RbacSettings
+import kcrud.base.settings.config.sections.security.sections.auth.BasicAuthSettings
+import kcrud.base.settings.config.sections.security.sections.auth.JwtAuthSettings
+import kcrud.base.settings.config.sections.security.sections.auth.OAuthSettings
 import kotlinx.serialization.Serializable
 
 /**
@@ -15,9 +20,9 @@ import kotlinx.serialization.Serializable
  * @property useSecureConnection Whether to use a secure connection or not.
  * @property encryption Settings related to encryption, such as the encryption keys.
  * @property constraints Settings related to security constraints, such endpoints rate limits.
- * @property jwt Settings related to JWT authentication, such as the JWT secrets.
- * @property basic Settings related to basic authentication, such as the realm and provider name.
- * @property oauth Settings related to OAuth authentication, such as the client id and secret.
+ * @property basicAuth Settings related to basic authentication, such as the realm and provider name.
+ * @property jwtAuth Settings related to JWT authentication, such as the JWT secrets.
+ * @property oAuth Settings related to OAuth authentication, such as the client id and secret.
  * @property rbac Settings related to RBAC authentication.
  */
 @Serializable
@@ -26,9 +31,9 @@ data class SecuritySettings(
     val useSecureConnection: Boolean,
     val encryption: EncryptionSettings,
     val constraints: ConstraintsSettings,
-    val jwt: JwtSettings,
-    val basic: HttpAuthSettings,
-    val oauth: OAuthSettings,
+    val basicAuth: BasicAuthSettings,
+    val jwtAuth: JwtAuthSettings,
+    val oAuth: OAuthSettings,
     val rbac: RbacSettings
 ) : IConfigSection {
     companion object {

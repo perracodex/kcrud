@@ -4,7 +4,6 @@
 
 commons-codec = "1.17.0"                # https://github.com/apache/commons-codec/tags
 database-h2 = "2.2.224"                 # https://github.com/h2database/h2database/releases
-dotenv = "6.4.1"                        # https://github.com/cdimascio/dotenv-kotlin/releases
 exposed = "0.51.1"                      # https://github.com/JetBrains/Exposed/releases
 flyway = "10.15.0"                      # https://github.com/flyway/flyway/releases
 google-phonenumber = "8.13.39"          # https://github.com/google/libphonenumber/releases
@@ -15,10 +14,10 @@ kotlinx-atomicfu = "0.24.0"             # https://github.com/Kotlin/kotlinx-atom
 kotlinx-datetime = "0.6.0"              # https://github.com/Kotlin/kotlinx-datetime/releases
 ktor = "2.3.11"                         # https://github.com/ktorio/ktor/releases, https://ktor.io/docs/releases.html#release-details
 logback = "1.5.6"                       # https://github.com/qos-ch/logback/tags
+micrometer-prometheus = "1.13.1"        # https://github.com/micrometer-metrics/micrometer/releases
 mockk = "1.13.11"                       # https://github.com/mockk/mockk/releases
 mockito-kotlin = "5.3.1"                # https://github.com/mockito/mockito-kotlin/releases
 quartz-scheduler = "2.4.0-rc2"          # https://github.com/quartz-scheduler/quartz/releases
-prometheus = "1.13.1"                   # https://github.com/micrometer-metrics/micrometer/releases
 swagger-generators = "1.0.50"           # https://github.com/swagger-api/swagger-codegen-generators/releases
 typesafe-config = "1.4.3"               # https://github.com/lightbend/config/releases
 
@@ -46,11 +45,6 @@ api-schema-swagger-generators = { module = "io.swagger.codegen.v3:swagger-codege
 # https://github.com/h2database/h2database
 # https://github.com/h2database/h2database/releases
 database-h2 = { module = "com.h2database:h2", version.ref = "database-h2" }
-
-# Dotenv (Dynamic environment variables).
-# https://github.com/cdimascio/dotenv-kotlin
-# https://github.com/cdimascio/dotenv-kotlin/releases
-dotenv = { module = "io.github.cdimascio:dotenv-kotlin", version.ref = "dotenv" }
 
 # Exposed ORM.
 # https://github.com/JetBrains/Exposed
@@ -139,7 +133,7 @@ logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "lo
 # https://ktor.io/docs/server-metrics-micrometer.html
 # https://github.com/micrometer-metrics/micrometer/releases
 micrometer-metrics = { module = "io.ktor:ktor-server-metrics-micrometer", version.ref = "ktor" }
-micrometer-metrics-prometheus = { module = "io.micrometer:micrometer-registry-prometheus", version.ref = "prometheus" }
+micrometer-metrics-prometheus = { module = "io.micrometer:micrometer-registry-prometheus", version.ref = "micrometer-prometheus" }
 
 # Quartz Scheduler.
 # https://github.com/quartz-scheduler/quartz
