@@ -218,7 +218,7 @@
     <span>Action</span>
 </div>
 <div class="table-content">
-    <div th:each="item : ${data}" class="table-container expandable">
+    <div th:each="item : ${data}" class="table-container expandable" th:attr="data-id=${item.name}">
         <div class="table-row">
             <span th:text="${item.name}">Task Name</span>
             <span th:text="${item.group}">Task Group</span>
@@ -258,22 +258,51 @@
 </div>
 <div class="events-box" id="events"></div>
 <script>
+    function setCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    }
+
+    function getCookie(name) {
+        const nameEQ = `${name}=`;
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            let cookie = cookies[i].trim();
+            if (cookie.indexOf(nameEQ) === 0) {
+                return cookie.substring(nameEQ.length, cookie.length);
+            }
+        }
+        return null;
+    }
+
     // noinspection JSUnusedLocalSymbols
     document.addEventListener('DOMContentLoaded', (event) => {
+        const pageIdentifier = window.location.pathname;  // Unique page identifier
+
         document.querySelectorAll('.expandable').forEach(item => {
             item.addEventListener('click', function (event) {
-                // Check if the click is on the 'Outcome' field or part of it.
                 if (event.target.closest('span[data-log], .icon-button')) {
-                    // If the click is on the 'Outcome' or action buttons, do nothing more.
                     return;
                 }
-                // Proceed with toggling the sub-row display.
                 const subRow = this.querySelector('.table-sub-row');
                 if (subRow) {
-                    // Toggle display state by checking the current state.
-                    subRow.style.display = subRow.style.display === 'block' ? 'none' : 'block';
+                    const isVisible = subRow.style.display === 'block';
+                    subRow.style.display = isVisible ? 'none' : 'block';
+                    const key = `${pageIdentifier}_${this.getAttribute('data-id')}`;
+                    setCookie(key, (!isVisible).toString(), 1);  // Set cookie for 1 day
                 }
             });
+
+            const key = `${pageIdentifier}_${item.getAttribute('data-id')}`;
+            const isExpanded = getCookie(key) === 'true';
+            if (isExpanded) {
+                item.querySelector('.table-sub-row').style.display = 'block';
+            }
         });
 
         updateSchedulerPauseResumeButton();
