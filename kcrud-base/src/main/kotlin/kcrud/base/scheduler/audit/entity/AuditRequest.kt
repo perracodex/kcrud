@@ -4,6 +4,7 @@
 
 package kcrud.base.scheduler.audit.entity
 
+import kcrud.base.scheduler.annotation.SchedulerAPI
 import kcrud.base.scheduler.service.task.TaskOutcome
 import kcrud.base.utils.KLocalDateTime
 
@@ -18,6 +19,7 @@ import kcrud.base.utils.KLocalDateTime
  * @property log The log information.
  * @property detail The detail that provides more information about the log.
  */
+@SchedulerAPI
 data class AuditRequest(
     val taskName: String,
     val taskGroup: String,

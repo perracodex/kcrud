@@ -5,6 +5,7 @@
 package kcrud.base.scheduler.audit
 
 import kcrud.base.database.schema.scheduler.SchedulerAuditTable
+import kcrud.base.scheduler.annotation.SchedulerAPI
 import kcrud.base.scheduler.audit.entity.AuditEntity
 import kcrud.base.scheduler.audit.entity.AuditRequest
 import org.jetbrains.exposed.sql.SortOrder
@@ -17,6 +18,7 @@ import java.util.*
 /**
  * Repository to manage the persistence aND retrieval of the scheduler audit logs.
  */
+@OptIn(SchedulerAPI::class)
 internal object AuditRepository {
 
     /**
