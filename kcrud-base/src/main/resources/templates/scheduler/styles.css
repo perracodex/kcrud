@@ -28,8 +28,8 @@ body {
 .table-header,
 .table-row {
     display: grid;
-    grid-template-columns: 1.5fr 1.5fr 1fr 1.2fr 0.5fr 0.8fr 0.7fr 0.4fr 0.65fr;
-    font-size: 0.9em;
+    grid-template-columns: 1.5fr 1.5fr 1fr 0.9fr 0.6fr 0.6fr 1.6fr 0.35fr 0.65fr;
+    font-size: 0.85em;
     align-items: center;
 }
 
@@ -66,6 +66,7 @@ body {
     padding: 6px;
     border-radius: 8px;
     margin-top: 5px;
+    font-size: 0.9em;
     display: none; /* Hide sub-rows by default */
 }
 
@@ -174,7 +175,7 @@ button {
 .table-content {
     flex-grow: 1;
     overflow-y: auto;
-    margin-bottom: 220px;
+    margin-bottom: 210px;
 }
 
 .expandable {

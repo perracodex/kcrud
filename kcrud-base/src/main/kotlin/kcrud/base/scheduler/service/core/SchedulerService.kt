@@ -5,6 +5,7 @@
 package kcrud.base.scheduler.service.core
 
 import io.ktor.server.application.*
+import it.burning.cron.CronExpressionDescriptor
 import kcrud.base.env.Tracer
 import kcrud.base.scheduler.annotation.SchedulerAPI
 import kcrud.base.scheduler.audit.AuditRepository
@@ -381,18 +382,16 @@ object SchedulerService {
             val outcome: String? = mostRecentAudit?.outcome?.name
 
             // Resolve the interval metrics.
-            val interval: String? = triggers.firstOrNull()?.let { trigger ->
+            val (interval: String?, intervalInfo: String?) = triggers.firstOrNull()?.let { trigger ->
                 if (trigger is SimpleTrigger) {
                     val repeatInterval: Duration = trigger.repeatInterval.toDuration(unit = DurationUnit.MILLISECONDS)
-                    val totalSeconds: Long = repeatInterval.inWholeSeconds
-
-                    if (totalSeconds != 0L) {
-                        DateTimeUtils.formatDuration(duration = repeatInterval)
+                    if (repeatInterval.inWholeSeconds != 0L) {
+                        repeatInterval.toString() to null
                     } else null
                 } else if (trigger is CronTrigger) {
-                    trigger.cronExpression
+                    CronExpressionDescriptor.getDescription(trigger.cronExpression) to trigger.cronExpression
                 } else null
-            }
+            } ?: (null to null)
 
             // Resolve the concrete parameters of the task.
             val dataMap: List<String> = taskDetail.jobDataMap
@@ -411,6 +410,7 @@ object SchedulerService {
                 outcome = outcome,
                 log = mostRecentAudit?.log,
                 interval = interval,
+                intervalInfo = intervalInfo,
                 runs = audit.size,
                 dataMap = dataMap,
             )

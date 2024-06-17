@@ -3,6 +3,7 @@
 [versions]
 
 commons-codec = "1.17.0"                # https://github.com/apache/commons-codec/tags
+cron-descriptor = "1.2.10"              # https://github.com/voidburn/cron-expression-descriptor/releases
 database-h2 = "2.2.224"                 # https://github.com/h2database/h2database/releases
 exposed = "0.51.1"                      # https://github.com/JetBrains/Exposed/releases
 flyway = "10.15.0"                      # https://github.com/flyway/flyway/releases
@@ -40,6 +41,11 @@ ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 api-schema-openapi = { module = "io.ktor:ktor-server-openapi", version.ref = "ktor" }
 api-schema-swagger = { module = "io.ktor:ktor-server-swagger", version.ref = "ktor" }
 api-schema-swagger-generators = { module = "io.swagger.codegen.v3:swagger-codegen-generators", version.ref = "swagger-generators" }
+
+# Cron Descriptor.
+# https://github.com/voidburn/cron-expression-descriptor
+# https://github.com/voidburn/cron-expression-descriptor/releases
+cron-descriptor = { module = "it.burning:cron-expression-descriptor", version.ref = "cron-descriptor" }
 
 # H2 database.
 # https://github.com/h2database/h2database

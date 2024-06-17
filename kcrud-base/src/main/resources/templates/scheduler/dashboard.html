@@ -40,7 +40,7 @@
             <span th:text="${item.nextFireTime}">Next Fire Time</span>
             <span th:text="${item.state}">State</span>
             <span th:text="${item.outcome}" th:attr="data-log=${item.log}" onclick="openLog(this)">Outcome</span>
-            <span th:text="${item.interval}">Interval</span>
+            <span th:text="${item.interval}" th:title="${item.intervalInfo}">>Interval</span>
             <span th:text="${item.runs}">runs</span>
             <div>
                 <button class="icon-button delete-button"

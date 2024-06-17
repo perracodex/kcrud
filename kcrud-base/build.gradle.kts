@@ -13,6 +13,8 @@ dependencies {
     implementation(libs.api.schema.swagger.generators)
     implementation(libs.api.schema.openapi)
 
+    implementation(libs.cron.descriptor)
+
     implementation(libs.kotlinx.atomicfu)
     implementation(libs.kotlinx.datetime)
 
