@@ -1,0 +1,79 @@
+<!--
+  ~ Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
+  -->
+
+<!DOCTYPE html>
+<!--suppress ThymeleafVariablesResolveInspection -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/templates/scheduler/styles.css">
+    <title>Task Scheduler</title>
+</head>
+<body>
+<div class="buttons-container">
+    <div class="left-buttons">
+        <button class="refresh" onclick="refreshPage()">Refresh Tasks</button>
+        <button class="pause-resume" id="pauseResumeButton" onclick="toggleScheduler()">Pause Scheduler</button>
+        <button class="audit" id="openFullAudit" onclick="openFullAudit()">Audit</button>
+    </div>
+    <button class="delete" onclick="deleteAll()">Delete All</button>
+</div>
+<div class="table-header">
+    <span>Name</span>
+    <span>Group</span>
+    <span>Consumer</span>
+    <span>Next Fire Time</span>
+    <span>State</span>
+    <span>Outcome</span>
+    <span>Interval</span>
+    <span>Runs</span>
+    <span>Action</span>
+</div>
+<div class="table-content">
+    <div th:each="item : ${data}" class="table-container expandable" th:attr="data-id=${item.name}">
+        <div class="table-row">
+            <span th:text="${item.name}">Task Name</span>
+            <span th:text="${item.group}">Task Group</span>
+            <span th:text="${item.consumer}">Consumer</span>
+            <span th:text="${item.nextFireTime}">Next Fire Time</span>
+            <span th:text="${item.state}">State</span>
+            <span th:text="${item.outcome}" th:attr="data-log=${item.log}" onclick="openLog(this)">Outcome</span>
+            <span th:text="${item.interval}">Interval</span>
+            <span th:text="${item.runs}">runs</span>
+            <div>
+                <button class="icon-button delete-button"
+                        th:attr="data-name=${item.name}, data-group=${item.group}"
+                        onclick="deleteTask(this)"
+                        title="Delete">
+                    <span>&#x1F5D9;</span>
+                </button>
+                <button class="icon-button"
+                        th:attr="data-name=${item.name}, data-group=${item.group}"
+                        onclick="openTaskAudit(this)"
+                        title="Audit">
+                    <span>&#128196;</span>
+                </button>
+                <div th:if="${item.state} != 'COMPLETE' and ${item.state} != 'NONE'">
+                    <button class="icon-button"
+                            th:attr="data-name=${item.name}, data-group=${item.group}, data-state=${item.state}"
+                            onclick="toggleTaskPauseResume(this)"
+                            th:title="${item.state} == 'PAUSED' ? 'Resume' : 'Pause'">
+                        <span th:if="${item.state} == 'PAUSED'">&#x23F5;</span>
+                        <span th:if="${item.state} != 'PAUSED'">&#x23F8;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="table-sub-row">
+            <ul>
+                <li th:each="entry : ${item.dataMap}" th:text="${entry}">Data Map Entry</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="events-box" id="events"></div>
+<script src="/templates/scheduler/scripts.js"></script>
+</body>
+</html>

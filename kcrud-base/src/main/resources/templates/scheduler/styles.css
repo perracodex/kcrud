@@ -1,0 +1,188 @@
+/*
+ * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
+ */
+
+body {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.left-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.table-header,
+.table-row {
+    display: grid;
+    grid-template-columns: 1.5fr 1.5fr 1fr 1.2fr 0.5fr 0.8fr 0.7fr 0.4fr 0.65fr;
+    font-size: 0.9em;
+    align-items: center;
+}
+
+.table-header {
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 9px;
+    background-color: #282828;
+    color: #8b969f;
+}
+
+.table-row > div {
+    display: flex;
+    white-space: nowrap;
+    align-items: center;
+    justify-content: flex-start; /* Ensure text is left-aligned */
+}
+
+.table-container {
+    background-color: #222222;
+    margin-top: 6px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: border-color 0.3s;
+}
+
+.table-container:hover {
+    border: 1px solid #6d747c;
+}
+
+.table-sub-row {
+    background-color: #333333;
+    color: #dfdfdf;
+    padding: 6px;
+    border-radius: 8px;
+    margin-top: 5px;
+    display: none; /* Hide sub-rows by default */
+}
+
+.table-header span,
+.table-row span {
+    text-align: left; /* Ensure text is left-aligned */
+    padding: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.table-row span[data-log] {
+    cursor: pointer;
+    color: #76c7c0;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+    flex-shrink: 0;
+    height: 40px;
+}
+
+.refresh {
+    background-color: #58af53;
+    color: #ffffff;
+    width: 150px;
+}
+
+.refresh:hover {
+    background-color: #4b8e47;
+}
+
+.pause-resume {
+    background-color: #db6e3e;
+    color: #ffffff;
+    width: 150px;
+    text-align: center;
+}
+
+.pause-resume:hover {
+    background-color: #b3582f;
+}
+
+.audit {
+    background-color: #4682b4;
+    color: #ffffff;
+    width: 150px;
+    text-align: center;
+}
+
+.audit:hover {
+    background-color: #376c92;
+}
+
+.delete {
+    color: #ffffff;
+    background-color: #b34747;
+    width: 150px;
+}
+
+.delete:hover {
+    background-color: #933636;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 1.2em;
+    padding: 1px;
+    transition: color 0.3s;
+}
+
+.icon-button:hover {
+    color: #6d747c;
+}
+
+.delete-button span {
+    color: #db6e6e;
+}
+
+.events-box {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 150px;
+    background-color: #323232;
+    color: #76ff76;
+    overflow-y: auto;
+    padding: 10px;
+    margin: 10px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.8em;
+    border-radius: 8px;
+    border: 1px solid #6d747c;
+}
+
+.table-content {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 220px;
+}
+
+.expandable {
+    cursor: pointer;
+    user-select: none; /* Prevent text selection */
+    outline: none; /* Prevent focus outline */
+}
+
+.expandable:focus {
+    outline: none; /* Prevent focus outline */
+}
