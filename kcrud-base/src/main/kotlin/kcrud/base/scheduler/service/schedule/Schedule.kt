@@ -88,7 +88,7 @@ sealed class Schedule {
      * Sample cron expressions:
      *   - "0 0 0 * * ?" - At midnight every day.
      *   - "0 0 12 ? * MON-FRI" - At noon every weekday.
-     *   - "0 0/30 9-17 * * ?" - Every 30 minutes between 9 AM to 17:59.
+     *   - "0 0/30 9-17 * * ?" - Every 30 minutes between 9 to 17:59.
      *   - "0 0 0 1 * ?" - At midnight on the first day of every month.
      *   - "0 0 6 ? * SUN" - At 6 AM every Sunday.
      *   - "0 0 14 * * ?" - At 2 PM every day.
