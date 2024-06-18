@@ -2,6 +2,12 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
+const SCHEDULER_STATE = {
+    RUNNING: 'RUNNING',
+    PAUSED: 'PAUSED',
+    STOPPED: 'STOPPED'
+}
+
 function setCookie(name, value, days) {
     let expires = "";
     if (days) {
@@ -146,9 +152,9 @@ function deleteTask(button) {
 
 function toggleScheduler() {
     checkSchedulerState(function (state) {
-        if (state.trim() === 'RUNNING') {
+        if (state.trim() === SCHEDULER_STATE.RUNNING) {
             pauseScheduler(confirmAndRefreshState);
-        } else if (state.trim() === 'PAUSED') {
+        } else if (state.trim() === SCHEDULER_STATE.PAUSED) {
             resumeScheduler(confirmAndRefreshState);
         }
     });
@@ -218,18 +224,18 @@ function confirmAndRefreshState() {
 }
 
 function setSchedulerButtonState(state) {
-    const button = document.getElementById('pauseResumeButton');
+    const button = document.getElementById('toggleScheduler');
     console.log('Setting button state for:', state); // Debug log
 
-    if (state.trim() === 'RUNNING') {
+    if (state.trim() === SCHEDULER_STATE.RUNNING) {
         button.textContent = 'Pause Scheduler';
         button.classList.add('pause');
         button.classList.remove('resume');
-    } else if (state.trim() === 'PAUSED') {
+    } else if (state.trim() === SCHEDULER_STATE.PAUSED) {
         button.textContent = 'Resume Scheduler';
         button.classList.add('resume');
         button.classList.remove('pause');
-    } else if (state.trim() === 'STOPPED') {
+    } else if (state.trim() === SCHEDULER_STATE.STOPPED) {
         button.textContent = 'Scheduler Stopped';
         button.disabled = true;
     }
