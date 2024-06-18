@@ -41,7 +41,7 @@
     <div th:each="item : ${data}" class="table-container expandable" th:attr="data-id=${item.name}">
         <div class="table-row">
             <span class="expand-trigger">+</span>
-            <span th:text="${item.name}">Task Name</span>
+            <span th:text="${item.name}" th:title="${item.snowflakeData}">Task Name</span>
             <span th:text="${item.group}">Task Group</span>
             <span th:text="${item.consumer}">Consumer</span>
             <span th:text="${item.nextFireTime}">Next Fire Time</span>

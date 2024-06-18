@@ -121,8 +121,7 @@ class TaskDispatch(
      * Build the job details and trigger builder for the task.
      */
     private fun buildJob(): BasicJob {
-        val snowflake: String = SnowflakeFactory.nextId()
-        val taskName = "task-${snowflake}-${System.nanoTime()}"
+        val taskName: String = SnowflakeFactory.nextId()
         val groupName: String = taskId.toString()
 
         val jobKey: JobKey = JobKey.jobKey(taskName, groupName)

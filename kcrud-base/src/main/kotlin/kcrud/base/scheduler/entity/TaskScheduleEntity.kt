@@ -12,6 +12,7 @@ import kotlinx.serialization.Serializable
  *
  * @property name The name of the task.
  * @property group The group of the task.
+ * @property snowflakeData The snowflake details of the task.
  * @property consumer The consumer that will execute the task.
  * @property nextFireTime The next time the task is scheduled to be executed. Or null if it is not scheduled.
  * @property state The state of the task, eg: 'PAUSED', 'NORMAL', etc.
@@ -25,6 +26,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class TaskScheduleEntity(
     val name: String,
+    val snowflakeData: String,
     val group: String,
     val consumer: String,
     val nextFireTime: KLocalDateTime?,
