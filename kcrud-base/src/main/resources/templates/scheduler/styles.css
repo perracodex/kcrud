@@ -181,7 +181,6 @@ button {
 
 .expandable {
     cursor: pointer;
-    user-select: none; /* Prevent text selection */
     outline: none; /* Prevent focus outline */
 }
 

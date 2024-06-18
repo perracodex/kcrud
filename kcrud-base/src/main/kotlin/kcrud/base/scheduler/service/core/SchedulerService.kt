@@ -381,12 +381,12 @@ object SchedulerService {
             val mostRecentAudit: AuditEntity? = audit.firstOrNull()
             val outcome: String? = mostRecentAudit?.outcome?.name
 
-            // Resolve the interval metrics.
-            val (interval: String?, intervalInfo: String?) = triggers.firstOrNull()?.let { trigger ->
+            // Resolve the schedule metrics.
+            val (schedule: String?, scheduleInfo: String?) = triggers.firstOrNull()?.let { trigger ->
                 if (trigger is SimpleTrigger) {
                     val repeatInterval: Duration = trigger.repeatInterval.toDuration(unit = DurationUnit.MILLISECONDS)
                     if (repeatInterval.inWholeSeconds != 0L) {
-                        repeatInterval.toString() to null
+                        "Every $repeatInterval" to null
                     } else null
                 } else if (trigger is CronTrigger) {
                     CronExpressionDescriptor.getDescription(trigger.cronExpression) to trigger.cronExpression
@@ -409,8 +409,8 @@ object SchedulerService {
                 state = mostRestrictiveState.name,
                 outcome = outcome,
                 log = mostRecentAudit?.log,
-                interval = interval,
-                intervalInfo = intervalInfo,
+                schedule = schedule,
+                scheduleInfo = scheduleInfo,
                 runs = audit.size,
                 dataMap = dataMap,
             )

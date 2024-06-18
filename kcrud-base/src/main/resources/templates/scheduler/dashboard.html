@@ -27,7 +27,7 @@
     <span>Next Fire Time</span>
     <span>State</span>
     <span>Outcome</span>
-    <span>Interval</span>
+    <span>Schedule</span>
     <span>Runs</span>
     <span>Action</span>
 </div>
@@ -40,7 +40,7 @@
             <span th:text="${item.nextFireTime}">Next Fire Time</span>
             <span th:text="${item.state}">State</span>
             <span th:text="${item.outcome}" th:attr="data-log=${item.log}" onclick="openLog(this)">Outcome</span>
-            <span th:text="${item.interval}" th:title="${item.intervalInfo}">>Interval</span>
+            <span th:text="${item.schedule}" th:title="${item.scheduleInfo}">>Schedule</span>
             <span th:text="${item.runs}">runs</span>
             <div>
                 <button class="icon-button delete-button"

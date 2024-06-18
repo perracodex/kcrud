@@ -17,8 +17,8 @@ import kotlinx.serialization.Serializable
  * @property state The state of the task, eg: 'PAUSED', 'NORMAL', etc.
  * @property outcome The execution outcome of the task.
  * @property log The log information of the task.
- * @property interval The interval at which the task should repeat.
- * @property intervalInfo Optional information about the interval. For example a raw cron expression.
+ * @property schedule The schedule at which the task should repeat.
+ * @property scheduleInfo Optional information about the schedule. For example a raw cron expression.
  * @property runs The number of times the task has been triggered.
  * @property dataMap Concrete parameters of the task.
  */
@@ -31,8 +31,8 @@ data class TaskScheduleEntity(
     val state: String,
     val outcome: String?,
     val log: String?,
-    val interval: String?,
-    val intervalInfo: String?,
+    val schedule: String?,
+    val scheduleInfo: String?,
     val runs: Int?,
     val dataMap: List<String>,
 )
