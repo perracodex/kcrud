@@ -51,22 +51,22 @@ illustrating custom columns with validation, field level encryption, different w
 
 ### Wiki
 
-* ### [Project Structure](.wiki/01.project-structure.md)
+* ### [Project Structure](./.wiki/01.project-structure.md)
 
-* ### [Domain Component Design Overview](.wiki/02.domain-component-design.md)
+* ### [Domain Component Design Overview](./.wiki/02.domain-component-design.md)
 
-* ### [Building and Executing a Fat JAR](.wiki/03.fat-jar)
+* ### [Building and Executing a Fat JAR](./.wiki/03.fat-jar.md)
 
-* ### [Docker Containerization](.wiki/04.docker)
+* ### [Docker Containerization](./.wiki/04.docker.md)
 
-* ### [RBAC (Role Based Access Control)](.wiki/05.rbac)
+* ### [RBAC (Role Based Access Control)](./.wiki/05.rbac.md)
 
-* ### [Pagination](.wiki/06.pagination)
+* ### [Pagination](./.wiki/06.pagination.md)
 
-* ### [Interactive Paginated Demo](.wiki/07.demo)
+* ### [Interactive Paginated Demo](./.wiki/07.demo.md)
 
-* ### [Handling Security](.wiki/09.security)
+* ### [REST endpoints](./.wiki/08.rest.md)
 
-* ### [REST endpoints](.wiki/08.rest)
+* ### [Handling Security](./.wiki/09.security.md)
 
-* ### [Micrometer Metrics](.wiki/10.micrometer-metrics)
+* ### [Micrometer Metrics](./.wiki/10.micrometer-metrics.md)

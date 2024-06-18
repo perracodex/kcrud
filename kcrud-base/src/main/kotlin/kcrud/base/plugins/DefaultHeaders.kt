@@ -45,8 +45,8 @@ fun Application.configureHeaders() {
     install(plugin = CachingHeaders) {
         options { _, content ->
             when (content.contentType?.withoutParameters()) {
-                ContentType.Text.Plain -> CachingOptions(CacheControl.MaxAge(maxAgeSeconds = 3600))
-                ContentType.Text.Html -> CachingOptions(CacheControl.MaxAge(maxAgeSeconds = 60))
+                ContentType.Text.Plain -> CachingOptions(CacheControl.MaxAge(maxAgeSeconds = 0))
+                ContentType.Text.Html -> CachingOptions(CacheControl.MaxAge(maxAgeSeconds = 0))
                 else -> null
             }
         }

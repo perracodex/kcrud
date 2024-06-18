@@ -12,6 +12,7 @@ body {
     flex-direction: column;
     height: 100vh;
     overflow: hidden;
+    caret-color: transparent;
 }
 
 .buttons-container {
@@ -29,7 +30,7 @@ body {
 .table-header,
 .table-row {
     display: grid;
-    grid-template-columns: 1.5fr 1.5fr 1fr 0.9fr 0.6fr 0.6fr 1.6fr 0.35fr 0.65fr;
+    grid-template-columns: 0.1fr 1.4fr 1.5fr 1fr 0.9fr 0.6fr 0.65fr 1.6fr 0.35fr 0.65fr;
     font-size: 0.85em;
     align-items: center;
 }
@@ -40,6 +41,19 @@ body {
     margin-top: 9px;
     background-color: #282828;
     color: #8b969f;
+}
+
+.expand-trigger {
+    cursor: pointer;
+    outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6px;
+    width: 16px;
+    height: 24px;
+    user-select: none;
+    font-size: 16px;
 }
 
 .table-row > div {
@@ -81,7 +95,6 @@ body {
 }
 
 .table-row span[data-log] {
-    cursor: pointer;
     color: #76c7c0;
 }
 
@@ -179,11 +192,35 @@ button {
     margin-bottom: 210px;
 }
 
-.expandable {
-    cursor: pointer;
-    outline: none; /* Prevent focus outline */
+
+.header {
+    margin-bottom: 20px;
 }
 
-.expandable:focus {
-    outline: none; /* Prevent focus outline */
+#groupForm {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#groupSelect {
+    background-color: #222222;
+    color: #ffffff;
+    border: 1px solid #6d747c;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: border-color 0.3s, background-color 0.3s;
+    width: 350px;
+}
+
+#groupSelect:focus {
+    border-color: #58af53;
+    outline: none;
+}
+
+#groupSelect option {
+    background-color: #222222;
+    color: #ffffff;
 }

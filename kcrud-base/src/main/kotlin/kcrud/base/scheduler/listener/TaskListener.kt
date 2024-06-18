@@ -13,6 +13,7 @@ import kcrud.base.scheduler.audit.AuditRepository
 import kcrud.base.scheduler.audit.entity.AuditRequest
 import kcrud.base.scheduler.service.task.TaskOutcome
 import kcrud.base.utils.DateTimeUtils
+import kotlinx.coroutines.runBlocking
 import org.quartz.JobExecutionContext
 import org.quartz.JobExecutionException
 import org.quartz.JobListener
@@ -94,7 +95,9 @@ class TaskListener : JobListener {
             log = jobException?.message,
             detail = context.jobDetail.jobDataMap.toMap().toString()
         ).also { request ->
-            AuditRepository.create(request = request)
+            runBlocking {
+                AuditRepository.create(request = request)
+            }
         }
     }
 }

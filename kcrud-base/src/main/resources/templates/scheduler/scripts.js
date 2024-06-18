@@ -6,6 +6,110 @@ const SCHEDULER_STATE = {
     RUNNING: 'RUNNING',
     PAUSED: 'PAUSED',
     STOPPED: 'STOPPED'
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    initializePage();
+});
+
+let isPageInitialized = false;  // Flag to prevent double initialization
+
+function initializePage() {
+    if (isPageInitialized) {
+        console.log("Page already initialized");
+        return;
+    }
+
+    isPageInitialized = true;
+    console.log("Initializing page...");
+
+    try {
+        fetchGroups();
+        updateSchedulerPauseResumeButton();
+        setupTableExpandCollapse();
+        setupEventSource();
+    } catch (error) {
+        console.error("Error during page initialization:", error);
+    }
+}
+
+function fetchGroups() {
+    fetch('/scheduler/task/group', {
+        method: 'GET',
+        headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+        }
+    })
+        .then(response => response.json())
+        .then(groups => populateGroupSelect(groups))
+        .catch(error => {
+            console.error('Error fetching groups:', error);
+        });
+}
+
+function populateGroupSelect(groups) {
+    const groupSelect = document.getElementById('groupSelect');
+    const currentGroup = new URLSearchParams(window.location.search).get('group');
+
+    groupSelect.innerHTML = '<option value="all">All Groups</option>';
+
+    groups.forEach(group => {
+        const option = document.createElement('option');
+        option.value = group;
+        option.textContent = group;
+        groupSelect.appendChild(option);
+    });
+
+    groupSelect.value = currentGroup || 'all';
+    groupSelect.addEventListener('change', handleGroupChange);
+}
+
+function handleGroupChange() {
+    const selectedGroup = document.getElementById('groupSelect').value;
+    const url = new URL(window.location);
+
+    if (selectedGroup === 'all') {
+        url.searchParams.delete('group');
+    } else {
+        url.searchParams.set('group', selectedGroup);
+    }
+
+    window.location.href = url.toString();
+}
+
+function setupTableExpandCollapse() {
+    const pageIdentifier = window.location.pathname;
+
+    document.querySelectorAll('.table-container').forEach(container => {
+        const key = `${pageIdentifier}_${container.getAttribute('data-id')}`;
+        const isExpandedInitially = getCookie(key) === 'true';
+        const subRow = container.querySelector('.table-sub-row');
+
+        subRow.style.display = isExpandedInitially ? 'block' : 'none';
+
+        const trigger = container.querySelector('.expand-trigger');
+        trigger.innerHTML = isExpandedInitially ? '-' : '+';
+
+        trigger.addEventListener('click', function () {
+            const isExpanded = getComputedStyle(subRow).display === 'block';
+            subRow.style.display = isExpanded ? 'none' : 'block';
+            setCookie(key, (!isExpanded).toString(), 1);
+            trigger.innerHTML = isExpanded ? '+' : '-';
+        });
+    });
+}
+
+function setupEventSource() {
+    const eventsSource = new EventSource("/events");
+    eventsSource.onmessage = function (event) {
+        const eventsContainer = document.getElementById("events");
+        const eventsDiv = document.createElement("div");
+        eventsDiv.textContent = event.data;
+        eventsContainer.appendChild(eventsDiv);
+        eventsContainer.scrollTop = eventsContainer.scrollHeight;
+    }
 }
 
 function setCookie(name, value, days) {
@@ -30,60 +134,95 @@ function getCookie(name) {
     return null;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const pageIdentifier = window.location.pathname;  // Unique page identifier
-
-    document.querySelectorAll('.expandable').forEach(item => {
-        item.addEventListener('click', function (event) {
-            if (event.target.closest('span[data-log], .icon-button')) {
-                return;
-            }
-            const subRow = this.querySelector('.table-sub-row');
-            if (subRow) {
-                const isVisible = subRow.style.display === 'block';
-                subRow.style.display = isVisible ? 'none' : 'block';
-                const key = `${pageIdentifier}_${this.getAttribute('data-id')}`;
-                setCookie(key, (!isVisible).toString(), 1);  // Set cookie for 1 day
-            }
-        });
-
-        const key = `${pageIdentifier}_${item.getAttribute('data-id')}`;
-        const isExpanded = getCookie(key) === 'true';
-        if (isExpanded) {
-            item.querySelector('.table-sub-row').style.display = 'block';
-        }
-    });
-
-    updateSchedulerPauseResumeButton();
-});
-
-const eventsSource = new EventSource("/events");
-eventsSource.onmessage = function (event) {
-    const eventsContainer = document.getElementById("events");
-    const eventsDiv = document.createElement("div");
-    eventsDiv.textContent = event.data;
-    eventsContainer.appendChild(eventsDiv);
-    eventsContainer.scrollTop = eventsContainer.scrollHeight; // Auto scroll to bottom.
+function updateSchedulerPauseResumeButton() {
+    checkSchedulerState(state => setSchedulerButtonState(state));
 }
 
-function openLog(element) {
-    const log = element.getAttribute('data-log');
-    const newWindow = window.open();
-    newWindow.document.write(`
-        <html lang="en">
-            <head>
-                <title>Log Details</title>
-                <style>
-                    body { font-family: Arial, sans-serif; font-size: 1.25em; background-color: #1e1e1e; color: #c7c7c7; }
-                    pre { white-space: pre-wrap; word-wrap: break-word; }
-                </style>
-            </head>
-            <body>
-                <pre>${log}</pre>
-            </body>
-        </html>
-    `);
-    newWindow.document.close();
+function checkSchedulerState(callback) {
+    fetch('/scheduler/state', {
+        method: 'GET',
+        headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(state => callback(state))
+        .catch(error => {
+            console.error('Error fetching scheduler state:', error);
+            alert('Error fetching scheduler state. Check console for details.');
+        });
+}
+
+function setSchedulerButtonState(state) {
+    const button = document.getElementById('toggleScheduler');
+    state = state.trim();
+
+    if (state === SCHEDULER_STATE.RUNNING) {
+        button.textContent = 'Pause Scheduler';
+        button.classList.add('pause');
+        button.classList.remove('resume');
+    } else if (state === SCHEDULER_STATE.PAUSED) {
+        button.textContent = 'Resume Scheduler';
+        button.classList.add('resume');
+        button.classList.remove('pause');
+    } else if (state === SCHEDULER_STATE.STOPPED) {
+        button.textContent = 'Scheduler Stopped';
+        button.disabled = true;
+    }
+
+    button.addEventListener('click', toggleScheduler);
+}
+
+function toggleScheduler() {
+    checkSchedulerState(state => {
+        if (state.trim() === SCHEDULER_STATE.RUNNING) {
+            pauseScheduler(confirmAndRefreshState);
+        } else if (state.trim() === SCHEDULER_STATE.PAUSED) {
+            resumeScheduler(confirmAndRefreshState);
+        }
+    });
+}
+
+function pauseScheduler(callback) {
+    fetch('/scheduler/pause', {method: 'POST'})
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to pause scheduler');
+            }
+            callback();
+        })
+        .catch(error => {
+            console.error('Error pausing scheduler:', error);
+            alert('Error pausing scheduler. Check console for details.');
+        });
+}
+
+function resumeScheduler(callback) {
+    fetch('/scheduler/resume', {method: 'POST'})
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to resume scheduler');
+            }
+            callback();
+        })
+        .catch(error => {
+            console.error('Error resuming scheduler:', error);
+            alert('Error resuming scheduler. Check console for details.');
+        });
+}
+
+function confirmAndRefreshState() {
+    checkSchedulerState(state => {
+        setSchedulerButtonState(state);
+        window.location.reload();
+    });
 }
 
 function openFullAudit() {
@@ -114,25 +253,6 @@ function deleteAll() {
         .catch(error => console.error('Error:', error));
 }
 
-function toggleTaskPauseResume(button) {
-    const itemName = encodeURIComponent(button.getAttribute('data-name'));
-    const itemGroup = encodeURIComponent(button.getAttribute('data-group'));
-    const state = button.getAttribute('data-state');
-    const action = state === 'PAUSED' ? 'resume' : 'pause';
-
-    fetch(`/scheduler/task/${itemName}/${itemGroup}/${action}`, {method: 'POST'})
-        .then(response => {
-            if (response.ok) {
-                console.log('Task paused/resumed successfully');
-                window.location.reload();
-            } else {
-                console.error('Failed to pause/resume task');
-                alert("Failed to pause/resume task.");
-            }
-        })
-        .catch(error => console.error('Error:', error));
-}
-
 function deleteTask(button) {
     const itemName = encodeURIComponent(button.getAttribute('data-name'));
     const itemGroup = encodeURIComponent(button.getAttribute('data-group'));
@@ -150,99 +270,41 @@ function deleteTask(button) {
         .catch(error => console.error('Error:', error));
 }
 
-function toggleScheduler() {
-    checkSchedulerState(function (state) {
-        if (state.trim() === SCHEDULER_STATE.RUNNING) {
-            pauseScheduler(confirmAndRefreshState);
-        } else if (state.trim() === SCHEDULER_STATE.PAUSED) {
-            resumeScheduler(confirmAndRefreshState);
-        }
-    });
+function openLog(element) {
+    const log = element.getAttribute('data-log');
+    const newWindow = window.open();
+    newWindow.document.write(`
+        <html lang="en">
+            <head>
+                <title>Log Details</title>
+                <style>
+                    body { font-family: Arial, sans-serif; font-size: 1.25em; background-color: #1e1e1e; color: #c7c7c7; }
+                    pre { white-space: pre-wrap; word-wrap: break-word; }
+                </style>
+            </head>
+            <body>
+                <pre>${log}</pre>
+            </body>
+        </html>
+    `);
+    newWindow.document.close();
 }
 
-function checkSchedulerState(callback) {
-    console.log("Fetching scheduler state...");
-    fetch('/scheduler/state', {
-        method: 'GET',
-        headers: {
-            'Cache-Control': 'no-cache, no-store, must-revalidate',
-            'Pragma': 'no-cache',
-            'Expires': '0'
-        }
-    })
+function toggleTaskPauseResume(button) {
+    const itemName = encodeURIComponent(button.getAttribute('data-name'));
+    const itemGroup = encodeURIComponent(button.getAttribute('data-group'));
+    const state = button.getAttribute('data-state');
+    const action = state === 'PAUSED' ? 'resume' : 'pause';
+
+    fetch(`/scheduler/task/${itemName}/${itemGroup}/${action}`, {method: 'POST'})
         .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+            if (response.ok) {
+                console.log('Task paused/resumed successfully');
+                window.location.reload();
+            } else {
+                console.error('Failed to pause/resume task');
+                alert("Failed to pause/resume task.");
             }
-            return response.text();
         })
-        .then(state => {
-            console.log('Scheduler state:', state);
-            callback(state);
-        })
-        .catch(error => {
-            console.error('Error fetching scheduler state:', error);
-            alert('Error fetching scheduler state. Check console for details.');
-        });
-}
-
-function pauseScheduler(callback) {
-    fetch('/scheduler/pause', {method: 'POST'})
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to pause scheduler');
-            }
-            console.log('Paused scheduler');
-            callback();
-        })
-        .catch(error => {
-            console.error('Error pausing scheduler:', error);
-            alert('Error pausing scheduler. Check console for details.');
-        });
-}
-
-function resumeScheduler(callback) {
-    fetch('/scheduler/resume', {method: 'POST'})
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to resume scheduler');
-            }
-            console.log('Resumed scheduler');
-            callback();
-        })
-        .catch(error => {
-            console.error('Error resuming scheduler:', error);
-            alert('Error resuming scheduler. Check console for details.');
-        });
-}
-
-function confirmAndRefreshState() {
-    checkSchedulerState(function (state) {
-        setSchedulerButtonState(state);
-        window.location.reload(); // Reload the page after state has been committed
-    });
-}
-
-function setSchedulerButtonState(state) {
-    const button = document.getElementById('toggleScheduler');
-    console.log('Setting button state for:', state); // Debug log
-
-    if (state.trim() === SCHEDULER_STATE.RUNNING) {
-        button.textContent = 'Pause Scheduler';
-        button.classList.add('pause');
-        button.classList.remove('resume');
-    } else if (state.trim() === SCHEDULER_STATE.PAUSED) {
-        button.textContent = 'Resume Scheduler';
-        button.classList.add('resume');
-        button.classList.remove('pause');
-    } else if (state.trim() === SCHEDULER_STATE.STOPPED) {
-        button.textContent = 'Scheduler Stopped';
-        button.disabled = true;
-    }
-}
-
-function updateSchedulerPauseResumeButton() {
-    checkSchedulerState(function (state) {
-        setSchedulerButtonState(state);
-    });
+        .catch(error => console.error('Error:', error));
 }

@@ -6,6 +6,7 @@ package kcrud.base.env.health.checks
 
 import kcrud.base.env.health.annotation.HealthCheckAPI
 import kcrud.base.scheduler.service.core.SchedulerService
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 
 /**
@@ -28,7 +29,7 @@ data class SchedulerCheck(
         errors = mutableListOf(),
         isStarted = SchedulerService.isStarted(),
         isPaused = SchedulerService.isPaused(),
-        totalTasks = SchedulerService.totalTasks(),
+        totalTasks = runBlocking { SchedulerService.totalTasks() },
     ) {
         if (!isStarted) {
             errors.add("${this::class.simpleName}. Scheduler is not started.")

@@ -258,7 +258,7 @@ object SchedulerService {
     /**
      * Returns the total number of tasks currently scheduled in the scheduler.
      */
-    fun totalTasks(): Int {
+    suspend fun totalTasks(): Int {
         if (!::scheduler.isInitialized) {
             return 0
         }
@@ -342,16 +342,22 @@ object SchedulerService {
         /**
          * Returns a snapshot list of all tasks currently scheduled in the scheduler.
          *
+         * @param groupId Optional group ID to filter the tasks by.
          * @param executing True if only actively executing tasks should be returned; false to return all tasks.
+         * @param groupId The group ID of the tasks to return. Null to return all tasks.
          * @return A list of [TaskScheduleEntity] objects representing the scheduled tasks.
          */
-        fun all(executing: Boolean = false): List<TaskScheduleEntity> {
-            val taskList: List<TaskScheduleEntity> = if (executing) {
+        suspend fun all(groupId: UUID? = null, executing: Boolean = false): List<TaskScheduleEntity> {
+            var taskList: List<TaskScheduleEntity> = if (executing) {
                 scheduler.currentlyExecutingJobs.map { task -> createTaskScheduleEntity(taskDetail = task.jobDetail) }
             } else {
                 scheduler.getJobKeys(GroupMatcher.anyGroup()).mapNotNull { jobKey ->
                     scheduler.getJobDetail(jobKey)?.let { detail -> createTaskScheduleEntity(taskDetail = detail) }
                 }
+            }
+
+            if (groupId != null) {
+                taskList = taskList.filter { it.group == groupId.toString() }
             }
 
             // Sort the task list by nextFireTime.
@@ -365,7 +371,7 @@ object SchedulerService {
          * @param taskDetail The task detail from which to create the [TaskScheduleEntity].
          * @return The constructed [TaskScheduleEntity].
          */
-        private fun createTaskScheduleEntity(taskDetail: JobDetail): TaskScheduleEntity {
+        private suspend fun createTaskScheduleEntity(taskDetail: JobDetail): TaskScheduleEntity {
             val jobKey: JobKey = taskDetail.key
             val triggers: List<Trigger> = scheduler.getTriggersOfJob(jobKey)
 
@@ -375,11 +381,12 @@ object SchedulerService {
                 taskDetail = taskDetail
             )
 
-            val audit: List<AuditEntity> = AuditRepository.find(taskName = jobKey.name, taskGroup = jobKey.group)
-
             // Resolve the last execution outcome.
-            val mostRecentAudit: AuditEntity? = audit.firstOrNull()
+            val mostRecentAudit: AuditEntity? = AuditRepository.mostRecent(taskName = jobKey.name, taskGroup = jobKey.group)
             val outcome: String? = mostRecentAudit?.outcome?.name
+
+            // Get how many times the task has been executed.
+            val runs: Int = AuditRepository.count(taskName = jobKey.name, taskGroup = jobKey.group)
 
             // Resolve the schedule metrics.
             val (schedule: String?, scheduleInfo: String?) = triggers.firstOrNull()?.let { trigger ->
@@ -411,7 +418,7 @@ object SchedulerService {
                 log = mostRecentAudit?.log,
                 schedule = schedule,
                 scheduleInfo = scheduleInfo,
-                runs = audit.size,
+                runs = runs,
                 dataMap = dataMap,
             )
         }
