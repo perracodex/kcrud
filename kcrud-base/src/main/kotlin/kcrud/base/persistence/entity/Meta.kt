@@ -29,7 +29,7 @@ data class Meta(
          * @param table The [Table] from which the [ResultRow] was obtained.
          * @return The mapped [Meta] instance.
          */
-        fun toEntity(row: ResultRow, table: Table): Meta {
+        fun from(row: ResultRow, table: Table): Meta {
             val createdAt: Column<*> = table.columns.single { it.name == "created_at" }
             val updatedAt: Column<*> = table.columns.single { it.name == "updated_at" }
 

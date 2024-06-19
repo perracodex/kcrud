@@ -55,7 +55,7 @@ fun Application.kcrudModule() {
 
     configureCallLogging()
 
-    configureContentNegotiation()
+    configureSerialization()
 
     configureRateLimit()
 

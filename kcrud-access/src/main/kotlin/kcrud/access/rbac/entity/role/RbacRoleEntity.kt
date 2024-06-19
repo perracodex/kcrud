@@ -67,7 +67,7 @@ data class RbacRoleEntity(
                 description = record[RbacRoleTable.description],
                 isSuper = record[RbacRoleTable.isSuper],
                 scopeRules = scopeRules,
-                meta = Meta.toEntity(row = record, table = RbacRoleTable)
+                meta = Meta.from(row = record, table = RbacRoleTable)
             )
         }
     }

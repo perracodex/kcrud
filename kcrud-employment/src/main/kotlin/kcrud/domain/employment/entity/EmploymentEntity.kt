@@ -46,12 +46,12 @@ data class EmploymentEntity(
         fun from(row: ResultRow): EmploymentEntity {
             return EmploymentEntity(
                 id = row[EmploymentTable.id],
-                period = Period.toEntity(row = row, table = EmploymentTable),
+                period = Period.from(row = row, table = EmploymentTable),
                 status = row[EmploymentTable.status],
                 probationEndDate = row[EmploymentTable.probationEndDate],
                 workModality = row[EmploymentTable.workModality],
                 employee = EmployeeEntity.from(row = row),
-                meta = Meta.toEntity(row = row, table = EmploymentTable)
+                meta = Meta.from(row = row, table = EmploymentTable)
             )
         }
     }

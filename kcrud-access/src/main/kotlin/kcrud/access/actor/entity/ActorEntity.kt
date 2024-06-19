@@ -50,7 +50,7 @@ data class ActorEntity(
                 password = row[ActorTable.password],
                 role = role,
                 isLocked = row[ActorTable.isLocked],
-                meta = Meta.toEntity(row = row, table = ActorTable)
+                meta = Meta.from(row = row, table = ActorTable)
             )
         }
     }

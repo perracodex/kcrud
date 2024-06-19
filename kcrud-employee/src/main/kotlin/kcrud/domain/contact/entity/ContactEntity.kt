@@ -37,7 +37,7 @@ data class ContactEntity(
                 id = row[ContactTable.id],
                 email = row[ContactTable.email],
                 phone = row[ContactTable.phone],
-                meta = Meta.toEntity(row = row, table = ContactTable)
+                meta = Meta.from(row = row, table = ContactTable)
             )
         }
     }

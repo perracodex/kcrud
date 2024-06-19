@@ -42,7 +42,7 @@ data class RbacFieldRuleEntity(
                 scopeRuleId = row[RbacFieldRuleTable.scopeRuleId],
                 fieldName = row[RbacFieldRuleTable.fieldName],
                 accessLevel = row[RbacFieldRuleTable.accessLevel],
-                meta = Meta.toEntity(row = row, table = RbacFieldRuleTable)
+                meta = Meta.from(row = row, table = RbacFieldRuleTable)
             )
         }
     }

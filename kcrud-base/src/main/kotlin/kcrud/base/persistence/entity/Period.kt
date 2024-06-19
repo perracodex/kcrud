@@ -33,7 +33,7 @@ data class Period(
          * @param table The [Table] that the [ResultRow] is from.
          * @return The mapped [Period] instance.
          */
-        fun toEntity(row: ResultRow, table: Table): Period {
+        fun from(row: ResultRow, table: Table): Period {
             val isActiveColumn: Column<*> = table.columns.single { it.name == "is_active" }
             val startDateColumn: Column<*> = table.columns.single { it.name == "start_date" }
             val endDateColumn: Column<*> = table.columns.single { it.name == "end_date" }

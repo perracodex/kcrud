@@ -69,7 +69,7 @@ data class EmployeeEntity(
                 maritalStatus = row[EmployeeTable.maritalStatus],
                 honorific = row[EmployeeTable.honorific],
                 contact = contact,
-                meta = Meta.toEntity(row = row, table = EmployeeTable)
+                meta = Meta.from(row = row, table = EmployeeTable)
             )
         }
     }
