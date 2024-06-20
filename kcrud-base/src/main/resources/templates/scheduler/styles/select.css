@@ -1,0 +1,26 @@
+/*
+ * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
+ */
+
+#groupSelect {
+    background-color: #222222;
+    color: #ffffff;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 1em;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: border-color 0.3s;
+    width: 350px;
+}
+
+#groupSelect:hover, #groupSelect:focus {
+    border: 1px solid #6d747c;
+    outline: none;
+}
+
+#groupSelect option {
+    background-color: #222222;
+    color: #ffffff;
+}
+

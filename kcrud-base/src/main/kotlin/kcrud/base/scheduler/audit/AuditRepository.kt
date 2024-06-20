@@ -8,8 +8,6 @@ import kcrud.base.database.schema.scheduler.SchedulerAuditTable
 import kcrud.base.scheduler.annotation.SchedulerAPI
 import kcrud.base.scheduler.audit.entity.AuditEntity
 import kcrud.base.scheduler.audit.entity.AuditRequest
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.andWhere
 import org.jetbrains.exposed.sql.insert
@@ -20,7 +18,7 @@ import java.util.*
 /**
  * Repository to manage the persistence aND retrieval of the scheduler audit logs.
  */
-@OptIn(SchedulerAPI::class)
+@SchedulerAPI
 internal object AuditRepository {
 
     /**
@@ -28,8 +26,8 @@ internal object AuditRepository {
      *
      * @param request The [AuditRequest] to create.
      */
-    suspend fun create(request: AuditRequest): UUID = withContext(Dispatchers.IO) {
-        transaction {
+    fun create(request: AuditRequest): UUID {
+        return transaction {
             val logId: UUID = SchedulerAuditTable.insert {
                 it[taskName] = request.taskName
                 it[taskGroup] = request.taskGroup
@@ -49,8 +47,8 @@ internal object AuditRepository {
      *
      * @return The list of [AuditEntity] instances.
      */
-    suspend fun findAll(): List<AuditEntity> = withContext(Dispatchers.IO) {
-        transaction {
+    fun findAll(): List<AuditEntity> {
+        return transaction {
             SchedulerAuditTable.selectAll()
                 .orderBy(SchedulerAuditTable.createdAt to SortOrder.DESC)
                 .map {
@@ -66,8 +64,8 @@ internal object AuditRepository {
      * @param taskGroup The group of the task.
      * @return The list of [AuditEntity] instances, or an empty list if none found.
      */
-    suspend fun find(taskName: String, taskGroup: String): List<AuditEntity> = withContext(Dispatchers.IO) {
-        transaction {
+    fun find(taskName: String, taskGroup: String): List<AuditEntity> {
+        return transaction {
             SchedulerAuditTable.selectAll()
                 .where { SchedulerAuditTable.taskName eq taskName }
                 .andWhere { SchedulerAuditTable.taskGroup eq taskGroup }
@@ -85,8 +83,8 @@ internal object AuditRepository {
      * @param taskGroup The group of the task.
      * @return The most recent [AuditEntity] instance, or `null` if none found.
      */
-    suspend fun mostRecent(taskName: String, taskGroup: String): AuditEntity? = withContext(Dispatchers.IO) {
-        transaction {
+    fun mostRecent(taskName: String, taskGroup: String): AuditEntity? {
+        return transaction {
             SchedulerAuditTable.selectAll()
                 .where { SchedulerAuditTable.taskName eq taskName }
                 .andWhere { SchedulerAuditTable.taskGroup eq taskGroup }
@@ -105,8 +103,18 @@ internal object AuditRepository {
      * @param taskGroup The group of the task.
      * @return The total count of audit entries for the task.
      */
-    suspend fun count(taskName: String, taskGroup: String): Int = withContext(Dispatchers.IO) {
-        transaction {
+    fun count(taskName: String, taskGroup: String): Int {
+        return transaction {
+            // addLogger(StdOutSqlLogger)
+
+//            explain {
+//                SchedulerAuditTable
+//                    .selectAll()
+//                    .where { SchedulerAuditTable.taskName eq taskName }
+//                    .andWhere { SchedulerAuditTable.taskGroup eq taskGroup }
+//            }.forEach(::print)
+
+
             SchedulerAuditTable
                 .selectAll()
                 .where { SchedulerAuditTable.taskName eq taskName }

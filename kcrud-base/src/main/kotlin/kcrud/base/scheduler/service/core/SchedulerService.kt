@@ -8,7 +8,7 @@ import io.ktor.server.application.*
 import it.burning.cron.CronExpressionDescriptor
 import kcrud.base.env.Tracer
 import kcrud.base.scheduler.annotation.SchedulerAPI
-import kcrud.base.scheduler.audit.AuditRepository
+import kcrud.base.scheduler.audit.AuditService
 import kcrud.base.scheduler.audit.entity.AuditEntity
 import kcrud.base.scheduler.entity.TaskScheduleEntity
 import kcrud.base.scheduler.entity.TaskStateChangeEntity
@@ -383,11 +383,11 @@ object SchedulerService {
             )
 
             // Resolve the last execution outcome.
-            val mostRecentAudit: AuditEntity? = AuditRepository.mostRecent(taskName = jobKey.name, taskGroup = jobKey.group)
+            val mostRecentAudit: AuditEntity? = AuditService.mostRecent(taskName = jobKey.name, taskGroup = jobKey.group)
             val outcome: String? = mostRecentAudit?.outcome?.name
 
             // Get how many times the task has been executed.
-            val runs: Int = AuditRepository.count(taskName = jobKey.name, taskGroup = jobKey.group)
+            val runs: Int = AuditService.count(taskName = jobKey.name, taskGroup = jobKey.group)
 
             // Resolve the schedule metrics.
             val (schedule: String?, scheduleInfo: String?) = triggers.firstOrNull()?.let { trigger ->

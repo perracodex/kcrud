@@ -8,7 +8,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.base.scheduler.audit.AuditRepository
+import kcrud.base.scheduler.audit.AuditService
 import kcrud.base.scheduler.audit.entity.AuditEntity
 
 /**
@@ -17,7 +17,7 @@ import kcrud.base.scheduler.audit.entity.AuditEntity
 fun Route.schedulerAuditRoute() {
     // Returns the audit logs for the scheduler.
     get("audit") {
-        val audit: List<AuditEntity> = AuditRepository.findAll()
+        val audit: List<AuditEntity> = AuditService.findAll()
         call.respond(status = HttpStatusCode.OK, message = audit)
     }
 
@@ -25,7 +25,7 @@ fun Route.schedulerAuditRoute() {
     get("audit/{name}/{group}") {
         val taskName: String = call.parameters["name"] ?: return@get call.respond(HttpStatusCode.BadRequest)
         val taskGroup: String = call.parameters["group"] ?: return@get call.respond(HttpStatusCode.BadRequest)
-        val audit: List<AuditEntity> = AuditRepository.find(taskName = taskName, taskGroup = taskGroup)
+        val audit: List<AuditEntity> = AuditService.find(taskName = taskName, taskGroup = taskGroup)
 
         if (audit.isEmpty()) {
             call.respond(status = HttpStatusCode.NotFound, message = "No audit logs found for the task.")

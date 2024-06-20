@@ -1,0 +1,74 @@
+/*
+ * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
+ */
+
+.table-header,
+.table-row {
+    display: grid;
+    grid-template-columns: 0.1fr 1fr 1.5fr 1fr 0.9fr 0.6fr 0.65fr 1.6fr 0.35fr 0.65fr;
+    font-size: 0.85em;
+    align-items: center;
+}
+
+.table-header {
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 9px;
+    background-color: #282828;
+    color: #8b969f;
+}
+
+.expand-trigger {
+    cursor: pointer;
+    outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6px;
+    width: 16px;
+    height: 24px;
+    user-select: none;
+    font-size: 16px;
+}
+
+.table-row > div {
+    display: flex;
+    white-space: nowrap;
+    align-items: center;
+    justify-content: flex-start; /* Ensure text is left-aligned */
+}
+
+.table-container {
+    background-color: #222222;
+    margin-top: 6px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: border-color 0.3s;
+}
+
+.table-container:hover {
+    border: 1px solid #6d747c;
+}
+
+.table-sub-row {
+    background-color: #333333;
+    color: #dfdfdf;
+    padding: 6px;
+    border-radius: 8px;
+    margin-top: 5px;
+    font-size: 0.9em;
+    display: none; /* Hide sub-rows by default */
+}
+
+.table-header span,
+.table-row span {
+    text-align: left; /* Ensure text is left-aligned */
+    padding: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.table-row span[data-log] {
+    color: #76c7c0;
+}

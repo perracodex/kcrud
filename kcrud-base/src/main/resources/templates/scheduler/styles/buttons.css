@@ -1,0 +1,82 @@
+/*
+ * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
+ */
+
+.buttons-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.left-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+    flex-shrink: 0;
+    height: 40px;
+}
+
+.refresh {
+    background-color: #58af53;
+    color: #ffffff;
+    width: 150px;
+}
+
+.refresh:hover {
+    background-color: #4b8e47;
+}
+
+.pause-resume {
+    background-color: #db6e3e;
+    color: #ffffff;
+    width: 150px;
+    text-align: center;
+}
+
+.pause-resume:hover {
+    background-color: #b3582f;
+}
+
+.audit {
+    background-color: #4682b4;
+    color: #ffffff;
+    width: 150px;
+    text-align: center;
+}
+
+.audit:hover {
+    background-color: #376c92;
+}
+
+.delete {
+    color: #ffffff;
+    background-color: #b34747;
+    width: 150px;
+}
+
+.delete:hover {
+    background-color: #933636;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 1.2em;
+    padding: 1px;
+    transition: color 0.3s;
+}
+
+.icon-button:hover {
+    color: #6d747c;
+}

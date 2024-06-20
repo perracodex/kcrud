@@ -9,7 +9,7 @@ import io.micrometer.core.instrument.Timer
 import kcrud.base.env.Tracer
 import kcrud.base.plugins.appMicrometerRegistry
 import kcrud.base.scheduler.annotation.SchedulerAPI
-import kcrud.base.scheduler.audit.AuditRepository
+import kcrud.base.scheduler.audit.AuditService
 import kcrud.base.scheduler.audit.entity.AuditRequest
 import kcrud.base.scheduler.service.task.TaskOutcome
 import kcrud.base.utils.DateTimeUtils
@@ -19,7 +19,9 @@ import org.quartz.JobExecutionException
 import org.quartz.JobListener
 
 /**
- * A listener for scheduler that logs task execution events.
+ * Listener for scheduler task events.
+ * In addition to logging task execution events, it also stores audit logs.
+ * Micro-metrics are also exposed for external monitoring.
  */
 @SchedulerAPI
 class TaskListener : JobListener {
@@ -96,7 +98,7 @@ class TaskListener : JobListener {
             detail = context.jobDetail.jobDataMap.toMap().toString()
         ).also { request ->
             runBlocking {
-                AuditRepository.create(request = request)
+                AuditService.create(request = request)
             }
         }
     }
