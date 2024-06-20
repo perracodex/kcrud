@@ -14,6 +14,8 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.testing.*
+import junit.framework.TestCase.assertTrue
+import kcrud.base.utils.FileDetails
 import kcrud.base.utils.MultipartHandler
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
@@ -32,9 +34,11 @@ class MultipartHandlerTest {
     @Test
     fun testMultipartHandler(): Unit = testApplication {
         val tempUploadPath: File = createTempDirectory().toFile()
-        val fileDescription = "Test file description"
+        val fileDescription1 = "Test file description 1"
+        val fileDescription2 = "Test file description 2"
         val request = TestRequest(text = "Hello", userId = "U12345")
-        val filename = "testfile.txt"
+        val filename1 = "testfile1.txt"
+        val filename2 = "testfile2.txt"
 
         try {
             application {
@@ -49,12 +53,24 @@ class MultipartHandlerTest {
 
                             assertNotNull(actual = response)
                             assertNotNull(actual = response.request)
-                            assertNotNull(actual = response.fileDescription)
-                            assertNotNull(actual = response.file)
                             assertEquals(expected = request, actual = response.request)
-                            assertEquals(expected = fileDescription, actual = response.fileDescription)
-                            assertEquals(expected = tempUploadPath.absolutePath, actual = response.file!!.parentFile?.absolutePath)
-                            assertEquals(expected = filename, actual = response.file!!.name)
+                            assertTrue(response.files.size >= 2)
+
+                            val fileDetails1: FileDetails? = response.files.find {
+                                it.description == fileDescription1 && it.file?.name == filename1
+                            }
+                            assertNotNull(actual = fileDetails1)
+                            assertEquals(expected = fileDescription1, fileDetails1.description)
+                            assertNotNull(actual = fileDetails1.file)
+                            assertEquals(expected = tempUploadPath.absolutePath, actual = fileDetails1.file?.parentFile?.absolutePath)
+
+                            val fileDetails2: FileDetails? = response.files.find {
+                                it.description == fileDescription2 && it.file?.name == filename2
+                            }
+                            assertNotNull(actual = fileDetails2)
+                            assertEquals(expected = fileDescription2, fileDetails2.description)
+                            assertNotNull(actual = fileDetails2.file)
+                            assertEquals(expected = tempUploadPath.absolutePath, actual = fileDetails2.file?.parentFile?.absolutePath)
 
                             call.respond(HttpStatusCode.OK, "Request processed.")
                         }
@@ -77,13 +93,42 @@ class MultipartHandlerTest {
                     )
                     append(
                         key = "file-description",
-                        value = fileDescription
+                        value = fileDescription1,
+                        headers = Headers.build {
+                            append(
+                                HttpHeaders.ContentDisposition,
+                                "form-data; name=\"file-description-1\""
+                            )
+                        }
                     )
                     append(
                         key = "file",
-                        value = byteArrayOf(1, 2, 3, 4, 5),
+                        value = byteArrayOf(1, 2, 3),
                         headers = Headers.build {
-                            append(HttpHeaders.ContentDisposition, "form-data; name=\"file\"; filename=\"$filename\"")
+                            append(
+                                HttpHeaders.ContentDisposition,
+                                "form-data; name=\"file-1\"; filename=\"$filename1\""
+                            )
+                        }
+                    )
+                    append(
+                        key = "file-description",
+                        value = fileDescription2,
+                        headers = Headers.build {
+                            append(
+                                HttpHeaders.ContentDisposition,
+                                "form-data; name=\"file-description-2\""
+                            )
+                        }
+                    )
+                    append(
+                        key = "file",
+                        value = byteArrayOf(4, 5, 6),
+                        headers = Headers.build {
+                            append(
+                                HttpHeaders.ContentDisposition,
+                                "form-data; name=\"file-2\"; filename=\"$filename2\""
+                            )
                         }
                     )
                 }

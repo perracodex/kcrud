@@ -30,7 +30,7 @@ import java.io.File
  *                     message = "Invalid request."
  *                 )
  *             } else {
- *                 SomeService.execute(request = response)
+ *                 SomeService.doSomething(request = response)
  *                 call.respond(
  *                     status = HttpStatusCode.OK,
  *                     message = "Some message."
@@ -55,13 +55,11 @@ class MultipartHandler<T>(private val uploadsPath: String = DEFAULT_UPLOADS_PATH
      * Data class to encapsulate the response from processing multipart data.
      *
      * @property request The parsed request object of type T.
-     * @property fileDescription Description of the file, if provided.
-     * @property file The File object representing the uploaded file.
+     * @property files A list of [FileDetails] objects containing the file description and file.
      */
     data class MultipartResponse<T>(
         val request: T?,
-        val fileDescription: String?,
-        val file: File?
+        val files: List<FileDetails>
     )
 
     /**
@@ -73,38 +71,35 @@ class MultipartHandler<T>(private val uploadsPath: String = DEFAULT_UPLOADS_PATH
      */
     suspend fun receive(multipart: MultiPartData, serializer: KSerializer<T>): MultipartResponse<T> {
         var requestObject: T? = null
+        val fileDetailsList = mutableListOf<FileDetails>()
         var fileDescription: String? = null
-        var uploadedFile: File? = null
 
         multipart.forEachPart { part ->
             when (part) {
                 is PartData.FormItem -> {
-                    when (part.name) {
-                        REQUEST_KEY -> {
-                            requestObject = Json.decodeFromString(serializer, part.value)
-                        }
-
-                        FILE_DESCRIPTION_KEY -> {
-                            fileDescription = part.value
-                        }
-
-                        else -> {
-                            tracer.warning("Unknown form part: ${part.name}")
-                        }
+                    if (part.name == REQUEST_KEY) {
+                        requestObject = Json.decodeFromString(serializer, part.value)
+                    } else if (part.name == FILE_DESCRIPTION_KEY) {
+                        fileDescription = part.value
                     }
                 }
 
                 is PartData.FileItem -> {
-                    if (part.name == FILE_KEY) {
+                    if (part.name!!.startsWith(FILE_KEY)) {
                         val file = File("$uploadsPath/${part.originalFileName}")
+
                         part.streamProvider().use { input ->
                             file.outputStream().buffered().use { output ->
-                                input.copyTo(out = output)
+                                input.copyTo(output)
                             }
                         }
-                        uploadedFile = file
+
+                        val fileDetails = FileDetails(description = fileDescription, file = file)
+                        fileDetailsList.add(fileDetails)
+                        // Reset the description to allow for subsequent files to have their own descriptions.
+                        fileDescription = null
                     } else {
-                        tracer.warning("Unknown file part: ${part.name}")
+                        tracer.warning("Unexpected file item received: ${part.name}")
                     }
                 }
 
@@ -118,8 +113,7 @@ class MultipartHandler<T>(private val uploadsPath: String = DEFAULT_UPLOADS_PATH
 
         return MultipartResponse(
             request = requestObject,
-            fileDescription = fileDescription,
-            file = uploadedFile
+            files = fileDetailsList
         )
     }
 
@@ -152,3 +146,14 @@ class MultipartHandler<T>(private val uploadsPath: String = DEFAULT_UPLOADS_PATH
         private const val FILE_KEY = "file"
     }
 }
+
+/**
+ * Data class to encapsulate the details of a file uploaded via multipart form data.
+ *
+ * @property description The description of the file, if provided.
+ * @property file The File object representing the uploaded file.
+ */
+data class FileDetails(
+    val description: String?,
+    val file: File?
+)
