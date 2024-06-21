@@ -9,7 +9,6 @@ import kcrud.access.actor.entity.ActorRequest
 import kcrud.access.rbac.entity.role.RbacRoleEntity
 import kcrud.access.rbac.repository.role.IRbacRoleRepository
 import kcrud.base.database.schema.admin.actor.ActorTable
-import kcrud.base.utils.DateTimeUtils
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.lowerCase
 import org.jetbrains.exposed.sql.selectAll
@@ -60,7 +59,7 @@ class ActorRepository(private val roleRepository: IRbacRoleRepository) : IActorR
     override suspend fun create(actorRequest: ActorRequest): UUID {
         return transaction {
             ActorTable.insert { actorRow ->
-                actorRow.mapActorRequest(request = actorRequest, withTimestamp = false)
+                actorRow.mapActorRequest(request = actorRequest)
             } get ActorTable.id
         }
     }
@@ -111,11 +110,10 @@ class ActorRepository(private val roleRepository: IRbacRoleRepository) : IActorR
      * Populates an SQL [UpdateBuilder] with data from an [ActorRequest] instance,
      * so that it can be used to update or create a database record.
      */
-    private fun UpdateBuilder<Int>.mapActorRequest(request: ActorRequest, withTimestamp: Boolean = true) {
+    private fun UpdateBuilder<Int>.mapActorRequest(request: ActorRequest) {
         this[ActorTable.username] = request.username.lowercase()
         this[ActorTable.password] = request.password
         this[ActorTable.roleId] = request.roleId
         this[ActorTable.isLocked] = request.isLocked
-        if (withTimestamp) this[ActorTable.updatedAt] = DateTimeUtils.currentUTCDateTime()
     }
 }

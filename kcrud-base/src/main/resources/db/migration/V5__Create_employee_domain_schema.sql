@@ -23,6 +23,11 @@ CREATE TABLE IF NOT EXISTS employee (
 CREATE INDEX IF NOT EXISTS ix_employee__first_name ON employee (first_name);
 CREATE INDEX IF NOT EXISTS ix_employee__last_name ON employee (last_name);
 
+CREATE TRIGGER IF NOT EXISTS tg_employee__updated_at
+BEFORE UPDATE ON employee
+FOR EACH ROW
+CALL 'UpdateTimestampTrigger';
+
 -------------------------------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS contact (
@@ -40,3 +45,8 @@ CREATE TABLE IF NOT EXISTS contact (
 );
 
 CREATE INDEX IF NOT EXISTS ix_contact__employee_id ON contact (employee_id);
+
+CREATE TRIGGER IF NOT EXISTS tg_contact__updated_at
+BEFORE UPDATE ON contact
+FOR EACH ROW
+CALL 'UpdateTimestampTrigger';

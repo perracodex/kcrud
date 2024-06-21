@@ -22,6 +22,11 @@ ALTER TABLE rbac_role
     ADD CONSTRAINT uq_rbac_role__role_name
         UNIQUE (role_name);
 
+CREATE TRIGGER IF NOT EXISTS tg_rbac_role__updated_at
+BEFORE UPDATE ON rbac_role
+FOR EACH ROW
+CALL 'UpdateTimestampTrigger';
+
 -------------------------------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS rbac_scope_rule (
@@ -42,6 +47,11 @@ ALTER TABLE rbac_scope_rule
     ADD CONSTRAINT uq_rbac_scope_rule__role_id__scope
         UNIQUE (role_id, scope);
 
+CREATE TRIGGER IF NOT EXISTS tg_rbac_scope_rule__updated_at
+BEFORE UPDATE ON rbac_scope_rule
+FOR EACH ROW
+CALL 'UpdateTimestampTrigger';
+
 -------------------------------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS rbac_field_rule (
@@ -61,3 +71,8 @@ CREATE TABLE IF NOT EXISTS rbac_field_rule (
 ALTER TABLE rbac_field_rule
     ADD CONSTRAINT uq_rbac_field_rule__scope_rule_id__field_name
         UNIQUE (scope_rule_id, field_name);
+
+CREATE TRIGGER IF NOT EXISTS tg_rbac_field_rule__updated_at
+BEFORE UPDATE ON rbac_field_rule
+FOR EACH ROW
+CALL 'UpdateTimestampTrigger';

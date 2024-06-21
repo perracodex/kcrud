@@ -10,7 +10,6 @@ import kcrud.base.env.SessionContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.pagination.applyPagination
-import kcrud.base.utils.DateTimeUtils
 import kcrud.domain.contact.entity.ContactEntity
 import kcrud.domain.contact.entity.ContactRequest
 import kcrud.domain.employee.entity.EmployeeRequest
@@ -95,8 +94,7 @@ internal class ContactRepository(
             ContactTable.insert { contactRow ->
                 contactRow.mapContactRequest(
                     employeeId = employeeId,
-                    request = contactRequest,
-                    withTimestamp = false
+                    request = contactRequest
                 )
             } get ContactTable.id
         }
@@ -145,14 +143,9 @@ internal class ContactRepository(
      * Populates an SQL [UpdateBuilder] with data from a [ContactRequest] instance,
      * so that it can be used to update or create a database record.
      */
-    private fun UpdateBuilder<Int>.mapContactRequest(
-        employeeId: UUID,
-        request: ContactRequest,
-        withTimestamp: Boolean = true
-    ) {
+    private fun UpdateBuilder<Int>.mapContactRequest(employeeId: UUID, request: ContactRequest) {
         this[ContactTable.employeeId] = employeeId
         this[ContactTable.email] = request.email.trim()
         this[ContactTable.phone] = request.phone.trim()
-        if (withTimestamp) this[ContactTable.updatedAt] = DateTimeUtils.currentUTCDateTime()
     }
 }

@@ -22,4 +22,11 @@ CREATE TABLE IF NOT EXISTS actor (
         REFERENCES rbac_role(role_id) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 
-ALTER TABLE actor ADD CONSTRAINT uq_actor__username UNIQUE (username);
+ALTER TABLE actor
+    ADD CONSTRAINT uq_actor__username
+        UNIQUE (username);
+
+CREATE TRIGGER IF NOT EXISTS tg_actor__updated_at
+BEFORE UPDATE ON actor
+FOR EACH ROW
+CALL 'UpdateTimestampTrigger';

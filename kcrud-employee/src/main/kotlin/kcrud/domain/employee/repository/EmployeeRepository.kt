@@ -11,7 +11,6 @@ import kcrud.base.env.SessionContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.pagination.applyPagination
-import kcrud.base.utils.DateTimeUtils
 import kcrud.domain.contact.repository.IContactRepository
 import kcrud.domain.employee.entity.EmployeeEntity
 import kcrud.domain.employee.entity.EmployeeFilterSet
@@ -121,7 +120,7 @@ internal class EmployeeRepository(
     override fun create(employeeRequest: EmployeeRequest): UUID {
         return transactionWithSchema(schema = sessionContext.schema) {
             val newEmployeeId: UUID = EmployeeTable.insert { employeeRow ->
-                employeeRow.mapEmployeeRequest(employeeRequest = employeeRequest, withTimestamp = false)
+                employeeRow.mapEmployeeRequest(employeeRequest = employeeRequest)
             } get EmployeeTable.id
 
             employeeRequest.contact?.let {
@@ -180,12 +179,11 @@ internal class EmployeeRepository(
      * Populates an SQL [UpdateBuilder] with data from an [EmployeeRequest] instance,
      * so that it can be used to update or create a database record.
      */
-    private fun UpdateBuilder<Int>.mapEmployeeRequest(employeeRequest: EmployeeRequest, withTimestamp: Boolean = true) {
+    private fun UpdateBuilder<Int>.mapEmployeeRequest(employeeRequest: EmployeeRequest) {
         this[EmployeeTable.firstName] = employeeRequest.firstName.trim()
         this[EmployeeTable.lastName] = employeeRequest.lastName.trim()
         this[EmployeeTable.dob] = employeeRequest.dob
         this[EmployeeTable.maritalStatus] = employeeRequest.maritalStatus
         this[EmployeeTable.honorific] = employeeRequest.honorific
-        if (withTimestamp) this[EmployeeTable.updatedAt] = DateTimeUtils.currentUTCDateTime()
     }
 }

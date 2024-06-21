@@ -12,7 +12,6 @@ import kcrud.base.env.SessionContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.pagination.applyPagination
-import kcrud.base.utils.DateTimeUtils
 import kcrud.domain.employment.entity.EmploymentEntity
 import kcrud.domain.employment.entity.EmploymentRequest
 import org.jetbrains.exposed.sql.*
@@ -76,8 +75,7 @@ internal class EmploymentRepository(
             EmploymentTable.insert { employmentRow ->
                 employmentRow.mapEmploymentRequest(
                     employeeId = employeeId,
-                    employmentRequest = employmentRequest,
-                    withTimestamp = false
+                    employmentRequest = employmentRequest
                 )
             } get EmploymentTable.id
         }
@@ -127,8 +125,7 @@ internal class EmploymentRepository(
      */
     private fun UpdateBuilder<Int>.mapEmploymentRequest(
         employeeId: UUID,
-        employmentRequest: EmploymentRequest,
-        withTimestamp: Boolean = true
+        employmentRequest: EmploymentRequest
     ) {
         this[EmploymentTable.employeeId] = employeeId
         this[EmploymentTable.status] = employmentRequest.status
@@ -138,6 +135,5 @@ internal class EmploymentRepository(
         this[EmploymentTable.startDate] = employmentRequest.period.startDate
         this[EmploymentTable.endDate] = employmentRequest.period.endDate
         this[EmploymentTable.comments] = employmentRequest.period.comments?.trim()
-        if (withTimestamp) this[EmploymentTable.updatedAt] = DateTimeUtils.currentUTCDateTime()
     }
 }

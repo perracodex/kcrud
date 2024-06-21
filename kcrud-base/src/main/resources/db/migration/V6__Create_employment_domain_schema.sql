@@ -28,4 +28,7 @@ CREATE TABLE IF NOT EXISTS employment (
 
 CREATE INDEX IF NOT EXISTS ix_employment__employee_id ON employment (employee_id);
 
--------------------------------------------------------------------------------------
+CREATE TRIGGER IF NOT EXISTS tg_employment__updated_at
+BEFORE UPDATE ON employment
+FOR EACH ROW
+CALL 'UpdateTimestampTrigger';

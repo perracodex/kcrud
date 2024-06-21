@@ -11,7 +11,6 @@ import kcrud.base.database.schema.admin.actor.ActorTable
 import kcrud.base.database.schema.admin.rbac.RbacFieldRuleTable
 import kcrud.base.database.schema.admin.rbac.RbacRoleTable
 import kcrud.base.database.schema.admin.rbac.RbacScopeRuleTable
-import kcrud.base.utils.DateTimeUtils
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
@@ -82,7 +81,7 @@ class RbacRoleRepository(
     override fun create(roleRequest: RbacRoleRequest): UUID {
         return transaction {
             val roleId: UUID = RbacRoleTable.insert { roleRow ->
-                roleRow.mapRoleRequest(roleRequest = roleRequest, withTimestamp = false)
+                roleRow.mapRoleRequest(roleRequest = roleRequest)
             } get RbacRoleTable.id
 
             // If the role insert was successful, insert the scope rules.
@@ -123,10 +122,9 @@ class RbacRoleRepository(
      * Populates an SQL [UpdateBuilder] with data from an [RbacRoleRequest] instance,
      * so that it can be used to update or create a database record.
      */
-    private fun UpdateBuilder<Int>.mapRoleRequest(roleRequest: RbacRoleRequest, withTimestamp: Boolean = true) {
+    private fun UpdateBuilder<Int>.mapRoleRequest(roleRequest: RbacRoleRequest) {
         this[RbacRoleTable.role_name] = roleRequest.roleName.trim()
         this[RbacRoleTable.description] = roleRequest.description?.trim()
         this[RbacRoleTable.isSuper] = roleRequest.isSuper
-        if (withTimestamp) this[RbacRoleTable.updatedAt] = DateTimeUtils.currentUTCDateTime()
     }
 }

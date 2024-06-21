@@ -6,7 +6,6 @@ package kcrud.access.rbac.repository.field_rule
 
 import kcrud.access.rbac.entity.field_rule.RbacFieldRuleRequest
 import kcrud.base.database.schema.admin.rbac.RbacFieldRuleTable
-import kcrud.base.utils.DateTimeUtils
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.batchInsert
@@ -53,6 +52,5 @@ class RbacFieldRuleRepository : IRbacFieldRuleRepository {
         this[RbacFieldRuleTable.scopeRuleId] = scopeRuleId
         this[RbacFieldRuleTable.fieldName] = request.fieldName
         this[RbacFieldRuleTable.accessLevel] = request.accessLevel
-        this[RbacFieldRuleTable.updatedAt] = DateTimeUtils.currentUTCDateTime()
     }
 }
