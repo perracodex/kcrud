@@ -45,6 +45,7 @@ import java.nio.ByteBuffer
  *
  * @param T The type of the object expected in the request part of the form.
  * @property uploadsPath Optional path where uploaded files are stored.
+ * @property persist Whether to persist the uploaded files to disk or keep them in memory.
  */
 class MultipartHandler<T : Any>(
     private val uploadsPath: String = DEFAULT_UPLOADS_PATH,
