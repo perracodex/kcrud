@@ -24,8 +24,8 @@ internal fun Route.findAllEmployees() {
     // Find all employees.
     get {
         val sessionContext: SessionContext? = call.principal<SessionContext>()
-        val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }
         val pageable: Pageable? = call.getPageable()
+        val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }
         val employees: Page<EmployeeEntity> = service.findAll(pageable = pageable)
         call.respond(status = HttpStatusCode.OK, message = employees)
     }

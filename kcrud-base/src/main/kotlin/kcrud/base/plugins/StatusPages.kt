@@ -24,59 +24,54 @@ import kotlinx.serialization.json.Json
  * See: [Ktor Status Pages Documentation](https://ktor.io/docs/server-status-pages.html)
  */
 fun Application.configureStatusPages() {
-
-    install(plugin = StatusPages) {
-        setup()
-    }
-}
-
-private fun StatusPagesConfig.setup() {
     val tracer = Tracer<Application>()
 
-    // Custom application exceptions.
-    exception<AppException> { call: ApplicationCall, cause ->
-        tracer.error(message = cause.messageDetail(), throwable = cause)
-        call.respondError(cause = cause)
-    }
+    install(plugin = StatusPages) {
+        // Custom application exceptions.
+        exception<AppException> { call: ApplicationCall, cause ->
+            tracer.error(message = cause.messageDetail(), throwable = cause)
+            call.respondError(cause = cause)
+        }
 
-    // Handle 401 Unauthorized status.
-    status(HttpStatusCode.Unauthorized) { call: ApplicationCall, status: HttpStatusCode ->
-        // Add WWW-Authenticate header to the response, indicating Basic Authentication is required.
-        // This is specific to Basic Authentication, doesn't affect JWT.
-        val realm: String = AppSettings.security.basicAuth.realm
-        call.response.header(name = HttpHeaders.WWWAuthenticate, value = "Basic realm=\"${realm}\"")
+        // Handle 401 Unauthorized status.
+        status(HttpStatusCode.Unauthorized) { call: ApplicationCall, status: HttpStatusCode ->
+            // Add WWW-Authenticate header to the response, indicating Basic Authentication is required.
+            // This is specific to Basic Authentication, doesn't affect JWT.
+            val realm: String = AppSettings.security.basicAuth.realm
+            call.response.header(name = HttpHeaders.WWWAuthenticate, value = "Basic realm=\"${realm}\"")
 
-        // Respond with 401 Unauthorized status code.
-        val message = "$status | Use either admin/admin or guest/guest."
-        call.respond(status = HttpStatusCode.Unauthorized, message = message)
-    }
+            // Respond with 401 Unauthorized status code.
+            val message = "$status | Use either admin/admin or guest/guest."
+            call.respond(status = HttpStatusCode.Unauthorized, message = message)
+        }
 
-    // Security exception handling.
-    status(HttpStatusCode.MethodNotAllowed) { call: ApplicationCall, status: HttpStatusCode ->
-        call.respond(status = HttpStatusCode.MethodNotAllowed, message = "$status")
-    }
+        // Security exception handling.
+        status(HttpStatusCode.MethodNotAllowed) { call: ApplicationCall, status: HttpStatusCode ->
+            call.respond(status = HttpStatusCode.MethodNotAllowed, message = "$status")
+        }
 
-    // Bad request exception handling.
-    exception<BadRequestException> { call: ApplicationCall, cause: Throwable ->
-        tracer.error(message = cause.message, throwable = cause)
-        val message: String = buildErrorMessage(cause)
-        call.respond(status = HttpStatusCode.BadRequest, message = message)
-    }
+        // Bad request exception handling.
+        exception<BadRequestException> { call: ApplicationCall, cause: Throwable ->
+            tracer.error(message = cause.message, throwable = cause)
+            val message: String = buildErrorMessage(cause)
+            call.respond(status = HttpStatusCode.BadRequest, message = message)
+        }
 
-    // Additional exception handling.
-    exception<IllegalArgumentException> { call: ApplicationCall, cause: Throwable ->
-        tracer.error(message = cause.message, throwable = cause)
-        val message: String = buildErrorMessage(throwable = cause)
-        call.respond(status = HttpStatusCode.BadRequest, message = message)
-    }
-    exception<NotFoundException> { call: ApplicationCall, cause: Throwable ->
-        tracer.error(message = cause.message, throwable = cause)
-        val message: String = buildErrorMessage(throwable = cause)
-        call.respond(status = HttpStatusCode.NotFound, message = message)
-    }
-    exception<Throwable> { call: ApplicationCall, cause: Throwable ->
-        tracer.error(message = cause.message, throwable = cause)
-        call.respond(status = HttpStatusCode.InternalServerError, message = HttpStatusCode.InternalServerError.description)
+        // Additional exception handling.
+        exception<IllegalArgumentException> { call: ApplicationCall, cause: Throwable ->
+            tracer.error(message = cause.message, throwable = cause)
+            val message: String = buildErrorMessage(throwable = cause)
+            call.respond(status = HttpStatusCode.BadRequest, message = message)
+        }
+        exception<NotFoundException> { call: ApplicationCall, cause: Throwable ->
+            tracer.error(message = cause.message, throwable = cause)
+            val message: String = buildErrorMessage(throwable = cause)
+            call.respond(status = HttpStatusCode.NotFound, message = message)
+        }
+        exception<Throwable> { call: ApplicationCall, cause: Throwable ->
+            tracer.error(message = cause.message, throwable = cause)
+            call.respond(status = HttpStatusCode.InternalServerError, message = HttpStatusCode.InternalServerError.description)
+        }
     }
 }
 
