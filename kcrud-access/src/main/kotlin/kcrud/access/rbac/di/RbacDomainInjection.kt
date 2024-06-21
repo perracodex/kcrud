@@ -18,7 +18,7 @@ import org.koin.dsl.module
 /**
  * RBAC dependency injection module.
  */
-object RbacInjection {
+object RbacDomainInjection {
 
     /**
      * Get the dependency injection module for the RBAC domain.

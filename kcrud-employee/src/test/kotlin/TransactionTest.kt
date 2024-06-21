@@ -5,8 +5,8 @@
 import io.ktor.test.dispatcher.*
 import io.mockk.every
 import io.mockk.mockk
-import kcrud.access.actor.di.ActorInjection
-import kcrud.access.rbac.di.RbacInjection
+import kcrud.access.actor.di.ActorDomainInjection
+import kcrud.access.rbac.di.RbacDomainInjection
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
 import kcrud.base.env.SessionContext
@@ -14,7 +14,7 @@ import kcrud.base.utils.KLocalDate
 import kcrud.base.utils.TestUtils
 import kcrud.domain.contact.entity.ContactRequest
 import kcrud.domain.contact.repository.IContactRepository
-import kcrud.domain.employee.di.EmployeeInjection
+import kcrud.domain.employee.di.EmployeeDomainInjection
 import kcrud.domain.employee.entity.EmployeeRequest
 import kcrud.domain.employee.repository.IEmployeeRepository
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
@@ -30,7 +30,7 @@ class TransactionTest : KoinComponent {
     fun setUp() {
         TestUtils.loadSettings()
         TestUtils.setupDatabase()
-        TestUtils.setupKoin(modules = listOf(RbacInjection.get(), ActorInjection.get(), EmployeeInjection.get()))
+        TestUtils.setupKoin(modules = listOf(RbacDomainInjection.get(), ActorDomainInjection.get(), EmployeeDomainInjection.get()))
     }
 
     @AfterTest

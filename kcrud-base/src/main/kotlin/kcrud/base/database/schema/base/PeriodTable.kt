@@ -13,23 +13,17 @@ import org.jetbrains.exposed.sql.kotlin.datetime.date
  */
 open class PeriodTable(name: String) : TimestampedTable(name = name) {
 
-    /**
-     * Whether the employment is active or not.
-     */
+    /** Whether the period record is active or not. */
     val isActive: Column<Boolean> = bool(
         name = "is_active"
     )
 
-    /**
-     * The date the employment started.
-     */
+    /** The date the period started. */
     val startDate: Column<KLocalDate> = date(
         name = "start_date"
     )
 
-    /**
-     * The date the employment ended.
-     */
+    /** The date the period ended. */
     val endDate: Column<KLocalDate?> = date(
         name = "end_date"
     ).nullable()

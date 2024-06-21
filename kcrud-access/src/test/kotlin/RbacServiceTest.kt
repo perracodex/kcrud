@@ -3,11 +3,11 @@
  */
 
 import io.ktor.test.dispatcher.*
-import kcrud.access.actor.di.ActorInjection
+import kcrud.access.actor.di.ActorDomainInjection
 import kcrud.access.actor.entity.ActorEntity
 import kcrud.access.actor.entity.ActorRequest
 import kcrud.access.actor.service.ActorService
-import kcrud.access.rbac.di.RbacInjection
+import kcrud.access.rbac.di.RbacDomainInjection
 import kcrud.access.rbac.entity.role.RbacRoleEntity
 import kcrud.access.rbac.entity.role.RbacRoleRequest
 import kcrud.access.rbac.entity.scope_rule.RbacScopeRuleRequest
@@ -32,7 +32,7 @@ class RbacServiceTest : KoinComponent {
     fun setUp() {
         TestUtils.loadSettings()
         TestUtils.setupDatabase()
-        TestUtils.setupKoin(modules = listOf(RbacInjection.get(), ActorInjection.get()))
+        TestUtils.setupKoin(modules = listOf(RbacDomainInjection.get(), ActorDomainInjection.get()))
     }
 
     @AfterTest

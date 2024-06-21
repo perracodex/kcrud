@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.domain.employment.routing.endpoints
+package kcrud.domain.employment.routing.endpoints.operate
 
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -23,7 +23,7 @@ import java.util.*
 @EmploymentRouteAPI
 internal fun Route.updateEmploymentById() {
     // Update an employment by ID.
-    put<EmploymentRequest> { employmentRequest ->
+    put<EmploymentRequest> { request ->
         val employeeId: UUID = call.parameters["employee_id"].toUUID()
         val employmentId: UUID = call.parameters["employment_id"].toUUID()
 
@@ -32,16 +32,14 @@ internal fun Route.updateEmploymentById() {
         val updatedEmployment: EmploymentEntity? = service.update(
             employeeId = employeeId,
             employmentId = employmentId,
-            employmentRequest = employmentRequest
+            employmentRequest = request
         )
 
-        if (updatedEmployment != null) {
+        updatedEmployment?.let {
             call.respond(status = HttpStatusCode.OK, message = updatedEmployment)
-        } else {
-            EmploymentError.EmploymentNotFound(
-                employeeId = employeeId,
-                employmentId = employmentId
-            ).raise()
-        }
+        } ?: EmploymentError.EmploymentNotFound(
+            employeeId = employeeId,
+            employmentId = employmentId
+        ).raise()
     }
 }

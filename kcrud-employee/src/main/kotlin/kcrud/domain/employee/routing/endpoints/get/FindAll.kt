@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.domain.employee.routing.endpoints
+package kcrud.domain.employee.routing.endpoints.get
 
 import io.ktor.http.*
 import io.ktor.server.application.*

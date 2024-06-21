@@ -9,7 +9,12 @@ import kcrud.access.rbac.plugin.withRbac
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kcrud.domain.employment.routing.annotation.EmploymentRouteAPI
-import kcrud.domain.employment.routing.endpoints.*
+import kcrud.domain.employment.routing.endpoints.delete.deleteEmploymentByEmployeeId
+import kcrud.domain.employment.routing.endpoints.delete.deleteEmploymentById
+import kcrud.domain.employment.routing.endpoints.get.findEmploymentByEmployeeId
+import kcrud.domain.employment.routing.endpoints.get.findEmploymentById
+import kcrud.domain.employment.routing.endpoints.operate.createEmployment
+import kcrud.domain.employment.routing.endpoints.operate.updateEmploymentById
 
 /**
  * Employment endpoints.

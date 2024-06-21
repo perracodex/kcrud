@@ -11,7 +11,7 @@ import kcrud.base.env.SessionContext
 import kcrud.base.utils.KLocalDate
 import kcrud.base.utils.KLocalDateTime
 import kcrud.base.utils.TestUtils
-import kcrud.domain.employee.di.EmployeeInjection
+import kcrud.domain.employee.di.EmployeeDomainInjection
 import kcrud.domain.employee.entity.EmployeeEntity
 import kcrud.domain.employee.entity.EmployeeRequest
 import kcrud.domain.employee.repository.IEmployeeRepository
@@ -28,7 +28,7 @@ class TimestampTest : KoinComponent {
     fun setUp() {
         TestUtils.loadSettings()
         TestUtils.setupDatabase()
-        TestUtils.setupKoin(modules = listOf(EmployeeInjection.get()))
+        TestUtils.setupKoin(modules = listOf(EmployeeDomainInjection.get()))
     }
 
     @AfterTest

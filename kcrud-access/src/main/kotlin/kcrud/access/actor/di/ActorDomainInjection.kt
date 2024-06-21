@@ -15,7 +15,7 @@ import org.koin.dsl.module
 /**
  * Actor dependency injection module.
  */
-object ActorInjection {
+object ActorDomainInjection {
 
     /**
      * Get the dependency injection module for the Actor domain.

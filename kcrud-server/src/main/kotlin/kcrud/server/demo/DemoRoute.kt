@@ -73,8 +73,8 @@ private fun Route.deleteDemoRecords() {
     delete {
         val sessionContext: SessionContext? = call.principal<SessionContext>()
         val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }
-        service.deleteAll()
-        call.respond(status = HttpStatusCode.OK, message = "All employees deleted.")
+        val count: Int = service.deleteAll()
+        call.respond(status = HttpStatusCode.OK, message = "All employees deleted. Total: $count.")
     }
 }
 

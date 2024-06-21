@@ -17,7 +17,7 @@ import org.koin.ktor.plugin.RequestScope
 /**
  * Employee domain dependency injection module.
  */
-object EmployeeInjection {
+object EmployeeDomainInjection {
 
     /**
      * Get the dependency injection module for the Employee domain.

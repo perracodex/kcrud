@@ -5,10 +5,10 @@
 package kcrud.server.plugins
 
 import io.ktor.server.application.*
-import kcrud.access.actor.di.ActorInjection
-import kcrud.access.rbac.di.RbacInjection
-import kcrud.domain.employee.di.EmployeeInjection
-import kcrud.domain.employment.di.EmploymentInjection
+import kcrud.access.actor.di.ActorDomainInjection
+import kcrud.access.rbac.di.RbacDomainInjection
+import kcrud.domain.employee.di.EmployeeDomainInjection
+import kcrud.domain.employment.di.EmploymentDomainInjection
 import org.koin.ktor.plugin.Koin
 
 /**
@@ -20,10 +20,10 @@ fun Application.configureKoin() {
 
     install(plugin = Koin) {
         modules(
-            RbacInjection.get(),
-            ActorInjection.get(),
-            EmployeeInjection.get(),
-            EmploymentInjection.get()
+            RbacDomainInjection.get(),
+            ActorDomainInjection.get(),
+            EmployeeDomainInjection.get(),
+            EmploymentDomainInjection.get()
         )
     }
 }

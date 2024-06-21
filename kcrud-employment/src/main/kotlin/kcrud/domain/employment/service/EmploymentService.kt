@@ -28,8 +28,7 @@ class EmploymentService(
     /**
      * Retrieves all employments.
      *
-     * @param pageable The pagination options to be applied.
-     *                 If not provided, a single page with the result will be returned.
+     * @param pageable The pagination options to be applied, or null for a single all-in-one page.
      * @return List of [EmploymentEntity] entities.
      */
     suspend fun findAll(pageable: Pageable? = null): Page<EmploymentEntity> = withContext(Dispatchers.IO) {

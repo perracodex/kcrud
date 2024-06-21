@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.domain.employment.routing.endpoints
+package kcrud.domain.employment.routing.endpoints.get
 
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -20,20 +20,6 @@ import org.koin.ktor.plugin.scope
 import java.util.*
 
 @EmploymentRouteAPI
-internal fun Route.findEmploymentByEmployeeId() {
-    // Find all employments for an employee ID.
-    get {
-        val employeeId: UUID = call.parameters["employee_id"].toUUID()
-
-        val sessionContext: SessionContext? = call.principal<SessionContext>()
-        val service: EmploymentService = call.scope.get<EmploymentService> { parametersOf(sessionContext) }
-        val employments: List<EmploymentEntity> = service.findByEmployeeId(employeeId = employeeId)
-
-        call.respond(status = HttpStatusCode.OK, message = employments)
-    }
-}
-
-@EmploymentRouteAPI
 internal fun Route.findEmploymentById() {
     // Find an employment by ID.
     get {
@@ -47,13 +33,11 @@ internal fun Route.findEmploymentById() {
             employmentId = employmentId
         )
 
-        if (employment != null) {
+        employment?.let {
             call.respond(status = HttpStatusCode.OK, message = employment)
-        } else {
-            EmploymentError.EmploymentNotFound(
-                employeeId = employeeId,
-                employmentId = employmentId
-            ).raise()
-        }
+        } ?: EmploymentError.EmploymentNotFound(
+            employeeId = employeeId,
+            employmentId = employmentId
+        ).raise()
     }
 }

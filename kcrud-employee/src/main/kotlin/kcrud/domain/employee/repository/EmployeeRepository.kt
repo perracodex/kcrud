@@ -68,9 +68,9 @@ internal class EmployeeRepository(
         }
     }
 
-    override fun filter(filterSet: EmployeeFilterSet): Page<EmployeeEntity> {
+    override fun search(filterSet: EmployeeFilterSet): Page<EmployeeEntity> {
         return transactionWithSchema(schema = sessionContext.schema) {
-            // Start with a base query selecting all from EmployeeTable.
+            // Start with a base query selecting all the records.
             val query: Query = EmployeeTable.selectAll()
 
             // Apply filters dynamically based on the presence of criteria in filterSet.

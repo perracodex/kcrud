@@ -20,22 +20,21 @@ import java.io.File
  *     post("some-endpoint") {
  *         val multipart: MultiPartData = call.receiveMultipart()
  *
- *         MultipartHandler<SomeRequest>().receive(
+ *         MultipartHandler <SomeRequest>().receive(
  *             multipart = multipart,
  *             serializer = SomeRequest.serializer()
  *         ).let { response ->
- *             if (response.request == null) {
- *                 call.respond(
- *                     status = HttpStatusCode.BadRequest,
- *                     message = "Invalid request."
- *                 )
- *             } else {
- *                 SomeService.doSomething(request = response)
+ *             response.request?.let { request ->
+ *                 SomeService.doSomething(request = request)
+ *
  *                 call.respond(
  *                     status = HttpStatusCode.OK,
  *                     message = "Some message."
  *                 )
- *             }
+ *             } ?: call.respond(
+ *                 status = HttpStatusCode.BadRequest,
+ *                 message = "Invalid request."
+ *             )
  *         }
  *     }
  * }

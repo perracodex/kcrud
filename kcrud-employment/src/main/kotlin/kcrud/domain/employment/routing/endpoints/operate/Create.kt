@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.domain.employment.routing.endpoints
+package kcrud.domain.employment.routing.endpoints.operate
 
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -22,14 +22,14 @@ import java.util.*
 @EmploymentRouteAPI
 internal fun Route.createEmployment() {
     // Create a new employment.
-    post<EmploymentRequest> { employmentRequest ->
+    post<EmploymentRequest> { request ->
         val employeeId: UUID = call.parameters["employee_id"].toUUID()
 
         val sessionContext: SessionContext? = call.principal<SessionContext>()
         val service: EmploymentService = call.scope.get<EmploymentService> { parametersOf(sessionContext) }
         val newEmployment: EmploymentEntity = service.create(
             employeeId = employeeId,
-            employmentRequest = employmentRequest
+            employmentRequest = request
         )
 
         call.respond(status = HttpStatusCode.Created, message = newEmployment)

@@ -43,8 +43,7 @@ class EmployeeService(
     /**
      * Retrieves all employee entities.
      *
-     * @param pageable The pagination options to be applied.
-     *                 If not provided, a single page with the result will be returned.
+     * @param pageable The pagination options to be applied, or null for a single all-in-one page.
      * @return List of [EmployeeEntity] entries.
      */
     suspend fun findAll(pageable: Pageable? = null): Page<EmployeeEntity> = withContext(Dispatchers.IO) {
@@ -57,8 +56,8 @@ class EmployeeService(
      * @param filterSet The [EmployeeFilterSet] to be applied.
      * @return List of [EmployeeEntity] entries.
      */
-    suspend fun filter(filterSet: EmployeeFilterSet): Page<EmployeeEntity> = withContext(Dispatchers.IO) {
-        employeeRepository.filter(filterSet = filterSet)
+    suspend fun search(filterSet: EmployeeFilterSet): Page<EmployeeEntity> = withContext(Dispatchers.IO) {
+        employeeRepository.search(filterSet = filterSet)
     }
 
     /**

@@ -9,7 +9,13 @@ import kcrud.access.rbac.plugin.withRbac
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kcrud.domain.employee.routing.annotation.EmployeeRouteAPI
-import kcrud.domain.employee.routing.endpoints.*
+import kcrud.domain.employee.routing.endpoints.delete.deleteAllEmployees
+import kcrud.domain.employee.routing.endpoints.delete.deleteEmployeeById
+import kcrud.domain.employee.routing.endpoints.get.findAllEmployees
+import kcrud.domain.employee.routing.endpoints.get.findEmployeeById
+import kcrud.domain.employee.routing.endpoints.get.searchEmployeeRoute
+import kcrud.domain.employee.routing.endpoints.operate.createEmployee
+import kcrud.domain.employee.routing.endpoints.operate.updateEmployeeById
 
 /**
  * Employee related endpoints.
@@ -29,7 +35,7 @@ fun Route.employeeRoute() {
 
         withRbac(scope = RbacScope.EMPLOYEE_RECORDS, accessLevel = RbacAccessLevel.VIEW) {
             findAllEmployees()
-            filterEmployees()
+            searchEmployeeRoute()
         }
 
         route("{employee_id}") {
