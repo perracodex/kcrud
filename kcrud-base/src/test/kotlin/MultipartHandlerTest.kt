@@ -21,6 +21,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
+import java.nio.ByteBuffer
 import kotlin.io.path.createTempDirectory
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -32,7 +33,7 @@ class MultipartHandlerTest {
     private data class TestRequest(val text: String, val userId: String)
 
     @Test
-    fun testMultipartHandler(): Unit = testApplication {
+    fun testJsonRequest(): Unit = testApplication {
         val tempUploadPath: File = createTempDirectory().toFile()
         val fileDescription1 = "Test file description 1"
         val fileDescription2 = "Test file description 2"
@@ -47,14 +48,14 @@ class MultipartHandlerTest {
                         val multipart: MultiPartData = call.receiveMultipart()
 
                         MultipartHandler<TestRequest>(uploadsPath = tempUploadPath.absolutePath).receive(
-                            multipart,
-                            TestRequest.serializer()
+                            multipart = multipart,
+                            serializer = TestRequest.serializer()
                         ).let { response ->
 
                             assertNotNull(actual = response)
                             assertNotNull(actual = response.request)
                             assertEquals(expected = request, actual = response.request)
-                            assertTrue(response.files.size >= 2)
+                            assertTrue(response.files.size == 2)
 
                             val fileDetails1: FileDetails? = response.files.find {
                                 it.description == fileDescription1 && it.file?.name == filename1
@@ -72,7 +73,7 @@ class MultipartHandlerTest {
                             assertNotNull(actual = fileDetails2.file)
                             assertEquals(expected = tempUploadPath.absolutePath, actual = fileDetails2.file?.parentFile?.absolutePath)
 
-                            call.respond(HttpStatusCode.OK, "Request processed.")
+                            call.respond(status = HttpStatusCode.OK, message = "Request processed.")
                         }
                     }
                 }
@@ -140,5 +141,183 @@ class MultipartHandlerTest {
         } finally {
             tempUploadPath.deleteRecursively()
         }
+    }
+
+    @Test
+    fun testKeysRequest(): Unit = testApplication {
+        val tempUploadPath: File = createTempDirectory().toFile()
+        val fileDescription = "Test file description"
+        val request = TestRequest(text = "Hello", userId = "U12345")
+        val filename = "testfile.txt"
+
+        try {
+            application {
+                routing {
+                    post("/test-endpoint") {
+                        val multipart: MultiPartData = call.receiveMultipart()
+
+                        MultipartHandler<TestRequest>(uploadsPath = tempUploadPath.absolutePath).receive(
+                            multipart = multipart,
+                            serializer = TestRequest.serializer()
+                        ).let { response ->
+
+                            assertNotNull(actual = response)
+                            assertNotNull(actual = response.request)
+                            assertEquals(expected = request, actual = response.request)
+                            assertTrue(response.files.size == 1)
+
+                            val fileDetails: FileDetails? = response.files.find {
+                                it.description == fileDescription && it.file?.name == filename
+                            }
+                            assertNotNull(actual = fileDetails)
+                            assertEquals(expected = fileDescription, fileDetails.description)
+                            assertNotNull(actual = fileDetails.file)
+                            assertEquals(expected = tempUploadPath.absolutePath, actual = fileDetails.file?.parentFile?.absolutePath)
+
+                            call.respond(status = HttpStatusCode.OK, message = "Request processed.")
+                        }
+                    }
+                }
+            }
+
+            val client: HttpClient = createClient {
+                this@testApplication.install(ContentNegotiation) {
+                    json()
+                }
+            }
+
+            val response: HttpResponse = client.submitFormWithBinaryData(
+                url = "/test-endpoint",
+                formData = formData {
+                    append(
+                        key = "text",
+                        value = request.text
+                    )
+                    append(
+                        key = "userId",
+                        value = request.userId
+                    )
+                    append(
+                        key = "file-description",
+                        value = fileDescription,
+                        headers = Headers.build {
+                            append(
+                                HttpHeaders.ContentDisposition,
+                                "form-data; name=\"file-description-1\""
+                            )
+                        }
+                    )
+                    append(
+                        key = "file",
+                        value = byteArrayOf(1, 2, 3),
+                        headers = Headers.build {
+                            append(
+                                HttpHeaders.ContentDisposition,
+                                "form-data; name=\"file-1\"; filename=\"$filename\""
+                            )
+                        }
+                    )
+                }
+            )
+
+            assertEquals(expected = HttpStatusCode.OK, actual = response.status)
+            assertEquals(expected = "Request processed.", actual = response.bodyAsText())
+
+        } finally {
+            tempUploadPath.deleteRecursively()
+        }
+    }
+
+    @Test
+    fun testFileBytes(): Unit = testApplication {
+        val tempUploadPath: File = createTempDirectory().toFile()
+        val fileDescription = "Test file description"
+        val filename = "testfile.txt"
+        val fileData: ByteArray = byteArrayOf(1, 2, 3)
+
+        try {
+            application {
+                routing {
+                    post("/test-endpoint") {
+                        val multipart: MultiPartData = call.receiveMultipart()
+
+                        MultipartHandler<Unit>(uploadsPath = tempUploadPath.absolutePath, persist = false).receive(
+                            multipart = multipart,
+                            serializer = null
+                        ).let { response ->
+
+                            assertNotNull(actual = response)
+                            assertTrue(response.files.size == 1)
+
+                            val fileDetails: FileDetails? = response.files.find {
+                                it.description == fileDescription && it.bytes != null
+                            }
+                            assertNotNull(actual = fileDetails)
+                            assertEquals(expected = fileDescription, fileDetails.description)
+                            assertNotNull(actual = fileDetails.bytes)
+                            assertTrue(compareByteBufferWithByteArray(byteBuffer = fileDetails.bytes!!, byteArray = fileData))
+
+                            val file: File = fileDetails.persistBytes(path = tempUploadPath.absolutePath)
+                            assertTrue(file.exists())
+                            assertTrue(file.readBytes().contentEquals(fileData))
+
+                            call.respond(status = HttpStatusCode.OK, message = "Request processed.")
+                        }
+                    }
+                }
+            }
+
+            val client: HttpClient = createClient {
+                this@testApplication.install(ContentNegotiation) {
+                    json()
+                }
+            }
+
+            val response: HttpResponse = client.submitFormWithBinaryData(
+                url = "/test-endpoint",
+                formData = formData {
+                    append(
+                        key = "file-description",
+                        value = fileDescription,
+                        headers = Headers.build {
+                            append(
+                                HttpHeaders.ContentDisposition,
+                                "form-data; name=\"file-description-1\""
+                            )
+                        }
+                    )
+                    append(
+                        key = "file",
+                        value = fileData,
+                        headers = Headers.build {
+                            append(
+                                HttpHeaders.ContentDisposition,
+                                "form-data; name=\"file-1\"; filename=\"$filename\""
+                            )
+                        }
+                    )
+                }
+            )
+
+            assertEquals(expected = HttpStatusCode.OK, actual = response.status)
+            assertEquals(expected = "Request processed.", actual = response.bodyAsText())
+
+        } finally {
+            tempUploadPath.deleteRecursively()
+        }
+    }
+
+    private fun compareByteBufferWithByteArray(byteBuffer: ByteBuffer, byteArray: ByteArray): Boolean {
+        if (byteBuffer.remaining() != byteArray.size) {
+            return false
+        }
+
+        for (index in byteArray.indices) {
+            if (byteBuffer.get(byteBuffer.position() + index) != byteArray[index]) {
+                return false
+            }
+        }
+
+        return true
     }
 }
