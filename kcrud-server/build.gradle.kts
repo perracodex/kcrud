@@ -33,6 +33,4 @@ dependencies {
     testImplementation(libs.test.kotlin.junit)
     testImplementation(libs.test.mockk)
     testImplementation(libs.test.mockito.kotlin)
-    testImplementation(libs.exposed.core)
-    testImplementation(libs.exposed.kotlin.datetime)
 }
