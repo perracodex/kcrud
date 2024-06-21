@@ -15,8 +15,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.testing.*
 import junit.framework.TestCase.assertTrue
-import kcrud.base.utils.FileDetails
-import kcrud.base.utils.MultipartHandler
+import kcrud.base.persistence.utils.FileDetails
+import kcrud.base.persistence.utils.MultipartHandler
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
