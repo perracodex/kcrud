@@ -65,7 +65,7 @@ class MultipartHandler<T : Any>(
      * @property request The parsed request object of type T.
      * @property files A list of [FileDetails] objects containing the file description and file.
      */
-    data class MultipartResponse<T>(
+    data class Response<T>(
         val request: T?,
         val files: List<FileDetails>
     )
@@ -75,9 +75,9 @@ class MultipartHandler<T : Any>(
      *
      * @param multipart The MultiPartData from a client's request.
      * @param serializer The serializer for the type T, used to parse the request object.
-     * @return A [MultipartResponse] object containing the parsed data.
+     * @return A [Response] object containing the parsed data.
      */
-    suspend fun receive(multipart: MultiPartData, serializer: KSerializer<T>?): MultipartResponse<T> {
+    suspend fun receive(multipart: MultiPartData, serializer: KSerializer<T>?): Response<T> {
         var requestObject: T? = null
         val requestData = mutableMapOf<String, String>()
         val fileDetailsList = mutableListOf<FileDetails>()
@@ -159,7 +159,7 @@ class MultipartHandler<T : Any>(
             }
         }
 
-        return MultipartResponse(
+        return Response(
             request = requestObject,
             files = fileDetailsList
         )
