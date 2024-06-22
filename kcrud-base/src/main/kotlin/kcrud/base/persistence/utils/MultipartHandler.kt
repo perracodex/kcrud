@@ -23,9 +23,9 @@ import java.nio.ByteBuffer
  *     post("some-endpoint") {
  *         val multipart: MultiPartData = call.receiveMultipart()
  *
- *         MultipartHandler <SomeRequest>().receive(
+ *         MultipartHandler <SomeEntity>().receive(
  *             multipart = multipart,
- *             serializer = SomeRequest.serializer()
+ *             serializer = SomeEntity.serializer()
  *         ).let { response ->
  *             response.request?.let { request ->
  *                 SomeService.doSomething(request = request)
