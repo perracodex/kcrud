@@ -24,8 +24,8 @@ import kcrud.base.settings.AppSettings
  */
 fun Application.configureSessions() {
 
-    val encryptionKey: ByteArray = AppSettings.security.encryption.key.to16ByteIV()
-    val signKey: ByteArray = AppSettings.security.encryption.sign.to16ByteIV()
+    val encryptionKey: ByteArray = AppSettings.security.encryption.atTransit.key.to16ByteIV()
+    val signKey: ByteArray = AppSettings.security.encryption.atTransit.sign.to16ByteIV()
 
     install(plugin = Sessions) {
         cookie<SessionContext>(name = SessionContext.SESSION_NAME) {

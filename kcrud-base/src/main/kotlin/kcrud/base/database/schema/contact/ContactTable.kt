@@ -33,7 +33,7 @@ import java.util.*
  * since the encrypted data will be larger than the original value.
  */
 object ContactTable : TimestampedTable(name = "contact") {
-    private val encryptor: Encryptor = EncryptionUtils.getEncryptor()
+    private val encryptor: Encryptor = EncryptionUtils.getEncryptor(type = EncryptionUtils.Type.AT_REST)
 
     /**
      * The unique id of the contact record.

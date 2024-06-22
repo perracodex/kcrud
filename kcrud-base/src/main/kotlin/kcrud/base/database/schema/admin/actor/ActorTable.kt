@@ -24,7 +24,7 @@ import java.util.*
  * some minimal validation constraints for all passwords.
  */
 object ActorTable : TimestampedTable(name = "actor") {
-    private val encryptor: Encryptor = EncryptionUtils.getEncryptor()
+    private val encryptor: Encryptor = EncryptionUtils.getEncryptor(type = EncryptionUtils.Type.AT_REST)
 
     /**
      * The unique id of the Actor record.

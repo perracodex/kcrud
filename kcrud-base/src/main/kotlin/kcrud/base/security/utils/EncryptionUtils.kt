@@ -20,15 +20,29 @@ object EncryptionUtils {
         TRIPLE_DES
     }
 
+    enum class Type {
+        /** Stable encryption for data at rest, such as encrypted database fields. */
+        AT_REST,
+
+        /** Transient encryption for data in transit, such as encrypted URLs. */
+        AT_TRANSIT
+    }
+
     /**
      * Get the [Encryptor] based on the encryption configuration settings.
      * Used for example to encrypt database fields.
+     *
+     * @param type The target [EncryptionUtils.Type] of encryption to use.
      */
-    fun getEncryptor(): Encryptor {
-        val encryption: EncryptionSettings = AppSettings.security.encryption
-        val algorithm: AlgorithmName = AlgorithmName.valueOf(encryption.algorithm)
-        val key: String = encryption.key
-        val salt: String = encryption.salt
+    fun getEncryptor(type: Type): Encryptor {
+        val encryptionSpec: EncryptionSettings.Spec = when (type) {
+            Type.AT_REST -> AppSettings.security.encryption.atRest
+            Type.AT_TRANSIT -> AppSettings.security.encryption.atTransit
+        }
+
+        val algorithm: AlgorithmName = AlgorithmName.valueOf(encryptionSpec.algorithm)
+        val key: String = encryptionSpec.key
+        val salt: String = encryptionSpec.salt
 
         return when (algorithm) {
             AlgorithmName.AES_256_PBE_CBC -> Algorithms.AES_256_PBE_CBC(password = key, salt = salt)
