@@ -5,6 +5,7 @@
 package kcrud.base.scheduler.service.task
 
 import kcrud.base.scheduler.annotation.SchedulerAPI
+import kotlinx.serialization.Serializable
 import org.quartz.JobKey
 
 /**
@@ -13,6 +14,7 @@ import org.quartz.JobKey
  * @property name The name of the task.
  * @property group The group to which the task belongs.
  */
+@Serializable
 data class TaskKey(
     val name: String,
     val group: String

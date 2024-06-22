@@ -1,0 +1,19 @@
+/*
+ * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
+ */
+
+.row-paused {
+    background-color: #4c4a3c;
+    border-radius: 8px;
+}
+
+.row-no-fire-time {
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    color: #808080;
+}
+
+.row-error {
+    background-color: #402825;
+    border-radius: 8px;
+}

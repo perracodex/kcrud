@@ -9,8 +9,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/templates/scheduler/styles/layout.css">
-    <link rel="stylesheet" href="/templates/scheduler/styles/buttons.css">
+    <link rel="stylesheet" href="/templates/scheduler/styles/buttons.css?v=1.2">
     <link rel="stylesheet" href="/templates/scheduler/styles/tables.css">
+    <link rel="stylesheet" href="/templates/scheduler/styles/rows.css">
     <link rel="stylesheet" href="/templates/scheduler/styles/select.css">
     <title>Task Scheduler</title>
 </head>
@@ -42,7 +43,10 @@
 </div>
 <div class="table-content">
     <div th:each="item : ${data}" class="table-container expandable" th:attr="data-id=${item.name}">
-        <div class="table-row">
+        <div class="table-row"
+             th:classappend="${item.state == 'PAUSED' ? 'row-paused' :
+                 (item.outcome == 'ERROR' ? 'row-error' :
+                 (!item.nextFireTime ? 'row-no-fire-time' : ''))}">
             <span class="expand-trigger">+</span>
             <span th:text="${item.name}" th:title="${item.snowflakeData}">Task Name</span>
             <span th:text="${item.group}">Task Group</span>
@@ -60,11 +64,11 @@
             <span th:text="${item.schedule}" th:title="${item.scheduleInfo}">>Schedule</span>
             <span th:text="${item.runs}">runs</span>
             <div>
-                <button class="icon-button delete-button"
+                <button class="icon-button"
                         th:attr="data-name=${item.name}, data-group=${item.group}"
                         onclick="deleteTask(this)"
                         title="Delete">
-                    <span>&#x1F5D9;</span>
+                    <span class="delete-icon">&#x1F5D9;</span>
                 </button>
                 <button class="icon-button"
                         th:attr="data-name=${item.name}, data-group=${item.group}"
@@ -77,10 +81,17 @@
                             th:attr="data-name=${item.name}, data-group=${item.group}, data-state=${item.state}"
                             onclick="toggleTaskPauseResume(this)"
                             th:title="${item.state} == 'PAUSED' ? 'Resume' : 'Pause'">
-                        <span th:if="${item.state} == 'PAUSED'">&#x23F5;</span>
-                        <span th:if="${item.state} != 'PAUSED'">&#x23F8;</span>
+                        <span style="font-size: 1.1em" th:if="${item.state} == 'PAUSED'">&#x23F5;</span>
+                        <span style="font-size: 0.55em" th:if="${item.state} != 'PAUSED'">&#9616;&nbsp;&#9612;</span>
                     </button>
                 </div>
+                <button class="icon-button resend-button"
+                        th:if="${!item.nextFireTime}"
+                        th:attr="data-name=${item.name}, data-group=${item.group}"
+                        onclick="resendTask(this)"
+                        title="Resend">
+                    <span>&#x21BA;</span>
+                </button>
             </div>
         </div>
         <div class="table-sub-row">
@@ -100,4 +111,3 @@
 <script src="/templates/scheduler/scripts/task-actions.js"></script>
 </body>
 </html>
-

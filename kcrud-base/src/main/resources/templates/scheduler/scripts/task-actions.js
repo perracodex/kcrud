@@ -85,3 +85,20 @@ function toggleTaskPauseResume(button) {
         })
         .catch(error => console.error('Error:', error));
 }
+
+function resendTask(button) {
+    const itemName = encodeURIComponent(button.getAttribute('data-name'));
+    const itemGroup = encodeURIComponent(button.getAttribute('data-group'));
+
+    fetch(`/scheduler/task/${itemName}/${itemGroup}/resend`, {method: 'POST'})
+        .then(response => {
+            if (response.ok) {
+                console.log('Task resent successfully');
+                window.location.reload();
+            } else {
+                console.error('Failed to resend task');
+                alert("Failed to pause/resume task.");
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
