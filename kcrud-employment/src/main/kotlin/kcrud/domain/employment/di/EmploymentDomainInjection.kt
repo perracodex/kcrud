@@ -22,8 +22,10 @@ object EmploymentDomainInjection {
      */
     fun get(): Module {
         return module {
-            // Definitions for scoped access within RequestScope.
-            // These are the definitions that are scoped to the lifecycle of a single request.
+            // Scoped definitions within RequestScope for single request lifecycle.
+            // Services receive the session context as a parameter. Repositories,
+            // which should only be accessed by services, do not receive it directly.
+
             scope<RequestScope> {
                 scoped<IEmploymentRepository> {
                     EmploymentRepository(sessionContext = get<SessionContext>())
@@ -38,6 +40,7 @@ object EmploymentDomainInjection {
             }
 
             // Definitions for non-scoped (global) access.
+
             single<IEmploymentRepository> {
                 EmploymentRepository(sessionContext = get<SessionContext>())
             }

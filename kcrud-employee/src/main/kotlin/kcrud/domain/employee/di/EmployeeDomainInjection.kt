@@ -24,8 +24,10 @@ object EmployeeDomainInjection {
      */
     fun get(): Module {
         return module {
-            // Definitions for scoped access within RequestScope.
-            // These are the definitions that are scoped to the lifecycle of a single request.
+            // Scoped definitions within RequestScope for single request lifecycle.
+            // Services receive the session context as a parameter. Repositories,
+            // which should only be accessed by services, do not receive it directly.
+
             scope<RequestScope> {
                 scoped<IContactRepository> {
                     ContactRepository(sessionContext = get<SessionContext>())
@@ -47,6 +49,7 @@ object EmployeeDomainInjection {
             }
 
             // Definitions for non-scoped (global) access.
+
             single<IContactRepository> {
                 ContactRepository(sessionContext = get<SessionContext>())
             }
