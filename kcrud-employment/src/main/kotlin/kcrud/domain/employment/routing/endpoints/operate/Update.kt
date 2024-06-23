@@ -6,7 +6,6 @@ package kcrud.domain.employment.routing.endpoints.operate
 
 import io.ktor.http.*
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.base.env.SessionContext
@@ -27,7 +26,7 @@ internal fun Route.updateEmploymentById() {
         val employeeId: UUID = call.parameters["employee_id"].toUUID()
         val employmentId: UUID = call.parameters["employment_id"].toUUID()
 
-        val sessionContext: SessionContext? = call.principal<SessionContext>()
+        val sessionContext: SessionContext? = SessionContext.from(call = call)
         val service: EmploymentService = call.scope.get<EmploymentService> { parametersOf(sessionContext) }
         val updatedEmployment: EmploymentEntity? = service.update(
             employeeId = employeeId,

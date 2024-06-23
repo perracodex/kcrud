@@ -5,7 +5,6 @@
 package kcrud.server.demo
 
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
 import kcrud.base.database.schema.employment.types.EmploymentStatus
@@ -40,7 +39,7 @@ object DemoUtils {
      * @param count The number of records to create.
      */
     suspend fun createDemoRecords(call: ApplicationCall, count: Int) {
-        val sessionContext: SessionContext? = call.principal<SessionContext>()
+        val sessionContext: SessionContext? = SessionContext.from(call = call)
         val employeeService: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }
         val employmentService: EmploymentService = call.scope.get<EmploymentService> { parametersOf(sessionContext) }
 

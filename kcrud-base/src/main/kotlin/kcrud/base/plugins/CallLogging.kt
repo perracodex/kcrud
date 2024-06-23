@@ -6,7 +6,6 @@ package kcrud.base.plugins
 
 import io.ktor.http.*
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
 import io.ktor.server.plugins.*
 import io.ktor.server.plugins.callid.*
 import io.ktor.server.plugins.callloging.*
@@ -44,7 +43,7 @@ fun Application.configureCallLogging() {
 
         // Format the log message to include the call ID, context details, and processing time.
         format { call ->
-            val sessionContext: SessionContext? = call.principal<SessionContext>()
+            val sessionContext: SessionContext? = SessionContext.from(call = call)
             val callDurationMs: Long = call.processingTimeMillis()
 
             "Call Metric: [${call.request.origin.remoteHost}] " +

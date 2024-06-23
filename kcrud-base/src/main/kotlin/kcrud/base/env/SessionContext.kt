@@ -4,9 +4,12 @@
 
 package kcrud.base.env
 
+import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import kcrud.base.persistence.serializers.SUUID
+import kcrud.base.settings.AppSettings
 import kotlinx.serialization.Serializable
+import java.util.*
 
 /**
  * Data class holding concrete session context information passed around in the application
@@ -37,5 +40,34 @@ data class SessionContext(
 
         /** The key used to store the session context in the payload claim. */
         const val CLAIM_KEY: String = "session_context"
+
+        /**
+         * The default empty session context instance. when security is disabled
+         * or the user is not authenticated.
+         */
+        private val defaultEmptyInstance = SessionContext(
+            actorId = UUID.fromString("00000000-0000-0000-0000-000000000000"),
+            username = "no-user",
+            roleId = UUID.fromString("00000000-0000-0000-0000-000000000000"),
+            schema = null
+        )
+
+        /**
+         * Retrieves an existing [SessionContext] from the current authentication principal
+         * or provides a default one based on security settings.
+         *
+         * First attempts to retrieve a [SessionContext] from the [ApplicationCall]'s principal.
+         * If [SessionContext] is not present:
+         *  - If security is disabled, it returns a default [SessionContext] with predefined 'empty' values.
+         *  - If security is enabled, it returns null, indicating an unauthorized request.
+         *
+         * @param call The [ApplicationCall] associated with the current request, containing potential authentication data.
+         * @return A [SessionContext] representing either the authenticated user
+         *         or a default context when unauthenticated and security is disabled.
+         */
+        fun from(call: ApplicationCall): SessionContext? {
+            return call.principal<SessionContext>()
+                ?: if (AppSettings.security.isEnabled) null else defaultEmptyInstance
+        }
     }
 }

@@ -6,7 +6,6 @@ package kcrud.domain.employee.routing.endpoints.get
 
 import io.ktor.http.*
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.base.env.SessionContext
@@ -23,7 +22,7 @@ import org.koin.ktor.plugin.scope
 internal fun Route.findAllEmployees() {
     // Find all employees.
     get {
-        val sessionContext: SessionContext? = call.principal<SessionContext>()
+        val sessionContext: SessionContext? = SessionContext.from(call = call)
         val pageable: Pageable? = call.getPageable()
         val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }
         val employees: Page<EmployeeEntity> = service.findAll(pageable = pageable)

@@ -62,7 +62,7 @@ fun Application.configureRoutes() {
 
         // Server root endpoint.
         get("/") {
-            val sessionContext: SessionContext? = call.principal<SessionContext>()
+            val sessionContext: SessionContext? = SessionContext.from(call = call)
             sessionContext?.let {
                 call.respondText(text = "Hello World. Welcome ${it.username}!")
             } ?: call.respondText(text = "Hello World.")

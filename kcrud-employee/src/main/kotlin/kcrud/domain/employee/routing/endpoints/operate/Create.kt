@@ -6,7 +6,6 @@ package kcrud.domain.employee.routing.endpoints.operate
 
 import io.ktor.http.*
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.base.env.SessionContext
@@ -21,7 +20,7 @@ import org.koin.ktor.plugin.scope
 internal fun Route.createEmployee() {
     // Create a new employee.
     post<EmployeeRequest> { request ->
-        val sessionContext: SessionContext? = call.principal<SessionContext>()
+        val sessionContext: SessionContext? = SessionContext.from(call = call)
         val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }
         val createdEmployee: EmployeeEntity = service.create(employeeRequest = request)
         call.respond(status = HttpStatusCode.Created, message = createdEmployee)
