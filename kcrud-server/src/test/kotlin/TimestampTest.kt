@@ -36,21 +36,6 @@ class TimestampTest : KoinComponent {
         TestUtils.tearDown()
     }
 
-    /**
-     * Test that data is not persisted when nested transactions are rolled back.
-     * This test is required as we use a custom transaction solution to
-     * support nested 'suspend' transactions.
-     *
-     * The test is done by creating an employee with a contact record.
-     * Creating a contact is done in a nested transaction within employee
-     * transaction as the parent.
-     * This implies that this unit test will work with 3 transactions:
-     * the outer one by the test, the middle one by the employee service,
-     * and the inner one by the contact repository.
-     *
-     * It is expected that when rolling back in the top transaction,
-     * no data is persisted in the database.
-     */
     @Test
     fun testTimestamp(): Unit = testSuspend {
         val sessionContext: SessionContext = mockk<SessionContext>()
