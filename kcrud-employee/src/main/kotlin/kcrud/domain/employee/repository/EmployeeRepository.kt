@@ -67,7 +67,7 @@ internal class EmployeeRepository(
         }
     }
 
-    override fun search(filterSet: EmployeeFilterSet): Page<EmployeeEntity> {
+    override fun search(filterSet: EmployeeFilterSet, pageable: Pageable?): Page<EmployeeEntity> {
         return transactionWithSchema(schema = sessionContext.schema) {
             // Start with a base query selecting all the records.
             val query: Query = EmployeeTable.selectAll()
@@ -104,7 +104,7 @@ internal class EmployeeRepository(
             val totalFilteredElements: Int = query.count().toInt()
 
             val content: List<EmployeeEntity> = query
-                .applyPagination(pageable = filterSet.pageable)
+                .applyPagination(pageable = pageable)
                 .map { resultRow ->
                     EmployeeEntity.from(row = resultRow)
                 }
@@ -112,7 +112,7 @@ internal class EmployeeRepository(
             Page.build(
                 content = content,
                 totalElements = totalFilteredElements,
-                pageable = filterSet.pageable
+                pageable = pageable
             )
         }
     }

@@ -11,6 +11,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.base.env.SessionContext
 import kcrud.base.persistence.pagination.Page
+import kcrud.base.persistence.pagination.Pageable
+import kcrud.base.persistence.pagination.getPageable
 import kcrud.domain.employee.entity.EmployeeEntity
 import kcrud.domain.employee.entity.EmployeeFilterSet
 import kcrud.domain.employee.routing.annotation.EmployeeRouteAPI
@@ -22,9 +24,10 @@ import org.koin.ktor.plugin.scope
 internal fun Route.searchEmployeeRoute() {
     // Search (Filter) employees.
     post<EmployeeFilterSet>("/search") { request ->
+        val pageable: Pageable? = call.getPageable()
         val sessionContext: SessionContext? = call.principal<SessionContext>()
         val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }
-        val employees: Page<EmployeeEntity> = service.search(filterSet = request)
+        val employees: Page<EmployeeEntity> = service.search(filterSet = request, pageable = pageable)
         call.respond(status = HttpStatusCode.OK, message = employees)
     }
 }

@@ -262,7 +262,7 @@
                       "raw": ""
                     },
                     "url": {
-                      "raw": "http://localhost:8080/v1/employees/1",
+                      "raw": "http://localhost:8080/v1/employees/39ccfa2f-a02d-45cf-bbcd-8bc84bbbb0ff",
                       "protocol": "http",
                       "host": [
                         "localhost"
@@ -271,7 +271,7 @@
                       "path": [
                         "v1",
                         "employees",
-                        "1"
+                        "39ccfa2f-a02d-45cf-bbcd-8bc84bbbb0ff"
                       ]
                     }
                   },
@@ -604,7 +604,8 @@
                           "});\r",
                           ""
                         ],
-                        "type": "text/javascript"
+                        "type": "text/javascript",
+                        "packages": {}
                       }
                     }
                   ],
@@ -623,7 +624,7 @@
                     ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\r\n    \"firstName\": \"AnyName\",\r\n    \"lastName\": \"AnySurname\",\r\n    \"honorific\": [\"MR\", \"MISS\"],\r\n    \"maritalStatus\": [\"SINGLE\", \"DIVORCED\"],\r\n    \"pageable\": {\r\n        \"page\": 0,\r\n        \"size\": 5\r\n    }\r\n}\r\n",
+                      "raw": "{\r\n    \"firstName\": \"AnyName\",\r\n    \"lastName\": \"AnySurname\",\r\n    \"honorific\": [\"MR\", \"MISS\"],\r\n    \"maritalStatus\": [\"SINGLE\", \"DIVORCED\"]\r\n}\r\n",
                       "options": {
                         "raw": {
                           "language": "json"
@@ -631,7 +632,7 @@
                       }
                     },
                     "url": {
-                      "raw": "http://localhost:8080/v1/employees/search",
+                      "raw": "http://localhost:8080/v1/employees/search?page=0&size=24",
                       "protocol": "http",
                       "host": [
                         "localhost"
@@ -641,6 +642,16 @@
                         "v1",
                         "employees",
                         "search"
+                      ],
+                      "query": [
+                        {
+                          "key": "page",
+                          "value": "0"
+                        },
+                        {
+                          "key": "size",
+                          "value": "24"
+                        }
                       ]
                     }
                   },
@@ -670,7 +681,8 @@
                           "});\r",
                           ""
                         ],
-                        "type": "text/javascript"
+                        "type": "text/javascript",
+                        "packages": {}
                       }
                     }
                   ],
@@ -689,7 +701,7 @@
                     ],
                     "body": {
                       "mode": "raw",
-                      "raw": "{\r\n    \"firstName\": \"AnyName\",\r\n    \"lastName\": \"AnySurname\",\r\n    \"honorific\": [\"MR\", \"MISS\"],\r\n    \"maritalStatus\": [\"SINGLE\", \"DIVORCED\"],\r\n    \"pageable\": {\r\n        \"page\": 0,\r\n        \"size\": 0,\r\n        \"sort\": [ \r\n            { \"field\": \"firstName\", \"direction\": \"ASC\" },\r\n            { \"field\": \"lastName\", \"direction\": \"DESC\" }\r\n        ]\r\n    }\r\n}\r\n",
+                      "raw": "{\r\n    \"firstName\": \"AnyName\",\r\n    \"lastName\": \"AnySurname\",\r\n    \"honorific\": [\"MR\", \"MISS\"],\r\n    \"maritalStatus\": [\"SINGLE\", \"DIVORCED\"]\r\n}\r\n",
                       "options": {
                         "raw": {
                           "language": "json"
@@ -697,7 +709,7 @@
                       }
                     },
                     "url": {
-                      "raw": "http://localhost:8080/v1/employees/search",
+                      "raw": "http://localhost:8080/v1/employees/search?page=0&size=10&sort=lastName,asc&&sort=maritalStatus,asc",
                       "protocol": "http",
                       "host": [
                         "localhost"
@@ -707,6 +719,28 @@
                         "v1",
                         "employees",
                         "search"
+                      ],
+                      "query": [
+                        {
+                          "key": "page",
+                          "value": "0"
+                        },
+                        {
+                          "key": "size",
+                          "value": "10"
+                        },
+                        {
+                          "key": "sort",
+                          "value": "lastName,asc"
+                        },
+                        {
+                          "key": null,
+                          "value": null
+                        },
+                        {
+                          "key": "sort",
+                          "value": "maritalStatus,asc"
+                        }
                       ]
                     }
                   },

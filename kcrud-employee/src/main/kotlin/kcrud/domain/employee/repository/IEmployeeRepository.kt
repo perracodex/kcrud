@@ -36,9 +36,10 @@ interface IEmployeeRepository {
      * Retrieves all employee entities matching the provided [filterSet].
      *
      * @param filterSet The [EmployeeFilterSet] to be applied.
+     * @param pageable The pagination options to be applied, or null for a single all-in-one page.
      * @return List of [EmployeeEntity] entries.
      */
-    fun search(filterSet: EmployeeFilterSet): Page<EmployeeEntity>
+    fun search(filterSet: EmployeeFilterSet, pageable: Pageable? = null): Page<EmployeeEntity>
 
     /**
      * Creates a new employee.
