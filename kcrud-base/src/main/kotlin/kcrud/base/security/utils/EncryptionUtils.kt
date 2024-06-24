@@ -51,4 +51,19 @@ object EncryptionUtils {
             AlgorithmName.TRIPLE_DES -> Algorithms.TRIPLE_DES(secretKey = key)
         }
     }
+
+    /**
+     * Converts a hexadecimal string to a ByteArray of a specified length.
+     * Pads with zeros or truncates as necessary, suitable for key generation in encryption.
+     *
+     * @param length The desired length of the key in bytes.
+     * @return A ByteArray of the specified length.
+     */
+    fun String.toByteKey(length: Int): ByteArray {
+        val requiredHexLength: Int = length * 2 // Each byte is represented by two hex characters.
+        return (if (this.length < requiredHexLength) padEnd(requiredHexLength, padChar = '0') else take(requiredHexLength))
+            .chunked(size = 2)
+            .map { it.toInt(radix = 16).toByte() }
+            .toByteArray()
+    }
 }
