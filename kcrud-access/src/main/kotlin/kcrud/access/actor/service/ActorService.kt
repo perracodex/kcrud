@@ -35,7 +35,7 @@ class ActorService(
      * @return The [ActorEntity] for the given username, or null if it doesn't exist.
      */
     suspend fun findByUsername(username: String): ActorEntity? = withContext(Dispatchers.IO) {
-        actorRepository.findByUsername(username = username)
+        return@withContext actorRepository.findByUsername(username = username)
     }
 
     /**
@@ -45,7 +45,7 @@ class ActorService(
      * @return The [ActorEntity] for the given id, or null if it doesn't exist.
      */
     suspend fun findById(actorId: UUID): ActorEntity? = withContext(Dispatchers.IO) {
-        actorRepository.findById(actorId = actorId)
+        return@withContext actorRepository.findById(actorId = actorId)
     }
 
     /**
@@ -53,7 +53,7 @@ class ActorService(
      * @return A list with all existing [ActorEntity] entries.
      */
     suspend fun findAll(): List<ActorEntity> = withContext(Dispatchers.IO) {
-        actorRepository.findAll()
+        return@withContext actorRepository.findAll()
     }
 
     /**
@@ -65,7 +65,7 @@ class ActorService(
         tracer.debug("Creating actor with username: ${actorRequest.username}")
         val actorId: UUID = actorRepository.create(actorRequest = actorRequest)
         refresh(actorId = actorId)
-        actorId
+        return@withContext actorId
     }
 
     /**
@@ -79,7 +79,7 @@ class ActorService(
         tracer.debug("Updating actor with ID: $actorId")
         val count: Int = actorRepository.update(actorId = actorId, actorRequest = actorRequest)
         refresh(actorId = actorId)
-        count
+        return@withContext count
     }
 
     /**
@@ -102,7 +102,7 @@ class ActorService(
      * @return True if there are actors for the given usernames in the database, false otherwise.
      */
     suspend fun actorsExist(usernames: List<String>? = null): Boolean = withContext(Dispatchers.IO) {
-        actorRepository.actorsExist(usernames = usernames)
+        return@withContext actorRepository.actorsExist(usernames = usernames)
     }
 
     /**

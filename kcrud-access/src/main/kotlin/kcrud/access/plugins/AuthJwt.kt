@@ -57,7 +57,7 @@ fun Application.configureJwtAuthentication() {
                 }
 
                 this.sessions.clear(name = SessionContext.SESSION_NAME)
-                null
+                return@validate null
             }
 
             challenge { _, _ ->

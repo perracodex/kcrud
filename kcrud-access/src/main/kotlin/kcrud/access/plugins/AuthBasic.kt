@@ -32,7 +32,7 @@ fun Application.configureBasicAuthentication() {
                 }
 
                 this.sessions.clear(name = SessionContext.SESSION_NAME)
-                null
+                return@validate null
             }
         }
     }

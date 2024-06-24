@@ -93,7 +93,7 @@ abstract class BaseRbacEntity {
             if (property != null) {
                 if (property.name in topLevelFields) {
                     // Anonymize top-level fields directly.
-                    RbacFieldAnonymization.anonymize(value = property.get(this as T))
+                    return@associateWith RbacFieldAnonymization.anonymize(value = property.get(this as T))
                 } else {
                     // Handle nested fields: find the nested entity and recursively anonymize it.
                     val nestedPropertyName = property.name
@@ -101,15 +101,15 @@ abstract class BaseRbacEntity {
                     if (nestedPropertyName in nestedFields.keys) {
                         val nestedEntity: BaseRbacEntity? = property.get(this as T) as? BaseRbacEntity
                         val newFields: List<String>? = nestedFields[nestedPropertyName]?.map { it.substringAfter(delimiter = '.') }
-                        nestedEntity?.internalAnonymize(newFields, nestedEntity::class) ?: property.get(this)
+                        return@associateWith nestedEntity?.internalAnonymize(newFields, nestedEntity::class) ?: property.get(this)
                     } else {
                         // If not a nested field or no anonymization needed, keep the original value.
-                        property.get(this as T)
+                        return@associateWith property.get(this as T)
                     }
                 }
             } else {
                 // If the property does not exist, return null (should not happen with well-formed data).
-                null
+                return@associateWith null
             }
         }
 

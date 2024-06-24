@@ -171,7 +171,7 @@ class RbacService(
      * @return List with all the existing [RbacRoleEntity] entries.
      */
     suspend fun findAllRoles(): List<RbacRoleEntity> = withContext(Dispatchers.IO) {
-        roleRepository.findAll()
+        return@withContext roleRepository.findAll()
     }
 
     /**
@@ -181,7 +181,7 @@ class RbacService(
      * @return The [RbacRoleEntity] for the given [roleId], or null if it doesn't exist.
      */
     suspend fun findRoleById(roleId: UUID): RbacRoleEntity? = withContext(Dispatchers.IO) {
-        roleRepository.findById(roleId = roleId)
+        return@withContext roleRepository.findById(roleId = roleId)
     }
 
     /**
@@ -191,7 +191,7 @@ class RbacService(
      * @return The [RbacRoleEntity] for the given [actorId], or null if it doesn't exist.
      */
     suspend fun findRoleByActorId(actorId: UUID): RbacRoleEntity? = withContext(Dispatchers.IO) {
-        roleRepository.findByActorId(actorId = actorId)
+        return@withContext roleRepository.findByActorId(actorId = actorId)
     }
 
     /**
@@ -209,7 +209,7 @@ class RbacService(
 
         refresh()
 
-        roleRepository.findById(roleId = roleId)!!
+        return@withContext roleRepository.findById(roleId = roleId)!!
     }
 
     /**
@@ -233,7 +233,7 @@ class RbacService(
 
         refresh()
 
-        if (updateCount > 0) {
+        return@withContext if (updateCount > 0) {
             roleRepository.findById(roleId = roleId)
         } else {
             null
@@ -262,6 +262,6 @@ class RbacService(
 
         refresh()
 
-        updateCount
+        return@withContext updateCount
     }
 }

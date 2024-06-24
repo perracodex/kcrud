@@ -32,7 +32,7 @@ class EmploymentService(
      * @return List of [EmploymentEntity] entities.
      */
     suspend fun findAll(pageable: Pageable? = null): Page<EmploymentEntity> = withContext(Dispatchers.IO) {
-        employmentRepository.findAll(pageable = pageable)
+        return@withContext employmentRepository.findAll(pageable = pageable)
     }
 
     /**
@@ -43,7 +43,7 @@ class EmploymentService(
      * @return The resolved [EmploymentEntity] if found, null otherwise.
      */
     suspend fun findById(employeeId: UUID, employmentId: UUID): EmploymentEntity? = withContext(Dispatchers.IO) {
-        employmentRepository.findById(employeeId = employeeId, employmentId = employmentId)
+        return@withContext employmentRepository.findById(employeeId = employeeId, employmentId = employmentId)
     }
 
     /**
@@ -53,7 +53,7 @@ class EmploymentService(
      * @return List of [EmploymentEntity] entities.
      */
     suspend fun findByEmployeeId(employeeId: UUID): List<EmploymentEntity> = withContext(Dispatchers.IO) {
-        employmentRepository.findByEmployeeId(employeeId = employeeId)
+        return@withContext employmentRepository.findByEmployeeId(employeeId = employeeId)
     }
 
     /**
@@ -81,7 +81,7 @@ class EmploymentService(
             employmentRequest = employmentRequest
         )
 
-        findById(employeeId = employeeId, employmentId = employmentId)!!
+        return@withContext findById(employeeId = employeeId, employmentId = employmentId)!!
     }
 
     /**
@@ -112,7 +112,7 @@ class EmploymentService(
             employmentRequest = employmentRequest
         )
 
-        if (updateCount > 0) {
+        return@withContext if (updateCount > 0) {
             findById(employeeId = employeeId, employmentId = employmentId)
         } else {
             null
@@ -127,7 +127,7 @@ class EmploymentService(
      */
     suspend fun delete(employmentId: UUID): Int = withContext(Dispatchers.IO) {
         tracer.debug("Deleting employment with ID: $employmentId")
-        employmentRepository.delete(employmentId = employmentId)
+        return@withContext employmentRepository.delete(employmentId = employmentId)
     }
 
     /**
@@ -138,7 +138,7 @@ class EmploymentService(
      */
     suspend fun deleteAll(employeeId: UUID): Int = withContext(Dispatchers.IO) {
         tracer.debug("Deleting all employments for employee with ID: $employeeId")
-        employmentRepository.deleteAll(employeeId = employeeId)
+        return@withContext employmentRepository.deleteAll(employeeId = employeeId)
     }
 
     private fun verify(employeeId: UUID, employmentId: UUID?, employmentRequest: EmploymentRequest, reason: String) {

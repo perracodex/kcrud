@@ -26,7 +26,7 @@ internal object AuditService {
      */
     suspend fun create(request: AuditRequest): UUID = withContext(Dispatchers.IO) {
         tracer.debug("Creating a new audit entry for task '${request.taskName}' in group '${request.taskGroup}'.")
-        AuditRepository.create(request = request)
+        return@withContext AuditRepository.create(request = request)
     }
 
     /**
@@ -36,7 +36,7 @@ internal object AuditService {
      */
     suspend fun findAll(): List<AuditEntity> = withContext(Dispatchers.IO) {
         tracer.debug("Finding all audit entries.")
-        AuditRepository.findAll()
+        return@withContext AuditRepository.findAll()
     }
 
     /**
@@ -48,7 +48,7 @@ internal object AuditService {
      */
     suspend fun find(taskName: String, taskGroup: String): List<AuditEntity> = withContext(Dispatchers.IO) {
         tracer.debug("Finding all audit entries for task '$taskName' in group '$taskGroup'.")
-        AuditRepository.find(taskName = taskName, taskGroup = taskGroup)
+        return@withContext AuditRepository.find(taskName = taskName, taskGroup = taskGroup)
     }
 
     /**
@@ -60,7 +60,7 @@ internal object AuditService {
      */
     suspend fun mostRecent(taskName: String, taskGroup: String): AuditEntity? = withContext(Dispatchers.IO) {
         tracer.debug("Finding the most recent audit entry for task '$taskName' in group '$taskGroup'.")
-        AuditRepository.mostRecent(taskName = taskName, taskGroup = taskGroup)
+        return@withContext AuditRepository.mostRecent(taskName = taskName, taskGroup = taskGroup)
     }
 
     /**
@@ -72,6 +72,6 @@ internal object AuditService {
      */
     suspend fun count(taskName: String, taskGroup: String): Int = withContext(Dispatchers.IO) {
         tracer.debug("Counting the total audit entries for task '$taskName' in group '$taskGroup'.")
-        AuditRepository.count(taskName = taskName, taskGroup = taskGroup)
+        return@withContext AuditRepository.count(taskName = taskName, taskGroup = taskGroup)
     }
 }

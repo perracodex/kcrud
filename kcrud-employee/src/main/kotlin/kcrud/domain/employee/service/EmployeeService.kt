@@ -37,7 +37,7 @@ class EmployeeService(
      * @return The resolved [EmployeeEntity] if found, null otherwise.
      */
     suspend fun findById(employeeId: UUID): EmployeeEntity? = withContext(Dispatchers.IO) {
-        employeeRepository.findById(employeeId = employeeId)
+        return@withContext employeeRepository.findById(employeeId = employeeId)
     }
 
     /**
@@ -47,7 +47,7 @@ class EmployeeService(
      * @return List of [EmployeeEntity] entries.
      */
     suspend fun findAll(pageable: Pageable? = null): Page<EmployeeEntity> = withContext(Dispatchers.IO) {
-        employeeRepository.findAll(pageable = pageable)
+        return@withContext employeeRepository.findAll(pageable = pageable)
     }
 
     /**
@@ -58,7 +58,7 @@ class EmployeeService(
      * @return List of [EmployeeEntity] entries.
      */
     suspend fun search(filterSet: EmployeeFilterSet, pageable: Pageable? = null): Page<EmployeeEntity> = withContext(Dispatchers.IO) {
-        employeeRepository.search(filterSet = filterSet, pageable = pageable)
+        return@withContext employeeRepository.search(filterSet = filterSet, pageable = pageable)
     }
 
     /**
@@ -71,7 +71,7 @@ class EmployeeService(
         tracer.debug("Creating a new employee.")
         verifyIntegrity(employeeId = null, employeeRequest = employeeRequest, reason = "Create Employee.")
         val employeeId: UUID = employeeRepository.create(employeeRequest = employeeRequest)
-        findById(employeeId = employeeId)!!
+        return@withContext findById(employeeId = employeeId)!!
     }
 
     /**
@@ -88,7 +88,7 @@ class EmployeeService(
         tracer.debug("Updating employee with ID: $employeeId.")
         verifyIntegrity(employeeId = employeeId, employeeRequest = employeeRequest, reason = "Update Employee.")
         val updatedCount: Int = employeeRepository.update(employeeId = employeeId, employeeRequest = employeeRequest)
-        if (updatedCount > 0) findById(employeeId = employeeId) else null
+        return@withContext if (updatedCount > 0) findById(employeeId = employeeId) else null
     }
 
     /**
@@ -99,7 +99,7 @@ class EmployeeService(
      */
     suspend fun delete(employeeId: UUID): Int = withContext(Dispatchers.IO) {
         tracer.debug("Deleting employee with ID: $employeeId.")
-        employeeRepository.delete(employeeId = employeeId)
+        return@withContext employeeRepository.delete(employeeId = employeeId)
     }
 
     /**
@@ -109,7 +109,7 @@ class EmployeeService(
      */
     suspend fun deleteAll(): Int = withContext(Dispatchers.IO) {
         tracer.debug("Deleting all employees.")
-        employeeRepository.deleteAll()
+        return@withContext employeeRepository.deleteAll()
     }
 
     /**
@@ -118,7 +118,7 @@ class EmployeeService(
      * @return The total count of existing records.
      */
     suspend fun count(): Int = withContext(Dispatchers.IO) {
-        employeeRepository.count()
+        return@withContext employeeRepository.count()
     }
 
     /**
