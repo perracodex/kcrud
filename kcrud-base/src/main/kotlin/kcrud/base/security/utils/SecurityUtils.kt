@@ -10,19 +10,18 @@ package kcrud.base.security.utils
 object SecurityUtils {
 
     /**
-     * Extension string function converting to a 16-byte initialization vector (IV) for AES encryption.
+     * Converts a hexadecimal string to a ByteArray of a specified length.
+     * Pads with zeros or truncates as necessary, suitable for key generation in encryption.
      *
-     * If the input string is shorter than 16 characters, it is padded with '0' to reach 16 characters.
-     * If it is longer than 16 characters, it is truncated to the first 16 characters.
-     * The resulting string is then converted to a ByteArray using UTF-8 encoding.
-     *
-     * Note: For security purposes, an IV should ideally be random and not reused with the same key.
-     * Using a fixed or predictable IV can weaken the security of the encryption.
-     *
-     * @return The 16-byte initialization vector (IV) for AES encryption.
+     * @param length The desired length of the key in bytes.
+     * @return A ByteArray of the specified length.
      */
-    fun String.to16ByteIV(): ByteArray {
-        return (if (length < 16) padEnd(length = 16, padChar = '0') else take(n = 16)).encodeToByteArray()
+    fun String.toByteKey(length: Int): ByteArray {
+        val requiredHexLength: Int = length * 2 // Each byte is represented by two hex characters.
+        return (if (this.length < requiredHexLength) padEnd(requiredHexLength, padChar = '0') else take(requiredHexLength))
+            .chunked(size = 2)
+            .map { it.toInt(radix = 16).toByte() }
+            .toByteArray()
     }
 
     /**

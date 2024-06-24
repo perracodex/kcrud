@@ -7,8 +7,9 @@ package kcrud.access.plugins
 import io.ktor.server.application.*
 import io.ktor.server.sessions.*
 import kcrud.base.env.SessionContext
-import kcrud.base.security.utils.SecurityUtils.to16ByteIV
+import kcrud.base.security.utils.SecurityUtils.toByteKey
 import kcrud.base.settings.AppSettings
+import kcrud.base.settings.config.sections.security.sections.EncryptionSettings
 
 /**
  * Configure the [Sessions] plugin.
@@ -24,12 +25,16 @@ import kcrud.base.settings.AppSettings
  */
 fun Application.configureSessions() {
 
-    val encryptionKey: ByteArray = AppSettings.security.encryption.atTransit.key.to16ByteIV()
-    val signKey: ByteArray = AppSettings.security.encryption.atTransit.sign.to16ByteIV()
+    val spec: EncryptionSettings.Spec = AppSettings.security.encryption.atTransit
+    val encryptionKey: ByteArray = spec.key.toByteKey(length = 16)
+    val signKey: ByteArray = spec.sign.toByteKey(length = 32)
 
     install(plugin = Sessions) {
         cookie<SessionContext>(name = SessionContext.SESSION_NAME) {
-            val session = SessionTransportTransformerEncrypt(encryptionKey = encryptionKey, signKey = signKey)
+            val session = SessionTransportTransformerEncrypt(
+                encryptionKey = encryptionKey,
+                signKey = signKey
+            )
             transform(transformer = session)
         }
     }
