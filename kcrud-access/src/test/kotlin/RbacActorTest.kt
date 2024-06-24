@@ -26,7 +26,7 @@ import kotlin.test.*
  * Not for RBAC permission checks, but instead for the service interface.
  * For an example of RBAC permission checks, see the RBAC tests in the application service.
  */
-class RbacServiceTest : KoinComponent {
+class RbacActorTest : KoinComponent {
 
     @BeforeTest
     fun setUp() {
@@ -38,52 +38,6 @@ class RbacServiceTest : KoinComponent {
     @AfterTest
     fun tearDown() {
         TestUtils.tearDown()
-    }
-
-    @Test
-    fun testRoleCreation(): Unit = testSuspend {
-        val roleName = "any_role_name"
-        val description = "Any role description"
-
-        val roleRequest = RbacRoleRequest(
-            roleName = roleName,
-            description = description,
-            isSuper = false,
-            scopeRules = listOf(
-                RbacScopeRuleRequest(
-                    scope = RbacScope.SYSTEM,
-                    accessLevel = RbacAccessLevel.FULL
-                )
-            )
-        )
-
-        val rbacService: RbacService by inject()
-
-        // Create the role.
-        val roleEntity: RbacRoleEntity = rbacService.createRole(roleRequest = roleRequest)
-        val existingRoleEntity: RbacRoleEntity? = rbacService.findRoleById(roleId = roleEntity.id)
-        assertNotNull(actual = existingRoleEntity, message = "The role was not found in the database after it was created.")
-        assertEquals(expected = roleName, actual = existingRoleEntity.roleName)
-        assertEquals(expected = description, actual = existingRoleEntity.description)
-
-        // Try to create the same role again.
-        assertFailsWith<ExposedSQLException> {
-            rbacService.createRole(roleRequest = roleRequest)
-        }
-
-        // Update the role.
-        val newRoleName = "new_role_name"
-        val newDescription = "New role description"
-        val updatedRoleEntity: RbacRoleEntity? = rbacService.updateRole(
-            roleId = roleEntity.id,
-            roleRequest = roleRequest.copy(
-                roleName = newRoleName,
-                description = newDescription
-            )
-        )
-        assertNotNull(actual = updatedRoleEntity, message = "The role was not updated.")
-        assertEquals(expected = newRoleName, actual = updatedRoleEntity.roleName)
-        assertEquals(expected = newDescription, actual = updatedRoleEntity.description)
     }
 
     @Test
