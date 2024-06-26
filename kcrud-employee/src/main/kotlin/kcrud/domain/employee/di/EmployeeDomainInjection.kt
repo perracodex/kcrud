@@ -50,20 +50,20 @@ object EmployeeDomainInjection {
 
             // Definitions for non-scoped (global) access.
 
-            single<IContactRepository> {
+            factory<IContactRepository> {
                 ContactRepository(sessionContext = get<SessionContext>())
             }
 
-            single<IEmployeeRepository> {
+            factory<IEmployeeRepository> {
                 EmployeeRepository(
                     sessionContext = get<SessionContext>(),
                     contactRepository = get<IContactRepository>()
                 )
             }
 
-            single<EmployeeService> {
+            factory<EmployeeService> { parameters ->
                 EmployeeService(
-                    sessionContext = get<SessionContext>(),
+                    sessionContext = parameters.get<SessionContext>(),
                     employeeRepository = get<IEmployeeRepository>()
                 )
             }

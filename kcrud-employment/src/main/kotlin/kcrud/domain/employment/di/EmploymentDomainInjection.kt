@@ -41,13 +41,13 @@ object EmploymentDomainInjection {
 
             // Definitions for non-scoped (global) access.
 
-            single<IEmploymentRepository> {
+            factory<IEmploymentRepository> {
                 EmploymentRepository(sessionContext = get<SessionContext>())
             }
 
-            single<EmploymentService> {
+            factory<EmploymentService> { parameters ->
                 EmploymentService(
-                    sessionContext = get<SessionContext>(),
+                    sessionContext = parameters.get<SessionContext>(),
                     employmentRepository = get<IEmploymentRepository>()
                 )
             }
