@@ -158,7 +158,7 @@ class EmploymentService(
         // Verify that the employment probation end date is valid.
         employmentRequest.probationEndDate?.let { probationEndDate ->
             if (probationEndDate < employmentRequest.period.startDate) {
-                EmploymentError.InvalidProbationEndDate(
+                throw EmploymentError.InvalidProbationEndDate(
                     employeeId = employeeId,
                     employmentId = employmentId,
                     startDate = employmentRequest.period.startDate,
