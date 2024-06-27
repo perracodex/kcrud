@@ -30,6 +30,6 @@ internal fun Route.findEmployeeById() {
 
         employee?.let {
             call.respond(status = HttpStatusCode.OK, message = employee)
-        } ?: EmployeeError.EmployeeNotFound(employeeId = employeeId).raise()
+        } ?: throw EmployeeError.EmployeeNotFound(employeeId = employeeId)
     }
 }

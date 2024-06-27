@@ -145,12 +145,13 @@ class EmploymentService(
         // Verify that the employment period dates are valid.
         employmentRequest.period.endDate?.let { endDate ->
             if (endDate < employmentRequest.period.startDate) {
-                EmploymentError.PeriodDatesMismatch(
+                throw EmploymentError.PeriodDatesMismatch(
                     employeeId = employeeId,
                     employmentId = employmentId,
                     startDate = employmentRequest.period.startDate,
-                    endDate = endDate
-                ).raise(reason = reason)
+                    endDate = endDate,
+                    reason = reason
+                )
             }
         }
 
@@ -161,8 +162,9 @@ class EmploymentService(
                     employeeId = employeeId,
                     employmentId = employmentId,
                     startDate = employmentRequest.period.startDate,
-                    probationEndDate = probationEndDate
-                ).raise(reason = reason)
+                    probationEndDate = probationEndDate,
+                    reason = reason
+                )
             }
         }
     }

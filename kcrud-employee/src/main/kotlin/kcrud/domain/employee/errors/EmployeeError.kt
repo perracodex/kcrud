@@ -5,7 +5,7 @@
 package kcrud.domain.employee.errors
 
 import io.ktor.http.*
-import kcrud.base.errors.BaseError
+import kcrud.base.errors.AppException
 import kcrud.base.errors.ErrorCodeRegistry
 import java.util.*
 
@@ -15,22 +15,32 @@ import java.util.*
  * @property status The [HttpStatusCode] associated with this error.
  * @property code A unique code identifying the type of error.
  * @property description A human-readable description of the error.
+ * @property reason An optional human-readable reason for the exception, providing more context.
+ * @property cause The underlying cause of the exception, if any.
  */
 sealed class EmployeeError(
     status: HttpStatusCode,
     code: String,
-    description: String
-) : BaseError(status = status, code = code, description = description) {
+    description: String,
+    reason: String? = null,
+    cause: Throwable? = null
+) : AppException(status = status, code = code, description = description, reason = reason, cause = cause) {
 
     /**
      * Error for when an employee is not found.
      *
      * @property employeeId The employee id that was not found.
      */
-    data class EmployeeNotFound(val employeeId: UUID) : EmployeeError(
+    class EmployeeNotFound(
+        val employeeId: UUID,
+        reason: String? = null,
+        cause: Throwable? = null
+    ) : EmployeeError(
         status = HttpStatusCode.NotFound,
         code = "${TAG}ENF",
-        description = "Employee not found. Employee Id: $employeeId"
+        description = "Employee not found. Employee Id: $employeeId",
+        reason = reason,
+        cause = cause
     )
 
     /**
@@ -39,10 +49,17 @@ sealed class EmployeeError(
      * @property employeeId The affected employee id.
      * @property email The email that is already registered.
      */
-    data class InvalidEmailFormat(val employeeId: UUID?, val email: String) : EmployeeError(
+    class InvalidEmailFormat(
+        val employeeId: UUID?,
+        val email: String,
+        reason: String? = null,
+        cause: Throwable? = null
+    ) : EmployeeError(
         status = HttpStatusCode.BadRequest,
         code = "${TAG}IEF",
-        description = "Invalid email format: '$email'. Employee Id: $employeeId"
+        description = "Invalid email format: '$email'. Employee Id: $employeeId",
+        reason = reason,
+        cause = cause
     )
 
     /**
@@ -51,10 +68,17 @@ sealed class EmployeeError(
      * @property employeeId The affected employee id.
      * @property phone The phone value with the invalid format.
      */
-    data class InvalidPhoneFormat(val employeeId: UUID?, val phone: String) : EmployeeError(
+    class InvalidPhoneFormat(
+        val employeeId: UUID?,
+        val phone: String,
+        reason: String? = null,
+        cause: Throwable? = null
+    ) : EmployeeError(
         status = HttpStatusCode.BadRequest,
         code = "${TAG}IPF",
-        description = "Invalid phone format: '$phone'. Employee Id: $employeeId"
+        description = "Invalid phone format: '$phone'. Employee Id: $employeeId",
+        reason = reason,
+        cause = cause
     )
 
     companion object {

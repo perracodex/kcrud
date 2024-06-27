@@ -6,7 +6,6 @@ package kcrud.domain.employee.service
 
 import kcrud.base.env.SessionContext
 import kcrud.base.env.Tracer
-import kcrud.base.errors.BaseError
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.validators.IValidator
@@ -127,15 +126,18 @@ class EmployeeService(
      * @param employeeId The ID of the employee being verified.
      * @param employeeRequest The employee request details.
      * @param reason The reason for the email verification.
-     * @throws BaseError If any of the fields is invalid.
+     * @throws EmployeeError If any of the fields is invalid.
      */
     private fun verifyIntegrity(employeeId: UUID?, employeeRequest: EmployeeRequest, reason: String) {
         employeeRequest.contact?.let { contact ->
             val phone: String = contact.phone
             val phoneValidation: IValidator.Result = PhoneValidator.validate(value = phone)
             if (phoneValidation is IValidator.Result.Failure) {
-                EmployeeError.InvalidPhoneFormat(employeeId = employeeId, phone = phone)
-                    .raise(reason = "$reason ${phoneValidation.reason}")
+                throw EmployeeError.InvalidPhoneFormat(
+                    employeeId = employeeId,
+                    phone = phone,
+                    reason = "$reason ${phoneValidation.reason}"
+                )
             }
 
             // Note: For sake of the example, we are already validating the email via the EmailString serializer
@@ -151,8 +153,11 @@ class EmployeeService(
             val email: String = contact.email
             val emailValidation: IValidator.Result = EmailValidator.validate(value = email)
             if (emailValidation is IValidator.Result.Failure) {
-                EmployeeError.InvalidEmailFormat(employeeId = employeeId, email = email)
-                    .raise(reason = "$reason ${emailValidation.reason}")
+                throw EmployeeError.InvalidEmailFormat(
+                    employeeId = employeeId,
+                    email = email,
+                    reason = "$reason ${emailValidation.reason}"
+                )
             }
         }
     }

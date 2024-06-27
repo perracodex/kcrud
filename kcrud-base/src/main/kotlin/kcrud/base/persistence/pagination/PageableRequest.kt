@@ -51,7 +51,7 @@ fun ApplicationCall.getPageable(): Pageable? {
 
     // If only one of the page parameters is provided, raise an error.
     if ((pageIndex == null) != (pageSize == null)) {
-        PaginationError.InvalidPageablePair.raise()
+        throw PaginationError.InvalidPageablePair()
     }
 
     // Parse multiple 'sort' parameters. Each can contain a field name and a sort direction.
@@ -76,7 +76,7 @@ fun ApplicationCall.getPageable(): Pageable? {
                     try {
                         Pageable.Direction.valueOf(directionString.uppercase())
                     } catch (e: IllegalArgumentException) {
-                        PaginationError.InvalidOrderDirection(direction = directionString).raise()
+                        throw PaginationError.InvalidOrderDirection(direction = directionString)
                     }
                 } else {
                     Pageable.Direction.ASC // Default direction.

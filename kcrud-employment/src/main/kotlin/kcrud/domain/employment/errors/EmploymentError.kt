@@ -5,7 +5,7 @@
 package kcrud.domain.employment.errors
 
 import io.ktor.http.*
-import kcrud.base.errors.BaseError
+import kcrud.base.errors.AppException
 import kcrud.base.errors.ErrorCodeRegistry
 import kcrud.base.utils.KLocalDate
 import java.util.*
@@ -16,12 +16,16 @@ import java.util.*
  * @property status The [HttpStatusCode] associated with this error.
  * @property code A unique code identifying the type of error.
  * @property description A human-readable description of the error.
+ * @property reason An optional human-readable reason for the exception, providing more context.
+ * @property cause The underlying cause of the exception, if any.
  */
 sealed class EmploymentError(
     status: HttpStatusCode,
     code: String,
-    description: String
-) : BaseError(status = status, code = code, description = description) {
+    description: String,
+    reason: String? = null,
+    cause: Throwable? = null
+) : AppException(status = status, code = code, description = description, reason = reason, cause = cause) {
 
     /**
      * Error for when an employment is not found for a concrete employee.
@@ -29,10 +33,17 @@ sealed class EmploymentError(
      * @property employeeId The affected employee id.
      * @property employmentId The employment id that was not found.
      */
-    data class EmploymentNotFound(val employeeId: UUID, val employmentId: UUID) : EmploymentError(
+    class EmploymentNotFound(
+        val employeeId: UUID,
+        val employmentId: UUID,
+        reason: String? = null,
+        cause: Throwable? = null
+    ) : EmploymentError(
         status = HttpStatusCode.NotFound,
         code = "${TAG}ENF",
-        description = "Employment not found. Employee Id: $employeeId. Employment Id: $employmentId."
+        description = "Employment not found. Employee Id: $employeeId. Employment Id: $employmentId.",
+        reason = reason,
+        cause = cause
     )
 
     /**
@@ -44,17 +55,21 @@ sealed class EmploymentError(
      * @property startDate The start date of the employment period.
      * @property endDate The end date of the employment period.
      */
-    data class PeriodDatesMismatch(
+    class PeriodDatesMismatch(
         val employeeId: UUID,
         val employmentId: UUID?,
         val startDate: KLocalDate,
-        val endDate: KLocalDate
+        val endDate: KLocalDate,
+        reason: String? = null,
+        cause: Throwable? = null
     ) : EmploymentError(
         status = HttpStatusCode.BadRequest,
         code = "${TAG}PDM",
         description = "Employment end date cannot be prior to the start date. " +
                 "Employee Id: $employeeId. Employment Id: $employmentId. " +
-                "Start Date: $startDate. End Date: $endDate."
+                "Start Date: $startDate. End Date: $endDate.",
+        reason = reason,
+        cause = cause
     )
 
     /**
@@ -65,17 +80,21 @@ sealed class EmploymentError(
      * @property startDate The start date of the employment period.
      * @property probationEndDate The probation end date of the employment period.
      */
-    data class InvalidProbationEndDate(
+    class InvalidProbationEndDate(
         val employeeId: UUID,
         val employmentId: UUID?,
         val startDate: KLocalDate,
         val probationEndDate: KLocalDate,
+        reason: String? = null,
+        cause: Throwable? = null
     ) : EmploymentError(
         status = HttpStatusCode.BadRequest,
         code = "${TAG}IPD",
         description = "Employment probation end date cannot be prior to the start date. " +
                 "Employee Id: $employeeId. Employment Id: $employmentId. " +
-                "Start Date: $startDate. Probation End Date: $probationEndDate."
+                "Start Date: $startDate. Probation End Date: $probationEndDate.",
+        reason = reason,
+        cause = cause
     )
 
     companion object {

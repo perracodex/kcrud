@@ -36,9 +36,6 @@ internal fun Route.updateEmploymentById() {
 
         updatedEmployment?.let {
             call.respond(status = HttpStatusCode.OK, message = updatedEmployment)
-        } ?: EmploymentError.EmploymentNotFound(
-            employeeId = employeeId,
-            employmentId = employmentId
-        ).raise()
+        } ?: throw EmploymentError.EmploymentNotFound(employeeId = employeeId, employmentId = employmentId)
     }
 }
