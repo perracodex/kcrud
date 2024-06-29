@@ -66,7 +66,7 @@ class EmploymentService(
     suspend fun create(
         employeeId: UUID,
         employmentRequest: EmploymentRequest
-    ): EmploymentEntity = withContext(Dispatchers.IO) {
+    ): EmploymentEntity {
         tracer.debug("Creating employment for employee with ID: $employeeId")
 
         verify(
@@ -81,7 +81,9 @@ class EmploymentService(
             employmentRequest = employmentRequest
         )
 
-        return@withContext findById(employeeId = employeeId, employmentId = employmentId)!!
+        return withContext(Dispatchers.IO) {
+            return@withContext findById(employeeId = employeeId, employmentId = employmentId)!!
+        }
     }
 
     /**
@@ -96,7 +98,7 @@ class EmploymentService(
         employeeId: UUID,
         employmentId: UUID,
         employmentRequest: EmploymentRequest
-    ): EmploymentEntity? = withContext(Dispatchers.IO) {
+    ): EmploymentEntity? {
         tracer.debug("Updating employment with ID: $employmentId")
 
         verify(
@@ -106,16 +108,18 @@ class EmploymentService(
             reason = "Update Employment."
         )
 
-        val updateCount: Int = employmentRepository.update(
-            employeeId = employeeId,
-            employmentId = employmentId,
-            employmentRequest = employmentRequest
-        )
+        return withContext(Dispatchers.IO) {
+            val updateCount: Int = employmentRepository.update(
+                employeeId = employeeId,
+                employmentId = employmentId,
+                employmentRequest = employmentRequest
+            )
 
-        return@withContext if (updateCount > 0) {
-            findById(employeeId = employeeId, employmentId = employmentId)
-        } else {
-            null
+            return@withContext if (updateCount > 0) {
+                findById(employeeId = employeeId, employmentId = employmentId)
+            } else {
+                null
+            }
         }
     }
 

@@ -66,11 +66,15 @@ class EmployeeService(
      * @param employeeRequest The employee to be created.
      * @return The ID of the created employee.
      */
-    suspend fun create(employeeRequest: EmployeeRequest): EmployeeEntity = withContext(Dispatchers.IO) {
+    suspend fun create(employeeRequest: EmployeeRequest): EmployeeEntity {
         tracer.debug("Creating a new employee.")
+
         verifyIntegrity(employeeId = null, employeeRequest = employeeRequest, reason = "Create Employee.")
-        val employeeId: UUID = employeeRepository.create(employeeRequest = employeeRequest)
-        return@withContext findById(employeeId = employeeId)!!
+
+        return withContext(Dispatchers.IO) {
+            val employeeId: UUID = employeeRepository.create(employeeRequest = employeeRequest)
+            return@withContext findById(employeeId = employeeId)!!
+        }
     }
 
     /**
@@ -83,11 +87,15 @@ class EmployeeService(
     suspend fun update(
         employeeId: UUID,
         employeeRequest: EmployeeRequest
-    ): EmployeeEntity? = withContext(Dispatchers.IO) {
+    ): EmployeeEntity? {
         tracer.debug("Updating employee with ID: $employeeId.")
+
         verifyIntegrity(employeeId = employeeId, employeeRequest = employeeRequest, reason = "Update Employee.")
-        val updatedCount: Int = employeeRepository.update(employeeId = employeeId, employeeRequest = employeeRequest)
-        return@withContext if (updatedCount > 0) findById(employeeId = employeeId) else null
+
+        return withContext(Dispatchers.IO) {
+            val updatedCount: Int = employeeRepository.update(employeeId = employeeId, employeeRequest = employeeRequest)
+            return@withContext if (updatedCount > 0) findById(employeeId = employeeId) else null
+        }
     }
 
     /**
