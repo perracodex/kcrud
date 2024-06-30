@@ -57,6 +57,7 @@ class SchemaTest {
                 // Change to schemaB.
                 SchemaUtils.setSchema(schema = schemaB)
                 assertEquals(expected = schemaB.identifier, actual = TransactionManager.current().connection.schema)
+                SchemaUtils.setSchema(schema = schemaA)
             }
 
             // Should be back to schemaA.
