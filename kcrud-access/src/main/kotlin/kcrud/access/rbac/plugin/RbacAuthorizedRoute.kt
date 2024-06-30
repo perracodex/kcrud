@@ -23,7 +23,7 @@ import kcrud.base.database.schema.admin.rbac.types.RbacScope
 internal fun Route.rbacAuthorizedRoute(
     scope: RbacScope,
     accessLevel: RbacAccessLevel,
-    build: Route.() -> Unit,
+    build: (Route) -> Unit,
 ): Route {
     if (accessLevel == RbacAccessLevel.NONE) {
         throw IllegalArgumentException(
@@ -52,7 +52,7 @@ internal fun Route.rbacAuthorizedRoute(
     // Apply the 'build' block to the new RBAC route, registering its route configurations and handlers
     // within the context of the RBAC constraints. This sets up the route's structure and behavior according
     // to the defined logic in 'build', but does not execute the request handling logic immediately.
-    authorizedRoute.build()
+    build(authorizedRoute)
 
     return authorizedRoute
 }
