@@ -27,7 +27,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 fun <T> transactionWithSchema(db: Database? = null, schema: String? = null, statement: Transaction.() -> T): T {
     // Directly proceed with the transaction if no schema is specified.
     if (schema.isNullOrBlank()) {
-        return transaction(statement = statement)
+        return transaction(db = db, statement = statement)
     }
 
     // Proceed with schema adjustment only if a schema is provided.
