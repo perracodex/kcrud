@@ -14,6 +14,7 @@ import kcrud.base.database.schema.contact.ContactTable
 import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.database.schema.employment.EmploymentTable
 import kcrud.base.database.schema.scheduler.SchedulerAuditTable
+import kcrud.base.env.MetricsRegistry
 
 /**
  * Configures the custom [DbPlugin].
@@ -26,7 +27,7 @@ import kcrud.base.database.schema.scheduler.SchedulerAuditTable
 fun Application.configureDatabase() {
 
     install(plugin = DbPlugin) {
-        micrometerRegistry = appMicrometerRegistry
+        micrometerRegistry = MetricsRegistry.registry
 
         // Default admin tables.
         tables.add(RbacFieldRuleTable)

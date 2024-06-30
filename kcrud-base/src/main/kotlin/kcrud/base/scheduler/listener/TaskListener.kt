@@ -6,8 +6,8 @@ package kcrud.base.scheduler.listener
 
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.Timer
+import kcrud.base.env.MetricsRegistry
 import kcrud.base.env.Tracer
-import kcrud.base.plugins.appMicrometerRegistry
 import kcrud.base.scheduler.annotation.SchedulerAPI
 import kcrud.base.scheduler.audit.AuditService
 import kcrud.base.scheduler.audit.entity.AuditRequest
@@ -27,17 +27,20 @@ import org.quartz.JobListener
 class TaskListener : JobListener {
     private val tracer = Tracer<TaskListener>()
 
-    private val taskExecutedMetric: Counter = Counter.builder("scheduler_task_total")
-        .description("Total number of tasks executed")
-        .register(appMicrometerRegistry)
+    private val taskExecutedMetric: Counter = MetricsRegistry.registerCounter(
+        name = "scheduler_task_total",
+        description = "Total number of tasks executed"
+    )
 
-    private val taskFailureMetric: Counter = Counter.builder("scheduler_task_failures")
-        .description("Total number of tasks failures")
-        .register(appMicrometerRegistry)
+    private val taskFailureMetric: Counter = MetricsRegistry.registerCounter(
+        name = "scheduler_task_failures",
+        description = "Total number of tasks failures"
+    )
 
-    private val taskRunTimeMetric: Timer = Timer.builder("scheduler_task_duration")
-        .description("Duration of tasks run-time execution")
-        .register(appMicrometerRegistry)
+    private val taskRunTimeMetric: Timer = MetricsRegistry.registerTimer(
+        name = "scheduler_task_duration",
+        description = "Duration of tasks run-time execution"
+    )
 
     /**
      * The name of the task listener.
