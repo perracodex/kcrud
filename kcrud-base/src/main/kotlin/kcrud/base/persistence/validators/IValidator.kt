@@ -27,16 +27,6 @@ interface IValidator {
     fun message(text: String): String
 
     /**
-     * Throws a [ValidationException] with the given message.
-     *
-     * @param message Contextual failure message.
-     * @throws ValidationException
-     */
-    fun raise(message: String): Nothing {
-        throw ValidationException(message = message)
-    }
-
-    /**
      * Sealed class represents a validation result.
      */
     sealed class Result {

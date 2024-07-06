@@ -5,6 +5,7 @@
 package kcrud.base.database.custom_columns
 
 import kcrud.base.persistence.validators.IValidator
+import kcrud.base.persistence.validators.ValidationException
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ColumnType
 import org.jetbrains.exposed.sql.Table
@@ -40,7 +41,7 @@ fun <T : Any> Table.baseValidColumn(
                 return baseColumn.notNullValueToDB(value = value)
             }
 
-            validator.raise(message = value.toString())
+            throw ValidationException(message = value.toString())
         }
 
         override fun valueFromDB(value: Any): T? {
