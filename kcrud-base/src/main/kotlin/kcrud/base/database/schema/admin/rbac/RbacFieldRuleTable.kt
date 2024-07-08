@@ -6,7 +6,7 @@ package kcrud.base.database.schema.admin.rbac
 
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.base.TimestampedTable
-import kcrud.base.persistence.utils.enumById
+import kcrud.base.persistence.utils.enumerationById
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
@@ -50,8 +50,8 @@ object RbacFieldRuleTable : TimestampedTable(name = "rbac_field_rule") {
     /**
      * The [RbacAccessLevel] representing the access level for the field.
      */
-    val accessLevel: Column<RbacAccessLevel> = enumById(
-        name = "access_level",
+    val accessLevel: Column<RbacAccessLevel> = enumerationById(
+        name = "access_level_id",
         fromId = RbacAccessLevel::fromId
     )
 

@@ -7,7 +7,7 @@ package kcrud.base.database.schema.employee
 import kcrud.base.database.schema.base.TimestampedTable
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
-import kcrud.base.persistence.utils.enumById
+import kcrud.base.persistence.utils.enumerationById
 import kcrud.base.utils.KLocalDate
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
@@ -64,8 +64,8 @@ object EmployeeTable : TimestampedTable(name = "employee") {
      *
      * Example of an enum that is stored as an integer in the database.
      */
-    val honorific: Column<Honorific> = enumById(
-        name = "honorific",
+    val honorific: Column<Honorific> = enumerationById(
+        name = "honorific_id",
         fromId = Honorific::fromId
     )
 

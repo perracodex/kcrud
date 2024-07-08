@@ -10,9 +10,9 @@
 CREATE TABLE IF NOT EXISTS employment (
     employment_id UUID,
     employee_id UUID NOT NULL,
-    status INTEGER NOT NULL,
+    status_id INTEGER NOT NULL,
     probation_end_date DATE NULL,
-    work_modality INTEGER NOT NULL,
+    work_modality_id INTEGER NOT NULL,
     is_active BOOLEAN NOT NULL,
     start_date DATE NOT NULL,
     end_date DATE NULL,

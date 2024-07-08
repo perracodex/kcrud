@@ -32,8 +32,8 @@ CALL 'UpdateTimestampTrigger';
 CREATE TABLE IF NOT EXISTS rbac_scope_rule (
     scope_rule_id UUID,
     role_id UUID NOT NULL,
-    scope INTEGER NOT NULL,
-    access_level INTEGER NOT NULL,
+    scope_id INTEGER NOT NULL,
+    access_level_id INTEGER NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS rbac_scope_rule (
 
 ALTER TABLE rbac_scope_rule
     ADD CONSTRAINT uq_rbac_scope_rule__role_id__scope
-        UNIQUE (role_id, scope);
+        UNIQUE (role_id, scope_id);
 
 CREATE TRIGGER IF NOT EXISTS tg_rbac_scope_rule__updated_at
 BEFORE UPDATE ON rbac_scope_rule
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS rbac_field_rule (
     field_rule_id UUID,
     scope_rule_id UUID NOT NULL,
     field_name VARCHAR(64) NOT NULL,
-    access_level INTEGER NOT NULL,
+    access_level_id INTEGER NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 

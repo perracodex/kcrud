@@ -7,7 +7,7 @@ package kcrud.base.database.schema.admin.rbac
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kcrud.base.database.schema.base.TimestampedTable
-import kcrud.base.persistence.utils.enumById
+import kcrud.base.persistence.utils.enumerationById
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
@@ -45,16 +45,16 @@ object RbacScopeRuleTable : TimestampedTable(name = "rbac_scope_rule") {
     /**
      * The [RbacScope] the rule is meant to target.
      */
-    val scope: Column<RbacScope> = enumById(
-        name = "scope",
+    val scope: Column<RbacScope> = enumerationById(
+        name = "scope_id",
         fromId = RbacScope::fromId
     )
 
     /**
      * The [RbacAccessLevel] representing the access level for the [RbacScope].
      */
-    val accessLevel: Column<RbacAccessLevel> = enumById(
-        name = "access_level",
+    val accessLevel: Column<RbacAccessLevel> = enumerationById(
+        name = "access_level_id",
         fromId = RbacAccessLevel::fromId
     )
 

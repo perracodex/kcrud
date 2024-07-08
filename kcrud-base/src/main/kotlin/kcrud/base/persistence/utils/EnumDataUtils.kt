@@ -27,16 +27,16 @@ interface IEnumWithId {
  *
  * Usage example:
  * ```
- * enum class AnyEnumName(override val id: Int) : EnumWithId {
+ * enum class SomeEnum(override val id: Int) : EnumWithId {
  *     ELEMENT_A(100), ELEMENT_B(101), ...
  *     companion object {
- *         private val map = AnyEnumName.entries.associateBy(AnyEnumName::id)
+ *         private val map = SomeEnum.entries.associateBy(SomeEnum::id)
  *         fun fromId(id: Int) = map[id]
  *     }
  * }
  *
- * object AnyTable : Table() {
- *     val anyField = enumById(name = "any_field", fromId = AnyEnumName::fromId)
+ * object SomeTable : Table() {
+ *     val field = enumerationById(name = "field", fromId = SomeEnum::fromId)
  *     ...
  * }
  * ```
@@ -47,7 +47,7 @@ interface IEnumWithId {
  * @return A Column of type T representing the enum in the Exposed table.
  * @throws IllegalArgumentException if an unknown enum id is encountered in the database.
  */
-inline fun <reified T : Enum<T>> Table.enumById(
+inline fun <reified T : Enum<T>> Table.enumerationById(
     name: String,
     noinline fromId: (Int) -> T?
 ): Column<T> {
