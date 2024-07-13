@@ -29,6 +29,7 @@ application {
     mainClass.set("io.ktor.server.netty.EngineMain")
 
     // Configure detailed coroutine debug logging.
+    // https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-debug/
     val enhanceCoroutinesDebugging: Boolean = project.findProperty("enhanceCoroutinesDebugging")?.toString()?.toBoolean() ?: false
     if (enhanceCoroutinesDebugging) {
         applicationDefaultJvmArgs = listOf("-Dkotlinx.coroutines.debug=on")
