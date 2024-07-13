@@ -27,6 +27,12 @@ application {
     // This setting is used to define the entry point for the executable JAR generated
     // by Gradle, which is essential for running the application with 'java -jar' command.
     mainClass.set("io.ktor.server.netty.EngineMain")
+
+    // Configure detailed coroutine debug logging.
+    val enhanceCoroutinesDebugging: Boolean = project.findProperty("enhanceCoroutinesDebugging")?.toString()?.toBoolean() ?: false
+    if (enhanceCoroutinesDebugging) {
+        applicationDefaultJvmArgs = listOf("-Dkotlinx.coroutines.debug=on")
+    }
 }
 
 // Configuration block for all projects in this multi-project build.
