@@ -16,7 +16,7 @@ class SEETest {
     fun testPushAndWriteEvent(): Unit = testSuspend {
         // The list size must not exceed the Replay constant in the SEEService.
         // as this is the number of events that will be replayed to new subscribers.
-        val messages = List(size = 100) { "Test Event $it" }
+        val messages: List<String> = List(size = 100) { "Test Event $it" }
 
         // Launch a coroutine to write events to the writer.
         val writer: Writer = StringWriter()
