@@ -20,38 +20,62 @@ object SchedulerAuditTable : Table(name = "scheduler_audit") {
         name = "audit_id"
     ).autoGenerate()
 
+    /**
+     * The name of the task that was executed.
+     */
     val taskName: Column<String> = varchar(
         name = "task_name",
         length = 200
     )
 
+    /**
+     * The group to which the task belongs.
+     */
     val taskGroup: Column<String> = varchar(
         name = "task_group",
         length = 200
     )
 
+    /**
+     * The time the task was scheduled to run.
+     */
     val fireTime: Column<KLocalDateTime> = datetime(
         name = "fire_time"
     )
 
+    /**
+     * The duration the task took to run.
+     */
     val runTime: Column<Long> = long(
         name = "run_time"
     )
 
+    /**
+     * The execution result [TaskOutcome].
+     */
     val outcome: Column<TaskOutcome> = enumerationByName(
         name = "outcome",
         length = 64,
         klass = TaskOutcome::class
     )
 
+    /**
+     * The audit log information.
+     */
     val log: Column<String?> = text(
         name = "log",
     ).nullable()
 
+    /**
+     * The detail that provides more information about the audit log.
+     */
     val detail: Column<String?> = text(
         name = "detail",
     ).nullable()
 
+    /**
+     * The creation timestamp of the audit record.
+     */
     val createdAt: Column<KLocalDateTime> = datetime(
         name = "created_at"
     ).defaultExpression(defaultValue = CurrentDateTime)
