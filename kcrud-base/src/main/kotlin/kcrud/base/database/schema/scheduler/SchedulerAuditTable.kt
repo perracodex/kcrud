@@ -16,6 +16,9 @@ import java.util.*
  * Database table definition for scheduler audit logs.
  */
 object SchedulerAuditTable : Table(name = "scheduler_audit") {
+    /**
+     * The unique identifier of the audit log.
+     */
     val id: Column<UUID> = uuid(
         name = "audit_id"
     ).autoGenerate()
