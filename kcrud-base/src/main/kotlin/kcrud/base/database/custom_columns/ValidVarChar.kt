@@ -13,7 +13,7 @@ import org.jetbrains.exposed.sql.VarCharColumnType
  * Creates a VARCHAR column with custom validation.
  *
  * This function utilizes `baseValidatedColumn` to create a standard VARCHAR column
- * with additional validation logic applied. It's useful when you need to store string data
+ * with additional validation logic applied. It's useful when needing to store string data
  * that conforms to specific validation rules defined by the provided `IValidator`.
  *
  * @param name The name of the column in the database.

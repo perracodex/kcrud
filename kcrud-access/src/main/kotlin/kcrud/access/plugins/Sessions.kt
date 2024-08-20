@@ -18,7 +18,7 @@ import kcrud.base.settings.config.sections.security.sections.EncryptionSettings
  * Typical use cases include storing a logged-in Actor's ID, the contents of a shopping basket,
  * or keeping actor preferences on the client.
  *
- * In Ktor, you can implement sessions by using cookies or custom headers, choose whether to store
+ * In Ktor, is possible can implement sessions by using cookies or custom headers, choose whether to store
  * session data on the server or pass it to the client, sign and encrypt session data and more.
  *
  * See: [Sessions](https://ktor.io/docs/server-sessions.html)

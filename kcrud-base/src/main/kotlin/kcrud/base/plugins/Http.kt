@@ -17,7 +17,7 @@ import io.ktor.server.routing.*
 fun Application.configureHttp() {
 
     // Provides the capability to compress outgoing content.
-    // You can use different compression algorithms, including gzip and deflate,
+    // Can use different compression algorithms, including gzip and deflate,
     // specify the required conditions for compressing data, such as a content type
     // or response size, or even compress data based on specific request parameters.
     install(plugin = Compression) {

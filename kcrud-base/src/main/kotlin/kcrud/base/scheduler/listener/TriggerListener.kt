@@ -57,8 +57,8 @@ class TriggerListener : TriggerListener {
      * Called by the [org.quartz.Scheduler] when a [Trigger] has misfired.
      *
      * Consideration should be given to how much time is spent in this method,
-     * as it will affect all triggers that are misfiring. If you have lots
-     * of triggers misfiring at once, it could be an issue it this method does a lot.
+     * as it will affect all triggers that are misfiring. If there are lots of
+     * triggers misfiring at once, it could be an issue it this method does a lot.
      *
      * @param trigger The [Trigger] that has misfired.
      */

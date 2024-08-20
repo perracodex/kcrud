@@ -133,7 +133,7 @@ class CredentialService : KoinComponent {
     companion object {
         /**
          * Naive hint for Actors login, only for this example project.
-         * This is not something you would do in a real application.
+         * This is not something would do in a real application.
          */
         const val HINT: String = "Use either admin/admin or guest/guest."
     }

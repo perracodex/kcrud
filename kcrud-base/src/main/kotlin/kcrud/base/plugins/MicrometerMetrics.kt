@@ -21,11 +21,11 @@ import kcrud.base.env.MetricsRegistry
 import kcrud.base.settings.AppSettings
 
 /**
- * The [MicrometerMetrics] plugin enables Micrometer metrics in your Ktor server application
- * and allows you to choose the required monitoring system, such as Prometheus, JMX, Elastic, and so on.
+ * The [MicrometerMetrics] plugin enables Micrometer metrics in the Ktor server application
+ * and allows to choose the required monitoring system, such as Prometheus, JMX, Elastic, and so on.
  *
  * By default, Ktor exposes metrics for monitoring HTTP requests and a set of low-level metrics for
- * monitoring the JVM. You can customize these metrics or create new ones.
+ * monitoring the JVM. Can customize these metrics or create new ones.
  *
  * See: [MicrometerMetrics](https://ktor.io/docs/server-metrics-micrometer.html)
  *

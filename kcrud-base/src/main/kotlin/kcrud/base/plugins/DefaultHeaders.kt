@@ -27,15 +27,15 @@ fun Application.configureHeaders() {
 
     // Provides with the ability to automatically respond to a HEAD request
     // for every route that has a GET defined.
-    // You can use AutoHeadResponse to avoid creating a separate head handler
-    // if you need to somehow process a response on the client before getting
+    // Can use AutoHeadResponse to avoid creating a separate head handler
+    // if needing to somehow process a response on the client before getting
     // the actual content. For example, calling the respondFile function adds
     // the Content-Length and Content-Type headers to a response automatically,
-    // and you can get this information on the client before downloading the file.
+    // and then can get this information on the client before downloading the file.
     install(plugin = AutoHeadResponse)
 
     // Adds the standard Server and Date headers into each response.
-    // Moreover, you can provide additional default headers and override the Server header.
+    // Moreover, is possible to provide additional default headers and override the Server header.
     install(plugin = DefaultHeaders) {
         header(name = "X-Engine", value = "Kcrud")
     }
