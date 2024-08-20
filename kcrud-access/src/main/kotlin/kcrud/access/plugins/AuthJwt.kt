@@ -40,7 +40,7 @@ fun Application.configureJwtAuthentication() {
             verifier(
                 // Configure the JWT verifier used to check the signature of each incoming JWT token.
                 // The signature check ensures that the token was signed with the same secret key
-                // and thus can be trusted as being issued by your application.
+                // and thus can be trusted as being issued by the application.
                 JWT.require(Algorithm.HMAC256(AppSettings.security.jwtAuth.secretKey))
                     .withAudience(AppSettings.security.jwtAuth.audience)
                     .withIssuer(AppSettings.security.jwtAuth.issuer)
