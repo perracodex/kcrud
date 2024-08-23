@@ -19,6 +19,11 @@ import org.quartz.JobExecutionContext
  */
 abstract class TaskConsumer : Job {
 
+    /**
+     * Initiates the task execution.
+     *
+     * @param context The job execution context.
+     */
     override fun execute(context: JobExecutionContext?) {
         val jobDataMap: JobDataMap? = context?.mergedJobDataMap
 

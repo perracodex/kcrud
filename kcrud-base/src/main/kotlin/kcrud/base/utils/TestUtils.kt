@@ -10,7 +10,6 @@ import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.database.service.DatabaseService
 import kcrud.base.persistence.entity.Period
 import kcrud.base.settings.AppSettings
-import kotlinx.coroutines.runBlocking
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.core.module.Module
@@ -28,9 +27,7 @@ object TestUtils {
     fun loadSettings() {
         val testConfig = ApplicationConfig(configPath = "application.conf")
 
-        runBlocking {
-            AppSettings.load(applicationConfig = testConfig)
-        }
+        AppSettings.load(applicationConfig = testConfig)
     }
 
     /**

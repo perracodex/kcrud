@@ -19,7 +19,7 @@ import java.util.*
 fun Route.getSchedulerTasksRoute() {
     // Gets all scheduler tasks.
     get {
-        val groupId: UUID? = call.parameters["group"]?.let { it.toUUIDOrNull() }
+        val groupId: UUID? = call.parameters["group"]?.toUUIDOrNull()
         val tasks: List<TaskScheduleEntity> = SchedulerService.tasks.all(groupId = groupId)
         call.respond(status = HttpStatusCode.OK, message = tasks)
     }

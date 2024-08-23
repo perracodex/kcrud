@@ -20,6 +20,9 @@ object EncryptionUtils {
         TRIPLE_DES
     }
 
+    /**
+     * The type of encryption to use.
+     */
     enum class Type {
         /** Stable encryption for data at rest, such as encrypted database fields. */
         AT_REST,

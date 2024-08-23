@@ -229,7 +229,7 @@ internal object ConfigurationParser {
                 ?: throw IllegalArgumentException("Invalid Double value in: '$key'")
 
             type.java.isEnum -> {
-                // Check if the config value is build by single string with comma delimited values.
+                // Check if the config value is build by single string with comma-delimited values.
                 if (stringValue.contains(char = ARRAY_DELIMITER)) {
                     // Split the string by commas and trim spaces, then convert each part to enum.
                     stringValue.split(ARRAY_DELIMITER).mapNotNull { part ->

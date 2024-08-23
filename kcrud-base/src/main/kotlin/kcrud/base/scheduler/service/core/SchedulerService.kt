@@ -30,9 +30,15 @@ import java.util.*
 object SchedulerService {
     private val tracer = Tracer<SchedulerService>()
 
+    /** The possible states of the task scheduler. */
     enum class TaskSchedulerState {
+        /** The scheduler is running. */
         RUNNING,
+
+        /** The scheduler is paused. */
         PAUSED,
+
+        /** The scheduler is stopped. */
         STOPPED
     }
 

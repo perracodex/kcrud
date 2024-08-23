@@ -23,7 +23,7 @@ fun Route.schedulerDashboardRoute() {
 
     // The scheduler dashboard route.
     get("dashboard") {
-        val groupId: UUID? = call.parameters["group"]?.let { it.toUUIDOrNull() }
+        val groupId: UUID? = call.parameters["group"]?.toUUIDOrNull()
         val tasks: List<TaskScheduleEntity> = SchedulerService.tasks.all(groupId = groupId)
         val content = ThymeleafContent(template = "scheduler/dashboard", model = mapOf("data" to tasks))
         call.respond(message = content)

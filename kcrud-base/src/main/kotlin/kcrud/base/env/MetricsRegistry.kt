@@ -21,6 +21,9 @@ import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
  * See: [Micrometer Prometheus](https://micrometer.io/docs/registry/prometheus)
  */
 object MetricsRegistry {
+    /**
+     * The [PrometheusMeterRegistry] instance used to manage metrics.
+     */
     val registry: PrometheusMeterRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT).apply {
         config()
             .meterFilter(MeterFilter.deny { id ->
@@ -28,9 +31,23 @@ object MetricsRegistry {
             })
     }
 
+    /**
+     * Registers a new counter metric.
+     *
+     * @param name The name of the counter.
+     * @param description The description of the counter.
+     * @return The registered counter.
+     */
     fun registerCounter(name: String, description: String): Counter =
         Counter.builder(name).description(description).register(registry)
 
+    /**
+     * Registers a new timer metric.
+     *
+     * @param name The name of the timer.
+     * @param description The description of the timer.
+     * @return The registered timer.
+     */
     fun registerTimer(name: String, description: String): Timer =
         Timer.builder(name).description(description).register(registry)
 

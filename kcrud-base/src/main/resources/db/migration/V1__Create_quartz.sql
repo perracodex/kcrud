@@ -8,7 +8,7 @@
 -- and verifying that it works with Quartz's StdJDBCDelegate
 --
 -- Note, Quartz depends on row-level locking which means you must use the MVCC=TRUE
--- setting on your H2 database, or you will experience dead-locks
+-- setting on your H2 database, or you will experience deadlocks
 --
 --
 -- In your Quartz properties file, you'll need to set
