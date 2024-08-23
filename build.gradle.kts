@@ -6,6 +6,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     application
+    alias(libs.plugins.dokka)
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.ktor)
     alias(libs.plugins.kotlin.serialization) apply false
@@ -58,6 +59,7 @@ subprojects {
     // This includes the Kotlin JVM and Kotlin Serialization plugins, which are
     // retrieved dynamically from the version catalog defined in the root project.
     apply {
+        plugin(rootProject.libs.plugins.dokka.get().pluginId)
         plugin(rootProject.libs.plugins.kotlin.jvm.get().pluginId)
         plugin(rootProject.libs.plugins.kotlin.serialization.get().pluginId)
     }

@@ -5,6 +5,7 @@
 commons-codec = "1.17.1"                # https://github.com/apache/commons-codec/tags
 cron-descriptor = "1.2.10"              # https://github.com/voidburn/cron-expression-descriptor/releases
 database-h2 = "2.3.232"                 # https://github.com/h2database/h2database/releases
+dokka = "1.9.20"                        # https://github.com/Kotlin/dokka/releases
 exposed = "0.53.0"                      # https://github.com/JetBrains/Exposed/releases
 flyway = "10.17.2"                      # https://github.com/flyway/flyway/releases
 google-phonenumber = "8.13.43"          # https://github.com/google/libphonenumber/releases
@@ -25,6 +26,7 @@ typesafe-config = "1.4.3"               # https://github.com/lightbend/config/re
 
 [plugins]
 
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
