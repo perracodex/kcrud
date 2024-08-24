@@ -30,7 +30,7 @@ import kotlin.uuid.Uuid
  * @property roleRepository The [IRbacRoleRepository] to handle Role operations.
  * @property scopeRuleRepository The [IRbacScopeRuleRepository] to handle scope rule operations.
  */
-class RbacService(
+internal class RbacService(
     private val actorRepository: IActorRepository,
     private val roleRepository: IRbacRoleRepository,
     private val scopeRuleRepository: IRbacScopeRuleRepository

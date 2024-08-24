@@ -26,7 +26,7 @@ import kotlin.uuid.Uuid
  * @property meta The metadata of the record.
  */
 @Serializable
-data class RbacRoleEntity(
+public data class RbacRoleEntity(
     val id: UuidS,
     val roleName: String,
     val description: String?,
@@ -34,7 +34,7 @@ data class RbacRoleEntity(
     val scopeRules: List<RbacScopeRuleEntity>,
     val meta: Meta
 ) {
-    companion object {
+    internal companion object {
         /**
          * Maps a list of [ResultRow]s to a [RbacRoleEntity] instance.
          * Each row is expected to represent a different scope rule.

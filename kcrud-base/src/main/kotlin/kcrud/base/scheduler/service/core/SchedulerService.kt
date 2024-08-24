@@ -27,7 +27,7 @@ import java.util.*
  * See: [Quartz Scheduler Configuration](https://www.quartz-scheduler.org/documentation/2.4.0-SNAPSHOT/configuration.html)
  */
 @OptIn(SchedulerAPI::class)
-object SchedulerService {
+internal object SchedulerService {
     private val tracer = Tracer<SchedulerService>()
 
     /** The possible states of the task scheduler. */

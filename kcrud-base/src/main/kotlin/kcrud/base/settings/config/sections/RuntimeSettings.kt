@@ -17,7 +17,7 @@ import kotlinx.serialization.Serializable
  * @property workingDir The working directory where files are stored.
  */
 @Serializable
-data class RuntimeSettings(
+public data class RuntimeSettings(
     val machineId: Int,
     val environment: EnvironmentType,
     val doubleReceiveEnvironments: List<EnvironmentType>,

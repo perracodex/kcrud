@@ -13,7 +13,7 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
  *
  * See: [Ktor Thymeleaf Plugin](https://ktor.io/docs/server-thymeleaf.html)
  */
-fun Application.configureThymeleaf() {
+public fun Application.configureThymeleaf() {
 
     install(plugin = Thymeleaf) {
         setTemplateResolver(ClassLoaderTemplateResolver().apply {

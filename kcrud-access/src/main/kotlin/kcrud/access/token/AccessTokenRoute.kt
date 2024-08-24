@@ -22,7 +22,7 @@ import kcrud.base.settings.AppSettings
  *
  * See: [Basic Authentication Documentation](https://ktor.io/docs/server-basic-auth.html)
  */
-fun Route.accessTokenRoute() {
+public fun Route.accessTokenRoute() {
 
     route("auth/token") {
 

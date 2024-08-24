@@ -18,7 +18,7 @@ import kotlin.uuid.Uuid
  * @property reason An optional human-readable reason for the exception, providing more context.
  * @property cause The underlying cause of the exception, if any.
  */
-sealed class EmployeeError(
+internal sealed class EmployeeError(
     status: HttpStatusCode,
     code: String,
     description: String,

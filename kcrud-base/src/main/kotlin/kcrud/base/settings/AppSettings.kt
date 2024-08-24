@@ -23,27 +23,27 @@ import kotlin.system.measureTimeMillis
  *
  * This class serves as the central point for accessing all configuration settings in a type-safe manner.
  */
-object AppSettings {
+public object AppSettings {
     @Volatile
     private lateinit var configuration: ConfigurationCatalog
 
     /** The API schema settings. */
-    val apiSchema: ApiSchemaSettings get() = configuration.apiSchema
+    public val apiSchema: ApiSchemaSettings get() = configuration.apiSchema
 
     /** The CORS settings. */
-    val cors: CorsSettings get() = configuration.cors
+    public val cors: CorsSettings get() = configuration.cors
 
     /** The database settings. */
-    val database: DatabaseSettings get() = configuration.database
+    public val database: DatabaseSettings get() = configuration.database
 
     /** The deployment settings. */
-    val deployment: DeploymentSettings get() = configuration.deployment
+    public val deployment: DeploymentSettings get() = configuration.deployment
 
     /** The runtime settings. */
-    val runtime: RuntimeSettings get() = configuration.runtime
+    public val runtime: RuntimeSettings get() = configuration.runtime
 
     /** The application security settings. */
-    val security: SecuritySettings get() = configuration.security
+    public val security: SecuritySettings get() = configuration.security
 
     /**
      * Loads the application settings from the provided [ApplicationConfig].
@@ -52,7 +52,7 @@ object AppSettings {
      * @param applicationConfig The [ApplicationConfig] to load the settings from.
      */
     @OptIn(ConfigurationAPI::class)
-    fun load(applicationConfig: ApplicationConfig) {
+    public fun load(applicationConfig: ApplicationConfig) {
         if (AppSettings::configuration.isInitialized)
             return
 
@@ -91,7 +91,7 @@ object AppSettings {
      *
      * @return The JSON string representation of the current settings.
      */
-    fun serialize(): String {
+    public fun serialize(): String {
         return Json.encodeToString<ConfigurationCatalog>(value = configuration)
     }
 
@@ -100,7 +100,7 @@ object AppSettings {
      *
      * @param string The JSON string to deserialize.
      */
-    fun deserialize(string: String) {
+    public fun deserialize(string: String) {
         configuration = Json.decodeFromString<ConfigurationCatalog>(string = string)
     }
 }

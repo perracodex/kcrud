@@ -13,15 +13,15 @@ import org.jetbrains.exposed.sql.kotlin.datetime.datetime
 /**
  * Base class for database tables holding entities with creation and modification timestamps.
  */
-open class TimestampedTable(name: String) : Table(name = name) {
+public open class TimestampedTable(name: String) : Table(name = name) {
 
     /** The timestamp when the record was created. */
-    val createdAt: Column<KLocalDateTime> = datetime(
+    public val createdAt: Column<KLocalDateTime> = datetime(
         name = "created_at"
     ).defaultExpression(defaultValue = CurrentDateTime)
 
     /** The timestamp when the record was last updated.  */
-    val updatedAt: Column<KLocalDateTime> = datetime(
+    public val updatedAt: Column<KLocalDateTime> = datetime(
         name = "updated_at"
     ).defaultExpression(defaultValue = CurrentDateTime)
 }

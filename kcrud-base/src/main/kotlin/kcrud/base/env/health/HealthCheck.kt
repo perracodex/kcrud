@@ -26,7 +26,7 @@ import kotlinx.serialization.Serializable
  */
 @OptIn(HealthCheckAPI::class)
 @Serializable
-data class HealthCheck(
+public data class HealthCheck(
     val health: MutableList<String>,
     val application: ApplicationCheck,
     val database: DatabaseCheck,
@@ -37,7 +37,7 @@ data class HealthCheck(
     val security: SecurityCheck,
     val snowflake: SnowflakeCheck
 ) {
-    constructor(call: ApplicationCall?) : this(
+    internal constructor(call: ApplicationCall?) : this(
         health = mutableListOf(),
         application = ApplicationCheck(),
         database = DatabaseService.getHealthCheck(),

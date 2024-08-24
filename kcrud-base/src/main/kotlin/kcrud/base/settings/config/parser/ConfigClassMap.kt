@@ -20,7 +20,7 @@ import kotlin.reflect.KClass
  * @see ConfigurationCatalog
  */
 @ConfigurationAPI
-data class ConfigClassMap<T : IConfigSection>(
+internal data class ConfigClassMap<T : IConfigSection>(
     val mappingName: String,
     val path: String,
     val kClass: KClass<T>

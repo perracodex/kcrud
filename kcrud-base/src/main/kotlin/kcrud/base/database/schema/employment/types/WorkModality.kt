@@ -11,7 +11,7 @@ import kcrud.base.persistence.utils.IEnumWithId
  *
  * @property id The unique identifier of the work modality.
  */
-enum class WorkModality(override val id: Int) : IEnumWithId {
+public enum class WorkModality(override val id: Int) : IEnumWithId {
     /** The employee works on-site premises. */
     ON_SITE(id = 100),
 
@@ -21,7 +21,7 @@ enum class WorkModality(override val id: Int) : IEnumWithId {
     /** The employee works in a hybrid modality, so both on-site and remotely. */
     HYBRID(id = 102);
 
-    companion object {
+    internal companion object {
         private val map: Map<Int, WorkModality> = WorkModality.entries.associateBy(WorkModality::id)
 
         /**

@@ -19,7 +19,7 @@ import kcrud.base.persistence.utils.IEnumWithId
  *
  * @see RbacScope
  */
-enum class RbacAccessLevel(override val id: Int) : IEnumWithId {
+public enum class RbacAccessLevel(override val id: Int) : IEnumWithId {
     /** No access rights to a scope. */
     NONE(id = 0),
 
@@ -40,7 +40,7 @@ enum class RbacAccessLevel(override val id: Int) : IEnumWithId {
      * @param requiredAccessLevel The [RbacAccessLevel] to be compared against the current access level.
      * @return True if the current access level has sufficient privileges for the required one, False otherwise.
      */
-    fun hasSufficientPrivileges(requiredAccessLevel: RbacAccessLevel): Boolean {
+    public fun hasSufficientPrivileges(requiredAccessLevel: RbacAccessLevel): Boolean {
         return when (this) {
             FULL -> true // Full level encompasses all privileges.
             VIEW -> (requiredAccessLevel == VIEW)
@@ -48,7 +48,7 @@ enum class RbacAccessLevel(override val id: Int) : IEnumWithId {
         }
     }
 
-    companion object {
+    internal companion object {
         private val map: Map<Int, RbacAccessLevel> = RbacAccessLevel.entries.associateBy(RbacAccessLevel::id)
 
         /**

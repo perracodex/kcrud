@@ -21,7 +21,7 @@ import kotlin.time.Duration.Companion.nanoseconds
  *
  * See: [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)
  */
-object SnowflakeFactory {
+public object SnowflakeFactory {
     private val tracer = Tracer<SnowflakeFactory>()
 
     private const val NO_MACHINE_ID: Int = Int.MIN_VALUE
@@ -83,14 +83,14 @@ object SnowflakeFactory {
      * Utilized in `newTimestamp()` to compute stable millisecond timestamps,
      * combining with elapsed time since initialization for adjustment-resilient values.
      */
-    val timestampEpoch: Long = System.currentTimeMillis()
+    public val timestampEpoch: Long = System.currentTimeMillis()
 
     /**
      * Nanosecond-precision timestamp recorded at SnowflakeFactory initialization.
      * Used alongside System.currentTimeMillis() in `newTimestamp()` to ensure
      * monotonically increasing timestamps, immune to system clock modifications.
      */
-    val nanoTimeStart: Long = System.nanoTime()
+    public val nanoTimeStart: Long = System.nanoTime()
 
     /**
      * Sets the machine ID used to generate the Snowflake ID.
@@ -99,7 +99,7 @@ object SnowflakeFactory {
      * @param id The machine ID to use for generating Snowflake IDs.
      * @throws IllegalArgumentException If the machine ID is outside the allowable range.
      */
-    fun setMachineId(id: Int) {
+    public fun setMachineId(id: Int) {
         require(id in 0..MAX_MACHINE_ID) { "The Machine ID must be between 0 and $MAX_MACHINE_ID" }
         machineId = id
     }
@@ -111,7 +111,7 @@ object SnowflakeFactory {
      * @throws IllegalStateException If the system clock has moved backwards, breaking the ID sequence.
      */
     @Synchronized
-    fun nextId(): String {
+    public fun nextId(): String {
         var currentTimestampMs: Long = newTimestamp()
 
         // Check for invalid system clock settings.
@@ -159,7 +159,7 @@ object SnowflakeFactory {
      * @param id The Snowflake ID to parse.
      * @return SnowflakeData containing the ID segments.
      */
-    fun parse(id: String): SnowflakeData {
+    public fun parse(id: String): SnowflakeData {
         val normalizedId: Long = id.toLong(radix = ALPHA_NUMERIC_BASE)
 
         // Extract the machine ID segment.

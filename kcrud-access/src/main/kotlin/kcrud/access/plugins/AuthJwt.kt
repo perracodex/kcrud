@@ -31,7 +31,7 @@ import kcrud.base.settings.AppSettings
  *
  * See: [Ktor JWT Authentication Documentation](https://ktor.io/docs/server-jwt.html)
  */
-fun Application.configureJwtAuthentication() {
+public fun Application.configureJwtAuthentication() {
 
     authentication {
         jwt(name = AppSettings.security.jwtAuth.providerName) {

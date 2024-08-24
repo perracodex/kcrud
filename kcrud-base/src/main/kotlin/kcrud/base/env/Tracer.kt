@@ -14,47 +14,47 @@ import kotlin.reflect.jvm.javaMethod
  * A simple tracer wrapper to provide a consistent logging interface.
  */
 @Suppress("unused")
-class Tracer(private val logger: Logger) {
+public class Tracer(private val logger: Logger) {
 
     /**
      * Logs a trace message with no severity level.
      */
-    fun trace(message: String) {
+    public fun trace(message: String) {
         logger.trace(message)
     }
 
     /**
      * Logs a message with debug severity level.
      */
-    fun debug(message: String) {
+    public fun debug(message: String) {
         logger.debug(message)
     }
 
     /**
      * Logs a message with info severity level.
      */
-    fun info(message: String) {
+    public fun info(message: String) {
         logger.info(message)
     }
 
     /**
      * Logs a message with warning severity level.
      */
-    fun warning(message: String) {
+    public fun warning(message: String) {
         logger.warn(message)
     }
 
     /**
      * Logs a message with error severity level.
      */
-    fun error(message: String) {
+    public fun error(message: String) {
         logger.error(message)
     }
 
     /**
      * Logs a message with error severity level and an associated throwable.
      */
-    fun error(message: String? = "Unexpected Exception", throwable: Throwable) {
+    public fun error(message: String? = "Unexpected Exception", throwable: Throwable) {
         logger.error(message, throwable)
     }
 
@@ -71,7 +71,7 @@ class Tracer(private val logger: Logger) {
      *
      * @param message The message to log indicating the context or operation that needs attention.
      */
-    fun withSeverity(message: String) {
+    public fun withSeverity(message: String) {
         when (val environment = AppSettings.runtime.environment) {
             EnvironmentType.PROD -> error("ATTENTION: '$environment' environment >> $message")
             EnvironmentType.STAGING -> warning("ATTENTION: '$environment' environment >> $message")
@@ -79,9 +79,9 @@ class Tracer(private val logger: Logger) {
         }
     }
 
-    companion object {
+    public companion object {
         /** Toggle for full package name or simple name. */
-        const val LOG_FULL_PACKAGE: Boolean = true
+        public const val LOG_FULL_PACKAGE: Boolean = true
 
         /**
          * Creates a new [Tracer] instance for a given class.
@@ -90,7 +90,7 @@ class Tracer(private val logger: Logger) {
          * @param T The class for which the logger is being created.
          * @return Tracer instance with a logger named after the class.
          */
-        inline operator fun <reified T : Any> invoke(): Tracer {
+        public inline operator fun <reified T : Any> invoke(): Tracer {
             val loggerName: String = if (LOG_FULL_PACKAGE) {
                 T::class.qualifiedName ?: T::class.simpleName ?: "UnknownClass"
             } else {
@@ -106,7 +106,7 @@ class Tracer(private val logger: Logger) {
          * @param ref The source reference to the top-level or extension function.
          * @return Tracer instance named after the function and its declaring class (if available).
          */
-        operator fun <T> invoke(ref: KFunction<T>): Tracer {
+        public operator fun <T> invoke(ref: KFunction<T>): Tracer {
             val loggerName = if (LOG_FULL_PACKAGE) {
                 "${ref.javaMethod?.declaringClass?.name ?: "Unknown"}.${ref.name}"
             } else {

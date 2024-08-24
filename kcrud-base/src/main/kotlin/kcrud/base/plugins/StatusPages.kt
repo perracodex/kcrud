@@ -23,7 +23,7 @@ import kotlinx.serialization.json.Json
  *
  * See: [Ktor Status Pages Documentation](https://ktor.io/docs/server-status-pages.html)
  */
-fun Application.configureStatusPages() {
+public fun Application.configureStatusPages() {
     val tracer = Tracer<Application>()
 
     install(plugin = StatusPages) {

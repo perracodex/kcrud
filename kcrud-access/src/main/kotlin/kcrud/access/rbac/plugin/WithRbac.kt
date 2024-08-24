@@ -19,7 +19,7 @@ import kcrud.base.settings.AppSettings
  * @return The created Route object configured with RBAC constraints.
  */
 @OptIn(RbacAPI::class)
-fun Route.withRbac(scope: RbacScope, accessLevel: RbacAccessLevel, build: Route.() -> Unit): Route {
+public fun Route.withRbac(scope: RbacScope, accessLevel: RbacAccessLevel, build: Route.() -> Unit): Route {
     return if (AppSettings.security.rbac.isEnabled)
         rbacAuthorizedRoute(scope = scope, accessLevel = accessLevel, build = build)
     else

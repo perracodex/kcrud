@@ -19,7 +19,7 @@ import kcrud.base.persistence.utils.IEnumWithId
  *
  * @see RbacAccessLevel
  */
-enum class RbacScope(override val id: Int) : IEnumWithId {
+public enum class RbacScope(override val id: Int) : IEnumWithId {
     /** Admin scope, allows access to all other scopes. */
     RBAC_ADMIN(id = 100),
 
@@ -35,7 +35,7 @@ enum class RbacScope(override val id: Int) : IEnumWithId {
     /** Employee employment records scope, allows access to the employee employment records. */
     EMPLOYMENT_RECORDS(id = 104);
 
-    companion object {
+    internal companion object {
         private val map: Map<Int, RbacScope> = RbacScope.entries.associateBy(RbacScope::id)
 
         /**

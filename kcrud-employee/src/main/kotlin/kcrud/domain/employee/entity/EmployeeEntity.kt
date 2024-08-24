@@ -32,7 +32,7 @@ import kotlin.uuid.toKotlinUuid
  * @property meta The metadata of the record.
  */
 @Serializable
-data class EmployeeEntity(
+public data class EmployeeEntity(
     val id: UuidS,
     val firstName: String,
     val lastName: String,
@@ -44,14 +44,14 @@ data class EmployeeEntity(
     val contact: ContactEntity?,
     val meta: Meta
 ) {
-    companion object {
+    public companion object {
         /**
          * Maps a [ResultRow] to a [EmployeeEntity] instance.
          *
          * @param row The [ResultRow] to map.
          * @return The mapped [EmployeeEntity] instance.
          */
-        fun from(row: ResultRow): EmployeeEntity {
+        public fun from(row: ResultRow): EmployeeEntity {
             val contact: ContactEntity? = row.getOrNull(ContactTable.id)?.let {
                 ContactEntity.from(row = row)
             }

@@ -17,7 +17,7 @@ import kotlinx.serialization.Serializable
  * @property scopeRules The list of [RbacScopeRuleEntity] entries for the role.
  */
 @Serializable
-data class RbacRoleRequest(
+public data class RbacRoleRequest(
     val roleName: String,
     val description: String? = null,
     val isSuper: Boolean,

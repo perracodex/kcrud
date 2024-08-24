@@ -8,6 +8,6 @@ package kcrud.domain
  * Main function for the domain module.
  * This module is not executable. Execute the application server module instead.
  */
-fun main() {
+public fun main() {
     println("Employee module. Execute the application server module instead.")
 }

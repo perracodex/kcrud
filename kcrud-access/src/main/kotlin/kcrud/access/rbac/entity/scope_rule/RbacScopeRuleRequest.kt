@@ -23,7 +23,7 @@ import kotlinx.serialization.Serializable
  * @property fieldRules The list of [RbacFieldRuleRequest] for the scope. Or null if there are no field rules.
  */
 @Serializable
-data class RbacScopeRuleRequest(
+public data class RbacScopeRuleRequest(
     val scope: RbacScope,
     val accessLevel: RbacAccessLevel,
     val fieldRules: List<RbacFieldRuleRequest>? = null

@@ -20,7 +20,7 @@ import kotlinx.serialization.Serializable
  */
 @HealthCheckAPI
 @Serializable
-data class SnowflakeCheck(
+public data class SnowflakeCheck(
     val errors: MutableList<String> = mutableListOf(),
     var testId: String? = null,
     var testResult: SnowflakeData? = null,

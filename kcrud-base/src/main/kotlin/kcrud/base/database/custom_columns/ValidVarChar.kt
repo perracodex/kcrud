@@ -21,7 +21,7 @@ import org.jetbrains.exposed.sql.VarCharColumnType
  * @param validator An instance of [IValidator] for validating the column data.
  * @return A [Column]<[String]> representing a VARCHAR column with custom validation.
  */
-fun Table.validVarChar(
+internal fun Table.validVarChar(
     name: String,
     textLength: Int,
     validator: IValidator

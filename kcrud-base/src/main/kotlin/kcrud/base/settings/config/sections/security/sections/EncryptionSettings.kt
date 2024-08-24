@@ -15,7 +15,7 @@ import kotlinx.serialization.Serializable
  * @property atTransit Settings related to encryption in transit.
  */
 @Serializable
-data class EncryptionSettings(
+public data class EncryptionSettings(
     val atRest: Spec,
     val atTransit: Spec
 ) : IConfigSection {
@@ -29,7 +29,7 @@ data class EncryptionSettings(
      * @property sign Signature key to sign the encrypted data.
      */
     @Serializable
-    data class Spec(
+    public data class Spec(
         val algorithm: String,
         val salt: String,
         val key: String,

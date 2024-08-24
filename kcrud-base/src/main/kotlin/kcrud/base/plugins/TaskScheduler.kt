@@ -21,7 +21,7 @@ import kcrud.base.scheduler.service.core.SchedulerService
  *
  * @see SchedulerService
  */
-fun Application.configureTaskScheduler() {
+public fun Application.configureTaskScheduler() {
 
     install(plugin = SchedulerPlugin) {
         autoStart = true

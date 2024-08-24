@@ -25,13 +25,13 @@ import kotlinx.serialization.Serializable
  */
 @HealthCheckAPI
 @Serializable
-data class DeploymentCheck(
+public data class DeploymentCheck(
     val errors: MutableList<String>,
     val configured: Configured,
     val serverSpec: ServerSpec,
     val connectors: MutableMap<String, List<String>>,
 ) {
-    constructor(call: ApplicationCall?) : this(
+    internal constructor(call: ApplicationCall?) : this(
         errors = mutableListOf(),
         configured = Configured(),
         serverSpec = ServerSpec(call = call),
@@ -48,7 +48,7 @@ data class DeploymentCheck(
      * @property allowedHosts The list of allowed hosts configured in CORS.
      */
     @Serializable
-    data class Configured(
+    public data class Configured(
         val protocol: String = NetworkUtils.getProtocol().name,
         val port: Int = AppSettings.deployment.port,
         val sslPort: Int = AppSettings.deployment.sslPort,
@@ -70,7 +70,7 @@ data class DeploymentCheck(
      * @property scheme The scheme of the request, for example, "http" or "https".
      */
     @Serializable
-    data class ServerSpec(
+    public data class ServerSpec(
         val serverHost: String?,
         val serverPort: Int?,
         val localHost: String?,
@@ -81,7 +81,7 @@ data class DeploymentCheck(
         val httpVersion: String?,
         val scheme: String?
     ) {
-        constructor(call: ApplicationCall?) : this(
+        internal constructor(call: ApplicationCall?) : this(
             serverHost = call?.request?.local?.serverHost,
             serverPort = call?.request?.local?.serverPort,
             localHost = call?.request?.local?.localHost,

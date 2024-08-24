@@ -20,11 +20,11 @@ import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
  *
  * See: [Micrometer Prometheus](https://micrometer.io/docs/registry/prometheus)
  */
-object MetricsRegistry {
+public object MetricsRegistry {
     /**
      * The [PrometheusMeterRegistry] instance used to manage metrics.
      */
-    val registry: PrometheusMeterRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT).apply {
+    internal val registry: PrometheusMeterRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT).apply {
         config()
             .meterFilter(MeterFilter.deny { id ->
                 id.name == "ktor.http.server.requests" && id.getTag("route") == "/rbac"
@@ -38,7 +38,7 @@ object MetricsRegistry {
      * @param description The description of the counter.
      * @return The registered counter.
      */
-    fun registerCounter(name: String, description: String): Counter =
+    public fun registerCounter(name: String, description: String): Counter =
         Counter.builder(name).description(description).register(registry)
 
     /**
@@ -48,12 +48,12 @@ object MetricsRegistry {
      * @param description The description of the timer.
      * @return The registered timer.
      */
-    fun registerTimer(name: String, description: String): Timer =
+    public fun registerTimer(name: String, description: String): Timer =
         Timer.builder(name).description(description).register(registry)
 
     /**
      * Returns the metrics content in Prometheus text format for the response body
      * of an endpoint designated for Prometheus to scrape.
      */
-    fun scrape(): String = registry.scrape()
+    public fun scrape(): String = registry.scrape()
 }

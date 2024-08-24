@@ -13,7 +13,7 @@ import kcrud.base.persistence.validators.IValidator
 /**
  * Verifies if a phone number is in the correct format.
  */
-object PhoneValidator : IValidator {
+public object PhoneValidator : IValidator {
     private val tracer = Tracer<PhoneValidator>()
 
     override fun <T> validate(value: T): IValidator.Result {

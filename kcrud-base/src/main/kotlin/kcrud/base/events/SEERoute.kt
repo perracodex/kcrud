@@ -16,7 +16,7 @@ import io.ktor.server.routing.*
  * for content type and cache control to ensure real-time updates are
  * sent to the client.
  */
-fun Route.sseRoute() {
+public fun Route.sseRoute() {
 
     // Server-Sent Events (SSE) endpoint.
     get("/events") {

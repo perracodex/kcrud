@@ -13,7 +13,7 @@ import kcrud.base.persistence.utils.IEnumWithId
  *
  * @property id The unique identifier of the honorific.
  */
-enum class Honorific(override val id: Int) : IEnumWithId {
+public enum class Honorific(override val id: Int) : IEnumWithId {
     /** Honorific for Mister. */
     MR(id = 100),
 
@@ -32,7 +32,7 @@ enum class Honorific(override val id: Int) : IEnumWithId {
     /** Unknown honorific. */
     UNKNOWN(id = 105);
 
-    companion object {
+    internal companion object {
         private val map: Map<Int, Honorific> = Honorific.entries.associateBy(Honorific::id)
 
         /**

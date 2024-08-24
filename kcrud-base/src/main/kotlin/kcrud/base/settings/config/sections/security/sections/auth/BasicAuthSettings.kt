@@ -14,7 +14,7 @@ import kotlinx.serialization.Serializable
  * @property realm Security realm for the HTTP authentication, used to differentiate between protection spaces.
  */
 @Serializable
-data class BasicAuthSettings(
+public data class BasicAuthSettings(
     val providerName: String,
     val realm: String,
 ) : IConfigSection

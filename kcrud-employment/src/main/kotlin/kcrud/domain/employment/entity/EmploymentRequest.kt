@@ -20,7 +20,7 @@ import kotlinx.serialization.Serializable
  * @property workModality The employment's work modality.
  */
 @Serializable
-data class EmploymentRequest(
+public data class EmploymentRequest(
     val period: Period,
     val status: EmploymentStatus,
     val probationEndDate: KLocalDate? = null,

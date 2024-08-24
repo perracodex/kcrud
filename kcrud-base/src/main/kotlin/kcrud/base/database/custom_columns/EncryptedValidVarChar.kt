@@ -19,7 +19,7 @@ import org.jetbrains.exposed.sql.Table
  * @param validator Validator to ensure data integrity.
  * @return Encrypted and validated column of type [Column]<[String]>.
  */
-fun Table.encryptedValidVarChar(
+internal fun Table.encryptedValidVarChar(
     name: String,
     cipherTextLength: Int,
     encryptor: Encryptor,

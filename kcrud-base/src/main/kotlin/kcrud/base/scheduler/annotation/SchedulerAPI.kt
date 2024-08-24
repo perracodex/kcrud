@@ -9,4 +9,4 @@ package kcrud.base.scheduler.annotation
  */
 @RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Scheduler API.")
 @Retention(AnnotationRetention.BINARY)
-annotation class SchedulerAPI
+internal annotation class SchedulerAPI

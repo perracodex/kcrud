@@ -9,4 +9,4 @@ package kcrud.base.settings.annotation
  */
 @RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Configuration API.")
 @Retention(AnnotationRetention.BINARY)
-annotation class ConfigurationAPI
+internal annotation class ConfigurationAPI

@@ -23,7 +23,7 @@ import kcrud.base.settings.config.sections.security.sections.EncryptionSettings
  *
  * See: [Sessions](https://ktor.io/docs/server-sessions.html)
  */
-fun Application.configureSessions() {
+public fun Application.configureSessions() {
 
     val spec: EncryptionSettings.Spec = AppSettings.security.encryption.atTransit
     val encryptionKey: ByteArray = spec.key.toByteKey(length = 16)

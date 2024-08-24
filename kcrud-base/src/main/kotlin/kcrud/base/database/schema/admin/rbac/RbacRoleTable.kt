@@ -16,18 +16,18 @@ import java.util.*
  *
  * @see RbacScopeRuleTable
  */
-object RbacRoleTable : TimestampedTable(name = "rbac_role") {
+public object RbacRoleTable : TimestampedTable(name = "rbac_role") {
     /**
      * The unique id of the role record.
      */
-    val id: Column<UUID> = uuid(
+    public val id: Column<UUID> = uuid(
         name = "role_id"
     ).autoGenerate()
 
     /**
      * The unique name of the role.
      */
-    val role_name: Column<String> = varchar(
+    public val role_name: Column<String> = varchar(
         name = "role_name",
         length = 64
     )
@@ -35,7 +35,7 @@ object RbacRoleTable : TimestampedTable(name = "rbac_role") {
     /**
      * Optional description of the role.
      */
-    val description: Column<String?> = varchar(
+    public val description: Column<String?> = varchar(
         name = "description",
         length = 512
     ).nullable()
@@ -43,7 +43,7 @@ object RbacRoleTable : TimestampedTable(name = "rbac_role") {
     /**
      * Whether this is a super-role, in which case it has all permissions granted.
      */
-    val isSuper: Column<Boolean> = bool(
+    public val isSuper: Column<Boolean> = bool(
         name = "is_super"
     )
 

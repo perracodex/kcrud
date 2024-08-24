@@ -16,7 +16,7 @@ import kcrud.base.env.SessionContext
  * The route for logging out of the RBAC admin panel.
  */
 @RbacAPI
-fun Route.rbacLogoutRoute() {
+internal fun Route.rbacLogoutRoute() {
     post("rbac/logout") {
         call.sessions.clear(name = SessionContext.SESSION_NAME)
         call.respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)

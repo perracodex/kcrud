@@ -18,7 +18,7 @@ import kotlinx.serialization.Serializable
  * @property maritalStatus The marital status of the employee.
  */
 @Serializable
-data class EmployeeFilterSet(
+public data class EmployeeFilterSet(
     val firstName: String? = null,
     val lastName: String? = null,
     val honorific: List<Honorific>? = null,

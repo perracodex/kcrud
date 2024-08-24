@@ -20,13 +20,13 @@ import kotlin.uuid.toKotlinUuid
  * @property meta The metadata of the record.
  */
 @Serializable
-data class ContactEntity(
+public data class ContactEntity(
     val id: UuidS,
     val email: String,
     val phone: String,
     val meta: Meta
 ) {
-    companion object {
+    internal companion object {
         /**
          * Maps a [ResultRow] to a [ContactEntity] instance.
          *

@@ -13,7 +13,7 @@ import kcrud.base.scheduler.service.core.SchedulerService
 /**
  * Returns the state of the task scheduler.
  */
-fun Route.schedulerStateRoute() {
+internal fun Route.schedulerStateRoute() {
     // Returns the state of the task scheduler.
     get("state") {
         val state: SchedulerService.TaskSchedulerState = SchedulerService.state()

@@ -4,7 +4,6 @@
 
 package kcrud.domain.employee.entity
 
-import kcrud.base.database.custom_columns.validVarChar
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
 import kcrud.base.persistence.serializers.NoBlankString
@@ -22,7 +21,7 @@ import kotlinx.serialization.Serializable
  * Note that the project also includes examples demonstrating how perform verifications
  * at service level or database field level, instead of using serializers.
  * Such validation variants can send to the client a more detailed error than
- * would do a serializer. See: [EmployeeError], [validVarChar]
+ * would do a serializer. See: [EmployeeError]
  *
  * @property firstName The first name of the employee. Must not be blank.
  * @property lastName The last name of the employee. Must not be blank.
@@ -32,7 +31,7 @@ import kotlinx.serialization.Serializable
  * @property contact Optional contact details of the employee.
  */
 @Serializable
-data class EmployeeRequest(
+public data class EmployeeRequest(
     val firstName: NoBlankString,
     val lastName: NoBlankString,
     val dob: KLocalDate,

@@ -14,7 +14,7 @@ import kotlin.uuid.Uuid
  *
  * @see RbacScopeRuleRequest
  */
-interface IRbacScopeRuleRepository {
+internal interface IRbacScopeRuleRepository {
 
     /**
      * Updates an existing role with the given set of [RbacScopeRuleRequest] entries.

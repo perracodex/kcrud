@@ -26,7 +26,7 @@ import kotlinx.serialization.Serializable
  * @property security The security settings for the application.
  */
 @Serializable
-data class ConfigurationCatalog(
+public data class ConfigurationCatalog(
     val apiSchema: ApiSchemaSettings,
     val cors: CorsSettings,
     val database: DatabaseSettings,

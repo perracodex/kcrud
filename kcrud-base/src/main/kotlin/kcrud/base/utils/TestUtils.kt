@@ -19,12 +19,12 @@ import kotlin.random.Random
 /**
  * Common utilities for unit testing.
  */
-object TestUtils {
+public object TestUtils {
 
     /**
      * Loads the application settings for testing.
      */
-    fun loadSettings() {
+    public fun loadSettings() {
         val testConfig = ApplicationConfig(configPath = "application.conf")
 
         AppSettings.load(applicationConfig = testConfig)
@@ -33,7 +33,7 @@ object TestUtils {
     /**
      * Sets up the database for testing.
      */
-    fun setupDatabase() {
+    public fun setupDatabase() {
         DatabaseService.init(settings = AppSettings.database) {
             addTable(table = ContactTable)
             addTable(table = EmployeeTable)
@@ -45,7 +45,7 @@ object TestUtils {
      *
      * @param modules The modules to load.
      */
-    fun setupKoin(modules: List<Module> = emptyList()) {
+    public fun setupKoin(modules: List<Module> = emptyList()) {
         startKoin {
             modules(modules)
         }
@@ -54,7 +54,7 @@ object TestUtils {
     /**
      * Tears down the testing environment.
      */
-    fun tearDown() {
+    public fun tearDown() {
         stopKoin()
 
         DatabaseService.close()
@@ -68,7 +68,7 @@ object TestUtils {
     /**
      * Generates a random phone number.
      */
-    fun randomPhoneNumber(): String {
+    public fun randomPhoneNumber(): String {
         val phoneSuffix: Int = (111..999).random()
         return "+34611222$phoneSuffix"
     }
@@ -76,7 +76,7 @@ object TestUtils {
     /**
      * Generates a random email.
      */
-    fun randomDob(): KLocalDate {
+    public fun randomDob(): KLocalDate {
         val year: Int = (1960..2000).random()
         val month: Int = (1..12).random()
         val day: Int = (1..28).random()
@@ -88,7 +88,7 @@ object TestUtils {
      *
      * @param threshold The threshold date to start generating [Period]s from.
      */
-    fun randomPeriod(threshold: KLocalDate): Period {
+    public fun randomPeriod(threshold: KLocalDate): Period {
         val startYear: Int = threshold.year + 18 + Random.nextInt(from = 0, until = 5)
         val startMonth: Int = Random.nextInt(from = 1, until = 13)
         val startDay: Int = Random.nextInt(from = 1, until = 29)
@@ -118,7 +118,7 @@ object TestUtils {
     /**
      * Generates a random actor name.
      */
-    fun randomName(): String {
+    public fun randomName(): String {
         val beginning: List<String> = listOf("Bel", "Nar", "Jen", "Mar", "Car", "Dan", "El", "San", "Chi", "Am")
         val middle: List<String> = listOf("li", "ven", "na", "la", "son", "fer", "man", "der", "tan", "ron")
         val end: List<String> = listOf("a", "o", "y", "e", "n", "d", "r", "th", "s", "m")

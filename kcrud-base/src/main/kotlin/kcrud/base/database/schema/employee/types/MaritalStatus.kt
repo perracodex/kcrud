@@ -8,7 +8,7 @@ package kcrud.base.database.schema.employee.types
  * Example of employee marital status. Ideally these should be defined
  * at database level instead of being hardcoded.
  */
-enum class MaritalStatus {
+public enum class MaritalStatus {
     /** Married marital status. */
     MARRIED,
 

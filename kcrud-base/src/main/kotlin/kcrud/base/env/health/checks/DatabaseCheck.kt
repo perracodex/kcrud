@@ -27,7 +27,7 @@ import org.jetbrains.exposed.sql.vendors.currentDialect
  */
 @HealthCheckAPI
 @Serializable
-data class DatabaseCheck(
+public data class DatabaseCheck(
     val errors: MutableList<String>,
     val alive: Boolean,
     val datasource: Datasource?,
@@ -35,7 +35,7 @@ data class DatabaseCheck(
     val configuration: Configuration,
     val tables: List<String>
 ) {
-    constructor(alive: Boolean, connectionTest: ConnectionTest?, datasource: Datasource?, tables: List<String>) : this(
+    internal constructor(alive: Boolean, connectionTest: ConnectionTest?, datasource: Datasource?, tables: List<String>) : this(
         errors = mutableListOf(),
         alive = alive,
         connectionTest = connectionTest,
@@ -84,7 +84,7 @@ data class DatabaseCheck(
      * @property catalog The name of the connection's catalog.
      */
     @Serializable
-    data class ConnectionTest(
+    public data class ConnectionTest(
         val established: Boolean,
         val isReadOnly: Boolean,
         val name: String,
@@ -101,9 +101,9 @@ data class DatabaseCheck(
          * @property output The [ConnectionTest] object if the test was successful.
          * @property error The error message if the test failed.
          */
-        data class Result(val output: ConnectionTest?, val error: String?)
+        internal data class Result(val output: ConnectionTest?, val error: String?)
 
-        companion object {
+        internal companion object {
             /**
              * Builds a [ConnectionTest] object from a [Database] object.
              *
@@ -152,7 +152,7 @@ data class DatabaseCheck(
      * @property maxPoolSize Maximum number of connections kept in the pool, including both idle and in-use connections.
      */
     @Serializable
-    data class Datasource(
+    public data class Datasource(
         val isPoolRunning: Boolean,
         val totalConnections: Int,
         val activeConnections: Int,
@@ -163,7 +163,7 @@ data class DatabaseCheck(
         val keepaliveTime: Long,
         val maxPoolSize: Int
     ) {
-        companion object {
+        internal companion object {
             /**
              * Builds a [Datasource] instance from a [HikariDataSource] source.
              *
@@ -199,7 +199,7 @@ data class DatabaseCheck(
      * @property jdbcUrl The JDBC url database connection.
      */
     @Serializable
-    data class Configuration(
+    public data class Configuration(
         val poolSize: Int = AppSettings.database.connectionPoolSize,
         val connectionTimeout: Long = AppSettings.database.connectionPoolTimeoutMs,
         val transactionRetryAttempts: Int = AppSettings.database.transactionMaxAttempts,

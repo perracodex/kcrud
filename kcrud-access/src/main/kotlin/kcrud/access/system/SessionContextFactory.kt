@@ -22,7 +22,7 @@ import org.koin.core.component.inject
 /**
  * Factory class for creating [SessionContext] instances.
  */
-object SessionContextFactory : KoinComponent {
+internal object SessionContextFactory : KoinComponent {
     private val tracer = Tracer<SessionContextFactory>()
 
     /**

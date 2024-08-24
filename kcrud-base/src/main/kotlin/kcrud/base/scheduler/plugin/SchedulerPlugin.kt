@@ -12,14 +12,14 @@ import kcrud.base.scheduler.service.core.SchedulerService
  *
  * @property autoStart Whether the scheduler should start automatically after configuration.
  */
-class SchedulerPluginConfig {
+internal class SchedulerPluginConfig {
     var autoStart: Boolean = false
 }
 
 /**
  * Custom Ktor plugin to configure the task scheduler.
  */
-val SchedulerPlugin: ApplicationPlugin<SchedulerPluginConfig> = createApplicationPlugin(
+internal val SchedulerPlugin: ApplicationPlugin<SchedulerPluginConfig> = createApplicationPlugin(
     name = "SchedulerPlugin",
     ::SchedulerPluginConfig
 ) {

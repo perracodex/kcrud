@@ -19,7 +19,7 @@ import kcrud.base.settings.AppSettings
  * enhancements could include more complex health checks, like database connectivity,
  * external service availability, or other critical component checks.
  */
-fun Route.healthCheckRoute() {
+public fun Route.healthCheckRoute() {
     authenticate(AppSettings.security.basicAuth.providerName, optional = !AppSettings.security.isEnabled) {
         // Healthcheck providing the current operational status.
         get("/health") {

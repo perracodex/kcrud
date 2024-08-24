@@ -23,21 +23,21 @@ import kotlin.uuid.toKotlinUuid
  * @property meta The metadata of the record.
  */
 @Serializable
-data class RbacFieldRuleEntity(
+public data class RbacFieldRuleEntity(
     val id: UuidS,
     val scopeRuleId: UuidS,
     val fieldName: String,
     val accessLevel: RbacAccessLevel,
     val meta: Meta
 ) {
-    companion object {
+    public companion object {
         /**
          * Maps a [ResultRow] to a [RbacFieldRuleEntity] instance.
          *
          * @param row The [ResultRow] to map.
          * @return The mapped [RbacFieldRuleEntity] instance.
          */
-        fun from(row: ResultRow): RbacFieldRuleEntity {
+        public fun from(row: ResultRow): RbacFieldRuleEntity {
             return RbacFieldRuleEntity(
                 id = row[RbacFieldRuleTable.id].toKotlinUuid(),
                 scopeRuleId = row[RbacFieldRuleTable.scopeRuleId].toKotlinUuid(),

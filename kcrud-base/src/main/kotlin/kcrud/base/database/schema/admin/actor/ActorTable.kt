@@ -23,20 +23,20 @@ import java.util.*
  * It could be improved further by using our custom [encryptedValidVarChar] to add
  * some minimal validation constraints for all passwords.
  */
-object ActorTable : TimestampedTable(name = "actor") {
+public object ActorTable : TimestampedTable(name = "actor") {
     private val encryptor: Encryptor = EncryptionUtils.getEncryptor(type = EncryptionUtils.Type.AT_REST)
 
     /**
      * The unique id of the Actor record.
      */
-    val id: Column<UUID> = uuid(
+    public val id: Column<UUID> = uuid(
         name = "actor_id"
     ).autoGenerate()
 
     /**
      * The actor's unique username.
      */
-    val username: Column<String> = varchar(
+    public val username: Column<String> = varchar(
         name = "username",
         length = 16
     )
@@ -44,7 +44,7 @@ object ActorTable : TimestampedTable(name = "actor") {
     /**
      * The actor's encrypted password.
      */
-    val password: Column<String> = encryptedVarchar(
+    public val password: Column<String> = encryptedVarchar(
         name = "password",
         cipherTextLength = encryptor.maxColLength(inputByteSize = 128),
         encryptor = encryptor
@@ -53,7 +53,7 @@ object ActorTable : TimestampedTable(name = "actor") {
     /**
      * The associated [RbacRoleTable] id.
      */
-    val roleId: Column<UUID> = uuid(
+    public val roleId: Column<UUID> = uuid(
         name = "role_id"
     ).references(
         fkName = "fk_rbac_role__role_id",
@@ -65,7 +65,7 @@ object ActorTable : TimestampedTable(name = "actor") {
     /**
      * Whether the Actor is locked and therefore has full restricted access.
      */
-    val isLocked: Column<Boolean> = bool(
+    public val isLocked: Column<Boolean> = bool(
         name = "is_locked"
     )
 

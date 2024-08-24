@@ -26,7 +26,7 @@ import kcrud.base.settings.AppSettings
  *
  * See: [DoubleReceive](https://ktor.io/docs/server-double-receive.html).
  */
-fun Application.configureDoubleReceive() {
+public fun Application.configureDoubleReceive() {
     if (!AppSettings.runtime.doubleReceiveEnvironments.contains(AppSettings.runtime.environment)) {
         return
     }

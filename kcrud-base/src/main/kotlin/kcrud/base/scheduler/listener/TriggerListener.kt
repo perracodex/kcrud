@@ -16,7 +16,7 @@ import org.quartz.TriggerListener
  * when a task schedule trigger fires.
  */
 @SchedulerAPI
-class TriggerListener : TriggerListener {
+internal class TriggerListener : TriggerListener {
     private val tracer = Tracer<kcrud.base.scheduler.listener.TriggerListener>()
 
     /**

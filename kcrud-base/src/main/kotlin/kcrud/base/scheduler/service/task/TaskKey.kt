@@ -15,11 +15,11 @@ import org.quartz.JobKey
  * @property group The group to which the task belongs.
  */
 @Serializable
-data class TaskKey(
+public data class TaskKey(
     val name: String,
     val group: String
 ) {
-    companion object {
+    internal companion object {
         /**
          * Creates a [TaskKey] from a Quartz [JobKey].
          *

@@ -23,7 +23,7 @@ import org.jetbrains.exposed.sql.Table
  * @param validator Validates the column data.
  * @return [Column]<[String]> with specified characteristics.
  */
-fun <T : Any> Table.baseValidColumn(
+internal fun <T : Any> Table.baseValidColumn(
     name: String,
     textLength: Int,
     validator: IValidator,

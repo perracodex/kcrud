@@ -71,7 +71,8 @@ subprojects {
 
         // Enable explicit API mode for all subprojects.
         // https://github.com/Kotlin/KEEP/blob/master/proposals/explicit-api-mode.md
-        //explicitApi()
+        // https://kotlinlang.org/docs/whatsnew14.html#explicit-api-mode-for-library-authors
+        explicitApi()
     }
 
     // Defined in 'gradle.properties' file.

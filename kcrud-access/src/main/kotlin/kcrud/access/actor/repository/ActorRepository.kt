@@ -23,7 +23,7 @@ import kotlin.uuid.toKotlinUuid
  * Implementation of [IActorRepository].
  * Responsible for managing [ActorEntity] data.
  */
-class ActorRepository(private val roleRepository: IRbacRoleRepository) : IActorRepository {
+internal class ActorRepository(private val roleRepository: IRbacRoleRepository) : IActorRepository {
 
     override suspend fun findByUsername(username: String): ActorEntity? {
         return transaction {

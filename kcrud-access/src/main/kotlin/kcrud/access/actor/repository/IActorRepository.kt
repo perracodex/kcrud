@@ -11,7 +11,7 @@ import kotlin.uuid.Uuid
 /**
  * Repository responsible for [ActorEntity] data.
  */
-interface IActorRepository {
+internal interface IActorRepository {
 
     /**
      * Finds the [ActorEntity] for the given username.

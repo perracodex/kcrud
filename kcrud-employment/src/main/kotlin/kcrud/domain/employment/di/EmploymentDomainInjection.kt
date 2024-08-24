@@ -15,12 +15,12 @@ import org.koin.ktor.plugin.RequestScope
 /**
  * Employment domain dependency injection module.
  */
-object EmploymentDomainInjection {
+public object EmploymentDomainInjection {
 
     /**
      * Get the dependency injection module for the Employment domain.
      */
-    fun get(): Module {
+    public fun get(): Module {
         return module {
             // Scoped definitions within RequestScope for single request lifecycle.
             // Services receive the session context as a parameter. Repositories,

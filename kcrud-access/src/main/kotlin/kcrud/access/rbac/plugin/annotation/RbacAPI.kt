@@ -9,4 +9,4 @@ package kcrud.access.rbac.plugin.annotation
  */
 @RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the RBAC API.")
 @Retention(AnnotationRetention.BINARY)
-annotation class RbacAPI
+internal annotation class RbacAPI

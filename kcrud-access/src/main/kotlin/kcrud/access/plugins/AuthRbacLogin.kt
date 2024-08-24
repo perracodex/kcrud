@@ -24,7 +24,7 @@ import kcrud.base.env.SessionContext
  * See: [Basic Authentication Documentation](https://ktor.io/docs/server-basic-auth.html)
  */
 @OptIn(RbacAPI::class)
-fun Application.configureRbac() {
+public fun Application.configureRbac() {
 
     // Refresh the default actors.
     DefaultActorFactory.refresh()

@@ -18,11 +18,11 @@ import kotlinx.serialization.Serializable
  */
 @HealthCheckAPI
 @Serializable
-data class ApplicationCheck(
+public data class ApplicationCheck(
     val errors: MutableList<String>,
     val apiSchemaEnabled: Boolean
 ) {
-    constructor() : this(
+    internal constructor() : this(
         errors = mutableListOf(),
         apiSchemaEnabled = AppSettings.apiSchema.environments.contains(AppSettings.runtime.environment)
     )

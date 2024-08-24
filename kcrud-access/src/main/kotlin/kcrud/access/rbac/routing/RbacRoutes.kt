@@ -17,7 +17,7 @@ import kcrud.base.plugins.RateLimitScope
  * Contains the RBAC endpoints.
  */
 @OptIn(RbacAPI::class)
-fun Route.rbacRoute() {
+public fun Route.rbacRoute() {
 
     // Required so the HTML for can find its respective CSS file.
     staticResources(remotePath = "/static-rbac", basePackage = "rbac")

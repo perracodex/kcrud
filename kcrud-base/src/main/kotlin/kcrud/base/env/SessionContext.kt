@@ -28,18 +28,18 @@ import kotlinx.serialization.Serializable
  * @property schema Optional database schema to use for the session.
  */
 @Serializable
-data class SessionContext(
+public data class SessionContext(
     val actorId: UuidS,
     val username: String,
     val roleId: UuidS,
     val schema: String? = null
 ) : Principal {
-    companion object {
+    public companion object {
         /** The name of the sessions, so for cookies it will be the cookie name. */
-        const val SESSION_NAME: String = "_ctx"
+        public const val SESSION_NAME: String = "_ctx"
 
         /** The key used to store the session context in the payload claim. */
-        const val CLAIM_KEY: String = "session_context"
+        public const val CLAIM_KEY: String = "session_context"
 
         /**
          * The default empty session context instance. when security is disabled
@@ -65,7 +65,7 @@ data class SessionContext(
          * @return A [SessionContext] representing either the authenticated user
          *         or a default context when unauthenticated and security is disabled.
          */
-        fun from(call: ApplicationCall): SessionContext? {
+        public fun from(call: ApplicationCall): SessionContext? {
             return call.principal<SessionContext>()
                 ?: if (AppSettings.security.isEnabled) null else defaultEmptyInstance
         }

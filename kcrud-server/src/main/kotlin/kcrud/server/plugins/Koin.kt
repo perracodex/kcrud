@@ -16,7 +16,7 @@ import org.koin.ktor.plugin.Koin
  *
  * See: [Koin for Ktor Documentation](https://insert-koin.io/docs/quickstart/ktor)
  */
-fun Application.configureKoin() {
+internal fun Application.configureKoin() {
 
     install(plugin = Koin) {
         modules(

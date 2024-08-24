@@ -24,7 +24,7 @@ import org.quartz.JobListener
  * Micro-metrics are also exposed for external monitoring.
  */
 @SchedulerAPI
-class TaskListener : JobListener {
+internal class TaskListener : JobListener {
     private val tracer = Tracer<TaskListener>()
 
     private val taskExecutedMetric: Counter = MetricsRegistry.registerCounter(

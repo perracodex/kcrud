@@ -29,7 +29,7 @@ import kcrud.base.utils.KLocalTime
  *
  * @see [BaseRbacEntity]
  */
-object RbacFieldAnonymization {
+public object RbacFieldAnonymization {
     private const val ANONYMIZED_STRING: String = "##########"
     private const val ANONYMIZED_INT: Int = Int.MIN_VALUE
     private const val ANONYMIZED_LONG: Long = Long.MIN_VALUE
@@ -45,7 +45,7 @@ object RbacFieldAnonymization {
      * @param value The original value to be anonymized.
      * @return The anonymized value, or the original value if the field type does not match any handled type.
      */
-    fun anonymize(value: Any?): Any? {
+    public fun anonymize(value: Any?): Any? {
         return when (value) {
             is String -> ANONYMIZED_STRING
             is Int -> ANONYMIZED_INT
@@ -66,7 +66,7 @@ object RbacFieldAnonymization {
      * @param value The value to check for anonymization.
      * @return True if the value is anonymized, false otherwise.
      */
-    fun isAnonymized(value: Any?): Boolean {
+    public fun isAnonymized(value: Any?): Boolean {
         return when (value) {
             is String -> value == ANONYMIZED_STRING
             is Int -> value == ANONYMIZED_INT

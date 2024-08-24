@@ -7,7 +7,7 @@ package kcrud.base.env
 /**
  * Represents different types of deployment environments.
  */
-enum class EnvironmentType {
+public enum class EnvironmentType {
     /** Development: for software development and debugging. */
     DEV,
 

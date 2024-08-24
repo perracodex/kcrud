@@ -24,7 +24,7 @@ import org.koin.java.KoinJavaComponent.getKoin
  * The route for logging into the RBAC admin panel.
  */
 @RbacAPI
-fun Route.rbacLoginRoute() {
+internal fun Route.rbacLoginRoute() {
 
     get("rbac/login") {
         if (getRbacAdminAccessActor(call = call) == null) {
@@ -51,7 +51,7 @@ fun Route.rbacLoginRoute() {
  * @return The [SessionContext] if the user has access to the RBAC admin panel, null otherwise.
  */
 @RbacAPI
-suspend fun getRbacAdminAccessActor(call: ApplicationCall): SessionContext? {
+internal suspend fun getRbacAdminAccessActor(call: ApplicationCall): SessionContext? {
     val sessionContext: SessionContext? = call.sessions.get<SessionContext>()
 
     if (sessionContext != null) {

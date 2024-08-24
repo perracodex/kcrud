@@ -30,7 +30,7 @@ import kcrud.base.settings.AppSettings
  *
  * See: [OAuth 2.0 Authorization](https://auth0.com/blog/adding-auth0-authorization-to-a-ktor-http-api/)
  */
-fun Application.configureOAuthAuthentication() {
+public fun Application.configureOAuthAuthentication() {
 
     authentication {
         oauth(name = AppSettings.security.oAuth.providerName) {

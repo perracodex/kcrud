@@ -17,7 +17,7 @@ import kcrud.base.errors.ErrorCodeRegistry
  * @property reason An optional human-readable reason for the exception, providing more context.
  * @property cause The underlying cause of the exception, if any.
  */
-sealed class PaginationError(
+internal sealed class PaginationError(
     status: HttpStatusCode,
     code: String,
     description: String,

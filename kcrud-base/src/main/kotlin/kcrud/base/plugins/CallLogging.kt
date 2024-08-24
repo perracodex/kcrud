@@ -29,7 +29,7 @@ import org.slf4j.event.Level
  *
  * See: [CallId Documentation](https://ktor.io/docs/server-call-id.html)
  */
-fun Application.configureCallLogging() {
+public fun Application.configureCallLogging() {
 
     // Set the machine ID used for generating Snowflake IDs.
     SnowflakeFactory.setMachineId(id = AppSettings.runtime.machineId)

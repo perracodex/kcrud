@@ -24,7 +24,7 @@ import kotlin.uuid.toKotlinUuid
  *
  * @see RbacScopeRuleRequest
  */
-class RbacScopeRuleRepository(
+internal class RbacScopeRuleRepository(
     private val fieldRuleRepository: IRbacFieldRuleRepository
 ) : IRbacScopeRuleRepository {
 

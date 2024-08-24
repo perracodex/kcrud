@@ -26,7 +26,7 @@ import kcrud.domain.employment.routing.endpoints.operate.updateEmploymentById
  * of how to organize routes in diverse ways.
  */
 @OptIn(EmploymentRouteAPI::class)
-fun Route.employmentRoute() {
+public fun Route.employmentRoute() {
 
     route("v1/employees/{employee_id}/employments") {
 

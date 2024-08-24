@@ -23,7 +23,7 @@ import kotlin.uuid.Uuid
  * @property actorRepository The [IActorRepository] to handle Actor persistence operations.
  * @property roleRepository The [IRbacRoleRepository] to handle RBAC role operations.
  */
-class ActorService(
+internal class ActorService(
     private val actorRepository: IActorRepository,
     private val roleRepository: IRbacRoleRepository
 ) : KoinComponent {

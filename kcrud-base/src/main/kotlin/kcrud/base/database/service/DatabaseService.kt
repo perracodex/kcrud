@@ -31,7 +31,7 @@ import java.nio.file.Paths
  * See: [Exposed](https://github.com/JetBrains/Exposed/wiki)
  */
 @OptIn(DatabaseAPI::class)
-object DatabaseService {
+internal object DatabaseService {
     private val tracer = Tracer<DatabaseService>()
 
     private var _database: Database? = null

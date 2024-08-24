@@ -30,7 +30,7 @@ import kotlin.reflect.full.primaryConstructor
  *
  * @see [RbacFieldAnonymization]
  */
-abstract class BaseRbacEntity {
+public abstract class BaseRbacEntity {
 
     /**
      * Anonymizes specified fields by using reflection to create a new instance
@@ -52,7 +52,7 @@ abstract class BaseRbacEntity {
      *               If null or empty, the original entity is returned without changes.
      * @return A new instance of the entity with specified fields anonymized.
      */
-    inline fun <reified T : BaseRbacEntity> anonymize(fields: List<String>?): T {
+    public inline fun <reified T : BaseRbacEntity> anonymize(fields: List<String>?): T {
         // Delegate to the internal, non-inline anonymization method while preserving the type information.
         return internalAnonymize(fields, T::class) as T
     }
@@ -66,7 +66,7 @@ abstract class BaseRbacEntity {
      * @return A new instance of the entity (or nested entity) with specified fields anonymized.
      */
     @Suppress("UNCHECKED_CAST")
-    fun <T : BaseRbacEntity> internalAnonymize(fields: List<String>?, clazz: KClass<T>): BaseRbacEntity {
+    public fun <T : BaseRbacEntity> internalAnonymize(fields: List<String>?, clazz: KClass<T>): BaseRbacEntity {
         if (fields.isNullOrEmpty()) {
             // If no fields are specified for anonymization, return the entity as is.
             return this

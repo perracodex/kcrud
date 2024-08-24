@@ -28,7 +28,7 @@ import kotlin.uuid.toKotlinUuid
  * @property isLocked Whether the Actor is locked, so its role and associated rules are ignored, loosing all accesses.
  * @property meta The metadata of the record.
  */
-data class ActorEntity(
+internal data class ActorEntity(
     var id: Uuid,
     val username: String,
     val password: String,

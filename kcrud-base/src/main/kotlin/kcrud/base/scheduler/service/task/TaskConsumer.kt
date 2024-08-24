@@ -17,7 +17,7 @@ import org.quartz.JobExecutionContext
  *
  * Subclasses must implement the [start] method to define the task's behavior.
  */
-abstract class TaskConsumer : Job {
+public abstract class TaskConsumer : Job {
 
     /**
      * Initiates the task execution.
@@ -49,5 +49,5 @@ abstract class TaskConsumer : Job {
      *
      * @param properties The property bundle containing the task's parameters.
      */
-    abstract fun start(properties: Map<String, Any>)
+    public abstract fun start(properties: Map<String, Any>)
 }

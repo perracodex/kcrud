@@ -30,7 +30,7 @@ import kotlin.random.Random
  * Utility class for demo-related operations.
  */
 @DemoAPI
-object DemoUtils {
+internal object DemoUtils {
 
     /**
      * Creates demo records.

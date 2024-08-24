@@ -11,20 +11,20 @@ import org.jetbrains.exposed.sql.kotlin.datetime.date
 /**
  * Base class for database tables holding entities that require period tracking.
  */
-open class PeriodTable(name: String) : TimestampedTable(name = name) {
+public open class PeriodTable(name: String) : TimestampedTable(name = name) {
 
     /** Whether the period record is active or not. */
-    val isActive: Column<Boolean> = bool(
+    public val isActive: Column<Boolean> = bool(
         name = "is_active"
     )
 
     /** The date the period started. */
-    val startDate: Column<KLocalDate> = date(
+    public val startDate: Column<KLocalDate> = date(
         name = "start_date"
     )
 
     /** The date the period ended. */
-    val endDate: Column<KLocalDate?> = date(
+    public val endDate: Column<KLocalDate?> = date(
         name = "end_date"
     ).nullable()
 }

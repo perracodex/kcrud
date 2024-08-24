@@ -17,7 +17,7 @@ import org.quartz.impl.matchers.GroupMatcher
  * Utility class for managing the task state in the scheduler.
  */
 @SchedulerAPI
-object TaskState {
+internal object TaskState {
 
     /**
      * Changes the state of all tasks (either pausing or resuming them) and returns detailed results of the change.

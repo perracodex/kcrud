@@ -34,7 +34,7 @@ import kotlin.uuid.Uuid
  *
  * @see HashedPasswordTableAuth
  */
-class CredentialService : KoinComponent {
+public class CredentialService : KoinComponent {
     private val tracer = Tracer<CredentialService>()
 
     /** Lock to ensure thread-safe access and updates to the actor mapping cache. */
@@ -52,7 +52,7 @@ class CredentialService : KoinComponent {
     /**
      * Authenticates an Actor based on the provided credentials.
      */
-    suspend fun authenticate(credential: UserPasswordCredential): UserIdPrincipal? {
+    public suspend fun authenticate(credential: UserPasswordCredential): UserIdPrincipal? {
         return if (isCacheEmpty()) {
             null
         } else {
@@ -81,7 +81,7 @@ class CredentialService : KoinComponent {
      *
      * @param actorId The id of the Actor to refresh. If null, refreshes all actors.
      */
-    suspend fun refresh(actorId: Uuid? = null): Unit = withContext(Dispatchers.IO) {
+    public suspend fun refresh(actorId: Uuid? = null): Unit = withContext(Dispatchers.IO) {
         tracer.info("Refreshing credentials cache.")
 
         val actorService: ActorService by inject()
@@ -130,11 +130,11 @@ class CredentialService : KoinComponent {
         tracer.info("Credentials cache refreshed.")
     }
 
-    companion object {
+    public companion object {
         /**
          * Naive hint for Actors login, only for this example project.
          * This is not something would do in a real application.
          */
-        const val HINT: String = "Use either admin/admin or guest/guest."
+        public const val HINT: String = "Use either admin/admin or guest/guest."
     }
 }

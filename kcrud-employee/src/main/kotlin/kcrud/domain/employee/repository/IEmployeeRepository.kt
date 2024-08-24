@@ -14,7 +14,7 @@ import kotlin.uuid.Uuid
 /**
  * Responsible for managing employee data.
  */
-interface IEmployeeRepository {
+public interface IEmployeeRepository {
 
     /**
      * Retrieves an employee by its ID.
@@ -22,7 +22,7 @@ interface IEmployeeRepository {
      * @param employeeId The ID of the employee to be retrieved.
      * @return The resolved [EmployeeEntity] if found, null otherwise.
      */
-    fun findById(employeeId: Uuid): EmployeeEntity?
+    public fun findById(employeeId: Uuid): EmployeeEntity?
 
     /**
      * Retrieves all employee entities.
@@ -30,7 +30,7 @@ interface IEmployeeRepository {
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
      * @return List of [EmployeeEntity] entries.
      */
-    fun findAll(pageable: Pageable? = null): Page<EmployeeEntity>
+    public fun findAll(pageable: Pageable? = null): Page<EmployeeEntity>
 
     /**
      * Retrieves all employee entities matching the provided [filterSet].
@@ -39,7 +39,7 @@ interface IEmployeeRepository {
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
      * @return List of [EmployeeEntity] entries.
      */
-    fun search(filterSet: EmployeeFilterSet, pageable: Pageable? = null): Page<EmployeeEntity>
+    public fun search(filterSet: EmployeeFilterSet, pageable: Pageable? = null): Page<EmployeeEntity>
 
     /**
      * Creates a new employee.
@@ -47,7 +47,7 @@ interface IEmployeeRepository {
      * @param employeeRequest The employee to be created.
      * @return The ID of the created employee.
      */
-    fun create(employeeRequest: EmployeeRequest): Uuid
+    public fun create(employeeRequest: EmployeeRequest): Uuid
 
     /**
      * Updates an employee's details.
@@ -56,7 +56,7 @@ interface IEmployeeRepository {
      * @param employeeRequest The new details for the employee.
      * @return The number of updated records.
      */
-    fun update(employeeId: Uuid, employeeRequest: EmployeeRequest): Int
+    public fun update(employeeId: Uuid, employeeRequest: EmployeeRequest): Int
 
     /**
      * Deletes an employee using the provided ID.
@@ -64,20 +64,20 @@ interface IEmployeeRepository {
      * @param employeeId The ID of the employee to be deleted.
      * @return The number of delete records.
      */
-    fun delete(employeeId: Uuid): Int
+    public fun delete(employeeId: Uuid): Int
 
     /**
      * Deletes all employees.
      *
      * @return The number of deleted records.
      */
-    fun deleteAll(): Int
+    public fun deleteAll(): Int
 
     /**
      * Retrieves the total count of employees.
      *
      * @return The total count of existing records.
      */
-    fun count(): Int
+    public fun count(): Int
 }
 

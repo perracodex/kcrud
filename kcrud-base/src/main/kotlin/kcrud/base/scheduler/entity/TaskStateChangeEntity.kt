@@ -15,7 +15,7 @@ import kotlinx.serialization.Serializable
  * @property state The new state after the change operation.
  */
 @Serializable
-data class TaskStateChangeEntity(
+public data class TaskStateChangeEntity(
     val totalAffected: Int,
     val alreadyInState: Int,
     val totalTasks: Int,

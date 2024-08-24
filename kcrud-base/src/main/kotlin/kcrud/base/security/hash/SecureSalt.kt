@@ -14,7 +14,7 @@ import java.security.SecureRandom
  * @property salt The binary representation of the salt.
  * @property length The specified length of the salt, in bytes.
  */
-data class SecureSalt(val salt: ByteArray, val length: Int) {
+public data class SecureSalt(val salt: ByteArray, val length: Int) {
 
     /**
      * Converts the binary salt into a hexadecimal String representation.
@@ -22,7 +22,7 @@ data class SecureSalt(val salt: ByteArray, val length: Int) {
      *
      * @return A String representing the salt in hexadecimal format.
      */
-    fun saltValueToString(): String {
+    public fun saltValueToString(): String {
         return salt.joinToString(separator = "") { "%02x".format(it) }
     }
 
@@ -35,7 +35,7 @@ data class SecureSalt(val salt: ByteArray, val length: Int) {
 
     override fun hashCode(): Int = arrayOf(length, salt.contentHashCode()).contentHashCode()
 
-    companion object {
+    public companion object {
         /**
          * Factory method to generate a new [SecureSalt] of a specified length.
          * This method uses a cryptographically strong random number generator.
@@ -43,7 +43,7 @@ data class SecureSalt(val salt: ByteArray, val length: Int) {
          * @param length The desired length of the salt, in bytes. Default is 16-byte (128-bit).
          * @return A new instance of [SecureSalt] with the specified length.
          */
-        fun generate(length: Int = 16): SecureSalt {
+        public fun generate(length: Int = 16): SecureSalt {
             val salt = ByteArray(length)
             SecureRandom().nextBytes(salt)
             return SecureSalt(salt = salt, length = length)

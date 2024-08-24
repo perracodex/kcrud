@@ -19,7 +19,7 @@ import kcrud.base.settings.config.sections.CorsSettings
  *
  * See: [CORS Documentation](https://ktor.io/docs/server-cors.html)
  */
-fun Application.configureCors() {
+public fun Application.configureCors() {
 
     val tracer = Tracer(ref = Application::configureCors)
 

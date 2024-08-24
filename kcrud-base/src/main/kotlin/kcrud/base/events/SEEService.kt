@@ -16,7 +16,7 @@ import java.io.Writer
 /**
  * Service for managing and broadcasting events using Server-Sent Events (SSE).
  */
-object SEEService {
+internal object SEEService {
     private val tracer = Tracer<SEEService>()
 
     /**

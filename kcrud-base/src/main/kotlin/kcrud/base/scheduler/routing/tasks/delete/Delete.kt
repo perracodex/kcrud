@@ -13,7 +13,7 @@ import kcrud.base.scheduler.service.core.SchedulerService
 /**
  * Deletes a concrete scheduler task.
  */
-fun Route.deleteSchedulerTaskRoute() {
+internal fun Route.deleteSchedulerTaskRoute() {
     // Deletes a concrete scheduler task.
     delete("{name}/{group}") {
         val name: String = call.parameters["name"]!!

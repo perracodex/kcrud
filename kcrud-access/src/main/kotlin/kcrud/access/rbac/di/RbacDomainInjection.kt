@@ -18,12 +18,12 @@ import org.koin.dsl.module
 /**
  * RBAC dependency injection module.
  */
-object RbacDomainInjection {
+public object RbacDomainInjection {
 
     /**
      * Get the dependency injection module for the RBAC domain.
      */
-    fun get(): Module {
+    public fun get(): Module {
         return module {
             single<IRbacFieldRuleRepository> {
                 RbacFieldRuleRepository()

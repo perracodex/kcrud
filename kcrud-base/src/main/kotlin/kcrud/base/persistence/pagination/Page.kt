@@ -24,7 +24,7 @@ import kotlin.math.max
  * @param content The data that forms the content in a page.
  */
 @Serializable
-class Page<out T : Any>(
+public data class Page<out T : Any>(
     val totalPages: Int,
     val pageIndex: Int,
     val totalElements: Int,
@@ -38,7 +38,7 @@ class Page<out T : Any>(
     val sort: List<Pageable.Sort>?,
     val content: List<T>
 ) {
-    companion object {
+    public companion object {
         /**
          * Factory method to create a new [Page] instance.
          *
@@ -47,7 +47,7 @@ class Page<out T : Any>(
          * @param pageable The pagination information that was used to request the content, or null if none was used.
          * @return A new [Page] instance with the given [content], including a computed page details.
          */
-        fun <T : Any> build(content: List<T>, totalElements: Int, pageable: Pageable?): Page<T> {
+        public fun <T : Any> build(content: List<T>, totalElements: Int, pageable: Pageable?): Page<T> {
             // Set default page size.
             val pageSize: Int = pageable?.size.takeIf { it != null && it > 0 } ?: totalElements
 

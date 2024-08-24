@@ -32,20 +32,20 @@ import java.util.*
  * For encrypted fields, the lengths are larger than the actual length of the data,
  * since the encrypted data will be larger than the original value.
  */
-object ContactTable : TimestampedTable(name = "contact") {
+public object ContactTable : TimestampedTable(name = "contact") {
     private val encryptor: Encryptor = EncryptionUtils.getEncryptor(type = EncryptionUtils.Type.AT_REST)
 
     /**
      * The unique id of the contact record.
      */
-    val id: Column<UUID> = uuid(
+    public val id: Column<UUID> = uuid(
         name = "contact_id"
     ).autoGenerate()
 
     /**
      * The id of the employee to which the contact details belong.
      */
-    val employeeId: Column<UUID> = uuid(
+    public val employeeId: Column<UUID> = uuid(
         name = "employee_id"
     ).references(
         fkName = "fk_contact__employee_id",
@@ -58,7 +58,7 @@ object ContactTable : TimestampedTable(name = "contact") {
      * The contact's email.
      * Must be a valid email.
      */
-    val email: Column<String> = encryptedValidVarChar(
+    public val email: Column<String> = encryptedValidVarChar(
         name = "email",
         cipherTextLength = 256,
         encryptor = encryptor,
@@ -69,7 +69,7 @@ object ContactTable : TimestampedTable(name = "contact") {
      * The contact's phone.
      * Must be a valid phone number.
      */
-    val phone: Column<String> = encryptedVarchar(
+    public val phone: Column<String> = encryptedVarchar(
         name = "phone",
         cipherTextLength = encryptor.maxColLength(inputByteSize = 128),
         encryptor = encryptor

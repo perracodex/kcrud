@@ -43,7 +43,7 @@ import io.ktor.server.application.*
  * @throws PaginationError.InvalidPageablePair if pagination parameters are incomplete.
  * @throws PaginationError.InvalidOrderDirection if a sorting direction is invalid.
  */
-fun ApplicationCall.getPageable(): Pageable? {
+public fun ApplicationCall.getPageable(): Pageable? {
 
     val parameters: Parameters = request.queryParameters
     val pageIndex: Int? = parameters["page"]?.toIntOrNull()

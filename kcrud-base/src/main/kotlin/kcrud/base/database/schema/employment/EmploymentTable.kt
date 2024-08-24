@@ -21,18 +21,18 @@ import java.util.*
  *
  * An employee may have multiple employments, which indicates re-hiring.
  */
-object EmploymentTable : PeriodTable(name = "employment") {
+public object EmploymentTable : PeriodTable(name = "employment") {
     /**
      * The unique id of the employment record.
      */
-    val id: Column<UUID> = uuid(
+    public val id: Column<UUID> = uuid(
         name = "employment_id"
     ).autoGenerate()
 
     /**
      * The id of the employee to which the employment belongs.
      */
-    val employeeId: Column<UUID> = uuid(
+    public val employeeId: Column<UUID> = uuid(
         name = "employee_id"
     ).references(
         fkName = "fk_employment__employee_id",
@@ -44,7 +44,7 @@ object EmploymentTable : PeriodTable(name = "employment") {
     /**
      * The status of the employment.
      */
-    val status: Column<EmploymentStatus> = enumerationById(
+    public val status: Column<EmploymentStatus> = enumerationById(
         name = "status_id",
         fromId = EmploymentStatus::fromId
     )
@@ -52,14 +52,14 @@ object EmploymentTable : PeriodTable(name = "employment") {
     /**
      * The date the employment started.
      */
-    val probationEndDate: Column<KLocalDate?> = date(
+    public val probationEndDate: Column<KLocalDate?> = date(
         name = "probation_end_date"
     ).nullable()
 
     /**
      * The [WorkModality] of the employment.
      */
-    val workModality: Column<WorkModality> = enumerationById(
+    public val workModality: Column<WorkModality> = enumerationById(
         name = "work_modality_id",
         fromId = WorkModality::fromId
     )
@@ -67,7 +67,7 @@ object EmploymentTable : PeriodTable(name = "employment") {
     /**
      * Optional comments or notes for the employment.
      */
-    val comments: Column<String?> = varchar(
+    public val comments: Column<String?> = varchar(
         name = "comments",
         length = 512
     ).nullable()

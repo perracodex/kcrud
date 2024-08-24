@@ -46,7 +46,7 @@ import kcrud.base.persistence.validators.IValidator
  *      • email@example...com (top-level domain has consecutive dots)
  * ```
  */
-object EmailValidator : IValidator {
+public object EmailValidator : IValidator {
     private const val MAX_EMAIL_LENGTH: Int = 254
     private const val MAX_LOCAL_PART_LENGTH: Int = 64
     private const val DOMAIN_SEPARATOR: String = "@"

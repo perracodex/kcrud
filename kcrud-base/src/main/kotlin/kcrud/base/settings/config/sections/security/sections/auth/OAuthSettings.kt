@@ -19,7 +19,7 @@ import kotlinx.serialization.Serializable
  * @property defaultScopes List of OAuth scopes used by default. Provided by OAuth server vendor.
  */
 @Serializable
-data class OAuthSettings(
+public data class OAuthSettings(
     val providerName: String,
     val redirectCallbackUrl: String,
     val authorizeUrl: String,

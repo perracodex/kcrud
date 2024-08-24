@@ -13,7 +13,7 @@ import kcrud.base.scheduler.service.core.SchedulerService
 /**
  * Resends a concrete scheduler task.
  */
-fun Route.resendSchedulerTaskRoute() {
+internal fun Route.resendSchedulerTaskRoute() {
     // Resends a concrete scheduler task.
     post("{name}/{group}/resend") {
         val name: String = call.parameters["name"]!!

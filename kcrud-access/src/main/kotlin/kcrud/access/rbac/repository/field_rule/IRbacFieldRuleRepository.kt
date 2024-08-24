@@ -14,7 +14,7 @@ import kotlin.uuid.Uuid
  *
  * @see RbacFieldRuleRequest
  */
-interface IRbacFieldRuleRepository {
+internal interface IRbacFieldRuleRepository {
 
     /**
      * Updates an existing scope rule with the given set of [RbacFieldRuleRequest] entries.

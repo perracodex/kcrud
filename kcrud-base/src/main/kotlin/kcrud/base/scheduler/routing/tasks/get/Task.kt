@@ -16,7 +16,7 @@ import kotlin.uuid.Uuid
 /**
  * Gets all scheduler tasks.
  */
-fun Route.getSchedulerTasksRoute() {
+internal fun Route.getSchedulerTasksRoute() {
     // Gets all scheduler tasks.
     get {
         val groupId: Uuid? = call.parameters["group"]?.toUuidOrNull()

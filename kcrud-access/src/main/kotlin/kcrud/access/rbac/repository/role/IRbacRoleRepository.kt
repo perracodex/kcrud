@@ -13,7 +13,7 @@ import kotlin.uuid.Uuid
  *
  * @see RbacRoleRequest
  */
-interface IRbacRoleRepository {
+internal interface IRbacRoleRepository {
 
     /**
      * Finds the [RbacRoleEntity] for the given [roleId]

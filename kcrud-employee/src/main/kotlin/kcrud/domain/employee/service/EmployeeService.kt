@@ -23,7 +23,7 @@ import kotlin.uuid.Uuid
 /**
  * Employee service, where all the employee business logic should be defined.
  */
-class EmployeeService(
+public class EmployeeService(
     @Suppress("unused") private val sessionContext: SessionContext,
     private val employeeRepository: IEmployeeRepository
 ) {
@@ -35,7 +35,7 @@ class EmployeeService(
      * @param employeeId The ID of the employee to be retrieved.
      * @return The resolved [EmployeeEntity] if found, null otherwise.
      */
-    suspend fun findById(employeeId: Uuid): EmployeeEntity? = withContext(Dispatchers.IO) {
+    public suspend fun findById(employeeId: Uuid): EmployeeEntity? = withContext(Dispatchers.IO) {
         return@withContext employeeRepository.findById(employeeId = employeeId)
     }
 
@@ -45,7 +45,7 @@ class EmployeeService(
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
      * @return List of [EmployeeEntity] entries.
      */
-    suspend fun findAll(pageable: Pageable? = null): Page<EmployeeEntity> = withContext(Dispatchers.IO) {
+    public suspend fun findAll(pageable: Pageable? = null): Page<EmployeeEntity> = withContext(Dispatchers.IO) {
         return@withContext employeeRepository.findAll(pageable = pageable)
     }
 
@@ -56,7 +56,8 @@ class EmployeeService(
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
      * @return List of [EmployeeEntity] entries.
      */
-    suspend fun search(filterSet: EmployeeFilterSet, pageable: Pageable? = null): Page<EmployeeEntity> = withContext(Dispatchers.IO) {
+    public suspend fun search(filterSet: EmployeeFilterSet, pageable: Pageable? = null): Page<EmployeeEntity> =
+        withContext(Dispatchers.IO) {
         return@withContext employeeRepository.search(filterSet = filterSet, pageable = pageable)
     }
 
@@ -66,7 +67,7 @@ class EmployeeService(
      * @param employeeRequest The employee to be created.
      * @return The ID of the created employee.
      */
-    suspend fun create(employeeRequest: EmployeeRequest): EmployeeEntity {
+    public suspend fun create(employeeRequest: EmployeeRequest): EmployeeEntity {
         tracer.debug("Creating a new employee.")
 
         verifyIntegrity(employeeId = null, employeeRequest = employeeRequest, reason = "Create Employee.")
@@ -84,7 +85,7 @@ class EmployeeService(
      * @param employeeRequest The new details for the employee.
      * @return The number of updated records.
      */
-    suspend fun update(
+    public suspend fun update(
         employeeId: Uuid,
         employeeRequest: EmployeeRequest
     ): EmployeeEntity? {
@@ -104,7 +105,7 @@ class EmployeeService(
      * @param employeeId The ID of the employee to be deleted.
      * @return The number of delete records.
      */
-    suspend fun delete(employeeId: Uuid): Int = withContext(Dispatchers.IO) {
+    public suspend fun delete(employeeId: Uuid): Int = withContext(Dispatchers.IO) {
         tracer.debug("Deleting employee with ID: $employeeId.")
         return@withContext employeeRepository.delete(employeeId = employeeId)
     }
@@ -114,7 +115,7 @@ class EmployeeService(
      *
      * @return The number of deleted records.
      */
-    suspend fun deleteAll(): Int = withContext(Dispatchers.IO) {
+    public suspend fun deleteAll(): Int = withContext(Dispatchers.IO) {
         tracer.debug("Deleting all employees.")
         return@withContext employeeRepository.deleteAll()
     }
@@ -124,7 +125,7 @@ class EmployeeService(
      *
      * @return The total count of existing records.
      */
-    suspend fun count(): Int = withContext(Dispatchers.IO) {
+    public suspend fun count(): Int = withContext(Dispatchers.IO) {
         return@withContext employeeRepository.count()
     }
 

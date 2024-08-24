@@ -12,7 +12,7 @@ import org.jetbrains.exposed.crypt.Encryptor
 /**
  * Utility class for database field encryption.
  */
-object EncryptionUtils {
+public object EncryptionUtils {
     private enum class AlgorithmName {
         AES_256_PBE_CBC,
         AES_256_PBE_GCM,
@@ -23,7 +23,7 @@ object EncryptionUtils {
     /**
      * The type of encryption to use.
      */
-    enum class Type {
+    public enum class Type {
         /** Stable encryption for data at rest, such as encrypted database fields. */
         AT_REST,
 
@@ -37,7 +37,7 @@ object EncryptionUtils {
      *
      * @param type The target [EncryptionUtils.Type] of encryption to use.
      */
-    fun getEncryptor(type: Type): Encryptor {
+    public fun getEncryptor(type: Type): Encryptor {
         val encryptionSpec: EncryptionSettings.Spec = when (type) {
             Type.AT_REST -> AppSettings.security.encryption.atRest
             Type.AT_TRANSIT -> AppSettings.security.encryption.atTransit
@@ -62,7 +62,7 @@ object EncryptionUtils {
      * @param length The desired length of the key in bytes.
      * @return A ByteArray of the specified length.
      */
-    fun String.toByteKey(length: Int): ByteArray {
+    public fun String.toByteKey(length: Int): ByteArray {
         val requiredHexLength: Int = length * 2 // Each byte is represented by two hex characters.
         return (if (this.length < requiredHexLength) padEnd(requiredHexLength, padChar = '0') else take(requiredHexLength))
             .chunked(size = 2)

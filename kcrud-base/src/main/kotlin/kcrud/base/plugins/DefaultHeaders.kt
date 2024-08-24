@@ -23,7 +23,7 @@ import io.ktor.server.plugins.forwardedheaders.*
  *
  * See: [Forwarded-Header Plugin](https://ktor.io/docs/server-forward-headers.html)
  */
-fun Application.configureHeaders() {
+public fun Application.configureHeaders() {
 
     // Provides with the ability to automatically respond to a HEAD request
     // for every route that has a GET defined.

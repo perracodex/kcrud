@@ -21,7 +21,7 @@ import kotlin.uuid.toJavaUuid
  *
  * @see RbacFieldRuleRequest
  */
-class RbacFieldRuleRepository : IRbacFieldRuleRepository {
+internal class RbacFieldRuleRepository : IRbacFieldRuleRepository {
 
     override fun replace(scopeRuleId: Uuid, requestList: List<RbacFieldRuleRequest>?): Int {
         return transaction {

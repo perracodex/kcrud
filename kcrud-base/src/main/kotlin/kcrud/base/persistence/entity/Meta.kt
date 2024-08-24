@@ -17,11 +17,11 @@ import org.jetbrains.exposed.sql.Table
  * @property updatedAt The timestamp when the record was last updated.
  */
 @Serializable
-data class Meta(
+public data class Meta(
     val createdAt: KLocalDateTime,
     val updatedAt: KLocalDateTime
 ) {
-    companion object {
+    public companion object {
         /**
          * Maps a [ResultRow] to a [Meta] instance.
          *
@@ -29,7 +29,7 @@ data class Meta(
          * @param table The [Table] from which the [ResultRow] was obtained.
          * @return The mapped [Meta] instance.
          */
-        fun from(row: ResultRow, table: Table): Meta {
+        public fun from(row: ResultRow, table: Table): Meta {
             val createdAt: Column<*> = table.columns.single { it.name == "created_at" }
             val updatedAt: Column<*> = table.columns.single { it.name == "updated_at" }
 

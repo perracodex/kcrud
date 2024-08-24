@@ -36,7 +36,7 @@ import kcrud.server.demo.employeesDemoRoute
  *
  * See: [Ktor Rate Limit](https://ktor.io/docs/server-rate-limit.html)
  */
-fun Application.configureRoutes() {
+internal fun Application.configureRoutes() {
 
     routing {
 

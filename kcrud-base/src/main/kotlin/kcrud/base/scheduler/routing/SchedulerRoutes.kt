@@ -19,7 +19,7 @@ import kcrud.base.scheduler.routing.view.schedulerDashboardRoute
 /**
  * Route administers all scheduled tasks, allowing to list and delete them.
  */
-fun Route.schedulerRoutes() {
+public fun Route.schedulerRoutes() {
 
     // Sets up the routing to serve resources as static content for the scheduler.
     staticResources(remotePath = "/templates/scheduler", basePackage = "/templates/scheduler")

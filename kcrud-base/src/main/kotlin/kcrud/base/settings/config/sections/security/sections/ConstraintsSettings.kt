@@ -15,7 +15,7 @@ import kotlinx.serialization.Serializable
  * @property newToken Rate limit specification for the New Authentication Token generation endpoint.
  */
 @Serializable
-data class ConstraintsSettings(
+public data class ConstraintsSettings(
     val publicApi: LimitSpec,
     val privateApi: LimitSpec,
     val newToken: LimitSpec
@@ -32,7 +32,7 @@ data class ConstraintsSettings(
      * @property refillMs The time period in milliseconds after which the limit is reset. Must be > 0.
      */
     @Serializable
-    data class LimitSpec(
+    public data class LimitSpec(
         val limit: Int,
         val refillMs: Long
     ) {

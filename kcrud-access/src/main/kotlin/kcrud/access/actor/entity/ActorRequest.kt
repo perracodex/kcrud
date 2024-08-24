@@ -29,7 +29,7 @@ import kotlinx.serialization.Serializable
  * @property isLocked Whether the Actor is locked, so its role and scope rules are ignored, loosing all accesses.
  */
 @Serializable
-data class ActorRequest(
+public data class ActorRequest(
     val roleId: UuidS,
     val username: String,
     val password: String,

@@ -24,7 +24,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
  * @param statement The block of code to execute within the transaction.
  * @return Returns the result of the block execution.
  */
-fun <T> transactionWithSchema(db: Database? = null, schema: String? = null, statement: Transaction.() -> T): T {
+public fun <T> transactionWithSchema(db: Database? = null, schema: String? = null, statement: Transaction.() -> T): T {
     // Directly proceed with the transaction if no schema is specified.
     if (schema.isNullOrBlank()) {
         return transaction(db = db, statement = statement)

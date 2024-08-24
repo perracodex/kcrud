@@ -26,7 +26,7 @@ import kotlinx.serialization.Serializable
  * @property allowedHosts The list of allowed hosts used in CORS.
  */
 @Serializable
-data class CorsSettings(
+public data class CorsSettings(
     val allowedHosts: List<String>
 ) : IConfigSection {
     /**
@@ -37,7 +37,7 @@ data class CorsSettings(
      * @property subDomains The allowed subdomains, such as "api","admin", etc.
      */
     @Serializable
-    data class HostConfig(
+    public data class HostConfig(
         val host: String,
         val schemes: List<String>,
         val subDomains: List<String>
@@ -47,12 +47,12 @@ data class CorsSettings(
      * Returns true if the allowed hosts list is empty
      * or any of the hosts is/or starts with a wildcard.
      */
-    fun allowAllHosts(): Boolean {
+    public fun allowAllHosts(): Boolean {
         return allowedHosts.isEmpty() or
                 (allowedHosts.any { it.startsWith(prefix = "*") })
     }
 
-    companion object {
+    public companion object {
 
         /**
          * Parses a host configuration from a string.
@@ -61,7 +61,7 @@ data class CorsSettings(
          *
          * @param spec The string to parse.
          */
-        fun parse(spec: String): HostConfig {
+        public fun parse(spec: String): HostConfig {
             var host = ""
             var schemes: List<String> = emptyList()
             var subDomains: List<String> = emptyList()

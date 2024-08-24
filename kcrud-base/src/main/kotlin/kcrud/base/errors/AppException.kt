@@ -16,10 +16,10 @@ import kotlinx.serialization.Serializable
  * @param reason An optional human-readable reason for the exception, providing more context.
  * @param cause The underlying cause of the exception, if any.
  */
-open class AppException(
-    val status: HttpStatusCode,
-    val code: String,
-    val description: String,
+public open class AppException(
+    public val status: HttpStatusCode,
+    public val code: String,
+    public val description: String,
     private val reason: String? = null,
     cause: Throwable? = null
 ) : RuntimeException(
@@ -30,7 +30,7 @@ open class AppException(
      * Generates a detailed message string for this exception, combining the exception segments.
      * @return The detailed message string.
      */
-    fun messageDetail(): String {
+    public fun messageDetail(): String {
         val formattedReason: String = reason?.let { "| $it" } ?: ""
         return "Status: ${status.value} | $code | $description $formattedReason"
     }
@@ -40,7 +40,7 @@ open class AppException(
      * suitable for sending in an HTTP response.
      * @return The [ErrorResponse] instance representing this exception.
      */
-    fun toErrorResponse(): ErrorResponse {
+    public fun toErrorResponse(): ErrorResponse {
         return ErrorResponse(
             status = status.value,
             code = code,
@@ -59,14 +59,14 @@ open class AppException(
      * @param reason An optional human-readable reason for the error, providing more context.
      */
     @Serializable
-    data class ErrorResponse(
+    public data class ErrorResponse(
         val status: Int,
         val code: String,
         val description: String,
         val reason: String?
     )
 
-    companion object {
+    internal companion object {
         /**
          * Builds the final exception message by concatenating the provided error description and reason.
          *

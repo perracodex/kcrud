@@ -17,18 +17,18 @@ import java.util.*
 /**
  * Database table definition for employees.
  */
-object EmployeeTable : TimestampedTable(name = "employee") {
+public object EmployeeTable : TimestampedTable(name = "employee") {
     /**
      * The unique id of the employee record.
      */
-    val id: Column<UUID> = uuid(
+    public val id: Column<UUID> = uuid(
         name = "employee_id"
     ).autoGenerate()
 
     /**
      * The employee's first name.
      */
-    val firstName: Column<String> = varchar(
+    public val firstName: Column<String> = varchar(
         name = "first_name",
         length = 64
     )
@@ -36,7 +36,7 @@ object EmployeeTable : TimestampedTable(name = "employee") {
     /**
      * The employee's last name.
      */
-    val lastName: Column<String> = varchar(
+    public val lastName: Column<String> = varchar(
         name = "last_name",
         length = 64
     )
@@ -44,7 +44,7 @@ object EmployeeTable : TimestampedTable(name = "employee") {
     /**
      * The employee's date of birth.
      */
-    val dob: Column<KLocalDate> = date(
+    public val dob: Column<KLocalDate> = date(
         name = "dob"
     )
 
@@ -53,7 +53,7 @@ object EmployeeTable : TimestampedTable(name = "employee") {
      *
      * Example of an enum that is stored as a string in the database.
      */
-    val maritalStatus: Column<MaritalStatus> = enumerationByName(
+    public val maritalStatus: Column<MaritalStatus> = enumerationByName(
         name = "marital_status",
         length = 64,
         klass = MaritalStatus::class
@@ -64,7 +64,7 @@ object EmployeeTable : TimestampedTable(name = "employee") {
      *
      * Example of an enum that is stored as an integer in the database.
      */
-    val honorific: Column<Honorific> = enumerationById(
+    public val honorific: Column<Honorific> = enumerationById(
         name = "honorific_id",
         fromId = Honorific::fromId
     )

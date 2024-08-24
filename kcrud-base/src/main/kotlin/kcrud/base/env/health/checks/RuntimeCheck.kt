@@ -24,7 +24,7 @@ import kotlinx.serialization.Serializable
  */
 @HealthCheckAPI
 @Serializable
-data class RuntimeCheck(
+public data class RuntimeCheck(
     val errors: MutableList<String>,
     val machineId: Int,
     val environment: EnvironmentType,
@@ -32,7 +32,7 @@ data class RuntimeCheck(
     val utc: KLocalDateTime,
     val local: KLocalDateTime,
 ) {
-    constructor(call: ApplicationCall?) : this(
+    internal constructor(call: ApplicationCall?) : this(
         errors = mutableListOf(),
         machineId = AppSettings.runtime.machineId,
         environment = AppSettings.runtime.environment,
@@ -58,7 +58,7 @@ data class RuntimeCheck(
         }
     }
 
-    companion object {
+    internal companion object {
         /** The current UTC timestamp. */
         private val timestamp: KLocalDateTime = DateTimeUtils.currentUTCDateTime()
     }

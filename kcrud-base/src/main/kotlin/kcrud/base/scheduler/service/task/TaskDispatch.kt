@@ -25,16 +25,16 @@ import kotlin.uuid.Uuid
  * @property parameters Optional parameters to be passed to the task class.
  */
 @OptIn(SchedulerAPI::class)
-class TaskDispatch(
-    val taskId: Uuid,
-    val consumerClass: Class<out TaskConsumer>,
-    var startAt: TaskStartAt = TaskStartAt.Immediate,
-    var parameters: Map<String, Any?> = emptyMap()
+public class TaskDispatch(
+    public val taskId: Uuid,
+    public val consumerClass: Class<out TaskConsumer>,
+    public var startAt: TaskStartAt = TaskStartAt.Immediate,
+    public var parameters: Map<String, Any?> = emptyMap()
 ) {
     /**
      * Schedule the task to be executed immediately or at a specified [startAt] time.
      */
-    fun send(): TaskKey {
+    public fun send(): TaskKey {
         val job: BasicJob = buildJob()
 
         // Define the schedule builder and set misfire instructions to
@@ -55,7 +55,7 @@ class TaskDispatch(
      *
      * @param schedule The [Schedule] at which the task should be executed.
      */
-    fun send(schedule: Schedule): TaskKey {
+    public fun send(schedule: Schedule): TaskKey {
         val job: BasicJob = buildJob()
 
         return when (schedule) {

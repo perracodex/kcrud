@@ -8,13 +8,9 @@ import io.ktor.http.*
 import io.ktor.server.testing.*
 import io.ktor.test.dispatcher.*
 import io.ktor.util.collections.*
-import kcrud.access.actor.entity.ActorEntity
-import kcrud.access.actor.service.ActorService
-import kcrud.access.actor.service.DefaultActorFactory
-import kcrud.access.token.AuthenticationTokenService
+import kcrud.access.utils.RbacTestUtils
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
-import kcrud.base.env.SessionContext
 import kcrud.base.utils.TestUtils
 import kcrud.domain.contact.entity.ContactRequest
 import kcrud.domain.employee.entity.EmployeeRequest
@@ -25,7 +21,6 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import kotlin.system.measureTimeMillis
 import kotlin.test.*
 
@@ -51,18 +46,7 @@ class BackPressureTest : KoinComponent {
     fun testWithControlledLoadIncrease(): Unit = testApplication {
         startApplication()
 
-        // Initial setup (unchanged)
-        val actorService: ActorService by inject()
-        val actor: ActorEntity? = actorService.findByUsername(username = DefaultActorFactory.RoleName.ADMIN.name.lowercase())
-        assertNotNull(actual = actor)
-
-        val sessionContext = SessionContext(
-            actorId = actor.id,
-            username = actor.username,
-            roleId = actor.role.id,
-            schema = null,
-        )
-        val authToken: String = AuthenticationTokenService.generate(sessionContext = sessionContext)
+        val authToken: String = RbacTestUtils.newAuthenticationToken()
 
         val startConcurrency = 100
         val maxConcurrency = 1000
@@ -155,23 +139,8 @@ class BackPressureTest : KoinComponent {
         val employeeRequest = createEmployeeRequest()
         val employeeRequestJson: String = Json.encodeToString<EmployeeRequest>(value = employeeRequest)
 
-        // Get the admin Actor to be used for the session context and the request.
-        val actorService: ActorService by inject()
-        val actor: ActorEntity? = actorService.findByUsername(
-            username = DefaultActorFactory.RoleName.ADMIN.name.lowercase()
-        )
-        assertNotNull(actual = actor)
-
-        // Generate the session context required for the request call.
-        val sessionContext = SessionContext(
-            actorId = actor.id,
-            username = actor.username,
-            roleId = actor.role.id,
-            schema = null,
-        )
-
         // Generate the authentication token required for the request call.
-        val authToken: String = AuthenticationTokenService.generate(sessionContext = sessionContext)
+        val authToken: String = RbacTestUtils.newAuthenticationToken()
 
         // Perform the backpressure test by sending a large number
         // of concurrent requests to the server.
@@ -219,21 +188,8 @@ class BackPressureTest : KoinComponent {
         val employeeRequest = createEmployeeRequest()
         val employeeRequestJson: String = Json.encodeToString<EmployeeRequest>(value = employeeRequest)
 
-        // Get the admin Actor to be used for the session context and the request.
-        val actorService: ActorService by inject()
-        val actor: ActorEntity? = actorService.findByUsername(username = DefaultActorFactory.RoleName.ADMIN.name.lowercase())
-        assertNotNull(actual = actor)
-
-        // Generate the session context required for the request call.
-        val sessionContext = SessionContext(
-            actorId = actor.id,
-            username = actor.username,
-            roleId = actor.role.id,
-            schema = null,
-        )
-
         // Generate the authentication token required for the request call.
-        val authToken: String = AuthenticationTokenService.generate(sessionContext = sessionContext)
+        val authToken: String = RbacTestUtils.newAuthenticationToken()
 
         // Perform the backpressure test by sending a large number
         // of concurrent requests to the server.
@@ -263,19 +219,8 @@ class BackPressureTest : KoinComponent {
         // Start the application so that the Koin DI container is initialized.
         startApplication()
 
-        // Get the admin Actor to be used for the session context and the request.
-        val actorService: ActorService by inject()
-        val actor: ActorEntity? = actorService.findByUsername(username = DefaultActorFactory.RoleName.ADMIN.name.lowercase())
-        assertNotNull(actual = actor)
-
-        // Generate the session context and authentication token.
-        val sessionContext = SessionContext(
-            actorId = actor.id,
-            username = actor.username,
-            roleId = actor.role.id,
-            schema = null
-        )
-        val authToken: String = AuthenticationTokenService.generate(sessionContext = sessionContext)
+        // Generate the authentication token required for the request call.
+        val authToken: String = RbacTestUtils.newAuthenticationToken()
 
         // Concurrently send write and read requests.
         val totalCalls = 10000

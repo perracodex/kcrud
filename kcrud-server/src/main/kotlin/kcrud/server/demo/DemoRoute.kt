@@ -24,7 +24,7 @@ import org.koin.ktor.plugin.scope
 /**
  * Interactive employees demo endpoint.
  */
-fun Route.employeesDemoRoute() {
+internal fun Route.employeesDemoRoute() {
 
     // Required so the HTML for can find its respective CSS file.
     staticResources(remotePath = "/static-demo", basePackage = "demo")

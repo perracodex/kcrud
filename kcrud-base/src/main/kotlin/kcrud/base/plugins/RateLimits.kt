@@ -29,7 +29,7 @@ import kotlin.time.Duration.Companion.milliseconds
  *
  * See: [Ktor Rate Limit](https://ktor.io/docs/server-rate-limit.html)
  */
-fun Application.configureRateLimit() {
+public fun Application.configureRateLimit() {
 
     install(plugin = RateLimit) {
         // Register the public API rate limit.
@@ -63,7 +63,7 @@ fun Application.configureRateLimit() {
  *
  * @property key The key that identifies the rate limit scope.
  */
-enum class RateLimitScope(val key: String) {
+public enum class RateLimitScope(public val key: String) {
     /** Scope key for authorization tokens. */
     NEW_AUTH_TOKEN(key = "new_auth_token"),
 

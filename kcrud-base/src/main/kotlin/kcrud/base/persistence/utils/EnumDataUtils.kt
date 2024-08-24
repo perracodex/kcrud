@@ -14,8 +14,8 @@ import org.jetbrains.exposed.sql.Table
  *
  * @property id The integer ID of the enum item.
  */
-interface IEnumWithId {
-    val id: Int
+public interface IEnumWithId {
+    public val id: Int
 }
 
 /**
@@ -47,7 +47,7 @@ interface IEnumWithId {
  * @return A Column of type T representing the enum in the Exposed table.
  * @throws IllegalArgumentException if an unknown enum id is encountered in the database.
  */
-inline fun <reified T : Enum<T>> Table.enumerationById(
+internal inline fun <reified T : Enum<T>> Table.enumerationById(
     name: String,
     noinline fromId: (Int) -> T?
 ): Column<T> {

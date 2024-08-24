@@ -26,7 +26,7 @@ import kotlin.uuid.toKotlinUuid
  * @property createdAt The creation date of the audit log.
  */
 @Serializable
-data class AuditEntity(
+public data class AuditEntity(
     val id: UuidS,
     val taskName: String,
     val taskGroup: String,
@@ -37,7 +37,7 @@ data class AuditEntity(
     val detail: String?,
     val createdAt: KLocalDateTime,
 ) {
-    companion object {
+    internal companion object {
         /**
          * Maps a [ResultRow] to a [AuditEntity] instance.
          *

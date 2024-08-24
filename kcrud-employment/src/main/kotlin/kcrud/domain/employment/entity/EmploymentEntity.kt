@@ -28,7 +28,7 @@ import kotlin.uuid.toKotlinUuid
  * @property meta The metadata of the record.
  */
 @Serializable
-data class EmploymentEntity(
+public data class EmploymentEntity(
     val id: UuidS,
     val period: Period,
     val status: EmploymentStatus,
@@ -37,7 +37,7 @@ data class EmploymentEntity(
     val employee: EmployeeEntity,
     val meta: Meta
 ) {
-    companion object {
+    internal companion object {
         /**
          * Maps a [ResultRow] to a [EmploymentEntity] instance.
          *

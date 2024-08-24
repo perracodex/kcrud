@@ -22,18 +22,18 @@ import java.util.*
  *
  * @see RbacRoleTable
  */
-object RbacScopeRuleTable : TimestampedTable(name = "rbac_scope_rule") {
+public object RbacScopeRuleTable : TimestampedTable(name = "rbac_scope_rule") {
     /**
      * The unique id of the scope rule record.
      */
-    val id: Column<UUID> = uuid(
+    public val id: Column<UUID> = uuid(
         name = "scope_rule_id"
     ).autoGenerate()
 
     /**
      * The associated [RbacRoleTable] id.
      */
-    val roleId: Column<UUID> = uuid(
+    public val roleId: Column<UUID> = uuid(
         name = "role_id"
     ).references(
         fkName = "fk_rbac_scope_rule__role_id",
@@ -45,7 +45,7 @@ object RbacScopeRuleTable : TimestampedTable(name = "rbac_scope_rule") {
     /**
      * The [RbacScope] the rule is meant to target.
      */
-    val scope: Column<RbacScope> = enumerationById(
+    public val scope: Column<RbacScope> = enumerationById(
         name = "scope_id",
         fromId = RbacScope::fromId
     )
@@ -53,7 +53,7 @@ object RbacScopeRuleTable : TimestampedTable(name = "rbac_scope_rule") {
     /**
      * The [RbacAccessLevel] representing the access level for the [RbacScope].
      */
-    val accessLevel: Column<RbacAccessLevel> = enumerationById(
+    public val accessLevel: Column<RbacAccessLevel> = enumerationById(
         name = "access_level_id",
         fromId = RbacAccessLevel::fromId
     )

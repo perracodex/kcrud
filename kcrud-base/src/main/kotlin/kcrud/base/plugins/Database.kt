@@ -24,7 +24,7 @@ import kcrud.base.env.MetricsRegistry
  *
  * @see DbPlugin
  */
-fun Application.configureDatabase() {
+public fun Application.configureDatabase() {
 
     install(plugin = DbPlugin) {
         micrometerRegistry = MetricsRegistry.registry

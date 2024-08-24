@@ -16,7 +16,7 @@ import org.koin.ktor.ext.inject
  * Defines all the RBAC admin routes.
  */
 @OptIn(RbacAPI::class)
-fun Route.rbacAdminRoute() {
+internal fun Route.rbacAdminRoute() {
     val rbacService: RbacService by inject()
 
     withRbac(scope = RbacScope.RBAC_ADMIN, accessLevel = RbacAccessLevel.VIEW) {

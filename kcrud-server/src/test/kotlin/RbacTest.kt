@@ -9,16 +9,8 @@ import io.ktor.server.testing.*
 import io.ktor.test.dispatcher.*
 import io.mockk.every
 import io.mockk.mockk
-import kcrud.access.actor.entity.ActorEntity
-import kcrud.access.actor.entity.ActorRequest
-import kcrud.access.actor.service.ActorService
-import kcrud.access.rbac.entity.role.RbacRoleEntity
-import kcrud.access.rbac.entity.role.RbacRoleRequest
-import kcrud.access.rbac.entity.scope_rule.RbacScopeRuleRequest
-import kcrud.access.rbac.service.RbacService
-import kcrud.access.token.AuthenticationTokenService
+import kcrud.access.utils.RbacTestUtils
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
 import kcrud.base.env.SessionContext
@@ -159,16 +151,8 @@ class RbacTest : KoinComponent {
                 testOutcomes.forEach { (accessLevel, expectedStatus) ->
 
                     // Create a unique Actor for each test case to ensure clear RBAC role assignments.
-                    val actor: ActorEntity = createActor(accessLevel = accessLevel, iteration = testIteration)
+                    val authToken: String = RbacTestUtils.newAuthenticationToken(accessLevel = accessLevel, testIteration = testIteration)
                     testIteration++
-
-                    val sessionContext = SessionContext(
-                        actorId = actor.id,
-                        username = actor.username,
-                        roleId = actor.role.id,
-                        schema = null
-                    )
-                    val authToken: String = AuthenticationTokenService.generate(sessionContext = sessionContext)
                     assertNotNull(actual = authToken, message = "Auth token should not be null")
 
                     // Make the request call.
@@ -201,45 +185,6 @@ class RbacTest : KoinComponent {
                 }
             }
         }
-    }
-
-    private suspend fun createActor(accessLevel: RbacAccessLevel, iteration: Int): ActorEntity {
-        // Setup actor and role for the test.
-        val scopeRuleRequest = RbacScopeRuleRequest(
-            scope = RbacScope.EMPLOYEE_RECORDS,
-            accessLevel = accessLevel,
-            fieldRules = null
-        )
-        val roleRequest = RbacRoleRequest(
-            roleName = "${accessLevel.name}_${iteration}".lowercase(), // Unique role name per iteration
-            description = "Role for ${accessLevel.name} access, iteration $iteration",
-            isSuper = false,
-            scopeRules = listOf(scopeRuleRequest)
-        )
-
-        val rbacService: RbacService by inject()
-        val role: RbacRoleEntity = rbacService.createRole(roleRequest = roleRequest)
-        assertNotNull(actual = role, message = "Role should not be null")
-
-        // Create the Actor with the associated role.
-        val username: String = "actor_${accessLevel.name}_${iteration}".lowercase() // Unique username per iteration.
-        val password: String = "pass_${iteration}".lowercase() // Unique password per iteration.
-        val actorRequest = ActorRequest(
-            roleId = role.id,
-            username = username,
-            password = password,
-            isLocked = false
-        )
-
-        val actorService: ActorService by inject()
-        val actorId: Uuid = actorService.create(actorRequest = actorRequest)
-        assertNotNull(actual = actorId, message = "Actor ID should not be null")
-
-        // Retrieve the Actor.
-        val actor: ActorEntity? = actorService.findById(actorId = actorId)
-        assertNotNull(actual = actor, message = "Actor should not be null")
-
-        return actor
     }
 
     private suspend fun createEmployee(): EmployeeEntity {

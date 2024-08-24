@@ -9,14 +9,14 @@ package kcrud.base.persistence.validators
  * logic that can be applied to various data fields, such as email
  * addresses, phone numbers, or any other data requiring a validation.
  */
-interface IValidator {
+public interface IValidator {
     /**
      * Validates the given value.
      *
      * @param value The target value to be validated.
      * @return A [Result] object containing the validation result.
      */
-    fun <T> validate(value: T): Result
+    public fun <T> validate(value: T): Result
 
     /**
      * Generates an error message for an invalid value.
@@ -24,23 +24,23 @@ interface IValidator {
      * @param text The value that failed validation.
      * @return A string representing the error message.
      */
-    fun message(text: String): String
+    public fun message(text: String): String
 
     /**
      * Sealed class represents a validation result.
      */
-    sealed class Result {
+    public sealed class Result {
         /**
          * Represents a successful outcome of an operation.
          */
-        data object Success : Result()
+        public data object Success : Result()
 
         /**
          * Represents a failed outcome of an operation, including an error message.
          *
          * @property reason The message describing the reason for the failure.
          */
-        data class Failure(val reason: String) : Result()
+        public data class Failure(val reason: String) : Result()
     }
 }
 
@@ -49,4 +49,4 @@ interface IValidator {
  *
  * @param message The detailed message of the validation failure.
  */
-class ValidationException(message: String) : IllegalArgumentException("Validation Failed. $message")
+public class ValidationException(message: String) : IllegalArgumentException("Validation Failed. $message")

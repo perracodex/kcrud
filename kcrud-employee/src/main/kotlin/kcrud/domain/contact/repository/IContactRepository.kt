@@ -14,7 +14,7 @@ import kotlin.uuid.Uuid
 /**
  * Responsible for managing [ContactEntity] data.
  */
-interface IContactRepository {
+internal interface IContactRepository {
 
     /**
      * Finds a contact by its ID.

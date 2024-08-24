@@ -14,7 +14,7 @@ import java.sql.Connection
  * @see [java.sql.Connection]
  */
 @Suppress("unused")
-enum class IsolationLevel(val id: Int) {
+internal enum class IsolationLevel(val id: Int) {
 
     /**
      * The most lenient isolation level. Allows uncommitted changes from one transaction to affect a read

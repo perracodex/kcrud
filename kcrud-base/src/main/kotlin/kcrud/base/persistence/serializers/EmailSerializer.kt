@@ -18,7 +18,7 @@ import kotlinx.serialization.encoding.Encoder
 /**
  * Serializer for Email strings.
  */
-object EmailStringSerializer : KSerializer<String> {
+internal object EmailStringSerializer : KSerializer<String> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
         serialName = "EmailString",
         kind = PrimitiveKind.STRING
@@ -47,4 +47,4 @@ object EmailStringSerializer : KSerializer<String> {
  *
  * @see EmailStringSerializer
  */
-typealias EmailString = @Serializable(with = EmailStringSerializer::class) String
+public typealias EmailString = @Serializable(with = EmailStringSerializer::class) String

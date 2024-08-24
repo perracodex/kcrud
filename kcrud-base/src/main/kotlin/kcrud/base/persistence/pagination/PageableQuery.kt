@@ -27,7 +27,7 @@ import kotlin.reflect.full.memberProperties
  * @param pageable An optional [Pageable] object containing pagination information.
  * @return The Query with pagination applied if Pageable is provided, otherwise the original Query.
  */
-fun Query.applyPagination(pageable: Pageable?): Query {
+public fun Query.applyPagination(pageable: Pageable?): Query {
     pageable?.let {
         QueryOrderingHelper.applyOrder(query = this, pageable = pageable)
 

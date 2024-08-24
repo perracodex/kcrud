@@ -19,18 +19,18 @@ import java.util.*
  * unless added to this table and associated to a [RbacScopeRuleTable] record,
  * in which case the fields should be handled according to their access level.
  */
-object RbacFieldRuleTable : TimestampedTable(name = "rbac_field_rule") {
+public object RbacFieldRuleTable : TimestampedTable(name = "rbac_field_rule") {
     /**
      * The unique id of the field rule record.
      */
-    val id: Column<UUID> = uuid(
+    public val id: Column<UUID> = uuid(
         name = "field_rule_id"
     ).autoGenerate()
 
     /**
      * The associated [RbacScopeRuleTable] id.
      */
-    val scopeRuleId: Column<UUID> = uuid(
+    public val scopeRuleId: Column<UUID> = uuid(
         name = "scope_rule_id"
     ).references(
         fkName = "fk_rbac_field_rule__scope_rule_id",
@@ -42,7 +42,7 @@ object RbacFieldRuleTable : TimestampedTable(name = "rbac_field_rule") {
     /**
      * The name of the field being targeted.
      */
-    val fieldName: Column<String> = varchar(
+    public val fieldName: Column<String> = varchar(
         name = "field_name",
         length = 64
     )
@@ -50,7 +50,7 @@ object RbacFieldRuleTable : TimestampedTable(name = "rbac_field_rule") {
     /**
      * The [RbacAccessLevel] representing the access level for the field.
      */
-    val accessLevel: Column<RbacAccessLevel> = enumerationById(
+    public val accessLevel: Column<RbacAccessLevel> = enumerationById(
         name = "access_level_id",
         fromId = RbacAccessLevel::fromId
     )

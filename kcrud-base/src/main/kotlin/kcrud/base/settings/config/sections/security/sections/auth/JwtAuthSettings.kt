@@ -19,7 +19,7 @@ import kotlinx.serialization.Serializable
  * @property secretKey Secret key for signing the JWT.
  */
 @Serializable
-data class JwtAuthSettings(
+public data class JwtAuthSettings(
     val providerName: String,
     val tokenLifetimeSec: Long,
     val audience: String,

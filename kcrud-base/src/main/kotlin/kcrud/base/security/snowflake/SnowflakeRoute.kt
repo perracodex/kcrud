@@ -14,7 +14,7 @@ import kcrud.base.settings.AppSettings
 /**
  * Defines the snowflake route, which is used to parse snowflake IDs.
  */
-fun Route.snowflakeRoute() {
+public fun Route.snowflakeRoute() {
 
     authenticate(AppSettings.security.basicAuth.providerName, optional = !AppSettings.security.isEnabled) {
         // Snowflake parser to read back the components of a snowflake ID.

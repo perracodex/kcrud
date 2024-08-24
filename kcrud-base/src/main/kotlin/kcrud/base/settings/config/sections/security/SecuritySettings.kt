@@ -26,7 +26,7 @@ import kotlinx.serialization.Serializable
  * @property rbac Settings related to RBAC authentication.
  */
 @Serializable
-data class SecuritySettings(
+public data class SecuritySettings(
     val isEnabled: Boolean,
     val useSecureConnection: Boolean,
     val encryption: EncryptionSettings,
@@ -36,8 +36,8 @@ data class SecuritySettings(
     val oAuth: OAuthSettings,
     val rbac: RbacSettings
 ) : IConfigSection {
-    companion object {
+    public companion object {
         /** The minimum length for a security key, such as encryption and secret keys. */
-        const val MIN_KEY_LENGTH: Int = 12
+        public const val MIN_KEY_LENGTH: Int = 12
     }
 }

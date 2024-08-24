@@ -19,7 +19,7 @@ import kotlin.uuid.Uuid
 /**
  * Employment service, where all the employment business logic should be defined.
  */
-class EmploymentService(
+public class EmploymentService(
     @Suppress("unused") private val sessionContext: SessionContext,
     private val employmentRepository: IEmploymentRepository
 ) {
@@ -31,7 +31,7 @@ class EmploymentService(
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
      * @return List of [EmploymentEntity] entities.
      */
-    suspend fun findAll(pageable: Pageable? = null): Page<EmploymentEntity> = withContext(Dispatchers.IO) {
+    public suspend fun findAll(pageable: Pageable? = null): Page<EmploymentEntity> = withContext(Dispatchers.IO) {
         return@withContext employmentRepository.findAll(pageable = pageable)
     }
 
@@ -42,7 +42,7 @@ class EmploymentService(
      * @param employmentId The ID of the employment to be retrieved.
      * @return The resolved [EmploymentEntity] if found, null otherwise.
      */
-    suspend fun findById(employeeId: Uuid, employmentId: Uuid): EmploymentEntity? = withContext(Dispatchers.IO) {
+    public suspend fun findById(employeeId: Uuid, employmentId: Uuid): EmploymentEntity? = withContext(Dispatchers.IO) {
         return@withContext employmentRepository.findById(employeeId = employeeId, employmentId = employmentId)
     }
 
@@ -52,7 +52,7 @@ class EmploymentService(
      * @param employeeId The ID of the employee associated with the employment.
      * @return List of [EmploymentEntity] entities.
      */
-    suspend fun findByEmployeeId(employeeId: Uuid): List<EmploymentEntity> = withContext(Dispatchers.IO) {
+    public suspend fun findByEmployeeId(employeeId: Uuid): List<EmploymentEntity> = withContext(Dispatchers.IO) {
         return@withContext employmentRepository.findByEmployeeId(employeeId = employeeId)
     }
 
@@ -63,7 +63,7 @@ class EmploymentService(
      * @param employmentRequest The employment to be created.
      * @return The ID of the created employment.
      */
-    suspend fun create(
+    public suspend fun create(
         employeeId: Uuid,
         employmentRequest: EmploymentRequest
     ): EmploymentEntity {
@@ -94,7 +94,7 @@ class EmploymentService(
      * @param employmentRequest The new details for the employment.
      * @return The number of updated records.
      */
-    suspend fun update(
+    public suspend fun update(
         employeeId: Uuid,
         employmentId: Uuid,
         employmentRequest: EmploymentRequest
@@ -129,7 +129,7 @@ class EmploymentService(
      * @param employmentId The ID of the employment to be deleted.
      * @return The number of delete records.
      */
-    suspend fun delete(employmentId: Uuid): Int = withContext(Dispatchers.IO) {
+    public suspend fun delete(employmentId: Uuid): Int = withContext(Dispatchers.IO) {
         tracer.debug("Deleting employment with ID: $employmentId")
         return@withContext employmentRepository.delete(employmentId = employmentId)
     }
@@ -140,7 +140,7 @@ class EmploymentService(
      * @param employeeId The ID of the employee to delete all its employments.
      * @return The number of delete records.
      */
-    suspend fun deleteAll(employeeId: Uuid): Int = withContext(Dispatchers.IO) {
+    public suspend fun deleteAll(employeeId: Uuid): Int = withContext(Dispatchers.IO) {
         tracer.debug("Deleting all employments for employee with ID: $employeeId")
         return@withContext employmentRepository.deleteAll(employeeId = employeeId)
     }

@@ -13,7 +13,7 @@ import kotlinx.serialization.json.jsonObject
 /**
  * Polymorphic JSON serializer for [Schedule] objects.
  */
-object ScheduleSerializer : JsonContentPolymorphicSerializer<Schedule>(Schedule::class) {
+internal object ScheduleSerializer : JsonContentPolymorphicSerializer<Schedule>(Schedule::class) {
 
     override fun selectDeserializer(element: JsonElement): KSerializer<out Schedule> {
         val jsonObject: JsonObject = element.jsonObject

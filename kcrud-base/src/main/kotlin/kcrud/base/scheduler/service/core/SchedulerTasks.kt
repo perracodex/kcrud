@@ -27,7 +27,7 @@ import kotlin.uuid.Uuid
  * Helper object to manage tasks in the scheduler.
  */
 @OptIn(SchedulerAPI::class)
-class SchedulerTasks private constructor(private val scheduler: Scheduler) {
+internal class SchedulerTasks private constructor(private val scheduler: Scheduler) {
     private val tracer = Tracer<SchedulerService>()
 
     /**

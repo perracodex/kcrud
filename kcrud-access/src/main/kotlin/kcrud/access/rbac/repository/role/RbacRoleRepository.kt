@@ -27,7 +27,7 @@ import kotlin.uuid.toKotlinUuid
  *
  * @see IRbacRoleRepository
  */
-class RbacRoleRepository(
+internal class RbacRoleRepository(
     private val scopeRuleRepository: IRbacScopeRuleRepository
 ) : IRbacRoleRepository {
 

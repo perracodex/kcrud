@@ -28,7 +28,7 @@ import kotlin.time.Duration.Companion.seconds
  * This class contains the logic for verifying JWT tokens using HMAC256 algorithm.
  * If the token is invalid or any exception occurs, an UnauthorizedException will be thrown.
  */
-object AuthenticationTokenService {
+internal object AuthenticationTokenService {
     private val tracer = Tracer<AuthenticationTokenService>()
 
     /**

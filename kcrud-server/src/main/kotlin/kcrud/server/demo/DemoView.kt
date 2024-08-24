@@ -10,7 +10,7 @@ import kotlinx.html.*
  * Builds the HTML for the demo view.
  */
 @DemoAPI
-object DemoView {
+internal object DemoView {
 
     /**
      * Builds the HTML for the demo view.

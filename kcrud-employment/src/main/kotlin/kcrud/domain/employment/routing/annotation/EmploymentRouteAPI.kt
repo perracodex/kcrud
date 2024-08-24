@@ -9,4 +9,4 @@ package kcrud.domain.employment.routing.annotation
  */
 @RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Employment Routes API.")
 @Retention(AnnotationRetention.BINARY)
-annotation class EmploymentRouteAPI
+internal annotation class EmploymentRouteAPI

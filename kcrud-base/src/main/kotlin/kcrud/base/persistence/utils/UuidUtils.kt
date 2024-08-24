@@ -11,7 +11,7 @@ import kotlin.uuid.Uuid
  *
  * @return The [Uuid] representation of the string, or null if the string is null or is not a valid [Uuid].
  */
-fun String?.toUuidOrNull(): Uuid? {
+public fun String?.toUuidOrNull(): Uuid? {
     if (this.isNullOrBlank()) return null
     return try {
         Uuid.parse(uuidString = this)
@@ -26,7 +26,7 @@ fun String?.toUuidOrNull(): Uuid? {
  * @return a [Uuid] object converted from the string representation.
  * @throws IllegalArgumentException if the string is not a valid [Uuid].
  */
-fun String?.toUuid(): Uuid {
+public fun String?.toUuid(): Uuid {
     return try {
         Uuid.parse(uuidString = this!!)
     } catch (e: IllegalArgumentException) {

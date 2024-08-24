@@ -12,7 +12,7 @@ package kcrud.base.security.hash
  * @property hash The binary representation of the hashed value.
  * @property salt The associated SecureSalt instance used during the hashing process.
  */
-data class SecureHash(val hash: ByteArray, val salt: SecureSalt) {
+public data class SecureHash(val hash: ByteArray, val salt: SecureSalt) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

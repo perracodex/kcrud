@@ -19,13 +19,13 @@ import org.jetbrains.exposed.sql.Table
  * @property comments Optional notes or comments.
  */
 @Serializable
-data class Period(
+public data class Period(
     val isActive: Boolean,
     val startDate: KLocalDate,
     val endDate: KLocalDate?,
     val comments: String?
 ) {
-    companion object {
+    public companion object {
         /**
          * Maps a [ResultRow] to a [Period] instance.
          *
@@ -33,7 +33,7 @@ data class Period(
          * @param table The [Table] that the [ResultRow] is from.
          * @return The mapped [Period] instance.
          */
-        fun from(row: ResultRow, table: Table): Period {
+        public fun from(row: ResultRow, table: Table): Period {
             val isActiveColumn: Column<*> = table.columns.single { it.name == "is_active" }
             val startDateColumn: Column<*> = table.columns.single { it.name == "start_date" }
             val endDateColumn: Column<*> = table.columns.single { it.name == "end_date" }

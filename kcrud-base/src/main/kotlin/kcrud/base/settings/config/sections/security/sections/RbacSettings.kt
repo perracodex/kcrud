@@ -13,6 +13,6 @@ import kotlinx.serialization.Serializable
  * @property isEnabled Flag to enable/disable RBAC authentication.
  */
 @Serializable
-data class RbacSettings(
+public data class RbacSettings(
     val isEnabled: Boolean
 ) : IConfigSection

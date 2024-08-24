@@ -22,7 +22,7 @@ import kotlinx.serialization.json.Json
  *
  * See: [Kotlin Serialization Guide](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md)
  */
-fun Application.configureSerialization() {
+public fun Application.configureSerialization() {
 
     install(plugin = ContentNegotiation) {
 

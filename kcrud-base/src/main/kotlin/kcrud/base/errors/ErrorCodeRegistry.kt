@@ -13,7 +13,7 @@ package kcrud.base.errors
  * as the code suffixes would produce a duplicate every time an error is instantiated
  * in order to be thrown.
  */
-object ErrorCodeRegistry {
+public object ErrorCodeRegistry {
     private val registeredTags: MutableSet<String> = mutableSetOf()
 
     /**
@@ -23,7 +23,7 @@ object ErrorCodeRegistry {
      * @throws IllegalArgumentException if the code tag is already registered, indicating a conflict
      *         in error code categorization.
      */
-    fun registerTag(tag: String) {
+    public fun registerTag(tag: String) {
         require(value = tag !in registeredTags) { "Duplicate error code tag detected: $tag" }
         registeredTags += tag
     }

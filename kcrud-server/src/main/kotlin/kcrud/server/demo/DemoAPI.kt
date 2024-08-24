@@ -9,4 +9,4 @@ package kcrud.server.demo
  */
 @RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Demo API.")
 @Retention(AnnotationRetention.BINARY)
-annotation class DemoAPI
+internal annotation class DemoAPI

@@ -15,7 +15,7 @@ import kotlinx.serialization.Serializable
  * @property sort The optional [Sort] order to apply to the results.
  */
 @Serializable
-data class Pageable(
+public data class Pageable(
     val page: Int,
     val size: Int,
     val sort: List<Sort>? = null
@@ -28,7 +28,7 @@ data class Pageable(
     /**
      * Sorting direction.
      */
-    enum class Direction {
+    public enum class Direction {
         /** Ascending sorting direction. */
         ASC,
 
@@ -44,7 +44,7 @@ data class Pageable(
      * @property direction The direction of the sorting.
      */
     @Serializable
-    data class Sort(
+    public data class Sort(
         val table: String? = null,
         val field: String,
         val direction: Direction
