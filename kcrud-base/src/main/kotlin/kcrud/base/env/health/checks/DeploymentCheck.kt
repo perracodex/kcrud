@@ -129,11 +129,10 @@ public data class DeploymentCheck(
             }
 
             if (AppSettings.security.useSecureConnection) {
-                val configuredPort = listOf(configured.sslPort)
-                if (!NetworkUtils.isSecurePort(ports = configuredPort)) {
+                if (!NetworkUtils.isSecurePort(port = configured.sslPort)) {
                     errors.add(
-                        "$className. Configured port is not secure or not set. " +
-                                "Port: $configuredPort. ${environment}."
+                        "$className. Configured SSL port is not secure or not set. " +
+                                "Port: ${configured.sslPort}. ${environment}."
                     )
                 }
 
@@ -141,7 +140,7 @@ public data class DeploymentCheck(
                 if (!NetworkUtils.isSecurePort(ports = runtimePorts)) {
                     errors.add(
                         "$className. Runtime ports are not secure or not set. " +
-                                "Port: $configuredPort. ${environment}."
+                                "Ports: $runtimePorts. ${environment}."
                     )
                 }
             } else {
