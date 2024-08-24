@@ -2,8 +2,6 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-@file:Suppress("unused")
-
 package kcrud.base.utils
 
 import kotlinx.datetime.*

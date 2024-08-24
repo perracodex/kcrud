@@ -13,7 +13,6 @@ import kotlin.reflect.jvm.javaMethod
 /**
  * A simple tracer wrapper to provide a consistent logging interface.
  */
-@Suppress("unused")
 public class Tracer(private val logger: Logger) {
 
     /**
