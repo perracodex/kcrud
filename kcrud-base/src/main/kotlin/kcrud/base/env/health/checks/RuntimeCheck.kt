@@ -58,8 +58,8 @@ public data class RuntimeCheck(
         }
     }
 
-    internal companion object {
+    private companion object {
         /** The current UTC timestamp. */
-        private val timestamp: KLocalDateTime = DateTimeUtils.currentUTCDateTime()
+        val timestamp: KLocalDateTime = DateTimeUtils.currentUTCDateTime()
     }
 }

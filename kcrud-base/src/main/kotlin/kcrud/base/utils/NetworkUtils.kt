@@ -103,17 +103,17 @@ public object NetworkUtils {
     }
 
     /**
-     * Evaluates if any of the provided port numbers are considered insecure.
+     * Evaluates if all the provided port numbers are considered secure.
      *
      * @param ports The list of port numbers to be evaluated.
-     * @return Whether any provided ports are considered insecure.
+     * @return True if all ports are considered secure, false otherwise.
      */
-    public fun isInsecurePort(ports: List<Int?>): Boolean {
+    public fun isSecurePort(ports: List<Int?>): Boolean {
         ports.forEach { port ->
             if (port == null || port == 0 || port == 8080) {
-                return true
+                return false
             }
         }
-        return false
+        return true
     }
 }
