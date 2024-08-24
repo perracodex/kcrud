@@ -18,8 +18,8 @@ import kcrud.base.utils.TestUtils
 import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.util.*
 import kotlin.test.*
+import kotlin.uuid.Uuid
 
 /**
  * Test for the [RbacService].
@@ -67,7 +67,7 @@ class RbacActorTest : KoinComponent {
 
         val username = "any_username"
         val password = "any_password"
-        val actorId: UUID = actorService.create(
+        val actorId: Uuid = actorService.create(
             actorRequest = ActorRequest(
                 roleId = roleEntity.id,
                 username = username,

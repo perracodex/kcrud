@@ -4,7 +4,6 @@
 
 package kcrud.base.scheduler.service.task
 
-import kcrud.base.persistence.serializers.SUUID
 import kcrud.base.scheduler.annotation.SchedulerAPI
 import kcrud.base.scheduler.service.core.SchedulerService
 import kcrud.base.scheduler.service.schedule.Schedule
@@ -14,6 +13,7 @@ import kcrud.base.utils.DateTimeUtils.toJavaDate
 import kcrud.base.utils.DateTimeUtils.toJavaInstant
 import org.quartz.*
 import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Class to create and send a scheduling request for a task.
@@ -26,7 +26,7 @@ import java.util.*
  */
 @OptIn(SchedulerAPI::class)
 class TaskDispatch(
-    val taskId: SUUID,
+    val taskId: Uuid,
     val consumerClass: Class<out TaskConsumer>,
     var startAt: TaskStartAt = TaskStartAt.Immediate,
     var parameters: Map<String, Any?> = emptyMap()

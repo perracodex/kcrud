@@ -6,7 +6,7 @@ package kcrud.access.actor.repository
 
 import kcrud.access.actor.entity.ActorEntity
 import kcrud.access.actor.entity.ActorRequest
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Repository responsible for [ActorEntity] data.
@@ -33,14 +33,14 @@ interface IActorRepository {
      * @param actorId The id of the [ActorEntity] to find.
      * @return The [ActorEntity] for the given id, or null if it doesn't exist.
      */
-    suspend fun findById(actorId: UUID): ActorEntity?
+    suspend fun findById(actorId: Uuid): ActorEntity?
 
     /**
      * Creates a new [ActorEntity].
      * @param actorRequest The [ActorRequest] to create.
      * @return The id of the [ActorEntity] created.
      */
-    suspend fun create(actorRequest: ActorRequest): UUID
+    suspend fun create(actorRequest: ActorRequest): Uuid
 
     /**
      * Updates an existing [ActorEntity].
@@ -49,7 +49,7 @@ interface IActorRepository {
      * @param actorRequest The new details for the [ActorEntity].
      * @return How many records were updated.
      */
-    suspend fun update(actorId: UUID, actorRequest: ActorRequest): Int
+    suspend fun update(actorId: Uuid, actorRequest: ActorRequest): Int
 
     /**
      * Sets the lock status for the given [ActorEntity].
@@ -57,7 +57,7 @@ interface IActorRepository {
      * @param actorId The id of the [ActorEntity] to lock/unlock.
      * @param isLocked Whether the [ActorEntity] should be locked or unlocked.
      */
-    suspend fun setLockedState(actorId: UUID, isLocked: Boolean)
+    suspend fun setLockedState(actorId: Uuid, isLocked: Boolean)
 
     /**
      * Checks if there are any Actor in the database, or if the given usernames exist.

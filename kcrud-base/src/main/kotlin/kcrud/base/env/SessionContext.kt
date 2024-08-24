@@ -6,10 +6,10 @@ package kcrud.base.env
 
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
-import kcrud.base.persistence.serializers.SUUID
+import kcrud.base.persistence.serializers.UuidS
+import kcrud.base.persistence.utils.toUuid
 import kcrud.base.settings.AppSettings
 import kotlinx.serialization.Serializable
-import java.util.*
 
 /**
  * Data class holding concrete session context information passed around in the application
@@ -29,9 +29,9 @@ import java.util.*
  */
 @Serializable
 data class SessionContext(
-    val actorId: SUUID,
+    val actorId: UuidS,
     val username: String,
-    val roleId: SUUID,
+    val roleId: UuidS,
     val schema: String? = null
 ) : Principal {
     companion object {
@@ -46,9 +46,9 @@ data class SessionContext(
          * or the user is not authenticated.
          */
         private val defaultEmptyInstance = SessionContext(
-            actorId = UUID.fromString("00000000-0000-0000-0000-000000000000"),
+            actorId = "00000000-0000-0000-0000-000000000000".toUuid(),
             username = "no-user",
-            roleId = UUID.fromString("00000000-0000-0000-0000-000000000000"),
+            roleId = "00000000-0000-0000-0000-000000000000".toUuid(),
             schema = null
         )
 

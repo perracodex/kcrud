@@ -21,6 +21,7 @@ import java.util.*
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
+import kotlin.uuid.Uuid
 
 /**
  * Helper object to manage tasks in the scheduler.
@@ -109,7 +110,7 @@ class SchedulerTasks private constructor(private val scheduler: Scheduler) {
         val jobKey: JobKey = JobKey.jobKey(name, group)
 
         // Triggers require a unique identity.
-        val identity = "$name-trigger-resend-${UUID.randomUUID()}"
+        val identity = "$name-trigger-resend-${Uuid.random()}"
 
         val triggerBuilder: TriggerBuilder<SimpleTrigger> = TriggerBuilder.newTrigger()
             .withIdentity(identity, group)
@@ -140,7 +141,7 @@ class SchedulerTasks private constructor(private val scheduler: Scheduler) {
      * @param groupId The group ID of the tasks to return. Null to return all tasks.
      * @return A list of [TaskScheduleEntity] objects representing the scheduled tasks.
      */
-    suspend fun all(groupId: UUID? = null, executing: Boolean = false): List<TaskScheduleEntity> {
+    suspend fun all(groupId: Uuid? = null, executing: Boolean = false): List<TaskScheduleEntity> {
         var taskList: List<TaskScheduleEntity> = if (executing) {
             scheduler.currentlyExecutingJobs.map { task -> toEntity(taskDetail = task.jobDetail) }
         } else {

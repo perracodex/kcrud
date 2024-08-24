@@ -13,7 +13,8 @@ import org.jetbrains.exposed.sql.andWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.util.*
+import kotlin.uuid.Uuid
+import kotlin.uuid.toKotlinUuid
 
 /**
  * Repository to manage the persistence aND retrieval of the scheduler audit logs.
@@ -26,9 +27,9 @@ internal object AuditRepository {
      *
      * @param request The [AuditRequest] to create.
      */
-    fun create(request: AuditRequest): UUID {
+    fun create(request: AuditRequest): Uuid {
         return transaction {
-            val logId: UUID = SchedulerAuditTable.insert {
+            val logId: Uuid = (SchedulerAuditTable.insert {
                 it[taskName] = request.taskName
                 it[taskGroup] = request.taskGroup
                 it[fireTime] = request.fireTime
@@ -36,7 +37,7 @@ internal object AuditRepository {
                 it[outcome] = request.outcome
                 it[log] = request.log
                 it[detail] = request.detail
-            } get SchedulerAuditTable.id
+            } get SchedulerAuditTable.id).toKotlinUuid()
 
             logId
         }

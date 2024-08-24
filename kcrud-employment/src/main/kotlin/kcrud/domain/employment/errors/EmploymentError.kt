@@ -8,7 +8,7 @@ import io.ktor.http.*
 import kcrud.base.errors.AppException
 import kcrud.base.errors.ErrorCodeRegistry
 import kcrud.base.utils.KLocalDate
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Concrete errors for the Employment domain.
@@ -34,8 +34,8 @@ sealed class EmploymentError(
      * @property employmentId The employment id that was not found.
      */
     class EmploymentNotFound(
-        val employeeId: UUID,
-        val employmentId: UUID,
+        val employeeId: Uuid,
+        val employmentId: Uuid,
         reason: String? = null,
         cause: Throwable? = null
     ) : EmploymentError(
@@ -56,8 +56,8 @@ sealed class EmploymentError(
      * @property endDate The end date of the employment period.
      */
     class PeriodDatesMismatch(
-        val employeeId: UUID,
-        val employmentId: UUID?,
+        val employeeId: Uuid,
+        val employmentId: Uuid?,
         val startDate: KLocalDate,
         val endDate: KLocalDate,
         reason: String? = null,
@@ -81,8 +81,8 @@ sealed class EmploymentError(
      * @property probationEndDate The probation end date of the employment period.
      */
     class InvalidProbationEndDate(
-        val employeeId: UUID,
-        val employmentId: UUID?,
+        val employeeId: Uuid,
+        val employmentId: Uuid?,
         val startDate: KLocalDate,
         val probationEndDate: KLocalDate,
         reason: String? = null,

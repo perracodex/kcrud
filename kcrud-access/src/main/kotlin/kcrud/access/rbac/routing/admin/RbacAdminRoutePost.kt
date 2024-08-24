@@ -20,10 +20,11 @@ import kcrud.access.rbac.view.RbacLoginView
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kcrud.base.env.SessionContext
+import kcrud.base.persistence.utils.toUuidOrNull
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Handles the POST request for the RBAC admin panel.
@@ -38,7 +39,7 @@ internal fun Route.rbacSAdminRoutePost(rbacService: RbacService) {
         }
 
         val parameters: Parameters = call.receiveParameters()
-        val currentRoleId: UUID? = parameters[RbacAdminView.ROLE_KEY]?.let(UUID::fromString)
+        val currentRoleId: Uuid? = parameters[RbacAdminView.ROLE_KEY].toUuidOrNull()
 
         currentRoleId?.let { roleId ->
             // Set the new scope rules for the role.
@@ -82,7 +83,7 @@ internal fun Route.rbacSAdminRoutePost(rbacService: RbacService) {
  */
 @RbacAPI
 private object RbacScopeRulesManager : KoinComponent {
-    suspend fun process(roleId: UUID, parameters: Parameters) {
+    suspend fun process(roleId: Uuid, parameters: Parameters) {
         val scopeRulesRequests: MutableList<RbacScopeRuleRequest> = mutableListOf()
 
         parameters.entries()

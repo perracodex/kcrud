@@ -9,12 +9,13 @@ import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
 import kcrud.base.persistence.entity.Meta
-import kcrud.base.persistence.serializers.SUUID
+import kcrud.base.persistence.serializers.UuidS
 import kcrud.base.utils.DateTimeUtils
 import kcrud.base.utils.KLocalDate
 import kcrud.domain.contact.entity.ContactEntity
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
+import kotlin.uuid.toKotlinUuid
 
 /**
  * Represents the entity for an employee.
@@ -32,7 +33,7 @@ import org.jetbrains.exposed.sql.ResultRow
  */
 @Serializable
 data class EmployeeEntity(
-    val id: SUUID,
+    val id: UuidS,
     val firstName: String,
     val lastName: String,
     val fullName: String,
@@ -60,7 +61,7 @@ data class EmployeeEntity(
             val lastName: String = row[EmployeeTable.lastName]
 
             return EmployeeEntity(
-                id = row[EmployeeTable.id],
+                id = row[EmployeeTable.id].toKotlinUuid(),
                 firstName = firstName,
                 lastName = lastName,
                 fullName = "$lastName, $firstName",

@@ -11,7 +11,7 @@ import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kotlinx.html.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import java.util.*
+import kotlin.uuid.Uuid
 
 @RbacAPI
 internal object RbacAdminView {
@@ -25,7 +25,7 @@ internal object RbacAdminView {
     fun build(
         html: HTML,
         rbacRoles: List<RbacRoleEntity>,
-        currentRoleId: UUID,
+        currentRoleId: Uuid,
         isUpdated: Boolean,
         isViewOnly: Boolean
     ) {
@@ -45,7 +45,7 @@ internal object RbacAdminView {
 
     private fun HTML.buildForm(
         rbacRoles: List<RbacRoleEntity>,
-        currentRoleId: UUID,
+        currentRoleId: Uuid,
         isUpdated: Boolean,
         isViewOnly: Boolean
     ) {
@@ -81,7 +81,7 @@ internal object RbacAdminView {
         }
     }
 
-    private fun FORM.showRoleSelector(rbacRoles: List<RbacRoleEntity>, currentRoleId: UUID) {
+    private fun FORM.showRoleSelector(rbacRoles: List<RbacRoleEntity>, currentRoleId: Uuid) {
         select {
             id = "roleSelect"
             attributes["name"] = ROLE_KEY

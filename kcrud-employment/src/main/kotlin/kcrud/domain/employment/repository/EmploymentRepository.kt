@@ -17,7 +17,9 @@ import kcrud.domain.employment.entity.EmploymentRequest
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
-import java.util.*
+import kotlin.uuid.Uuid
+import kotlin.uuid.toJavaUuid
+import kotlin.uuid.toKotlinUuid
 
 /**
  * Implementation of the [IEmploymentRepository] interface.
@@ -46,23 +48,23 @@ internal class EmploymentRepository(
         }
     }
 
-    override fun findById(employeeId: UUID, employmentId: UUID): EmploymentEntity? {
+    override fun findById(employeeId: Uuid, employmentId: Uuid): EmploymentEntity? {
         return transactionWithSchema(schema = sessionContext.schema) {
             (EmploymentTable innerJoin EmployeeTable leftJoin ContactTable)
                 .selectAll().where {
-                    (EmploymentTable.id eq employmentId) and
-                            (EmploymentTable.employeeId eq employeeId)
+                    (EmploymentTable.id eq employmentId.toJavaUuid()) and
+                            (EmploymentTable.employeeId eq employeeId.toJavaUuid())
                 }.singleOrNull()?.let { resultRow ->
                     EmploymentEntity.from(row = resultRow)
                 }
         }
     }
 
-    override fun findByEmployeeId(employeeId: UUID): List<EmploymentEntity> {
+    override fun findByEmployeeId(employeeId: Uuid): List<EmploymentEntity> {
         return transactionWithSchema(schema = sessionContext.schema) {
             (EmploymentTable innerJoin EmployeeTable leftJoin ContactTable)
                 .selectAll().where {
-                    (EmploymentTable.employeeId eq employeeId)
+                    (EmploymentTable.employeeId eq employeeId.toJavaUuid())
                 }
                 .map { resultRow ->
                     EmploymentEntity.from(row = resultRow)
@@ -70,22 +72,22 @@ internal class EmploymentRepository(
         }
     }
 
-    override fun create(employeeId: UUID, employmentRequest: EmploymentRequest): UUID {
+    override fun create(employeeId: Uuid, employmentRequest: EmploymentRequest): Uuid {
         return transactionWithSchema(schema = sessionContext.schema) {
-            EmploymentTable.insert { employmentRow ->
+            (EmploymentTable.insert { employmentRow ->
                 employmentRow.mapEmploymentRequest(
                     employeeId = employeeId,
                     employmentRequest = employmentRequest
                 )
-            } get EmploymentTable.id
+            } get EmploymentTable.id).toKotlinUuid()
         }
     }
 
-    override fun update(employeeId: UUID, employmentId: UUID, employmentRequest: EmploymentRequest): Int {
+    override fun update(employeeId: Uuid, employmentId: Uuid, employmentRequest: EmploymentRequest): Int {
         return transactionWithSchema(schema = sessionContext.schema) {
             EmploymentTable.update(where = {
-                (EmploymentTable.employeeId eq employeeId) and
-                        (EmploymentTable.id eq employmentId)
+                (EmploymentTable.employeeId eq employeeId.toJavaUuid()) and
+                        (EmploymentTable.id eq employmentId.toJavaUuid())
             }) { employmentRow ->
                 employmentRow.mapEmploymentRequest(
                     employeeId = employeeId,
@@ -95,26 +97,26 @@ internal class EmploymentRepository(
         }
     }
 
-    override fun delete(employmentId: UUID): Int {
+    override fun delete(employmentId: Uuid): Int {
         return transactionWithSchema(schema = sessionContext.schema) {
             EmploymentTable.deleteWhere {
-                id eq employmentId
+                id eq employmentId.toJavaUuid()
             }
         }
     }
 
-    override fun deleteAll(employeeId: UUID): Int {
+    override fun deleteAll(employeeId: Uuid): Int {
         return transactionWithSchema(schema = sessionContext.schema) {
             EmploymentTable.deleteWhere {
-                EmploymentTable.employeeId eq employeeId
+                EmploymentTable.employeeId eq employeeId.toJavaUuid()
             }
         }
     }
 
-    override fun count(employeeId: UUID?): Int {
+    override fun count(employeeId: Uuid?): Int {
         return transactionWithSchema(schema = sessionContext.schema) {
             employeeId?.let { id ->
-                EmploymentTable.select(column = EmploymentTable.employeeId eq id).count().toInt()
+                EmploymentTable.select(column = EmploymentTable.employeeId eq id.toJavaUuid()).count().toInt()
             } ?: EmploymentTable.selectAll().count().toInt()
         }
     }
@@ -124,10 +126,10 @@ internal class EmploymentRepository(
      * so that it can be used to update or create a database record.
      */
     private fun UpdateBuilder<Int>.mapEmploymentRequest(
-        employeeId: UUID,
+        employeeId: Uuid,
         employmentRequest: EmploymentRequest
     ) {
-        this[EmploymentTable.employeeId] = employeeId
+        this[EmploymentTable.employeeId] = employeeId.toJavaUuid()
         this[EmploymentTable.status] = employmentRequest.status
         this[EmploymentTable.probationEndDate] = employmentRequest.probationEndDate
         this[EmploymentTable.workModality] = employmentRequest.workModality

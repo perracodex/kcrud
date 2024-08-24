@@ -4,33 +4,32 @@
 
 package kcrud.base.persistence.utils
 
-import kcrud.base.persistence.serializers.SUUID
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
- * Converts a [String] to a [UUID] or returns null if the string is not a valid UUID.
+ * Converts a [String] to a [Uuid] or returns null if the string is not a valid [Uuid].
  *
- * @return The [UUID] representation of the string, or null if the string is null or is not a valid UUID.
+ * @return The [Uuid] representation of the string, or null if the string is null or is not a valid [Uuid].
  */
-fun String?.toUUIDOrNull(): SUUID? {
+fun String?.toUuidOrNull(): Uuid? {
     if (this.isNullOrBlank()) return null
     return try {
-        UUID.fromString(this)
+        Uuid.parse(uuidString = this)
     } catch (e: IllegalArgumentException) {
         null
     }
 }
 
 /**
- * Converts a given string representation of a UUID to a UUID object.
+ * Converts a given string to a [Uuid] object.
  *
- * @return a UUID object converted from the string representation.
- * @throws IllegalArgumentException if the string is not a valid UUID.
+ * @return a [Uuid] object converted from the string representation.
+ * @throws IllegalArgumentException if the string is not a valid [Uuid].
  */
-fun String?.toUUID(): SUUID {
+fun String?.toUuid(): Uuid {
     return try {
-        UUID.fromString(this)
+        Uuid.parse(uuidString = this!!)
     } catch (e: IllegalArgumentException) {
-        throw IllegalArgumentException("String '$this' is not a valid UUID.")
+        throw IllegalArgumentException("String '$this' is not a valid Uuid.")
     }
 }

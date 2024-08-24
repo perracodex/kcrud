@@ -12,7 +12,8 @@ import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.statements.BatchInsertStatement
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.util.*
+import kotlin.uuid.Uuid
+import kotlin.uuid.toJavaUuid
 
 /**
  * Implementation of [IRbacFieldRuleRepository].
@@ -22,10 +23,10 @@ import java.util.*
  */
 class RbacFieldRuleRepository : IRbacFieldRuleRepository {
 
-    override fun replace(scopeRuleId: UUID, requestList: List<RbacFieldRuleRequest>?): Int {
+    override fun replace(scopeRuleId: Uuid, requestList: List<RbacFieldRuleRequest>?): Int {
         return transaction {
             RbacFieldRuleTable.deleteWhere {
-                RbacFieldRuleTable.scopeRuleId eq scopeRuleId
+                RbacFieldRuleTable.scopeRuleId eq scopeRuleId.toJavaUuid()
             }
 
             var newRowCount = 0
@@ -48,8 +49,8 @@ class RbacFieldRuleRepository : IRbacFieldRuleRepository {
      * Populates an SQL [BatchInsertStatement] with data from an [RbacFieldRuleRequest] instance,
      * so that it can be used to update or create a database record.
      */
-    private fun BatchInsertStatement.mapRuleRequest(scopeRuleId: UUID, request: RbacFieldRuleRequest) {
-        this[RbacFieldRuleTable.scopeRuleId] = scopeRuleId
+    private fun BatchInsertStatement.mapRuleRequest(scopeRuleId: Uuid, request: RbacFieldRuleRequest) {
+        this[RbacFieldRuleTable.scopeRuleId] = scopeRuleId.toJavaUuid()
         this[RbacFieldRuleTable.fieldName] = request.fieldName
         this[RbacFieldRuleTable.accessLevel] = request.accessLevel
     }

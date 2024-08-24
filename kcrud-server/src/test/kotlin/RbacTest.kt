@@ -32,8 +32,8 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.util.*
 import kotlin.test.*
+import kotlin.uuid.Uuid
 
 class RbacTest : KoinComponent {
 
@@ -143,7 +143,7 @@ class RbacTest : KoinComponent {
 
         testSuspend {
             // Create an employee to be used in the test cases for individual operations.
-            val createdEmployeeId: UUID = createEmployee().id
+            val createdEmployeeId: Uuid = createEmployee().id
 
             // Iterate over each endpoint and method pair, along with their expected outcomes.
             for ((endpointTemplate, requestMethod, testOutcomes) in endpointsAndExpectedOutcomes) {
@@ -232,7 +232,7 @@ class RbacTest : KoinComponent {
         )
 
         val actorService: ActorService by inject()
-        val actorId: UUID = actorService.create(actorRequest = actorRequest)
+        val actorId: Uuid = actorService.create(actorRequest = actorRequest)
         assertNotNull(actual = actorId, message = "Actor ID should not be null")
 
         // Retrieve the Actor.

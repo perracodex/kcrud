@@ -6,7 +6,7 @@ package kcrud.access.rbac.repository.role
 
 import kcrud.access.rbac.entity.role.RbacRoleEntity
 import kcrud.access.rbac.entity.role.RbacRoleRequest
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Repository for [RbacRoleEntity] data.
@@ -21,7 +21,7 @@ interface IRbacRoleRepository {
      * @param roleId The unique id of the [RbacRoleEntity] to find.
      * @return The [RbacRoleEntity] for the given [roleId], or null if not found.
      */
-    fun findById(roleId: UUID): RbacRoleEntity?
+    fun findById(roleId: Uuid): RbacRoleEntity?
 
     /**
      * Finds the [RbacRoleEntity] for the given [actorId]
@@ -29,7 +29,7 @@ interface IRbacRoleRepository {
      * @param actorId The id of the actor to which the role is associated.
      * @return The [RbacRoleEntity] for the given [actorId], or null if it doesn't exist.
      */
-    fun findByActorId(actorId: UUID): RbacRoleEntity?
+    fun findByActorId(actorId: Uuid): RbacRoleEntity?
 
     /**
      * Finds all existing [RbacRoleEntity] entries.
@@ -44,7 +44,7 @@ interface IRbacRoleRepository {
      * @param roleRequest The [RbacRoleRequest] to create the [RbacRoleEntity] from.
      * @return The id of the newly created [RbacRoleEntity].
      */
-    fun create(roleRequest: RbacRoleRequest): UUID
+    fun create(roleRequest: RbacRoleRequest): Uuid
 
     /**
      * Updates an existing [RbacRoleEntity] for the given [roleId].
@@ -55,5 +55,5 @@ interface IRbacRoleRepository {
      * @param roleRequest The [RbacRoleRequest] to update the [RbacRoleEntity] from.
      * @return The number of rows updated.
      */
-    fun update(roleId: UUID, roleRequest: RbacRoleRequest): Int
+    fun update(roleId: Uuid, roleRequest: RbacRoleRequest): Int
 }

@@ -3,7 +3,6 @@
  */
 
 import io.ktor.test.dispatcher.*
-import kcrud.base.persistence.serializers.SUUID
 import kcrud.base.scheduler.service.core.SchedulerService
 import kcrud.base.scheduler.service.schedule.Schedule
 import kcrud.base.scheduler.service.schedule.TaskStartAt
@@ -17,6 +16,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertTrue
+import kotlin.uuid.Uuid
 
 class SchedulerServiceTest {
 
@@ -41,7 +41,7 @@ class SchedulerServiceTest {
     fun testImmediate(): Unit = testSuspend {
         val uniqueTestKey = "uniqueTestTask_${System.nanoTime()}"
 
-        val taskId: SUUID = SUUID.randomUUID()
+        val taskId: Uuid = Uuid.random()
         val taskKey: TaskKey = TaskDispatch(
             taskId = taskId,
             consumerClass = SimpleTestConsumer::class.java,
@@ -63,7 +63,7 @@ class SchedulerServiceTest {
         val uniqueTestKey = "uniqueTestTask_${System.nanoTime()}"
 
         val interval: Schedule.Interval = Schedule.Interval(days = 0u, hours = 0u, minutes = 0u, seconds = 1u)
-        val taskId: SUUID = SUUID.randomUUID()
+        val taskId: Uuid = Uuid.random()
         val taskKey: TaskKey = TaskDispatch(
             taskId = taskId,
             consumerClass = SimpleTestConsumer::class.java,
@@ -85,7 +85,7 @@ class SchedulerServiceTest {
         val uniqueTestKey = "uniqueTestTask_${System.nanoTime()}"
 
         val cron: Schedule.Cron = Schedule.Cron(cron = "0/1 * * * * ?")
-        val taskId: SUUID = SUUID.randomUUID()
+        val taskId: Uuid = Uuid.random()
         val taskKey: TaskKey = TaskDispatch(
             taskId = taskId,
             consumerClass = SimpleTestConsumer::class.java,

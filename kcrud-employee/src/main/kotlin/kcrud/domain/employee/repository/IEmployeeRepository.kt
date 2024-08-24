@@ -9,7 +9,7 @@ import kcrud.base.persistence.pagination.Pageable
 import kcrud.domain.employee.entity.EmployeeEntity
 import kcrud.domain.employee.entity.EmployeeFilterSet
 import kcrud.domain.employee.entity.EmployeeRequest
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Responsible for managing employee data.
@@ -22,7 +22,7 @@ interface IEmployeeRepository {
      * @param employeeId The ID of the employee to be retrieved.
      * @return The resolved [EmployeeEntity] if found, null otherwise.
      */
-    fun findById(employeeId: UUID): EmployeeEntity?
+    fun findById(employeeId: Uuid): EmployeeEntity?
 
     /**
      * Retrieves all employee entities.
@@ -47,7 +47,7 @@ interface IEmployeeRepository {
      * @param employeeRequest The employee to be created.
      * @return The ID of the created employee.
      */
-    fun create(employeeRequest: EmployeeRequest): UUID
+    fun create(employeeRequest: EmployeeRequest): Uuid
 
     /**
      * Updates an employee's details.
@@ -56,7 +56,7 @@ interface IEmployeeRepository {
      * @param employeeRequest The new details for the employee.
      * @return The number of updated records.
      */
-    fun update(employeeId: UUID, employeeRequest: EmployeeRequest): Int
+    fun update(employeeId: Uuid, employeeRequest: EmployeeRequest): Int
 
     /**
      * Deletes an employee using the provided ID.
@@ -64,7 +64,7 @@ interface IEmployeeRepository {
      * @param employeeId The ID of the employee to be deleted.
      * @return The number of delete records.
      */
-    fun delete(employeeId: UUID): Int
+    fun delete(employeeId: Uuid): Int
 
     /**
      * Deletes all employees.

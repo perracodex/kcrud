@@ -27,8 +27,8 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
-import java.util.*
 import kotlin.test.*
+import kotlin.uuid.Uuid
 
 class EmployeeEntityServiceTest : KoinComponent {
 
@@ -53,7 +53,7 @@ class EmployeeEntityServiceTest : KoinComponent {
                 val dob: KLocalDate = KLocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1 + index)
                 val firstName = "AnyName_$index"
                 val lastName = "AnySurname_$index"
-                val employeeId = UUID.randomUUID()
+                val employeeId: Uuid = Uuid.random()
 
                 val mockEmployee = EmployeeEntity(
                     id = employeeId,
@@ -65,7 +65,7 @@ class EmployeeEntityServiceTest : KoinComponent {
                     honorific = honorific,
                     maritalStatus = maritalStatus,
                     contact = ContactEntity(
-                        id = UUID.randomUUID(),
+                        id = Uuid.random(),
                         email = "$firstName.$lastName@kcrud.com",
                         phone = "+34-611-222-333",
                         meta = Meta(

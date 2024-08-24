@@ -16,8 +16,8 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.util.*
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.uuid.Uuid
 
 /**
  * Class managing Actor credential authentication, providing in-memory storage for username
@@ -81,7 +81,7 @@ class CredentialService : KoinComponent {
      *
      * @param actorId The id of the Actor to refresh. If null, refreshes all actors.
      */
-    suspend fun refresh(actorId: UUID? = null): Unit = withContext(Dispatchers.IO) {
+    suspend fun refresh(actorId: Uuid? = null): Unit = withContext(Dispatchers.IO) {
         tracer.info("Refreshing credentials cache.")
 
         val actorService: ActorService by inject()

@@ -6,9 +6,10 @@ package kcrud.domain.contact.entity
 
 import kcrud.base.database.schema.contact.ContactTable
 import kcrud.base.persistence.entity.Meta
-import kcrud.base.persistence.serializers.SUUID
+import kcrud.base.persistence.serializers.UuidS
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
+import kotlin.uuid.toKotlinUuid
 
 /**
  * Represents the entity for an employee's contact details.
@@ -20,7 +21,7 @@ import org.jetbrains.exposed.sql.ResultRow
  */
 @Serializable
 data class ContactEntity(
-    val id: SUUID,
+    val id: UuidS,
     val email: String,
     val phone: String,
     val meta: Meta
@@ -34,7 +35,7 @@ data class ContactEntity(
          */
         fun from(row: ResultRow): ContactEntity {
             return ContactEntity(
-                id = row[ContactTable.id],
+                id = row[ContactTable.id].toKotlinUuid(),
                 email = row[ContactTable.email],
                 phone = row[ContactTable.phone],
                 meta = Meta.from(row = row, table = ContactTable)

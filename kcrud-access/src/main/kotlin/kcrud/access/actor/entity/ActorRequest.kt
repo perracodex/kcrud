@@ -4,7 +4,7 @@
 
 package kcrud.access.actor.entity
 
-import kcrud.base.persistence.serializers.SUUID
+import kcrud.base.persistence.serializers.UuidS
 import kotlinx.serialization.Serializable
 
 /**
@@ -30,7 +30,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class ActorRequest(
-    val roleId: SUUID,
+    val roleId: UuidS,
     val username: String,
     val password: String,
     val isLocked: Boolean

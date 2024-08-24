@@ -18,8 +18,8 @@ import kcrud.domain.employee.repository.IEmployeeRepository
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
-import java.util.*
 import kotlin.test.*
+import kotlin.uuid.Uuid
 
 
 class TimestampTest : KoinComponent {
@@ -53,7 +53,7 @@ class TimestampTest : KoinComponent {
             maritalStatus = MaritalStatus.SINGLE
         )
 
-        val employeeId: UUID = employeeRepository.create(employeeRequest = employeeRequest)
+        val employeeId: Uuid = employeeRepository.create(employeeRequest = employeeRequest)
         val employee: EmployeeEntity = employeeRepository.findById(employeeId = employeeId)!!
 
         // Assert that the record has timestamps.

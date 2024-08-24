@@ -68,6 +68,10 @@ subprojects {
     // This ensures that all Kotlin compilations in subprojects use the specified JDK version.
     kotlin {
         jvmToolchain(jdkVersion = 17)
+
+        // Enable explicit API mode for all subprojects.
+        // https://github.com/Kotlin/KEEP/blob/master/proposals/explicit-api-mode.md
+        //explicitApi()
     }
 
     // Defined in 'gradle.properties' file.
@@ -75,12 +79,15 @@ subprojects {
 
     // Targets 'KotlinCompile' tasks in each subproject to apply task-specific compiler options.
     tasks.withType<KotlinCompile>().configureEach {
-        if (disableOptimizations) {
-            compilerOptions {
+        compilerOptions {
+            if (disableOptimizations) {
                 // Add '-Xdebug' flag to disable local variable optimizations when debugging.
                 // WARNING: Never add this flag in production as it can cause memory leaks.
                 freeCompilerArgs.add("-Xdebug")
             }
+
+            // Enable the experimental Uuid API in the standard library.
+            freeCompilerArgs.add("-opt-in=kotlin.uuid.ExperimentalUuidApi")
         }
     }
 }

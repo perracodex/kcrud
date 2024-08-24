@@ -10,7 +10,8 @@ import kcrud.base.database.schema.admin.actor.ActorTable
 import kcrud.base.env.SessionContext
 import kcrud.base.persistence.entity.Meta
 import org.jetbrains.exposed.sql.ResultRow
-import java.util.*
+import kotlin.uuid.Uuid
+import kotlin.uuid.toKotlinUuid
 
 /**
  * Represents a single Actor. An Actor is a user with a role and access to scopes.
@@ -28,7 +29,7 @@ import java.util.*
  * @property meta The metadata of the record.
  */
 data class ActorEntity(
-    var id: UUID,
+    var id: Uuid,
     val username: String,
     val password: String,
     val role: RbacRoleEntity,
@@ -45,7 +46,7 @@ data class ActorEntity(
          */
         fun from(row: ResultRow, role: RbacRoleEntity): ActorEntity {
             return ActorEntity(
-                id = row[ActorTable.id],
+                id = row[ActorTable.id].toKotlinUuid(),
                 username = row[ActorTable.username],
                 password = row[ActorTable.password],
                 role = role,

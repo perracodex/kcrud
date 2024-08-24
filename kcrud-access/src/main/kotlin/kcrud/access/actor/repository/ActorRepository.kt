@@ -15,7 +15,9 @@ import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
-import java.util.*
+import kotlin.uuid.Uuid
+import kotlin.uuid.toJavaUuid
+import kotlin.uuid.toKotlinUuid
 
 /**
  * Implementation of [IActorRepository].
@@ -28,7 +30,7 @@ class ActorRepository(private val roleRepository: IRbacRoleRepository) : IActorR
             ActorTable.selectAll().where {
                 ActorTable.username.eq(username)
             }.singleOrNull()?.let { resultRow ->
-                val actorId: UUID = resultRow[ActorTable.id]
+                val actorId: Uuid = resultRow[ActorTable.id].toKotlinUuid()
                 val role: RbacRoleEntity = roleRepository.findByActorId(actorId = actorId)!!
                 ActorEntity.from(row = resultRow, role = role)
             }
@@ -38,17 +40,17 @@ class ActorRepository(private val roleRepository: IRbacRoleRepository) : IActorR
     override suspend fun findAll(): List<ActorEntity> {
         return transaction {
             ActorTable.selectAll().map { resultRow ->
-                val actorId: UUID = resultRow[ActorTable.id]
+                val actorId: Uuid = resultRow[ActorTable.id].toKotlinUuid()
                 val role: RbacRoleEntity = roleRepository.findByActorId(actorId = actorId)!!
                 ActorEntity.from(row = resultRow, role = role)
             }
         }
     }
 
-    override suspend fun findById(actorId: UUID): ActorEntity? {
+    override suspend fun findById(actorId: Uuid): ActorEntity? {
         return transaction {
             ActorTable.selectAll().where {
-                ActorTable.id eq actorId
+                ActorTable.id eq actorId.toJavaUuid()
             }.singleOrNull()?.let { resultRow ->
                 val role: RbacRoleEntity = roleRepository.findByActorId(actorId = actorId)!!
                 ActorEntity.from(row = resultRow, role = role)
@@ -56,19 +58,19 @@ class ActorRepository(private val roleRepository: IRbacRoleRepository) : IActorR
         }
     }
 
-    override suspend fun create(actorRequest: ActorRequest): UUID {
+    override suspend fun create(actorRequest: ActorRequest): Uuid {
         return transaction {
-            ActorTable.insert { actorRow ->
+            (ActorTable.insert { actorRow ->
                 actorRow.mapActorRequest(request = actorRequest)
-            } get ActorTable.id
+            } get ActorTable.id).toKotlinUuid()
         }
     }
 
-    override suspend fun update(actorId: UUID, actorRequest: ActorRequest): Int {
+    override suspend fun update(actorId: Uuid, actorRequest: ActorRequest): Int {
         return transaction {
             ActorTable.update(
                 where = {
-                    ActorTable.id eq actorId
+                    ActorTable.id eq actorId.toJavaUuid()
                 }
             ) { actorRow ->
                 actorRow.mapActorRequest(request = actorRequest)
@@ -76,11 +78,11 @@ class ActorRepository(private val roleRepository: IRbacRoleRepository) : IActorR
         }
     }
 
-    override suspend fun setLockedState(actorId: UUID, isLocked: Boolean) {
+    override suspend fun setLockedState(actorId: Uuid, isLocked: Boolean) {
         transaction {
             ActorTable.update(
                 where = {
-                    ActorTable.id eq actorId
+                    ActorTable.id eq actorId.toJavaUuid()
                 }
             ) {
                 it[ActorTable.isLocked] = isLocked
@@ -113,7 +115,7 @@ class ActorRepository(private val roleRepository: IRbacRoleRepository) : IActorR
     private fun UpdateBuilder<Int>.mapActorRequest(request: ActorRequest) {
         this[ActorTable.username] = request.username.lowercase()
         this[ActorTable.password] = request.password
-        this[ActorTable.roleId] = request.roleId
+        this[ActorTable.roleId] = request.roleId.toJavaUuid()
         this[ActorTable.isLocked] = request.isLocked
     }
 }

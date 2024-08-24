@@ -18,7 +18,7 @@ import kcrud.domain.employee.errors.EmployeeError
 import kcrud.domain.employee.repository.IEmployeeRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Employee service, where all the employee business logic should be defined.
@@ -35,7 +35,7 @@ class EmployeeService(
      * @param employeeId The ID of the employee to be retrieved.
      * @return The resolved [EmployeeEntity] if found, null otherwise.
      */
-    suspend fun findById(employeeId: UUID): EmployeeEntity? = withContext(Dispatchers.IO) {
+    suspend fun findById(employeeId: Uuid): EmployeeEntity? = withContext(Dispatchers.IO) {
         return@withContext employeeRepository.findById(employeeId = employeeId)
     }
 
@@ -72,7 +72,7 @@ class EmployeeService(
         verifyIntegrity(employeeId = null, employeeRequest = employeeRequest, reason = "Create Employee.")
 
         return withContext(Dispatchers.IO) {
-            val employeeId: UUID = employeeRepository.create(employeeRequest = employeeRequest)
+            val employeeId: Uuid = employeeRepository.create(employeeRequest = employeeRequest)
             return@withContext findById(employeeId = employeeId)!!
         }
     }
@@ -85,7 +85,7 @@ class EmployeeService(
      * @return The number of updated records.
      */
     suspend fun update(
-        employeeId: UUID,
+        employeeId: Uuid,
         employeeRequest: EmployeeRequest
     ): EmployeeEntity? {
         tracer.debug("Updating employee with ID: $employeeId.")
@@ -104,7 +104,7 @@ class EmployeeService(
      * @param employeeId The ID of the employee to be deleted.
      * @return The number of delete records.
      */
-    suspend fun delete(employeeId: UUID): Int = withContext(Dispatchers.IO) {
+    suspend fun delete(employeeId: Uuid): Int = withContext(Dispatchers.IO) {
         tracer.debug("Deleting employee with ID: $employeeId.")
         return@withContext employeeRepository.delete(employeeId = employeeId)
     }
@@ -136,7 +136,7 @@ class EmployeeService(
      * @param reason The reason for the email verification.
      * @throws EmployeeError If any of the fields is invalid.
      */
-    private fun verifyIntegrity(employeeId: UUID?, employeeRequest: EmployeeRequest, reason: String) {
+    private fun verifyIntegrity(employeeId: Uuid?, employeeRequest: EmployeeRequest, reason: String) {
         employeeRequest.contact?.let { contact ->
             val phone: String = contact.phone
             val phoneValidation: IValidator.Result = PhoneValidator.validate(value = phone)

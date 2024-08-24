@@ -15,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Service to handle Actor operations.
@@ -44,7 +44,7 @@ class ActorService(
      * @param actorId The id of the [ActorEntity] to find.
      * @return The [ActorEntity] for the given id, or null if it doesn't exist.
      */
-    suspend fun findById(actorId: UUID): ActorEntity? = withContext(Dispatchers.IO) {
+    suspend fun findById(actorId: Uuid): ActorEntity? = withContext(Dispatchers.IO) {
         return@withContext actorRepository.findById(actorId = actorId)
     }
 
@@ -61,9 +61,9 @@ class ActorService(
      * @param actorRequest The [ActorRequest] to create.
      * @return The id of the [ActorEntity] created.
      */
-    suspend fun create(actorRequest: ActorRequest): UUID = withContext(Dispatchers.IO) {
+    suspend fun create(actorRequest: ActorRequest): Uuid = withContext(Dispatchers.IO) {
         tracer.debug("Creating actor with username: ${actorRequest.username}")
-        val actorId: UUID = actorRepository.create(actorRequest = actorRequest)
+        val actorId: Uuid = actorRepository.create(actorRequest = actorRequest)
         refresh(actorId = actorId)
         return@withContext actorId
     }
@@ -75,7 +75,7 @@ class ActorService(
      * @param actorRequest The new details for the [ActorEntity].
      * @return How many records were updated.
      */
-    suspend fun update(actorId: UUID, actorRequest: ActorRequest): Int = withContext(Dispatchers.IO) {
+    suspend fun update(actorId: Uuid, actorRequest: ActorRequest): Int = withContext(Dispatchers.IO) {
         tracer.debug("Updating actor with ID: $actorId")
         val count: Int = actorRepository.update(actorId = actorId, actorRequest = actorRequest)
         refresh(actorId = actorId)
@@ -89,7 +89,7 @@ class ActorService(
      * @param isLocked Whether the [ActorEntity] should be locked or unlocked.
      */
     @Suppress("unused")
-    suspend fun setLockedState(actorId: UUID, isLocked: Boolean): Unit = withContext(Dispatchers.IO) {
+    suspend fun setLockedState(actorId: Uuid, isLocked: Boolean): Unit = withContext(Dispatchers.IO) {
         tracer.debug("Setting lock state for actor with ID: $actorId")
         actorRepository.setLockedState(actorId = actorId, isLocked = isLocked)
         refresh(actorId = actorId)
@@ -110,7 +110,7 @@ class ActorService(
      *
      * @param actorId The id of the Actor to refresh.
      */
-    private suspend fun refresh(actorId: UUID) {
+    private suspend fun refresh(actorId: Uuid) {
         tracer.info("Triggering refresh in Credentials and RBAC services for actor with ID: $actorId")
 
         val credentialService: CredentialService by inject()

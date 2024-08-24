@@ -19,7 +19,9 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import org.jetbrains.exposed.sql.update
-import java.util.*
+import kotlin.uuid.Uuid
+import kotlin.uuid.toJavaUuid
+import kotlin.uuid.toKotlinUuid
 
 /**
  * Implementation of [IContactRepository].
@@ -29,20 +31,20 @@ internal class ContactRepository(
     private val sessionContext: SessionContext
 ) : IContactRepository {
 
-    override fun findById(contactId: UUID): ContactEntity? {
+    override fun findById(contactId: Uuid): ContactEntity? {
         return transactionWithSchema(schema = sessionContext.schema) {
             ContactTable.selectAll().where {
-                ContactTable.id eq contactId
+                ContactTable.id eq contactId.toJavaUuid()
             }.singleOrNull()?.let { resultRow ->
                 ContactEntity.from(row = resultRow)
             }
         }
     }
 
-    override fun findByEmployeeId(employeeId: UUID): ContactEntity? {
+    override fun findByEmployeeId(employeeId: Uuid): ContactEntity? {
         return transactionWithSchema(schema = sessionContext.schema) {
             ContactTable.selectAll().where {
-                ContactTable.employeeId eq employeeId
+                ContactTable.employeeId eq employeeId.toJavaUuid()
             }.singleOrNull()?.let { resultRow ->
                 ContactEntity.from(row = resultRow)
             }
@@ -68,13 +70,13 @@ internal class ContactRepository(
         }
     }
 
-    override fun syncWithEmployee(employeeId: UUID, employeeRequest: EmployeeRequest): UUID? {
+    override fun syncWithEmployee(employeeId: Uuid, employeeRequest: EmployeeRequest): Uuid? {
         // If the request does not contain a contact, delete the existing one.
         return if (employeeRequest.contact == null) {
             deleteByEmployeeId(employeeId = employeeId)
             null
         } else {
-            val contactId: UUID? = findByEmployeeId(employeeId = employeeId)?.id
+            val contactId: Uuid? = findByEmployeeId(employeeId = employeeId)?.id
 
             // If the contact already exists, update it, otherwise create it.
             contactId?.let { newContactId ->
@@ -89,22 +91,22 @@ internal class ContactRepository(
         }
     }
 
-    override fun create(employeeId: UUID, contactRequest: ContactRequest): UUID {
+    override fun create(employeeId: Uuid, contactRequest: ContactRequest): Uuid {
         return transactionWithSchema(schema = sessionContext.schema) {
-            ContactTable.insert { contactRow ->
+            (ContactTable.insert { contactRow ->
                 contactRow.mapContactRequest(
                     employeeId = employeeId,
                     request = contactRequest
                 )
-            } get ContactTable.id
+            } get ContactTable.id).toKotlinUuid()
         }
     }
 
-    override fun update(employeeId: UUID, contactId: UUID, contactRequest: ContactRequest): Int {
+    override fun update(employeeId: Uuid, contactId: Uuid, contactRequest: ContactRequest): Int {
         return transactionWithSchema(schema = sessionContext.schema) {
             ContactTable.update(
                 where = {
-                    ContactTable.id eq contactId
+                    ContactTable.id eq contactId.toJavaUuid()
                 }
             ) { contactRow ->
                 contactRow.mapContactRequest(
@@ -115,26 +117,26 @@ internal class ContactRepository(
         }
     }
 
-    override fun delete(contactId: UUID): Int {
+    override fun delete(contactId: Uuid): Int {
         return transactionWithSchema(schema = sessionContext.schema) {
             ContactTable.deleteWhere {
-                id eq contactId
+                id eq contactId.toJavaUuid()
             }
         }
     }
 
-    override fun deleteByEmployeeId(employeeId: UUID): Int {
+    override fun deleteByEmployeeId(employeeId: Uuid): Int {
         return transactionWithSchema(schema = sessionContext.schema) {
             ContactTable.deleteWhere {
-                ContactTable.employeeId eq employeeId
+                ContactTable.employeeId eq employeeId.toJavaUuid()
             }
         }
     }
 
-    override fun count(employeeId: UUID?): Int {
+    override fun count(employeeId: Uuid?): Int {
         return transactionWithSchema(schema = sessionContext.schema) {
             employeeId?.let { id ->
-                ContactTable.select(column = ContactTable.employeeId eq id).count().toInt()
+                ContactTable.select(column = ContactTable.employeeId eq id.toJavaUuid()).count().toInt()
             } ?: ContactTable.selectAll().count().toInt()
         }
     }
@@ -143,8 +145,8 @@ internal class ContactRepository(
      * Populates an SQL [UpdateBuilder] with data from a [ContactRequest] instance,
      * so that it can be used to update or create a database record.
      */
-    private fun UpdateBuilder<Int>.mapContactRequest(employeeId: UUID, request: ContactRequest) {
-        this[ContactTable.employeeId] = employeeId
+    private fun UpdateBuilder<Int>.mapContactRequest(employeeId: Uuid, request: ContactRequest) {
+        this[ContactTable.employeeId] = employeeId.toJavaUuid()
         this[ContactTable.email] = request.email.trim()
         this[ContactTable.phone] = request.phone.trim()
     }

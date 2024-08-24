@@ -8,9 +8,10 @@ import kcrud.base.database.schema.admin.rbac.RbacFieldRuleTable
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kcrud.base.persistence.entity.Meta
-import kcrud.base.persistence.serializers.SUUID
+import kcrud.base.persistence.serializers.UuidS
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
+import kotlin.uuid.toKotlinUuid
 
 /**
  * Represents a single RBAC field level rule.
@@ -23,8 +24,8 @@ import org.jetbrains.exposed.sql.ResultRow
  */
 @Serializable
 data class RbacFieldRuleEntity(
-    val id: SUUID,
-    val scopeRuleId: SUUID,
+    val id: UuidS,
+    val scopeRuleId: UuidS,
     val fieldName: String,
     val accessLevel: RbacAccessLevel,
     val meta: Meta
@@ -38,8 +39,8 @@ data class RbacFieldRuleEntity(
          */
         fun from(row: ResultRow): RbacFieldRuleEntity {
             return RbacFieldRuleEntity(
-                id = row[RbacFieldRuleTable.id],
-                scopeRuleId = row[RbacFieldRuleTable.scopeRuleId],
+                id = row[RbacFieldRuleTable.id].toKotlinUuid(),
+                scopeRuleId = row[RbacFieldRuleTable.scopeRuleId].toKotlinUuid(),
                 fieldName = row[RbacFieldRuleTable.fieldName],
                 accessLevel = row[RbacFieldRuleTable.accessLevel],
                 meta = Meta.from(row = row, table = RbacFieldRuleTable)

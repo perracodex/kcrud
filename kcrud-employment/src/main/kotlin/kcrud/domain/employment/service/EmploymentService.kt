@@ -14,7 +14,7 @@ import kcrud.domain.employment.errors.EmploymentError
 import kcrud.domain.employment.repository.IEmploymentRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Employment service, where all the employment business logic should be defined.
@@ -42,7 +42,7 @@ class EmploymentService(
      * @param employmentId The ID of the employment to be retrieved.
      * @return The resolved [EmploymentEntity] if found, null otherwise.
      */
-    suspend fun findById(employeeId: UUID, employmentId: UUID): EmploymentEntity? = withContext(Dispatchers.IO) {
+    suspend fun findById(employeeId: Uuid, employmentId: Uuid): EmploymentEntity? = withContext(Dispatchers.IO) {
         return@withContext employmentRepository.findById(employeeId = employeeId, employmentId = employmentId)
     }
 
@@ -52,7 +52,7 @@ class EmploymentService(
      * @param employeeId The ID of the employee associated with the employment.
      * @return List of [EmploymentEntity] entities.
      */
-    suspend fun findByEmployeeId(employeeId: UUID): List<EmploymentEntity> = withContext(Dispatchers.IO) {
+    suspend fun findByEmployeeId(employeeId: Uuid): List<EmploymentEntity> = withContext(Dispatchers.IO) {
         return@withContext employmentRepository.findByEmployeeId(employeeId = employeeId)
     }
 
@@ -64,7 +64,7 @@ class EmploymentService(
      * @return The ID of the created employment.
      */
     suspend fun create(
-        employeeId: UUID,
+        employeeId: Uuid,
         employmentRequest: EmploymentRequest
     ): EmploymentEntity {
         tracer.debug("Creating employment for employee with ID: $employeeId")
@@ -76,7 +76,7 @@ class EmploymentService(
             reason = "Create Employment."
         )
 
-        val employmentId: UUID = employmentRepository.create(
+        val employmentId: Uuid = employmentRepository.create(
             employeeId = employeeId,
             employmentRequest = employmentRequest
         )
@@ -95,8 +95,8 @@ class EmploymentService(
      * @return The number of updated records.
      */
     suspend fun update(
-        employeeId: UUID,
-        employmentId: UUID,
+        employeeId: Uuid,
+        employmentId: Uuid,
         employmentRequest: EmploymentRequest
     ): EmploymentEntity? {
         tracer.debug("Updating employment with ID: $employmentId")
@@ -129,7 +129,7 @@ class EmploymentService(
      * @param employmentId The ID of the employment to be deleted.
      * @return The number of delete records.
      */
-    suspend fun delete(employmentId: UUID): Int = withContext(Dispatchers.IO) {
+    suspend fun delete(employmentId: Uuid): Int = withContext(Dispatchers.IO) {
         tracer.debug("Deleting employment with ID: $employmentId")
         return@withContext employmentRepository.delete(employmentId = employmentId)
     }
@@ -140,12 +140,12 @@ class EmploymentService(
      * @param employeeId The ID of the employee to delete all its employments.
      * @return The number of delete records.
      */
-    suspend fun deleteAll(employeeId: UUID): Int = withContext(Dispatchers.IO) {
+    suspend fun deleteAll(employeeId: Uuid): Int = withContext(Dispatchers.IO) {
         tracer.debug("Deleting all employments for employee with ID: $employeeId")
         return@withContext employmentRepository.deleteAll(employeeId = employeeId)
     }
 
-    private fun verify(employeeId: UUID, employmentId: UUID?, employmentRequest: EmploymentRequest, reason: String) {
+    private fun verify(employeeId: Uuid, employmentId: Uuid?, employmentRequest: EmploymentRequest, reason: String) {
         // Verify that the employment period dates are valid.
         employmentRequest.period.endDate?.let { endDate ->
             if (endDate < employmentRequest.period.startDate) {

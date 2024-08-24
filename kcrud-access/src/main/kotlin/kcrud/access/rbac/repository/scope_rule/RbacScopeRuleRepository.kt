@@ -14,7 +14,9 @@ import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.statements.BatchInsertStatement
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.util.*
+import kotlin.uuid.Uuid
+import kotlin.uuid.toJavaUuid
+import kotlin.uuid.toKotlinUuid
 
 /**
  * Implementation of [IRbacScopeRuleRepository].
@@ -26,10 +28,10 @@ class RbacScopeRuleRepository(
     private val fieldRuleRepository: IRbacFieldRuleRepository
 ) : IRbacScopeRuleRepository {
 
-    override fun replace(roleId: UUID, scopeRuleRequests: List<RbacScopeRuleRequest>?): Int {
+    override fun replace(roleId: Uuid, scopeRuleRequests: List<RbacScopeRuleRequest>?): Int {
         return transaction {
             RbacScopeRuleTable.deleteWhere {
-                RbacScopeRuleTable.roleId eq roleId
+                RbacScopeRuleTable.roleId eq roleId.toJavaUuid()
             }
 
             var newRowCount = 0
@@ -53,7 +55,7 @@ class RbacScopeRuleRepository(
                         }?.fieldRules
 
                         // If the field rules are not empty, update the field rules.
-                        val newScopeRuleId: UUID = scopeRule[RbacScopeRuleTable.id]
+                        val newScopeRuleId: Uuid = scopeRule[RbacScopeRuleTable.id].toKotlinUuid()
                         fieldRuleRepository.replace(
                             scopeRuleId = newScopeRuleId,
                             requestList = fieldRuleRequest
@@ -70,8 +72,8 @@ class RbacScopeRuleRepository(
      * Populates an SQL [BatchInsertStatement] with data from an [RbacScopeRuleRequest] instance,
      * so that it can be used to update or create a database record.
      */
-    private fun BatchInsertStatement.mapRuleRequest(roleId: UUID, scopeRuleRequest: RbacScopeRuleRequest) {
-        this[RbacScopeRuleTable.roleId] = roleId
+    private fun BatchInsertStatement.mapRuleRequest(roleId: Uuid, scopeRuleRequest: RbacScopeRuleRequest) {
+        this[RbacScopeRuleTable.roleId] = roleId.toJavaUuid()
         this[RbacScopeRuleTable.scope] = scopeRuleRequest.scope
         this[RbacScopeRuleTable.accessLevel] = scopeRuleRequest.accessLevel
     }

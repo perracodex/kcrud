@@ -11,27 +11,27 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
- * Serializer for UUID objects.
+ * Serializer for [Uuid] objects.
  */
-internal object UUIDSerializer : KSerializer<UUID> {
+internal object UuidSerializer : KSerializer<Uuid> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
-        serialName = "UUID",
+        serialName = "Uuid",
         kind = PrimitiveKind.STRING
     )
 
-    override fun serialize(encoder: Encoder, value: UUID): Unit = encoder.encodeString(value = value.toString())
+    override fun serialize(encoder: Encoder, value: Uuid): Unit = encoder.encodeString(value = value.toString())
 
-    override fun deserialize(decoder: Decoder): UUID = UUID.fromString(decoder.decodeString())
+    override fun deserialize(decoder: Decoder): Uuid = Uuid.parse(uuidString = decoder.decodeString())
 }
 
 /**
- * Represents a serializable UUID.
+ * Represents a serializable [Uuid].
  *
- * @property SUUID The type representing the serializable UUID.
- * @see UUID
- * @see UUIDSerializer
+ * @property UuidS The type representing the serializable [Uuid].
+ * @see Uuid
+ * @see UuidSerializer
  */
-typealias SUUID = @Serializable(with = UUIDSerializer::class) UUID
+typealias UuidS = @Serializable(with = UuidSerializer::class) Uuid

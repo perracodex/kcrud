@@ -9,7 +9,7 @@ import kcrud.base.persistence.pagination.Pageable
 import kcrud.domain.contact.entity.ContactEntity
 import kcrud.domain.contact.entity.ContactRequest
 import kcrud.domain.employee.entity.EmployeeRequest
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Responsible for managing [ContactEntity] data.
@@ -22,7 +22,7 @@ interface IContactRepository {
      * @param contactId The id of the contact to be retrieved.
      * @return The resolved [ContactEntity] if it exists, null otherwise.
      */
-    fun findById(contactId: UUID): ContactEntity?
+    fun findById(contactId: Uuid): ContactEntity?
 
     /**
      * Finds a contact by the provided [employeeId].
@@ -30,7 +30,7 @@ interface IContactRepository {
      * @param employeeId The id of the employee whose contact is to be retrieved.
      * @return The resolve [ContactEntity] if it exists, null otherwise.
      */
-    fun findByEmployeeId(employeeId: UUID): ContactEntity?
+    fun findByEmployeeId(employeeId: Uuid): ContactEntity?
 
     /**
      * Retrieves all contacts.
@@ -48,7 +48,7 @@ interface IContactRepository {
      * @param employeeRequest The details of the employee to be processed.
      * @return The id of the contact if it was created or updated, null if it was deleted.
      */
-    fun syncWithEmployee(employeeId: UUID, employeeRequest: EmployeeRequest): UUID?
+    fun syncWithEmployee(employeeId: Uuid, employeeRequest: EmployeeRequest): Uuid?
 
     /**
      * Creates a new contact for an employee.
@@ -57,7 +57,7 @@ interface IContactRepository {
      * @param contactRequest The details of the contact to be created.
      * @return The id of the created contact.
      */
-    fun create(employeeId: UUID, contactRequest: ContactRequest): UUID
+    fun create(employeeId: Uuid, contactRequest: ContactRequest): Uuid
 
     /**
      * Updates the contact of an employee.
@@ -66,7 +66,7 @@ interface IContactRepository {
      * @param contactRequest The new details for the contact.
      * @return The number of updated records.
      */
-    fun update(employeeId: UUID, contactId: UUID, contactRequest: ContactRequest): Int
+    fun update(employeeId: Uuid, contactId: Uuid, contactRequest: ContactRequest): Int
 
     /**
      * Deletes the contact of an employee.
@@ -74,7 +74,7 @@ interface IContactRepository {
      * @param contactId The id of the contact to be deleted.
      * @return The number of deleted records.
      */
-    fun delete(contactId: UUID): Int
+    fun delete(contactId: Uuid): Int
 
     /**
      * Deletes the contact of an employee.
@@ -82,7 +82,7 @@ interface IContactRepository {
      * @param employeeId The id of the employee whose contact is to be deleted.
      * @return The number of deleted records.
      */
-    fun deleteByEmployeeId(employeeId: UUID): Int
+    fun deleteByEmployeeId(employeeId: Uuid): Int
 
     /**
      * Retrieves the total count of contacts.
@@ -90,5 +90,5 @@ interface IContactRepository {
      * @param employeeId The ID of the employee to count its contacts, or null to count all contacts.
      * @return The total count of existing records.
      */
-    fun count(employeeId: UUID? = null): Int
+    fun count(employeeId: Uuid? = null): Int
 }

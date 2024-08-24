@@ -7,7 +7,7 @@ package kcrud.domain.employee.errors
 import io.ktor.http.*
 import kcrud.base.errors.AppException
 import kcrud.base.errors.ErrorCodeRegistry
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Concrete errors for the Employee domain.
@@ -32,7 +32,7 @@ sealed class EmployeeError(
      * @property employeeId The employee id that was not found.
      */
     class EmployeeNotFound(
-        val employeeId: UUID,
+        val employeeId: Uuid,
         reason: String? = null,
         cause: Throwable? = null
     ) : EmployeeError(
@@ -50,7 +50,7 @@ sealed class EmployeeError(
      * @property email The email that is already registered.
      */
     class InvalidEmailFormat(
-        val employeeId: UUID?,
+        val employeeId: Uuid?,
         val email: String,
         reason: String? = null,
         cause: Throwable? = null
@@ -69,7 +69,7 @@ sealed class EmployeeError(
      * @property phone The phone value with the invalid format.
      */
     class InvalidPhoneFormat(
-        val employeeId: UUID?,
+        val employeeId: Uuid?,
         val phone: String,
         reason: String? = null,
         cause: Throwable? = null

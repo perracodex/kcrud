@@ -13,7 +13,7 @@ import org.jetbrains.exposed.sql.Table
 /**
  * Configuration for the [DbPlugin].
  */
-class DbPluginConfig {
+internal class DbPluginConfig {
     /** List of tables to be registered with the database. */
     val tables: MutableList<Table> = mutableListOf()
 
@@ -24,7 +24,7 @@ class DbPluginConfig {
 /**
  * Custom Ktor plugin to configure the database.
  */
-val DbPlugin: ApplicationPlugin<DbPluginConfig> = createApplicationPlugin(
+internal val DbPlugin: ApplicationPlugin<DbPluginConfig> = createApplicationPlugin(
     name = "DbPlugin",
     createConfiguration = ::DbPluginConfig
 ) {

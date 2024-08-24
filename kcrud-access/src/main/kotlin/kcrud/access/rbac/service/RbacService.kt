@@ -20,8 +20,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
-import java.util.*
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.uuid.Uuid
 
 /**
  * Service to handle Role-Based Access Control (RBAC) operations.
@@ -48,7 +48,7 @@ class RbacService(
      *
      * The cache is meant to be updated whenever roles are updated.
      */
-    private val cache: ConcurrentHashMap<UUID, ActorRole> = ConcurrentHashMap()
+    private val cache: ConcurrentHashMap<Uuid, ActorRole> = ConcurrentHashMap()
 
     /** Data class holding role attributes and the actor's locked status. */
     private data class ActorRole(val isLocked: Boolean, val role: RbacRoleEntity)
@@ -76,7 +76,7 @@ class RbacService(
      *
      * @param actorId The id of the Actor to refresh. If null, refreshes permissions for all Actors.
      */
-    suspend fun refresh(actorId: UUID? = null): Unit = withContext(Dispatchers.IO) {
+    suspend fun refresh(actorId: Uuid? = null): Unit = withContext(Dispatchers.IO) {
         tracer.info("Refreshing RBAC cache.")
 
         var targetActors: List<ActorEntity> = if (actorId == null) {
@@ -100,7 +100,7 @@ class RbacService(
             }
         } else {
             // Prepare the new cache mapping for all actors.
-            val newCache: ConcurrentHashMap<UUID, ActorRole> = ConcurrentHashMap()
+            val newCache: ConcurrentHashMap<Uuid, ActorRole> = ConcurrentHashMap()
             newCache.putAll(
                 targetActors.associateBy(
                     { actor -> actor.id },
@@ -180,7 +180,7 @@ class RbacService(
      * @param roleId The id of the role to retrieve.
      * @return The [RbacRoleEntity] for the given [roleId], or null if it doesn't exist.
      */
-    suspend fun findRoleById(roleId: UUID): RbacRoleEntity? = withContext(Dispatchers.IO) {
+    suspend fun findRoleById(roleId: Uuid): RbacRoleEntity? = withContext(Dispatchers.IO) {
         return@withContext roleRepository.findById(roleId = roleId)
     }
 
@@ -190,7 +190,7 @@ class RbacService(
      * @param actorId The id of the actor to which the role is associated.
      * @return The [RbacRoleEntity] for the given [actorId], or null if it doesn't exist.
      */
-    suspend fun findRoleByActorId(actorId: UUID): RbacRoleEntity? = withContext(Dispatchers.IO) {
+    suspend fun findRoleByActorId(actorId: Uuid): RbacRoleEntity? = withContext(Dispatchers.IO) {
         return@withContext roleRepository.findByActorId(actorId = actorId)
     }
 
@@ -205,7 +205,7 @@ class RbacService(
     ): RbacRoleEntity = withContext(Dispatchers.IO) {
         tracer.info("Creating new role: ${roleRequest.roleName}")
 
-        val roleId: UUID = roleRepository.create(roleRequest = roleRequest)
+        val roleId: Uuid = roleRepository.create(roleRequest = roleRequest)
 
         refresh()
 
@@ -221,7 +221,7 @@ class RbacService(
      * @return The updated [RbacRoleEntity] if the update was successful, null otherwise.
      */
     suspend fun updateRole(
-        roleId: UUID,
+        roleId: Uuid,
         roleRequest: RbacRoleRequest
     ): RbacRoleEntity? = withContext(Dispatchers.IO) {
         tracer.info("Updating role with ID: $roleId")
@@ -250,7 +250,7 @@ class RbacService(
      * @return The number of rows updated.
      */
     suspend fun updateScopeRules(
-        roleId: UUID,
+        roleId: Uuid,
         scopeRuleRequests: List<RbacScopeRuleRequest>
     ): Int = withContext(Dispatchers.IO) {
         tracer.info("Updating scope rules for role with ID: $roleId")
