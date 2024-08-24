@@ -27,7 +27,7 @@ public data class TaskKey(
          * @return The [TaskKey] instance.
          */
         @SchedulerAPI
-        internal fun fromJobKey(jobKey: JobKey): TaskKey {
+        fun fromJobKey(jobKey: JobKey): TaskKey {
             return TaskKey(name = jobKey.name, group = jobKey.group)
         }
     }

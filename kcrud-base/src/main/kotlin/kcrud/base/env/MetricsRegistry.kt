@@ -55,5 +55,5 @@ public object MetricsRegistry {
      * Returns the metrics content in Prometheus text format for the response body
      * of an endpoint designated for Prometheus to scrape.
      */
-    public fun scrape(): String = registry.scrape()
+    internal fun scrape(): String = registry.scrape()
 }

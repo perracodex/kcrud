@@ -51,8 +51,8 @@ internal sealed class PaginationError(
         cause = cause
     )
 
-    companion object {
-        private const val TAG: String = "PGN."
+    private companion object {
+        const val TAG: String = "PGN."
 
         init {
             ErrorCodeRegistry.registerTag(tag = TAG)

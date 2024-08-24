@@ -62,7 +62,7 @@ public sealed class Schedule {
         /**
          * Converts the overall interval into a total number of seconds.
          */
-        public fun toTotalSeconds(): UInt {
+        internal fun toTotalSeconds(): UInt {
             return (days * 24u * 60u * 60u) + (hours * 60u * 60u) + (minutes * 60u) + seconds
         }
     }

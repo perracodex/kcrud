@@ -26,10 +26,10 @@ import kotlin.uuid.Uuid
  */
 @OptIn(SchedulerAPI::class)
 public class TaskDispatch(
-    public val taskId: Uuid,
-    public val consumerClass: Class<out TaskConsumer>,
-    public var startAt: TaskStartAt = TaskStartAt.Immediate,
-    public var parameters: Map<String, Any?> = emptyMap()
+    private val taskId: Uuid,
+    private val consumerClass: Class<out TaskConsumer>,
+    private var startAt: TaskStartAt = TaskStartAt.Immediate,
+    private var parameters: Map<String, Any?> = emptyMap()
 ) {
     /**
      * Schedule the task to be executed immediately or at a specified [startAt] time.

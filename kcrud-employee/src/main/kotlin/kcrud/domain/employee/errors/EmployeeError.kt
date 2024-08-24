@@ -81,8 +81,8 @@ internal sealed class EmployeeError(
         cause = cause
     )
 
-    companion object {
-        private const val TAG: String = "EMP."
+    private companion object {
+        const val TAG: String = "EMP."
 
         init {
             ErrorCodeRegistry.registerTag(tag = TAG)

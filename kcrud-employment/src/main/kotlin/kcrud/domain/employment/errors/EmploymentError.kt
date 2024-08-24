@@ -97,8 +97,8 @@ internal sealed class EmploymentError(
         cause = cause
     )
 
-    companion object {
-        private const val TAG: String = "EMT."
+    private companion object {
+        const val TAG: String = "EMT."
 
         init {
             ErrorCodeRegistry.registerTag(tag = TAG)

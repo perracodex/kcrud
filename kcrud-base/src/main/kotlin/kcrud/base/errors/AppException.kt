@@ -66,7 +66,7 @@ public open class AppException(
         val reason: String?
     )
 
-    internal companion object {
+    private companion object {
         /**
          * Builds the final exception message by concatenating the provided error description and reason.
          *

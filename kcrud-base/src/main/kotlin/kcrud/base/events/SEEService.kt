@@ -16,7 +16,7 @@ import java.io.Writer
 /**
  * Service for managing and broadcasting events using Server-Sent Events (SSE).
  */
-internal object SEEService {
+public object SEEService {
     private val tracer = Tracer<SEEService>()
 
     /**
@@ -39,7 +39,7 @@ internal object SEEService {
      *
      * @param message The message to push to the event flow.
      */
-    suspend fun push(message: String) {
+    public suspend fun push(message: String) {
         eventFlow.emit(message)
     }
 
@@ -51,7 +51,7 @@ internal object SEEService {
      * @param writer The [Writer] to which the SSE events will be written.
      * @throws IOException If an I/O error occurs during writing.
      */
-    suspend fun write(writer: Writer) {
+    internal suspend fun write(writer: Writer) {
         try {
             eventFlow.buffer(capacity = BUFFER_CAPACITY).collect { message ->
                 withContext(Dispatchers.IO) {

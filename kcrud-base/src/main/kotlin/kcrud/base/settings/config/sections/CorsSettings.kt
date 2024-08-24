@@ -47,12 +47,12 @@ public data class CorsSettings(
      * Returns true if the allowed hosts list is empty
      * or any of the hosts is/or starts with a wildcard.
      */
-    public fun allowAllHosts(): Boolean {
+    internal fun allowAllHosts(): Boolean {
         return allowedHosts.isEmpty() or
                 (allowedHosts.any { it.startsWith(prefix = "*") })
     }
 
-    public companion object {
+    internal companion object {
 
         /**
          * Parses a host configuration from a string.
@@ -61,7 +61,7 @@ public data class CorsSettings(
          *
          * @param spec The string to parse.
          */
-        public fun parse(spec: String): HostConfig {
+        fun parse(spec: String): HostConfig {
             var host = ""
             var schemes: List<String> = emptyList()
             var subDomains: List<String> = emptyList()
