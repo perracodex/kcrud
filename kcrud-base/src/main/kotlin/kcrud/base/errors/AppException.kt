@@ -74,7 +74,7 @@ public open class AppException(
          * @param reason An optional additional reason to be appended to the error description.
          * @return The concatenated error message.
          */
-        private fun buildMessage(description: String, reason: String?): String {
+        fun buildMessage(description: String, reason: String?): String {
             return (reason?.let { "$it : " } ?: "") + description
         }
     }
