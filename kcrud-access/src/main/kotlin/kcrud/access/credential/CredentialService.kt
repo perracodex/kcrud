@@ -45,7 +45,12 @@ public class CredentialService : KoinComponent {
 
     /** Provides the in-memory authentication store. */
     private val store: HashedPasswordTableAuth = HashedPasswordTableAuth(
-        digester = { password, salt -> HashedPasswordTableAuth.hashPassword(password = password, salt = salt) },
+        digester = { password, salt ->
+            HashedPasswordTableAuth.hashPassword(
+                password = password,
+                salt = salt
+            )
+        },
         table = cache
     )
 
