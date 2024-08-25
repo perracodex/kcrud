@@ -27,12 +27,14 @@ import org.koin.java.KoinJavaComponent.getKoin
 internal fun Route.rbacLoginRoute() {
 
     get("rbac/login") {
-        if (getRbacAdminAccessActor(call = call) == null) {
+        getRbacAdminAccessActor(call = call)?.let {
+            // If the actor is not null, redirect to the admin view.
+            call.respondRedirect(url = RbacAdminView.RBAC_ADMIN_PATH)
+        } ?: run {
+            // If the actor is null, show the login view.
             call.respondHtml(status = HttpStatusCode.OK) {
                 RbacLoginView.build(html = this)
             }
-        } else {
-            call.respondRedirect(url = RbacAdminView.RBAC_ADMIN_PATH)
         }
     }
 
@@ -54,7 +56,7 @@ internal fun Route.rbacLoginRoute() {
 internal suspend fun getRbacAdminAccessActor(call: ApplicationCall): SessionContext? {
     val sessionContext: SessionContext? = call.sessions.get<SessionContext>()
 
-    if (sessionContext != null) {
+    sessionContext?.let {
         val rbacService: RbacService = getKoin().get()
 
         val hasPermission: Boolean = rbacService.hasPermission(

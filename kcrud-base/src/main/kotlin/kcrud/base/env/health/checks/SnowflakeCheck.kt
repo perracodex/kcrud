@@ -35,7 +35,7 @@ public data class SnowflakeCheck(
             null
         }
 
-        if (testId == null) {
+        testId ?: run {
             errors.add(
                 "${SnowflakeCheck::class.simpleName}. Error generating snowflake. " +
                         "timestampEpoch: $timestampEpoch, nanoTimeStart: $nanoTimeStart."
@@ -49,7 +49,7 @@ public data class SnowflakeCheck(
             null
         }
 
-        if (testResult == null) {
+        testResult ?: run {
             errors.add(
                 "${SnowflakeCheck::class.simpleName}. Unable to parse testId '$testId'. " +
                         "timestampEpoch: $timestampEpoch, nanoTimeStart: $nanoTimeStart."

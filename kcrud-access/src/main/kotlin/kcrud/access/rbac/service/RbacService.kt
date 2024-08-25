@@ -79,11 +79,9 @@ internal class RbacService(
     suspend fun refresh(actorId: Uuid? = null): Unit = withContext(Dispatchers.IO) {
         tracer.info("Refreshing RBAC cache.")
 
-        var targetActors: List<ActorEntity> = if (actorId == null) {
-            actorRepository.findAll()
-        } else {
+        var targetActors: List<ActorEntity> = actorId?.let {
             actorRepository.findById(actorId = actorId)?.let { listOf(it) } ?: emptyList()
-        }
+        } ?: actorRepository.findAll()
 
         // Filter out Actors without any scope rules.
         targetActors = targetActors.filter { actor ->

@@ -71,11 +71,7 @@ internal class ContactRepository(
     }
 
     override fun syncWithEmployee(employeeId: Uuid, employeeRequest: EmployeeRequest): Uuid? {
-        // If the request does not contain a contact, delete the existing one.
-        return if (employeeRequest.contact == null) {
-            deleteByEmployeeId(employeeId = employeeId)
-            null
-        } else {
+        return employeeRequest.contact?.let {
             val contactId: Uuid? = findByEmployeeId(employeeId = employeeId)?.id
 
             // If the contact already exists, update it, otherwise create it.
@@ -88,6 +84,10 @@ internal class ContactRepository(
 
                 newContactId.takeIf { updateCount > 0 }
             } ?: create(employeeId = employeeId, contactRequest = employeeRequest.contact)
+        } ?: run {
+            // If the request does not contain a contact, delete the existing one.
+            deleteByEmployeeId(employeeId = employeeId)
+            null
         }
     }
 

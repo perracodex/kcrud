@@ -139,7 +139,7 @@ public object SnowflakeFactory {
         }
 
         // Verify the machine ID is set.
-        if (machineId == null) {
+        machineId ?: run {
             tracer.warning("Machine ID not set.")
             machineId = NO_MACHINE_ID
         }

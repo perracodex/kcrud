@@ -139,15 +139,16 @@ class SchedulerServiceTest {
 
         override fun execute(context: JobExecutionContext?) {
             // Check if this execution is a misfire.
-            if (context?.trigger?.nextFireTime == null) {
-                // This means the task has been fired due to misfire handling.
-                println("TEST PASSED: Misfire handled for task: ${context!!.jobDetail.key}")
-                testResults.add(MISFIRE_MESSAGE)
-            } else {
+            context?.trigger?.nextFireTime?.let {
                 // Regular execution.
                 println("TEST FAILED: Expected misfire handling but got regular execution for task: ${context.jobDetail.key}")
                 testResults.add(REGULAR_EXECUTION_MESSAGE)
+                return
             }
+
+            // This means the task has been fired due to misfire handling.
+            println("TEST PASSED: Misfire handled for task: ${context!!.jobDetail.key}")
+            testResults.add(MISFIRE_MESSAGE)
         }
     }
 

@@ -28,7 +28,7 @@ import kotlin.uuid.Uuid
 internal fun Route.rbacAdminRouteGet(rbacService: RbacService) {
     get("rbac/admin") {
         val sessionContext: SessionContext? = getRbacAdminAccessActor(call = call)
-        if (sessionContext == null) {
+        sessionContext ?: run {
             call.respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
             return@get
         }

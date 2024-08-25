@@ -51,7 +51,7 @@ public data class DatabaseCheck(
             errors.add("$className. Database is not responding. $configuration")
         }
 
-        if (datasource == null) {
+        datasource ?: run {
             errors.add("$className. Undefined datasource. $configuration")
         }
 

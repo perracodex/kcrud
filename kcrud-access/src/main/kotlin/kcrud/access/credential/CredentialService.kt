@@ -92,11 +92,9 @@ public class CredentialService : KoinComponent {
         val actorService: ActorService by inject()
 
         // Refresh a single actor or all actors based on the actorId parameter.
-        val actorsToRefresh: List<ActorEntity> = if (actorId == null) {
-            actorService.findAll()
-        } else {
+        val actorsToRefresh: List<ActorEntity> = actorId?.let {
             actorService.findById(actorId = actorId)?.let { listOf(it) } ?: emptyList()
-        }
+        } ?: actorService.findAll()
 
         if (actorsToRefresh.isEmpty()) {
             throw IllegalStateException("No actor found for the given criteria.")
@@ -113,23 +111,21 @@ public class CredentialService : KoinComponent {
                 salt = salt
             )
 
-            if (actorId == null) {
-                // Prepare to replace the entire cache for all actors.
-                newCache?.put(key = actor.username.lowercase(), value = hashedPassword)
-            } else {
+            actorId?.let {
                 // Update only the specified actor's cache entry.
                 lock.withLock {
                     cache[actor.username.lowercase()] = hashedPassword
                 }
+            } ?: run {
+                // Prepare to replace the entire cache for all actors.
+                newCache?.put(key = actor.username.lowercase(), value = hashedPassword)
             }
         }
 
         // Replace the current cache with the new one if refreshing all actors.
-        if (actorId == null) {
-            lock.withLock {
-                cache.clear()
-                cache.putAll(newCache!!)
-            }
+        actorId ?: lock.withLock {
+            cache.clear()
+            cache.putAll(newCache!!)
         }
 
         tracer.info("Credentials cache refreshed.")

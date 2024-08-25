@@ -33,7 +33,7 @@ import kotlin.uuid.Uuid
 internal fun Route.rbacSAdminRoutePost(rbacService: RbacService) {
     post("rbac/admin") {
         val sessionContext: SessionContext? = call.sessions.get<SessionContext>()
-        if (sessionContext == null) {
+        sessionContext ?: run {
             call.respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
             return@post
         }

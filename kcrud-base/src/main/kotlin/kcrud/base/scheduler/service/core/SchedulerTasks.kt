@@ -150,7 +150,7 @@ internal class SchedulerTasks private constructor(private val scheduler: Schedul
             }
         }
 
-        if (groupId != null) {
+        groupId?.let {
             taskList = taskList.filter { it.group == groupId.toString() }
         }
 

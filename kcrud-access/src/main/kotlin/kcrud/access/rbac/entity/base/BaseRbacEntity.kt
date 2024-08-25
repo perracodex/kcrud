@@ -90,7 +90,7 @@ public abstract class BaseRbacEntity {
             // Find the corresponding property for each constructor parameter.
             val property: KProperty1<T, *>? = clazz.memberProperties.firstOrNull { it.name == parameter.name }
 
-            if (property != null) {
+            property?.let {
                 if (property.name in topLevelFields) {
                     // Anonymize top-level fields directly.
                     return@associateWith RbacFieldAnonymization.anonymize(value = property.get(this as T))
@@ -107,7 +107,7 @@ public abstract class BaseRbacEntity {
                         return@associateWith property.get(this as T)
                     }
                 }
-            } else {
+            } ?: run {
                 // If the property does not exist, return null (should not happen with well-formed data).
                 return@associateWith null
             }
