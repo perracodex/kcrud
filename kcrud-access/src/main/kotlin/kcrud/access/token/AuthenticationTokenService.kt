@@ -59,7 +59,7 @@ internal object AuthenticationTokenService {
         } catch (e: TokenExpiredException) {
             TokenState.EXPIRED
         } catch (e: JWTDecodeException) {
-            tracer.error("Failed to decide token: ${e.message}")
+            tracer.error("Failed to decode token: ${e.message}")
             TokenState.INVALID
         } catch (e: JWTVerificationException) {
             tracer.error("Token verification failed: ${e.message}")
