@@ -19,7 +19,7 @@ import kotlin.uuid.Uuid
 /**
  * Employment service, where all the employment business logic should be defined.
  */
-public class EmploymentService(
+public class EmploymentService internal constructor(
     @Suppress("unused") private val sessionContext: SessionContext,
     private val employmentRepository: IEmploymentRepository
 ) {

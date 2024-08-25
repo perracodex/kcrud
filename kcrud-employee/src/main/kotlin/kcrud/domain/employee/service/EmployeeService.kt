@@ -23,7 +23,7 @@ import kotlin.uuid.Uuid
 /**
  * Employee service, where all the employee business logic should be defined.
  */
-public class EmployeeService(
+public class EmployeeService internal constructor(
     @Suppress("unused") private val sessionContext: SessionContext,
     private val employeeRepository: IEmployeeRepository
 ) {
