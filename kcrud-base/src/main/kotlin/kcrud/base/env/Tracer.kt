@@ -16,13 +16,6 @@ import kotlin.reflect.jvm.javaMethod
 public class Tracer(private val logger: Logger) {
 
     /**
-     * Logs a trace message with no severity level.
-     */
-    public fun trace(message: String) {
-        logger.trace(message)
-    }
-
-    /**
      * Logs a message with debug severity level.
      */
     public fun debug(message: String) {
