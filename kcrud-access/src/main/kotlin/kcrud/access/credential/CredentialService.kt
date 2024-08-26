@@ -117,7 +117,7 @@ public class CredentialService : KoinComponent {
                     cache[actor.username.lowercase()] = hashedPassword
                 }
             } ?: run {
-                // Prepare to replace the entire cache for all actors.
+                // Add the updated credentials to the new cache for later replacement of the entire cache.
                 newCache?.put(key = actor.username.lowercase(), value = hashedPassword)
             }
         }

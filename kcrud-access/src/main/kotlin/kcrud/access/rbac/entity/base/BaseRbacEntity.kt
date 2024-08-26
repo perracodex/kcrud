@@ -107,10 +107,7 @@ public abstract class BaseRbacEntity {
                         return@associateWith property.get(this as T)
                     }
                 }
-            } ?: run {
-                // If the property does not exist, return null (should not happen with well-formed data).
-                return@associateWith null
-            }
+            } ?: return@associateWith null // Return null for non-existent properties. Unlikely with well-formed data.
         }
 
         // Construct and return the new instance of the entity with anonymized fields.
