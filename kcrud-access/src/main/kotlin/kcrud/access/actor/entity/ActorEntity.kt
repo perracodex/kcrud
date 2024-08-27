@@ -11,7 +11,6 @@ import kcrud.base.env.SessionContext
 import kcrud.base.persistence.entity.Meta
 import org.jetbrains.exposed.sql.ResultRow
 import kotlin.uuid.Uuid
-import kotlin.uuid.toKotlinUuid
 
 /**
  * Represents a single Actor. An Actor is a user with a role and access to scopes.
@@ -46,7 +45,7 @@ internal data class ActorEntity(
          */
         fun from(row: ResultRow, role: RbacRoleEntity): ActorEntity {
             return ActorEntity(
-                id = row[ActorTable.id].toKotlinUuid(),
+                id = row[ActorTable.id],
                 username = row[ActorTable.username],
                 password = row[ActorTable.password],
                 role = role,

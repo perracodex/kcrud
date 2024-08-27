@@ -19,8 +19,6 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import kotlin.uuid.Uuid
-import kotlin.uuid.toJavaUuid
-import kotlin.uuid.toKotlinUuid
 
 /**
  * Implementation of the [IEmployeeRepository] interface.
@@ -39,7 +37,7 @@ internal class EmployeeRepository(
                 onColumn = EmployeeTable.id,
                 otherColumn = ContactTable.employeeId
             ).selectAll().where {
-                EmployeeTable.id eq employeeId.toJavaUuid()
+                EmployeeTable.id eq employeeId
             }.singleOrNull()?.let { resultRow ->
                 EmployeeEntity.from(row = resultRow)
             }
@@ -121,9 +119,9 @@ internal class EmployeeRepository(
 
     override fun create(employeeRequest: EmployeeRequest): Uuid {
         return transactionWithSchema(schema = sessionContext.schema) {
-            val newEmployeeId: Uuid = (EmployeeTable.insert { employeeRow ->
+            val newEmployeeId: Uuid = EmployeeTable.insert { employeeRow ->
                 employeeRow.mapEmployeeRequest(employeeRequest = employeeRequest)
-            } get EmployeeTable.id).toKotlinUuid()
+            } get EmployeeTable.id
 
             employeeRequest.contact?.let {
                 contactRepository.create(
@@ -140,7 +138,7 @@ internal class EmployeeRepository(
         return transactionWithSchema(schema = sessionContext.schema) {
             val updateCount: Int = EmployeeTable.update(
                 where = {
-                    EmployeeTable.id eq employeeId.toJavaUuid()
+                    EmployeeTable.id eq employeeId
                 }
             ) { employeeRow ->
                 employeeRow.mapEmployeeRequest(employeeRequest = employeeRequest)
@@ -160,7 +158,7 @@ internal class EmployeeRepository(
     override fun delete(employeeId: Uuid): Int {
         return transactionWithSchema(schema = sessionContext.schema) {
             EmployeeTable.deleteWhere {
-                id eq employeeId.toJavaUuid()
+                id eq employeeId
             }
         }
     }

@@ -18,8 +18,6 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import kotlin.uuid.Uuid
-import kotlin.uuid.toJavaUuid
-import kotlin.uuid.toKotlinUuid
 
 /**
  * Implementation of the [IEmploymentRepository] interface.
@@ -52,8 +50,8 @@ internal class EmploymentRepository(
         return transactionWithSchema(schema = sessionContext.schema) {
             (EmploymentTable innerJoin EmployeeTable leftJoin ContactTable)
                 .selectAll().where {
-                    (EmploymentTable.id eq employmentId.toJavaUuid()) and
-                            (EmploymentTable.employeeId eq employeeId.toJavaUuid())
+                    (EmploymentTable.id eq employmentId) and
+                            (EmploymentTable.employeeId eq employeeId)
                 }.singleOrNull()?.let { resultRow ->
                     EmploymentEntity.from(row = resultRow)
                 }
@@ -64,7 +62,7 @@ internal class EmploymentRepository(
         return transactionWithSchema(schema = sessionContext.schema) {
             (EmploymentTable innerJoin EmployeeTable leftJoin ContactTable)
                 .selectAll().where {
-                    (EmploymentTable.employeeId eq employeeId.toJavaUuid())
+                    (EmploymentTable.employeeId eq employeeId)
                 }
                 .map { resultRow ->
                     EmploymentEntity.from(row = resultRow)
@@ -74,20 +72,20 @@ internal class EmploymentRepository(
 
     override fun create(employeeId: Uuid, employmentRequest: EmploymentRequest): Uuid {
         return transactionWithSchema(schema = sessionContext.schema) {
-            (EmploymentTable.insert { employmentRow ->
+            EmploymentTable.insert { employmentRow ->
                 employmentRow.mapEmploymentRequest(
                     employeeId = employeeId,
                     employmentRequest = employmentRequest
                 )
-            } get EmploymentTable.id).toKotlinUuid()
+            } get EmploymentTable.id
         }
     }
 
     override fun update(employeeId: Uuid, employmentId: Uuid, employmentRequest: EmploymentRequest): Int {
         return transactionWithSchema(schema = sessionContext.schema) {
             EmploymentTable.update(where = {
-                (EmploymentTable.employeeId eq employeeId.toJavaUuid()) and
-                        (EmploymentTable.id eq employmentId.toJavaUuid())
+                (EmploymentTable.employeeId eq employeeId) and
+                        (EmploymentTable.id eq employmentId)
             }) { employmentRow ->
                 employmentRow.mapEmploymentRequest(
                     employeeId = employeeId,
@@ -100,7 +98,7 @@ internal class EmploymentRepository(
     override fun delete(employmentId: Uuid): Int {
         return transactionWithSchema(schema = sessionContext.schema) {
             EmploymentTable.deleteWhere {
-                id eq employmentId.toJavaUuid()
+                id eq employmentId
             }
         }
     }
@@ -108,7 +106,7 @@ internal class EmploymentRepository(
     override fun deleteAll(employeeId: Uuid): Int {
         return transactionWithSchema(schema = sessionContext.schema) {
             EmploymentTable.deleteWhere {
-                EmploymentTable.employeeId eq employeeId.toJavaUuid()
+                EmploymentTable.employeeId eq employeeId
             }
         }
     }
@@ -116,7 +114,7 @@ internal class EmploymentRepository(
     override fun count(employeeId: Uuid?): Int {
         return transactionWithSchema(schema = sessionContext.schema) {
             employeeId?.let { id ->
-                EmploymentTable.select(column = EmploymentTable.employeeId eq id.toJavaUuid()).count().toInt()
+                EmploymentTable.select(column = EmploymentTable.employeeId eq id).count().toInt()
             } ?: EmploymentTable.selectAll().count().toInt()
         }
     }
@@ -129,7 +127,7 @@ internal class EmploymentRepository(
         employeeId: Uuid,
         employmentRequest: EmploymentRequest
     ) {
-        this[EmploymentTable.employeeId] = employeeId.toJavaUuid()
+        this[EmploymentTable.employeeId] = employeeId
         this[EmploymentTable.status] = employmentRequest.status
         this[EmploymentTable.probationEndDate] = employmentRequest.probationEndDate
         this[EmploymentTable.workModality] = employmentRequest.workModality

@@ -14,7 +14,6 @@ import kcrud.base.utils.KLocalDate
 import kcrud.domain.employee.entity.EmployeeEntity
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
-import kotlin.uuid.toKotlinUuid
 
 /**
  * Represents the entity for an employment.
@@ -46,7 +45,7 @@ public data class EmploymentEntity(
          */
         fun from(row: ResultRow): EmploymentEntity {
             return EmploymentEntity(
-                id = row[EmploymentTable.id].toKotlinUuid(),
+                id = row[EmploymentTable.id],
                 period = Period.from(row = row, table = EmploymentTable),
                 status = row[EmploymentTable.status],
                 probationEndDate = row[EmploymentTable.probationEndDate],

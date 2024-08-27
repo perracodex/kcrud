@@ -9,7 +9,6 @@ import kcrud.base.persistence.entity.Meta
 import kcrud.base.persistence.serializers.UuidS
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
-import kotlin.uuid.toKotlinUuid
 
 /**
  * Represents the entity for an employee's contact details.
@@ -35,7 +34,7 @@ public data class ContactEntity(
          */
         fun from(row: ResultRow): ContactEntity {
             return ContactEntity(
-                id = row[ContactTable.id].toKotlinUuid(),
+                id = row[ContactTable.id],
                 email = row[ContactTable.email],
                 phone = row[ContactTable.phone],
                 meta = Meta.from(row = row, table = ContactTable)

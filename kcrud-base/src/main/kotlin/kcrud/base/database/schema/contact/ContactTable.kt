@@ -7,6 +7,9 @@ package kcrud.base.database.schema.contact
 import kcrud.base.database.custom_columns.encryptedValidVarChar
 import kcrud.base.database.schema.base.TimestampedTable
 import kcrud.base.database.schema.employee.EmployeeTable
+import kcrud.base.persistence.utils.autoGenerate
+import kcrud.base.persistence.utils.kotlinUuid
+import kcrud.base.persistence.utils.references
 import kcrud.base.persistence.validators.impl.EmailValidator
 import kcrud.base.security.utils.EncryptionUtils
 import org.jetbrains.exposed.crypt.Encryptor
@@ -14,7 +17,7 @@ import org.jetbrains.exposed.crypt.encryptedVarchar
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Database table definition for employee contact details.
@@ -38,20 +41,20 @@ public object ContactTable : TimestampedTable(name = "contact") {
     /**
      * The unique id of the contact record.
      */
-    public val id: Column<UUID> = uuid(
+    public val id: Column<Uuid> = kotlinUuid(
         name = "contact_id"
     ).autoGenerate()
 
     /**
      * The id of the employee to which the contact details belong.
      */
-    public val employeeId: Column<UUID> = uuid(
+    public val employeeId: Column<Uuid> = kotlinUuid(
         name = "employee_id"
     ).references(
-        fkName = "fk_contact__employee_id",
         ref = EmployeeTable.id,
         onDelete = ReferenceOption.CASCADE,
-        onUpdate = ReferenceOption.RESTRICT
+        onUpdate = ReferenceOption.RESTRICT,
+        fkName = "fk_contact__employee_id"
     )
 
     /**

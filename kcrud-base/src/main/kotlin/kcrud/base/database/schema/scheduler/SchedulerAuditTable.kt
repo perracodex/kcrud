@@ -4,13 +4,15 @@
 
 package kcrud.base.database.schema.scheduler
 
+import kcrud.base.persistence.utils.autoGenerate
+import kcrud.base.persistence.utils.kotlinUuid
 import kcrud.base.scheduler.service.task.TaskOutcome
 import kcrud.base.utils.KLocalDateTime
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.CurrentDateTime
 import org.jetbrains.exposed.sql.kotlin.datetime.datetime
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Database table definition for scheduler audit logs.
@@ -19,7 +21,7 @@ internal object SchedulerAuditTable : Table(name = "scheduler_audit") {
     /**
      * The unique identifier of the audit log.
      */
-    val id: Column<UUID> = uuid(
+    val id: Column<Uuid> = kotlinUuid(
         name = "audit_id"
     ).autoGenerate()
 

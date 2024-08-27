@@ -15,7 +15,6 @@ import kcrud.base.utils.KLocalDate
 import kcrud.domain.contact.entity.ContactEntity
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
-import kotlin.uuid.toKotlinUuid
 
 /**
  * Represents the entity for an employee.
@@ -61,7 +60,7 @@ public data class EmployeeEntity(
             val lastName: String = row[EmployeeTable.lastName]
 
             return EmployeeEntity(
-                id = row[EmployeeTable.id].toKotlinUuid(),
+                id = row[EmployeeTable.id],
                 firstName = firstName,
                 lastName = lastName,
                 fullName = "$lastName, $firstName",

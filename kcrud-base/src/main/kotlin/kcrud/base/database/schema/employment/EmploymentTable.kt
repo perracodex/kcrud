@@ -8,13 +8,16 @@ import kcrud.base.database.schema.base.PeriodTable
 import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.database.schema.employment.types.EmploymentStatus
 import kcrud.base.database.schema.employment.types.WorkModality
+import kcrud.base.persistence.utils.autoGenerate
 import kcrud.base.persistence.utils.enumerationById
+import kcrud.base.persistence.utils.kotlinUuid
+import kcrud.base.persistence.utils.references
 import kcrud.base.utils.KLocalDate
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.date
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Database table definition for employments.
@@ -25,20 +28,20 @@ public object EmploymentTable : PeriodTable(name = "employment") {
     /**
      * The unique id of the employment record.
      */
-    public val id: Column<UUID> = uuid(
+    public val id: Column<Uuid> = kotlinUuid(
         name = "employment_id"
     ).autoGenerate()
 
     /**
      * The id of the employee to which the employment belongs.
      */
-    public val employeeId: Column<UUID> = uuid(
+    public val employeeId: Column<Uuid> = kotlinUuid(
         name = "employee_id"
     ).references(
-        fkName = "fk_employment__employee_id",
         ref = EmployeeTable.id,
         onDelete = ReferenceOption.CASCADE,
-        onUpdate = ReferenceOption.RESTRICT
+        onUpdate = ReferenceOption.RESTRICT,
+        fkName = "fk_employment__employee_id"
     )
 
     /**

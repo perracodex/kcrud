@@ -7,12 +7,14 @@ package kcrud.base.database.schema.employee
 import kcrud.base.database.schema.base.TimestampedTable
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
+import kcrud.base.persistence.utils.autoGenerate
 import kcrud.base.persistence.utils.enumerationById
+import kcrud.base.persistence.utils.kotlinUuid
 import kcrud.base.utils.KLocalDate
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.date
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Database table definition for employees.
@@ -21,7 +23,7 @@ public object EmployeeTable : TimestampedTable(name = "employee") {
     /**
      * The unique id of the employee record.
      */
-    public val id: Column<UUID> = uuid(
+    public val id: Column<Uuid> = kotlinUuid(
         name = "employee_id"
     ).autoGenerate()
 

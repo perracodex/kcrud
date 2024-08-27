@@ -18,8 +18,6 @@ import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import kotlin.uuid.Uuid
-import kotlin.uuid.toJavaUuid
-import kotlin.uuid.toKotlinUuid
 
 /**
  * Implementation of [IRbacRoleRepository].
@@ -37,7 +35,7 @@ internal class RbacRoleRepository(
                 .leftJoin(otherTable = RbacScopeRuleTable)
                 .leftJoin(otherTable = RbacFieldRuleTable)
                 .selectAll()
-                .where { RbacRoleTable.id eq roleId.toJavaUuid() }
+                .where { RbacRoleTable.id eq roleId }
                 .groupBy { it[RbacRoleTable.id] }
                 .map { (_, rows) ->
                     RbacRoleEntity.from(roleId = roleId, rows = rows)
@@ -59,10 +57,10 @@ internal class RbacRoleRepository(
                 .leftJoin(otherTable = RbacScopeRuleTable)
                 .leftJoin(otherTable = RbacFieldRuleTable)
                 .select(columns = columns)
-                .where { ActorTable.id eq actorId.toJavaUuid() }
+                .where { ActorTable.id eq actorId }
                 .groupBy { it[RbacRoleTable.id] }
                 .map { (roleId, rows) ->
-                    RbacRoleEntity.from(roleId = roleId.toKotlinUuid(), rows = rows)
+                    RbacRoleEntity.from(roleId = roleId, rows = rows)
                 }.singleOrNull()
         }
     }
@@ -75,16 +73,16 @@ internal class RbacRoleRepository(
                 .selectAll()
                 .groupBy { it[RbacRoleTable.id] }
                 .map { (roleId, rows) ->
-                    RbacRoleEntity.from(roleId = roleId.toKotlinUuid(), rows = rows)
+                    RbacRoleEntity.from(roleId = roleId, rows = rows)
                 }
         }
     }
 
     override fun create(roleRequest: RbacRoleRequest): Uuid {
         return transaction {
-            val roleId: Uuid = (RbacRoleTable.insert { roleRow ->
+            val roleId: Uuid = RbacRoleTable.insert { roleRow ->
                 roleRow.mapRoleRequest(roleRequest = roleRequest)
-            } get RbacRoleTable.id).toKotlinUuid()
+            } get RbacRoleTable.id
 
             // If the role insert was successful, insert the scope rules.
             if (!roleRequest.scopeRules.isNullOrEmpty()) {
@@ -102,7 +100,7 @@ internal class RbacRoleRepository(
         return transaction {
             val updateCount: Int = RbacRoleTable.update(
                 where = {
-                    RbacRoleTable.id eq roleId.toJavaUuid()
+                    RbacRoleTable.id eq roleId
                 }
             ) { roleRow ->
                 roleRow.mapRoleRequest(roleRequest = roleRequest)

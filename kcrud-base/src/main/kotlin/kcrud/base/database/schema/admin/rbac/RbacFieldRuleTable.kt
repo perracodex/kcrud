@@ -6,11 +6,14 @@ package kcrud.base.database.schema.admin.rbac
 
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.base.TimestampedTable
+import kcrud.base.persistence.utils.autoGenerate
 import kcrud.base.persistence.utils.enumerationById
+import kcrud.base.persistence.utils.kotlinUuid
+import kcrud.base.persistence.utils.references
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Database table definition holding the RBAC field level rules.
@@ -23,20 +26,20 @@ public object RbacFieldRuleTable : TimestampedTable(name = "rbac_field_rule") {
     /**
      * The unique id of the field rule record.
      */
-    public val id: Column<UUID> = uuid(
+    public val id: Column<Uuid> = kotlinUuid(
         name = "field_rule_id"
     ).autoGenerate()
 
     /**
      * The associated [RbacScopeRuleTable] id.
      */
-    public val scopeRuleId: Column<UUID> = uuid(
+    public val scopeRuleId: Column<Uuid> = kotlinUuid(
         name = "scope_rule_id"
     ).references(
-        fkName = "fk_rbac_field_rule__scope_rule_id",
         ref = RbacScopeRuleTable.id,
         onDelete = ReferenceOption.CASCADE,
-        onUpdate = ReferenceOption.RESTRICT
+        onUpdate = ReferenceOption.RESTRICT,
+        fkName = "fk_rbac_field_rule__scope_rule_id"
     )
 
     /**

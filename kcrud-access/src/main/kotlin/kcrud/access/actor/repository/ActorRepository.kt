@@ -16,8 +16,6 @@ import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import kotlin.uuid.Uuid
-import kotlin.uuid.toJavaUuid
-import kotlin.uuid.toKotlinUuid
 
 /**
  * Implementation of [IActorRepository].
@@ -30,7 +28,7 @@ internal class ActorRepository(private val roleRepository: IRbacRoleRepository) 
             ActorTable.selectAll().where {
                 ActorTable.username.eq(username)
             }.singleOrNull()?.let { resultRow ->
-                val actorId: Uuid = resultRow[ActorTable.id].toKotlinUuid()
+                val actorId: Uuid = resultRow[ActorTable.id]
                 val role: RbacRoleEntity = roleRepository.findByActorId(actorId = actorId)!!
                 ActorEntity.from(row = resultRow, role = role)
             }
@@ -40,7 +38,7 @@ internal class ActorRepository(private val roleRepository: IRbacRoleRepository) 
     override suspend fun findAll(): List<ActorEntity> {
         return transaction {
             ActorTable.selectAll().map { resultRow ->
-                val actorId: Uuid = resultRow[ActorTable.id].toKotlinUuid()
+                val actorId: Uuid = resultRow[ActorTable.id]
                 val role: RbacRoleEntity = roleRepository.findByActorId(actorId = actorId)!!
                 ActorEntity.from(row = resultRow, role = role)
             }
@@ -50,7 +48,7 @@ internal class ActorRepository(private val roleRepository: IRbacRoleRepository) 
     override suspend fun findById(actorId: Uuid): ActorEntity? {
         return transaction {
             ActorTable.selectAll().where {
-                ActorTable.id eq actorId.toJavaUuid()
+                ActorTable.id eq actorId
             }.singleOrNull()?.let { resultRow ->
                 val role: RbacRoleEntity = roleRepository.findByActorId(actorId = actorId)!!
                 ActorEntity.from(row = resultRow, role = role)
@@ -60,9 +58,9 @@ internal class ActorRepository(private val roleRepository: IRbacRoleRepository) 
 
     override suspend fun create(actorRequest: ActorRequest): Uuid {
         return transaction {
-            (ActorTable.insert { actorRow ->
+            ActorTable.insert { actorRow ->
                 actorRow.mapActorRequest(request = actorRequest)
-            } get ActorTable.id).toKotlinUuid()
+            } get ActorTable.id
         }
     }
 
@@ -70,7 +68,7 @@ internal class ActorRepository(private val roleRepository: IRbacRoleRepository) 
         return transaction {
             ActorTable.update(
                 where = {
-                    ActorTable.id eq actorId.toJavaUuid()
+                    ActorTable.id eq actorId
                 }
             ) { actorRow ->
                 actorRow.mapActorRequest(request = actorRequest)
@@ -82,7 +80,7 @@ internal class ActorRepository(private val roleRepository: IRbacRoleRepository) 
         transaction {
             ActorTable.update(
                 where = {
-                    ActorTable.id eq actorId.toJavaUuid()
+                    ActorTable.id eq actorId
                 }
             ) {
                 it[ActorTable.isLocked] = isLocked
@@ -115,7 +113,7 @@ internal class ActorRepository(private val roleRepository: IRbacRoleRepository) 
     private fun UpdateBuilder<Int>.mapActorRequest(request: ActorRequest) {
         this[ActorTable.username] = request.username.lowercase()
         this[ActorTable.password] = request.password
-        this[ActorTable.roleId] = request.roleId.toJavaUuid()
+        this[ActorTable.roleId] = request.roleId
         this[ActorTable.isLocked] = request.isLocked
     }
 }

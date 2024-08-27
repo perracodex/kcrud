@@ -5,9 +5,11 @@
 package kcrud.base.database.schema.admin.rbac
 
 import kcrud.base.database.schema.base.TimestampedTable
+import kcrud.base.persistence.utils.autoGenerate
+import kcrud.base.persistence.utils.kotlinUuid
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Database table definition holding the RBAC Roles.
@@ -20,7 +22,7 @@ public object RbacRoleTable : TimestampedTable(name = "rbac_role") {
     /**
      * The unique id of the role record.
      */
-    public val id: Column<UUID> = uuid(
+    public val id: Column<Uuid> = kotlinUuid(
         name = "role_id"
     ).autoGenerate()
 

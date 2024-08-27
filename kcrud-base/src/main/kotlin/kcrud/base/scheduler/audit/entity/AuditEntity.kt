@@ -10,7 +10,6 @@ import kcrud.base.scheduler.service.task.TaskOutcome
 import kcrud.base.utils.KLocalDateTime
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
-import kotlin.uuid.toKotlinUuid
 
 /**
  * Represents a scheduler audit log entity.
@@ -46,7 +45,7 @@ public data class AuditEntity(
          */
         fun from(row: ResultRow): AuditEntity {
             return AuditEntity(
-                id = row[SchedulerAuditTable.id].toKotlinUuid(),
+                id = row[SchedulerAuditTable.id],
                 taskName = row[SchedulerAuditTable.taskName],
                 taskGroup = row[SchedulerAuditTable.taskGroup],
                 fireTime = row[SchedulerAuditTable.fireTime],

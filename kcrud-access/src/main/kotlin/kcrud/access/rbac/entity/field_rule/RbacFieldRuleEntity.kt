@@ -11,7 +11,6 @@ import kcrud.base.persistence.entity.Meta
 import kcrud.base.persistence.serializers.UuidS
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
-import kotlin.uuid.toKotlinUuid
 
 /**
  * Represents a single RBAC field level rule.
@@ -39,8 +38,8 @@ public data class RbacFieldRuleEntity(
          */
         public fun from(row: ResultRow): RbacFieldRuleEntity {
             return RbacFieldRuleEntity(
-                id = row[RbacFieldRuleTable.id].toKotlinUuid(),
-                scopeRuleId = row[RbacFieldRuleTable.scopeRuleId].toKotlinUuid(),
+                id = row[RbacFieldRuleTable.id],
+                scopeRuleId = row[RbacFieldRuleTable.scopeRuleId],
                 fieldName = row[RbacFieldRuleTable.fieldName],
                 accessLevel = row[RbacFieldRuleTable.accessLevel],
                 meta = Meta.from(row = row, table = RbacFieldRuleTable)

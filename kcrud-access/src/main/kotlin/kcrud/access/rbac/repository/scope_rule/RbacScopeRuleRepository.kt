@@ -15,8 +15,6 @@ import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.statements.BatchInsertStatement
 import org.jetbrains.exposed.sql.transactions.transaction
 import kotlin.uuid.Uuid
-import kotlin.uuid.toJavaUuid
-import kotlin.uuid.toKotlinUuid
 
 /**
  * Implementation of [IRbacScopeRuleRepository].
@@ -31,7 +29,7 @@ internal class RbacScopeRuleRepository(
     override fun replace(roleId: Uuid, scopeRuleRequests: List<RbacScopeRuleRequest>?): Int {
         return transaction {
             RbacScopeRuleTable.deleteWhere {
-                RbacScopeRuleTable.roleId eq roleId.toJavaUuid()
+                RbacScopeRuleTable.roleId eq roleId
             }
 
             var newRowCount = 0
@@ -55,7 +53,7 @@ internal class RbacScopeRuleRepository(
                         }?.fieldRules
 
                         // If the field rules are not empty, update the field rules.
-                        val newScopeRuleId: Uuid = scopeRule[RbacScopeRuleTable.id].toKotlinUuid()
+                        val newScopeRuleId: Uuid = scopeRule[RbacScopeRuleTable.id]
                         fieldRuleRepository.replace(
                             scopeRuleId = newScopeRuleId,
                             requestList = fieldRuleRequest
@@ -73,7 +71,7 @@ internal class RbacScopeRuleRepository(
      * so that it can be used to update or create a database record.
      */
     private fun BatchInsertStatement.mapRuleRequest(roleId: Uuid, scopeRuleRequest: RbacScopeRuleRequest) {
-        this[RbacScopeRuleTable.roleId] = roleId.toJavaUuid()
+        this[RbacScopeRuleTable.roleId] = roleId
         this[RbacScopeRuleTable.scope] = scopeRuleRequest.scope
         this[RbacScopeRuleTable.accessLevel] = scopeRuleRequest.accessLevel
     }

@@ -13,7 +13,6 @@ import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.statements.BatchInsertStatement
 import org.jetbrains.exposed.sql.transactions.transaction
 import kotlin.uuid.Uuid
-import kotlin.uuid.toJavaUuid
 
 /**
  * Implementation of [IRbacFieldRuleRepository].
@@ -26,7 +25,7 @@ internal class RbacFieldRuleRepository : IRbacFieldRuleRepository {
     override fun replace(scopeRuleId: Uuid, requestList: List<RbacFieldRuleRequest>?): Int {
         return transaction {
             RbacFieldRuleTable.deleteWhere {
-                RbacFieldRuleTable.scopeRuleId eq scopeRuleId.toJavaUuid()
+                RbacFieldRuleTable.scopeRuleId eq scopeRuleId
             }
 
             var newRowCount = 0
@@ -50,7 +49,7 @@ internal class RbacFieldRuleRepository : IRbacFieldRuleRepository {
      * so that it can be used to update or create a database record.
      */
     private fun BatchInsertStatement.mapRuleRequest(scopeRuleId: Uuid, request: RbacFieldRuleRequest) {
-        this[RbacFieldRuleTable.scopeRuleId] = scopeRuleId.toJavaUuid()
+        this[RbacFieldRuleTable.scopeRuleId] = scopeRuleId
         this[RbacFieldRuleTable.fieldName] = request.fieldName
         this[RbacFieldRuleTable.accessLevel] = request.accessLevel
     }

@@ -7,11 +7,14 @@ package kcrud.base.database.schema.admin.rbac
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kcrud.base.database.schema.base.TimestampedTable
+import kcrud.base.persistence.utils.autoGenerate
 import kcrud.base.persistence.utils.enumerationById
+import kcrud.base.persistence.utils.kotlinUuid
+import kcrud.base.persistence.utils.references
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
-import java.util.*
+import kotlin.uuid.Uuid
 
 /**
  * Database table definition holding RBAC rules for a concrete [RbacRoleTable] record.
@@ -26,20 +29,20 @@ public object RbacScopeRuleTable : TimestampedTable(name = "rbac_scope_rule") {
     /**
      * The unique id of the scope rule record.
      */
-    public val id: Column<UUID> = uuid(
+    public val id: Column<Uuid> = kotlinUuid(
         name = "scope_rule_id"
     ).autoGenerate()
 
     /**
      * The associated [RbacRoleTable] id.
      */
-    public val roleId: Column<UUID> = uuid(
+    public val roleId: Column<Uuid> = kotlinUuid(
         name = "role_id"
     ).references(
-        fkName = "fk_rbac_scope_rule__role_id",
         ref = RbacRoleTable.id,
         onDelete = ReferenceOption.CASCADE,
-        onUpdate = ReferenceOption.RESTRICT
+        onUpdate = ReferenceOption.RESTRICT,
+        fkName = "fk_rbac_scope_rule__role_id"
     )
 
     /**
