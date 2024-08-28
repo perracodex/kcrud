@@ -4,20 +4,20 @@
 
 package kcrud.base.database.schema.scheduler
 
-import kcrud.base.persistence.utils.autoGenerate
-import kcrud.base.persistence.utils.kotlinUuid
+import kcrud.base.database.custom_columns.autoGenerate
+import kcrud.base.database.custom_columns.kotlinUuid
+import kcrud.base.database.schema.base.TimestampedTable
 import kcrud.base.scheduler.service.task.TaskOutcome
 import kcrud.base.utils.KLocalDateTime
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.kotlin.datetime.CurrentDateTime
 import org.jetbrains.exposed.sql.kotlin.datetime.datetime
 import kotlin.uuid.Uuid
 
 /**
  * Database table definition for scheduler audit logs.
  */
-internal object SchedulerAuditTable : Table(name = "scheduler_audit") {
+internal object SchedulerAuditTable : TimestampedTable(name = "scheduler_audit") {
     /**
      * The unique identifier of the audit log.
      */
@@ -77,13 +77,6 @@ internal object SchedulerAuditTable : Table(name = "scheduler_audit") {
     val detail: Column<String?> = text(
         name = "detail",
     ).nullable()
-
-    /**
-     * The creation timestamp of the audit record.
-     */
-    val createdAt: Column<KLocalDateTime> = datetime(
-        name = "created_at"
-    ).defaultExpression(defaultValue = CurrentDateTime)
 
     override val primaryKey: Table.PrimaryKey = PrimaryKey(
         firstColumn = id,

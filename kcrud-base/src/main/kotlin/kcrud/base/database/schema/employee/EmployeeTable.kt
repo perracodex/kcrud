@@ -4,12 +4,12 @@
 
 package kcrud.base.database.schema.employee
 
+import kcrud.base.database.custom_columns.autoGenerate
+import kcrud.base.database.custom_columns.kotlinUuid
 import kcrud.base.database.schema.base.TimestampedTable
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
-import kcrud.base.persistence.utils.autoGenerate
 import kcrud.base.persistence.utils.enumerationById
-import kcrud.base.persistence.utils.kotlinUuid
 import kcrud.base.utils.KLocalDate
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table

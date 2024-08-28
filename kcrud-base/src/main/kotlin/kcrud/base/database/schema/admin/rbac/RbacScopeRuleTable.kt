@@ -4,13 +4,13 @@
 
 package kcrud.base.database.schema.admin.rbac
 
+import kcrud.base.database.custom_columns.autoGenerate
+import kcrud.base.database.custom_columns.kotlinUuid
+import kcrud.base.database.custom_columns.references
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kcrud.base.database.schema.base.TimestampedTable
-import kcrud.base.persistence.utils.autoGenerate
 import kcrud.base.persistence.utils.enumerationById
-import kcrud.base.persistence.utils.kotlinUuid
-import kcrud.base.persistence.utils.references
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table

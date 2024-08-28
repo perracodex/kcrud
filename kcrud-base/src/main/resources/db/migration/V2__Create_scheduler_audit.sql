@@ -17,6 +17,12 @@ CREATE TABLE IF NOT EXISTS scheduler_audit (
     log TEXT,
     detail TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT pk_audit_id PRIMARY KEY (audit_id)
 );
+
+CREATE TRIGGER IF NOT EXISTS tg_scheduler_audit__updated_at
+BEFORE UPDATE ON scheduler_audit
+FOR EACH ROW
+CALL 'UpdateTimestampTrigger';

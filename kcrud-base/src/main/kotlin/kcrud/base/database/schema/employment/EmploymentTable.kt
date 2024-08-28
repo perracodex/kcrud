@@ -4,14 +4,14 @@
 
 package kcrud.base.database.schema.employment
 
+import kcrud.base.database.custom_columns.autoGenerate
+import kcrud.base.database.custom_columns.kotlinUuid
+import kcrud.base.database.custom_columns.references
 import kcrud.base.database.schema.base.PeriodTable
 import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.database.schema.employment.types.EmploymentStatus
 import kcrud.base.database.schema.employment.types.WorkModality
-import kcrud.base.persistence.utils.autoGenerate
 import kcrud.base.persistence.utils.enumerationById
-import kcrud.base.persistence.utils.kotlinUuid
-import kcrud.base.persistence.utils.references
 import kcrud.base.utils.KLocalDate
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ReferenceOption
