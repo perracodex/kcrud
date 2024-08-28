@@ -11,17 +11,6 @@ import kcrud.base.settings.AppSettings
 import org.jetbrains.exposed.sql.Table
 
 /**
- * Configuration for the [DbPlugin].
- */
-internal class DbPluginConfig {
-    /** List of tables to be registered with the database. */
-    val tables: MutableList<Table> = mutableListOf()
-
-    /** Optional [PrometheusMeterRegistry] instance for micro-metrics monitoring. */
-    var micrometerRegistry: PrometheusMeterRegistry? = null
-}
-
-/**
  * Custom Ktor plugin to configure the database.
  */
 internal val DbPlugin: ApplicationPlugin<DbPluginConfig> = createApplicationPlugin(
@@ -36,4 +25,15 @@ internal val DbPlugin: ApplicationPlugin<DbPluginConfig> = createApplicationPlug
             addTable(table)
         }
     }
+}
+
+/**
+ * Configuration for the [DbPlugin].
+ */
+internal class DbPluginConfig {
+    /** List of tables to be registered with the database. */
+    val tables: MutableList<Table> = mutableListOf()
+
+    /** Optional [PrometheusMeterRegistry] instance for micro-metrics monitoring. */
+    var micrometerRegistry: PrometheusMeterRegistry? = null
 }
