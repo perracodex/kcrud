@@ -57,6 +57,7 @@ internal object AuthenticationTokenService {
             verifier.verify(decodedToken)
             TokenState.VALID
         } catch (e: TokenExpiredException) {
+            tracer.info("Token expired: ${e.message}")
             TokenState.EXPIRED
         } catch (e: JWTDecodeException) {
             tracer.error("Failed to decode token: ${e.message}")
@@ -78,8 +79,8 @@ internal object AuthenticationTokenService {
             it.key.equals(other = HttpHeaders.Authorization, ignoreCase = true)
         }?.value?.get(index = 0)
 
-        if (authHeader.isNullOrBlank() || !authHeader.startsWith(prefix = AuthScheme.Bearer, ignoreCase = true)) {
-            throw IllegalArgumentException("Invalid Authorization header format.")
+        require(!authHeader.isNullOrBlank() && authHeader.startsWith(prefix = AuthScheme.Bearer, ignoreCase = true)) {
+            "Invalid Authorization header format. Expected format is 'Bearer <token>'."
         }
 
         return authHeader.substring(AuthScheme.Bearer.length).trim()

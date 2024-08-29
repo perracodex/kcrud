@@ -96,7 +96,7 @@ internal object TaskState {
             triggerStates.any { it == TriggerState.BLOCKED } -> TriggerState.BLOCKED
             triggerStates.any { it == TriggerState.ERROR } -> TriggerState.ERROR
             triggerStates.any { it == TriggerState.COMPLETE } -> TriggerState.COMPLETE
-            else -> TriggerState.NORMAL  // Assuming NORMAL as default if no other states are found.
+            else -> TriggerState.NORMAL // Assuming NORMAL as default if no other states are found.
         }
     }
 

@@ -4,6 +4,7 @@
 
 package kcrud.base.persistence.utils
 
+import kcrud.base.env.Tracer
 import kotlin.uuid.Uuid
 
 /**
@@ -16,6 +17,7 @@ public fun String?.toUuidOrNull(): Uuid? {
     return try {
         Uuid.parse(uuidString = this)
     } catch (e: IllegalArgumentException) {
+        Tracer(ref = ::toUuidOrNull).error(message = "Failed to parse UUID from string: '$this'", e)
         null
     }
 }
@@ -30,7 +32,6 @@ public fun String?.toUuid(): Uuid {
     return try {
         Uuid.parse(uuidString = this!!)
     } catch (e: IllegalArgumentException) {
-        throw IllegalArgumentException("String '$this' is not a valid Uuid.")
+        throw IllegalArgumentException("String '$this' is not a valid Uuid.", e)
     }
 }
-

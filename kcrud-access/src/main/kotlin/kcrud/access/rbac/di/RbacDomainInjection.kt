@@ -5,12 +5,12 @@
 package kcrud.access.rbac.di
 
 import kcrud.access.actor.repository.IActorRepository
-import kcrud.access.rbac.repository.field_rule.IRbacFieldRuleRepository
-import kcrud.access.rbac.repository.field_rule.RbacFieldRuleRepository
+import kcrud.access.rbac.repository.field.IRbacFieldRuleRepository
+import kcrud.access.rbac.repository.field.RbacFieldRuleRepository
 import kcrud.access.rbac.repository.role.IRbacRoleRepository
 import kcrud.access.rbac.repository.role.RbacRoleRepository
-import kcrud.access.rbac.repository.scope_rule.IRbacScopeRuleRepository
-import kcrud.access.rbac.repository.scope_rule.RbacScopeRuleRepository
+import kcrud.access.rbac.repository.scope.IRbacScopeRuleRepository
+import kcrud.access.rbac.repository.scope.RbacScopeRuleRepository
 import kcrud.access.rbac.service.RbacService
 import org.koin.core.module.Module
 import org.koin.dsl.module

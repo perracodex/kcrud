@@ -6,6 +6,7 @@ package kcrud.base.persistence.pagination
 
 import io.ktor.http.*
 import io.ktor.server.application.*
+import kcrud.base.env.Tracer
 
 /**
  * Extension function to construct a [Pageable] instance from [ApplicationCall] request parameters.
@@ -44,7 +45,6 @@ import io.ktor.server.application.*
  * @throws PaginationError.InvalidOrderDirection if a sorting direction is invalid.
  */
 public fun ApplicationCall.getPageable(): Pageable? {
-
     val parameters: Parameters = request.queryParameters
     val pageIndex: Int? = parameters["page"]?.toIntOrNull()
     val pageSize: Int? = parameters["size"]?.toIntOrNull()
@@ -76,6 +76,7 @@ public fun ApplicationCall.getPageable(): Pageable? {
                     try {
                         Pageable.Direction.valueOf(directionString.uppercase())
                     } catch (e: IllegalArgumentException) {
+                        Tracer(ref = ::getPageable).error("Invalid sorting direction: $directionString", e)
                         throw PaginationError.InvalidOrderDirection(direction = directionString)
                     }
                 } else {

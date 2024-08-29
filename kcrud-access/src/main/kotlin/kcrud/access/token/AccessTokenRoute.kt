@@ -12,11 +12,21 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.access.credential.CredentialService
 import kcrud.base.env.SessionContext
+import kcrud.base.env.Tracer
 import kcrud.base.plugins.RateLimitScope
 import kcrud.base.settings.AppSettings
 
 /**
- * Access-token endpoints.
+ * Defines routes for handling access tokens within the authentication system,
+ * using JWT and Basic Authentication as specified in Ktor's documentation.
+ *
+ * • `create`: Generates a new JWT token using Basic Authentication.
+ *   This endpoint is rate-limited to prevent abuse and requires valid Basic Authentication credentials.
+ *
+ * • `refresh`: Allows a client to refresh their existing JWT token. This endpoint does not require
+ *   Basic Authentication but does require a valid JWT token in the 'Authorization' header.
+ *   Depending on the state of the provided token (valid, expired, or invalid), it either returns
+ *   the same token, generates a new one, or denies access.
  *
  * See: [Ktor JWT Authentication Documentation](https://ktor.io/docs/server-jwt.html)
  *
@@ -65,18 +75,30 @@ public fun Route.accessTokenRoute() {
 }
 
 /**
- * Generates a new JWT token and sends it as a response.
- * If token generation fails, responds with an Internal Server Error status.
+ * Generates a new JWT token for the authenticated session and sends it as a response.
+ *
+ * Responds with:
+ * - OK (200) and the JWT token if generation is successful.
+ * - Bad Request (400) with an error message if the session context is invalid.
+ * - Internal Server Error (500) with a general error message if an unexpected error occurs during token generation.
  */
 private suspend fun ApplicationCall.respondWithToken() {
+    val tracer = Tracer(ref = ApplicationCall::respondWithToken)
+
     try {
         val sessionContext: SessionContext = this.principal<SessionContext>()
             ?: throw IllegalArgumentException("Invalid actor. ${CredentialService.HINT}")
+
         val newJwtToken: String = AuthenticationTokenService.generate(sessionContext = sessionContext)
         respond(status = HttpStatusCode.OK, message = newJwtToken)
     } catch (e: IllegalArgumentException) {
-        respond(status = HttpStatusCode.BadRequest, message = e.message ?: "Invalid actor. ${CredentialService.HINT}")
+        tracer.error("Failed to generate token due to invalid session context.", e)
+        respond(
+            status = HttpStatusCode.BadRequest,
+            message = e.message ?: "Invalid session context. ${CredentialService.HINT}"
+        )
     } catch (e: Exception) {
+        tracer.error("Failed to generate token due to an unexpected error.", e)
         respond(status = HttpStatusCode.InternalServerError, message = "Failed to generate token.")
     }
 }

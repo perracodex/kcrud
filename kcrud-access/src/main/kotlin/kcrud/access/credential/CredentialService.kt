@@ -96,8 +96,8 @@ public class CredentialService : KoinComponent {
             actorService.findById(actorId = actorId)?.let { listOf(it) } ?: emptyList()
         } ?: actorService.findAll()
 
-        if (actorsToRefresh.isEmpty()) {
-            throw IllegalStateException("No actor found for the given criteria.")
+        check(actorsToRefresh.isNotEmpty()) {
+            "No actor(s) found for the given criteria."
         }
 
         // Prepare the new cache mapping for the specified actors.

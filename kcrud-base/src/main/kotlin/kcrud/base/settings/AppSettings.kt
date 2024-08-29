@@ -53,8 +53,9 @@ public object AppSettings {
      */
     @OptIn(ConfigurationAPI::class)
     public fun load(applicationConfig: ApplicationConfig) {
-        if (AppSettings::configuration.isInitialized)
+        if (AppSettings::configuration.isInitialized) {
             return
+        }
 
         val tracer = Tracer(ref = ::load)
         tracer.info("Loading application settings.")

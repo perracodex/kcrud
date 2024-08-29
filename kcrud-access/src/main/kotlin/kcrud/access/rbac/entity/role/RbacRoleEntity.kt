@@ -4,8 +4,8 @@
 
 package kcrud.access.rbac.entity.role
 
-import kcrud.access.rbac.entity.field_rule.RbacFieldRuleEntity
-import kcrud.access.rbac.entity.scope_rule.RbacScopeRuleEntity
+import kcrud.access.rbac.entity.field.RbacFieldRuleEntity
+import kcrud.access.rbac.entity.scope.RbacScopeRuleEntity
 import kcrud.base.database.schema.admin.rbac.RbacFieldRuleTable
 import kcrud.base.database.schema.admin.rbac.RbacRoleTable
 import kcrud.base.database.schema.admin.rbac.RbacScopeRuleTable

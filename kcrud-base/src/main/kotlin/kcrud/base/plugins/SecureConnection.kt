@@ -26,8 +26,9 @@ import kcrud.base.settings.AppSettings
  */
 public fun Application.configureSecureConnection() {
 
-    if (!AppSettings.security.useSecureConnection)
+    if (!AppSettings.security.useSecureConnection) {
         return
+    }
 
     // The HttpsRedirect plugin redirects all HTTP requests to the HTTPS counterpart
     // before processing the call. By default, a resource returns 301 Moved Permanently,

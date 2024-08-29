@@ -56,9 +56,10 @@ public class EmployeeService internal constructor(
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
      * @return List of [EmployeeEntity] entries.
      */
-    public suspend fun search(filterSet: EmployeeFilterSet, pageable: Pageable? = null): Page<EmployeeEntity> =
-        withContext(Dispatchers.IO) {
-        return@withContext employeeRepository.search(filterSet = filterSet, pageable = pageable)
+    public suspend fun search(filterSet: EmployeeFilterSet, pageable: Pageable? = null): Page<EmployeeEntity> {
+        return withContext(Dispatchers.IO) {
+            employeeRepository.search(filterSet = filterSet, pageable = pageable)
+        }
     }
 
     /**

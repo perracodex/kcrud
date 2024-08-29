@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.access.rbac.entity.field_rule
+package kcrud.access.rbac.entity.field
 
 import kcrud.base.database.schema.admin.rbac.RbacFieldRuleTable
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel

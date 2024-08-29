@@ -27,7 +27,6 @@ import kcrud.domain.employee.routing.endpoints.operate.updateEmployeeById
 public fun Route.employeeRoute() {
 
     route("v1/employees") {
-
         withRbac(scope = RbacScope.EMPLOYEE_RECORDS, accessLevel = RbacAccessLevel.FULL) {
             createEmployee()
             deleteAllEmployees()

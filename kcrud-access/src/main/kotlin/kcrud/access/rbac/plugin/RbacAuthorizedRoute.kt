@@ -25,12 +25,10 @@ internal fun Route.rbacAuthorizedRoute(
     accessLevel: RbacAccessLevel,
     build: Route.() -> Unit,
 ): Route {
-    if (accessLevel == RbacAccessLevel.NONE) {
-        throw IllegalArgumentException(
-            "'${accessLevel.name}' access level is not meant to be used as mark for scopes access. " +
-                    "When defining a RBAC route its target scope must always have a minimum access level. " +
-                    "'${accessLevel.name}' can be used only to restrict a role to a concrete scope."
-        )
+    require(accessLevel != RbacAccessLevel.NONE) {
+        "'${accessLevel.name}' access level is not meant to be used as mark for scopes access. " +
+                "When defining a RBAC route its target scope must always have a minimum access level. " +
+                "'${accessLevel.name}' can be used only to restrict a role to a concrete scope."
     }
 
     // Create the selector to be used to tag routes for RBAC, acting only as a marker in the routing structure.

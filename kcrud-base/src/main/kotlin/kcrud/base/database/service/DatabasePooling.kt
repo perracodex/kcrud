@@ -29,7 +29,7 @@ internal object DatabasePooling {
     ): HikariDataSource {
         require(value = settings.connectionPoolSize > 0) { "Database connection pooling must be >= 1." }
 
-        return HikariDataSource(HikariConfig().apply {
+        val hikariConfig: HikariConfig = HikariConfig().apply {
             driverClassName = settings.jdbcDriver
             jdbcUrl = settings.jdbcUrl
             maximumPoolSize = settings.connectionPoolSize
@@ -48,6 +48,8 @@ internal object DatabasePooling {
             }
 
             validate()
-        })
+        }
+
+        return HikariDataSource(hikariConfig)
     }
 }

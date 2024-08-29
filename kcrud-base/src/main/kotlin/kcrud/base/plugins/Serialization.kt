@@ -27,10 +27,12 @@ public fun Application.configureSerialization() {
     install(plugin = ContentNegotiation) {
 
         // Define the behavior and characteristics for JSON serialization.
-        json(Json {
-            prettyPrint = true         // Format JSON output for easier reading.
-            encodeDefaults = true      // Serialize properties with default values.
-            ignoreUnknownKeys = false  // Fail on unknown keys in the incoming JSON.
-        })
+        json(
+            Json {
+                prettyPrint = true         // Format JSON output for easier reading.
+                encodeDefaults = true      // Serialize properties with default values.
+                ignoreUnknownKeys = false  // Fail on unknown keys in the incoming JSON.
+            }
+        )
     }
 }

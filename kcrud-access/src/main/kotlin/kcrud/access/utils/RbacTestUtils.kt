@@ -10,7 +10,7 @@ import kcrud.access.actor.service.ActorService
 import kcrud.access.actor.service.DefaultActorFactory
 import kcrud.access.rbac.entity.role.RbacRoleEntity
 import kcrud.access.rbac.entity.role.RbacRoleRequest
-import kcrud.access.rbac.entity.scope_rule.RbacScopeRuleRequest
+import kcrud.access.rbac.entity.scope.RbacScopeRuleRequest
 import kcrud.access.rbac.service.RbacService
 import kcrud.access.token.AuthenticationTokenService
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
@@ -32,7 +32,8 @@ public object RbacTestUtils {
      */
     public suspend fun newAuthenticationToken(): String {
         val actorService: ActorService = getKoin().get()
-        val actor: ActorEntity? = actorService.findByUsername(username = DefaultActorFactory.RoleName.ADMIN.name.lowercase())
+        val username: String = DefaultActorFactory.RoleName.ADMIN.name.lowercase()
+        val actor: ActorEntity? = actorService.findByUsername(username = username)
         assertNotNull(actual = actor)
 
         val sessionContext = SessionContext(
@@ -80,7 +81,7 @@ public object RbacTestUtils {
             fieldRules = null
         )
         val roleRequest = RbacRoleRequest(
-            roleName = "${accessLevel.name}_${iteration}".lowercase(), // Unique role name per iteration
+            roleName = "${accessLevel.name}_$iteration".lowercase(), // Unique role name per iteration
             description = "Role for ${accessLevel.name} access, iteration $iteration",
             isSuper = false,
             scopeRules = listOf(scopeRuleRequest)
@@ -91,8 +92,8 @@ public object RbacTestUtils {
         assertNotNull(actual = role, message = "Role should not be null")
 
         // Create the Actor with the associated role.
-        val username: String = "actor_${accessLevel.name}_${iteration}".lowercase() // Unique username per iteration.
-        val password: String = "pass_${iteration}".lowercase() // Unique password per iteration.
+        val username: String = "actor_${accessLevel.name}_$iteration".lowercase() // Unique username per iteration.
+        val password: String = "password_$iteration".lowercase() // Unique password per iteration.
         val actorRequest = ActorRequest(
             roleId = role.id,
             username = username,

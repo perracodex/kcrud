@@ -4,8 +4,8 @@
 
 package kcrud.base.database.schema.admin.rbac
 
-import kcrud.base.database.custom_columns.autoGenerate
-import kcrud.base.database.custom_columns.kotlinUuid
+import kcrud.base.database.columns.autoGenerate
+import kcrud.base.database.columns.kotlinUuid
 import kcrud.base.database.schema.base.TimestampedTable
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table

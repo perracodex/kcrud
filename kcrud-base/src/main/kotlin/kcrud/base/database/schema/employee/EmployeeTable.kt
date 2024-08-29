@@ -4,8 +4,8 @@
 
 package kcrud.base.database.schema.employee
 
-import kcrud.base.database.custom_columns.autoGenerate
-import kcrud.base.database.custom_columns.kotlinUuid
+import kcrud.base.database.columns.autoGenerate
+import kcrud.base.database.columns.kotlinUuid
 import kcrud.base.database.schema.base.TimestampedTable
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus

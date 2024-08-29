@@ -22,10 +22,8 @@ internal object ScheduleSerializer : JsonContentPolymorphicSerializer<Schedule>(
         // Warn about unsupported combinations of schedule types.
         val hasCron: Boolean = "cron" in lowerCaseKeys
         val hasInterval: Boolean = setOf("days", "hours", "minutes", "seconds").any { it in lowerCaseKeys }
-        if (hasCron && hasInterval) {
-            throw IllegalArgumentException(
-                "Unsupported schedule. 'cron' cannot be combined with 'days, hours, minutes or 'seconds'."
-            )
+        require(!(hasCron && hasInterval)) {
+            "Unsupported schedule. 'cron' cannot be combined with 'days, hours, minutes or 'seconds'."
         }
 
         // Resolve the schedule type based on the available keys.
@@ -33,7 +31,8 @@ internal object ScheduleSerializer : JsonContentPolymorphicSerializer<Schedule>(
             "cron" in lowerCaseKeys -> Schedule.Cron.serializer()
             setOf("days", "hours", "minutes").any { it in lowerCaseKeys } -> Schedule.Interval.serializer()
             else -> throw IllegalArgumentException(
-                "Unsupported Schedule type. Expected either 'cron' or 'days, hours, minutes or seconds'. Got: ${jsonObject.keys}"
+                "Unsupported Schedule type. Expected either 'cron' or 'days, " +
+                        "hours, minutes or seconds'. Got: ${jsonObject.keys}"
             )
         }
     }

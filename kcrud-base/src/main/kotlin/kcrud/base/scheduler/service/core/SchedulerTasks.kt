@@ -188,10 +188,14 @@ internal class SchedulerTasks private constructor(private val scheduler: Schedul
                 val repeatInterval: Duration = trigger.repeatInterval.toDuration(unit = DurationUnit.MILLISECONDS)
                 if (repeatInterval.inWholeSeconds != 0L) {
                     "Every $repeatInterval" to null
-                } else null
+                } else {
+                    null
+                }
             } else if (trigger is CronTrigger) {
                 CronExpressionDescriptor.getDescription(trigger.cronExpression) to trigger.cronExpression
-            } else null
+            } else {
+                null
+            }
         } ?: (null to null)
 
         // Resolve the concrete parameters of the task.

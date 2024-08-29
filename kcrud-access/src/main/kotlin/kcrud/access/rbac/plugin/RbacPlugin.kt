@@ -17,19 +17,6 @@ import kcrud.base.env.SessionContext
 import org.koin.ktor.ext.inject
 
 /**
- * Configuration for the RBAC plugin.
- * Holds the RBAC target scope and the required access level.
- */
-@RbacAPI
-internal class RbacPluginConfig {
-    /** The RBAC scope associated with the route, defining the scope of access control. */
-    lateinit var scope: RbacScope
-
-    /** The RBAC access level required for accessing the route, defining the degree of access control. */
-    lateinit var accessLevel: RbacAccessLevel
-}
-
-/**
  * Custom Ktor RBAC plugin intercepting calls to routes, and
  * applying RBAC checks based on the configured scope and access level.
  *
@@ -65,4 +52,17 @@ internal val RbacPlugin: RouteScopedPlugin<RbacPluginConfig> = createRouteScoped
 
         call.respond(status = HttpStatusCode.Forbidden, message = "Access denied.")
     }
+}
+
+/**
+ * Configuration for the RBAC plugin.
+ * Holds the RBAC target scope and the required access level.
+ */
+@RbacAPI
+internal class RbacPluginConfig {
+    /** The RBAC scope associated with the route, defining the scope of access control. */
+    lateinit var scope: RbacScope
+
+    /** The RBAC access level required for accessing the route, defining the degree of access control. */
+    lateinit var accessLevel: RbacAccessLevel
 }

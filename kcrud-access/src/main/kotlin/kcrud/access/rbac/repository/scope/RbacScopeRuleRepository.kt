@@ -2,11 +2,11 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.access.rbac.repository.scope_rule
+package kcrud.access.rbac.repository.scope
 
-import kcrud.access.rbac.entity.field_rule.RbacFieldRuleRequest
-import kcrud.access.rbac.entity.scope_rule.RbacScopeRuleRequest
-import kcrud.access.rbac.repository.field_rule.IRbacFieldRuleRepository
+import kcrud.access.rbac.entity.field.RbacFieldRuleRequest
+import kcrud.access.rbac.entity.scope.RbacScopeRuleRequest
+import kcrud.access.rbac.repository.field.IRbacFieldRuleRepository
 import kcrud.base.database.schema.admin.rbac.RbacScopeRuleTable
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

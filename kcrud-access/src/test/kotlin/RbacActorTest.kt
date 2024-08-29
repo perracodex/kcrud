@@ -10,7 +10,7 @@ import kcrud.access.actor.service.ActorService
 import kcrud.access.rbac.di.RbacDomainInjection
 import kcrud.access.rbac.entity.role.RbacRoleEntity
 import kcrud.access.rbac.entity.role.RbacRoleRequest
-import kcrud.access.rbac.entity.scope_rule.RbacScopeRuleRequest
+import kcrud.access.rbac.entity.scope.RbacScopeRuleRequest
 import kcrud.access.rbac.service.RbacService
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacScope

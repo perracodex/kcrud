@@ -46,4 +46,3 @@ internal object NonBlankStringSerializer : KSerializer<String> {
  * @see NonBlankStringSerializer
  */
 public typealias NoBlankString = @Serializable(with = NonBlankStringSerializer::class) String
-

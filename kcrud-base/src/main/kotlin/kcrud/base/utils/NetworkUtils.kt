@@ -14,6 +14,7 @@ import kcrud.base.settings.AppSettings
 public object NetworkUtils {
     private val tracer = Tracer<NetworkUtils>()
 
+    private const val DEFAULT_PORT: Int = 8080
     private const val LISTEN_ALL_INTERFACES: String = "0.0.0.0"
     private val SECURE_PROTOCOL: URLProtocol = URLProtocol.HTTPS
     private val INSECURE_PROTOCOL: URLProtocol = URLProtocol.HTTP
@@ -74,10 +75,11 @@ public object NetworkUtils {
      * @return The resolved port number.
      */
     private fun getPort(): Int {
-        return if (AppSettings.security.useSecureConnection)
+        return if (AppSettings.security.useSecureConnection) {
             AppSettings.deployment.sslPort
-        else
+        } else {
             AppSettings.deployment.port
+        }
     }
 
     /**
@@ -86,10 +88,11 @@ public object NetworkUtils {
      * @return The [URLProtocol] representing HTTP or HTTPS.
      */
     public fun getProtocol(): URLProtocol {
-        return if (AppSettings.security.useSecureConnection)
+        return if (AppSettings.security.useSecureConnection) {
             SECURE_PROTOCOL
-        else
+        } else {
             INSECURE_PROTOCOL
+        }
     }
 
     /**
@@ -119,6 +122,6 @@ public object NetworkUtils {
      * @return True if the port is considered secure, false otherwise.
      */
     public fun isSecurePort(port: Int): Boolean {
-        return (port != 0) && (port != 8080)
+        return (port != 0) && (port != DEFAULT_PORT)
     }
 }

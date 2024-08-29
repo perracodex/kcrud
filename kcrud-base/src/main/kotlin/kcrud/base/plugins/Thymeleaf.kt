@@ -16,10 +16,12 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
 public fun Application.configureThymeleaf() {
 
     install(plugin = Thymeleaf) {
-        setTemplateResolver(ClassLoaderTemplateResolver().apply {
-            prefix = "templates/"
-            suffix = ".html"
-            characterEncoding = "utf-8"
-        })
+        setTemplateResolver(
+            ClassLoaderTemplateResolver().apply {
+                prefix = "templates/"
+                suffix = ".html"
+                characterEncoding = "utf-8"
+            }
+        )
     }
 }

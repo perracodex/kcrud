@@ -29,7 +29,6 @@ import kcrud.domain.employment.routing.endpoints.operate.updateEmploymentById
 public fun Route.employmentRoute() {
 
     route("v1/employees/{employee_id}/employments") {
-
         withRbac(scope = RbacScope.EMPLOYMENT_RECORDS, accessLevel = RbacAccessLevel.VIEW) {
             findEmploymentByEmployeeId()
         }
@@ -40,7 +39,6 @@ public fun Route.employmentRoute() {
         }
 
         route("{employment_id}") {
-
             withRbac(scope = RbacScope.EMPLOYMENT_RECORDS, accessLevel = RbacAccessLevel.VIEW) {
                 findEmploymentById()
             }

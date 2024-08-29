@@ -12,13 +12,14 @@ import kcrud.domain.employment.di.EmploymentDomainInjection
 import org.koin.ktor.plugin.Koin
 
 /**
- * Sets up and initializes dependency injection using the Koin framework.
+ * Sets up and initializes dependency injection using the Koin framework,
  *
  * See: [Koin for Ktor Documentation](https://insert-koin.io/docs/quickstart/ktor)
  */
 internal fun Application.configureKoin() {
 
     install(plugin = Koin) {
+        // Load all the DI modules for the application.
         modules(
             RbacDomainInjection.get(),
             ActorDomainInjection.get(),

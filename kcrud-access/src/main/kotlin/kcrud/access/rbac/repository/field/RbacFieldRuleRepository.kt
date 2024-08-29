@@ -2,9 +2,9 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.access.rbac.repository.field_rule
+package kcrud.access.rbac.repository.field
 
-import kcrud.access.rbac.entity.field_rule.RbacFieldRuleRequest
+import kcrud.access.rbac.entity.field.RbacFieldRuleRequest
 import kcrud.base.database.schema.admin.rbac.RbacFieldRuleTable
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

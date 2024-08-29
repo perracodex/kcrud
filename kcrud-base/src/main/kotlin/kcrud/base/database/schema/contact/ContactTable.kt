@@ -4,10 +4,10 @@
 
 package kcrud.base.database.schema.contact
 
-import kcrud.base.database.custom_columns.autoGenerate
-import kcrud.base.database.custom_columns.encryptedValidVarChar
-import kcrud.base.database.custom_columns.kotlinUuid
-import kcrud.base.database.custom_columns.references
+import kcrud.base.database.columns.autoGenerate
+import kcrud.base.database.columns.encryptedValidVarChar
+import kcrud.base.database.columns.kotlinUuid
+import kcrud.base.database.columns.references
 import kcrud.base.database.schema.base.TimestampedTable
 import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.persistence.validators.impl.EmailValidator

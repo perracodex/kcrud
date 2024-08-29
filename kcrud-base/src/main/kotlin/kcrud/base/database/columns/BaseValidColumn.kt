@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.base.database.custom_columns
+package kcrud.base.database.columns
 
 import kcrud.base.persistence.validators.IValidator
 import kcrud.base.persistence.validators.ValidationException

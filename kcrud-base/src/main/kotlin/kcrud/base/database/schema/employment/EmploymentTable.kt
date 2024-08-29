@@ -4,9 +4,9 @@
 
 package kcrud.base.database.schema.employment
 
-import kcrud.base.database.custom_columns.autoGenerate
-import kcrud.base.database.custom_columns.kotlinUuid
-import kcrud.base.database.custom_columns.references
+import kcrud.base.database.columns.autoGenerate
+import kcrud.base.database.columns.kotlinUuid
+import kcrud.base.database.columns.references
 import kcrud.base.database.schema.base.PeriodTable
 import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.database.schema.employment.types.EmploymentStatus

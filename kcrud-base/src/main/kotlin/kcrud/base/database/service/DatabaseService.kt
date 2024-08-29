@@ -38,7 +38,7 @@ internal object DatabaseService {
 
     /** The database instance held by the service. */
     val database: Database
-        get() = _database ?: throw IllegalStateException("Database not initialized.")
+        get() = _database ?: error("Database not initialized.")
 
     private var hikariDataSource: HikariDataSource? = null
 
@@ -207,7 +207,7 @@ internal object DatabaseService {
                 true
             }
         } catch (e: Exception) {
-            tracer.warning("Database is not alive.")
+            tracer.error("Database is not alive.", e)
             false
         }
     }
@@ -216,9 +216,7 @@ internal object DatabaseService {
      * Builds the database location directory if the database is a local file.
      */
     private fun buildDatabase(settings: DatabaseSettings) {
-        if (settings.path.isBlank()) {
-            throw IllegalArgumentException("Database path is required.")
-        }
+        require(settings.path.isNotBlank()) { "Database path is required." }
 
         if (settings.isLocalFile) {
             val currentWorkingPath: Path = Paths.get("").toAbsolutePath()
@@ -265,7 +263,7 @@ internal object DatabaseService {
                 currentDialect.allTablesNames()
             }
         } catch (e: Exception) {
-            tracer.warning("Failed to dump tables.")
+            tracer.error("Failed to dump tables.", e)
             return emptyList()
         }
     }

@@ -4,8 +4,8 @@
 
 package kcrud.access.rbac.entity.role
 
-import kcrud.access.rbac.entity.scope_rule.RbacScopeRuleEntity
-import kcrud.access.rbac.entity.scope_rule.RbacScopeRuleRequest
+import kcrud.access.rbac.entity.scope.RbacScopeRuleEntity
+import kcrud.access.rbac.entity.scope.RbacScopeRuleRequest
 import kotlinx.serialization.Serializable
 
 /**

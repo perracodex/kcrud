@@ -105,15 +105,14 @@ internal object AuditRepository {
      */
     fun count(taskName: String, taskGroup: String): Int {
         return transaction {
-            // addLogger(StdOutSqlLogger)
-
+//            addLogger(StdOutSqlLogger)
+//
 //            explain {
 //                SchedulerAuditTable
 //                    .selectAll()
 //                    .where { SchedulerAuditTable.taskName eq taskName }
 //                    .andWhere { SchedulerAuditTable.taskGroup eq taskGroup }
 //            }.forEach(::print)
-
 
             SchedulerAuditTable
                 .selectAll()
