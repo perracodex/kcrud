@@ -150,16 +150,13 @@ public class EmployeeService internal constructor(
                 )
             }
 
-            // Note: For sake of the example, we are already validating the email via the EmailString serializer
-            // defined in the ContactRequest entity.
-            // So, this validation is not really necessary and could be removed.
+            // Note: The email could also be verified via the EmailString serializer before
+            // reaching this point, which would raise a generic error for the email field.
             // However, this verification shows how to raise a custom error for the email field
             // with a concrete error code and description.
-            // The difference between this approach and the one used in the EmailString serializer,
+            // The difference between this approach or using the EmailString serializer,
             // is that the serializer is a generic one, and it is not aware of the context in which
-            // it is being used, so it cannot provide a more concrete error code and description
-            // as if using the following approach.
-            // Also, there is another example of email validation at the Table column level.
+            // it is being used, so it cannot provide a more concrete error code and description.
             val email: String = contact.email
             val emailValidation: IValidator.Result = EmailValidator.validate(value = email)
             if (emailValidation is IValidator.Result.Failure) {
