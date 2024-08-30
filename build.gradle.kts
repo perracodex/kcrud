@@ -32,6 +32,7 @@ application {
     // Configure detailed coroutine debug logging.
     // https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-debug/
     // https://github.com/Kotlin/kotlinx.coroutines/blob/master/docs/topics/debugging.md
+    // Defined in 'gradle.properties' file.
     val enhanceCoroutinesDebugging: Boolean = project.findProperty("enhanceCoroutinesDebugging")?.toString()?.toBoolean() ?: false
     if (enhanceCoroutinesDebugging) {
         applicationDefaultJvmArgs = listOf("-Dkotlinx.coroutines.debug=on")
