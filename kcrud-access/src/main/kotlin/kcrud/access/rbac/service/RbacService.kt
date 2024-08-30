@@ -120,8 +120,8 @@ internal class RbacService(
      * Checks if the given [SessionContext] has the given [RbacAccessLevel] for the given [RbacScope].
      *
      * @param sessionContext The current request [SessionContext].
-     * @param accessLevel The [RbacAccessLevel] to check.
      * @param scope The [RbacScope] to check.
+     * @param accessLevel The [RbacAccessLevel] to check. Expected to have minimal this access level.
      * @return True if the [SessionContext] has permission, false otherwise.
      */
     suspend fun hasPermission(

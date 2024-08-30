@@ -29,7 +29,7 @@ internal object SessionContextFactory : KoinComponent {
      * Creates a [SessionContext] instance from a JWT [JWTCredential].
      *
      * @param jwtCredential The [JWTCredential] containing actor-related claims.
-     * @return A [SessionContext] instance if both actorId and role are present and valid, null otherwise.
+     * @return A [SessionContext] instance if actor details and validations pass; null otherwise.
      */
     fun from(jwtCredential: JWTCredential): SessionContext? {
         // Check if the JWT audience claim matches the configured audience.
@@ -46,13 +46,17 @@ internal object SessionContextFactory : KoinComponent {
             return null
         }
 
+        // Extract the serialized session context from the JWT claims.
+        // This payload contains key session details serialized as a string,
+        // intended for reconstructing the SessionContext.
+        // If absent or blank, it indicates the JWT does not contain the required session context data.
         val payload: String? = jwtCredential.payload.getClaim(SessionContext.CLAIM_KEY)?.asString()
-
         if (payload.isNullOrBlank()) {
             tracer.error("Missing JWT payload.")
             return null
         }
 
+        // Return a fully constructed SessionContext for the reconstructed payload.
         return payload.let {
             Json.decodeFromString<SessionContext>(string = it).run {
                 SessionContext(
@@ -66,29 +70,29 @@ internal object SessionContextFactory : KoinComponent {
     }
 
     /**
-     * Retrieves a [SessionContext] instance from the database given a [UserPasswordCredential].
+     * Creates a [SessionContext] by authenticating a [UserPasswordCredential].
+     * Authenticates the user's credentials and retrieves actor details from the database.
      *
-     * @param credential The [UserPasswordCredential] of the Actor to retrieve.
-     * @return A [SessionContext] instance if the Actor exists, null otherwise.
+     * @param credential The [UserPasswordCredential] of the actor attempting to authenticate.
+     * @return A [SessionContext] instance if actor details and validations pass; null otherwise.
      */
     suspend fun from(credential: UserPasswordCredential): SessionContext? {
+        // Resolve the UserIdPrincipal. Return null if the authentication fails to provide it.
         val credentialService: CredentialService by inject()
-        val userIdPrincipal: UserIdPrincipal? = credentialService.authenticate(credential = credential)
-
-        userIdPrincipal ?: run {
-            tracer.error("Invalid credentials.")
+        val userIdPrincipal: UserIdPrincipal = credentialService.authenticate(credential = credential) ?: run {
+            tracer.error("Failed to resolve UserIdPrincipal. Invalid credentials.")
             return null
         }
 
+        // Resolve the actor. Return null if no actor corresponds to the provided username.
         val username: String = userIdPrincipal.name
         val actorService: ActorService by inject()
-        val actor: ActorEntity? = actorService.findByUsername(username = username)
-
-        actor ?: run {
+        val actor: ActorEntity = actorService.findByUsername(username = username) ?: run {
             tracer.error("No actor found for username: $username")
             return null
         }
 
+        // Return a fully constructed SessionContext for the authenticated actor.
         return actor.let { actorDetails ->
             SessionContext(
                 actorId = actorDetails.id,
@@ -102,44 +106,49 @@ internal object SessionContextFactory : KoinComponent {
      * Creates a [SessionContext] instance from an OAuth [OAuthAccessTokenResponse.OAuth2].
      *
      * @param oauth2 The OAuth [OAuthAccessTokenResponse.OAuth2] containing actor-related claims.
-     * @return A [SessionContext] instance if the auth token is valid, null otherwise.
+     * @return A [SessionContext] instance if the auth token is valid; null otherwise.
      */
     suspend fun from(oauth2: OAuthAccessTokenResponse.OAuth2): SessionContext? {
-        val jwt: DecodedJWT? = try {
-            JWT.decode(oauth2.extraParameters["id_token"] as String)
+        // Resolve the JWT.
+        val jwt: DecodedJWT = try {
+            JWT.decode(oauth2.extraParameters["id_token"] as String).also { decodedJwt ->
+                // Validate JWT immediately after decoding.
+                if (decodedJwt.subject.isNullOrBlank()) {
+                    tracer.error("Invalid OAuth token: Missing subject.")
+                    return null
+                }
+            }
         } catch (e: JWTDecodeException) {
             tracer.error("Invalid OAuth token. ${e.message}")
             return null
         }
 
-        if (jwt == null || jwt.subject.isNullOrBlank()) {
-            tracer.error("Invalid OAuth.")
-            return null
-        }
-
+        // Ensure the OAuth issuer matches expected configuration.
         if (!AppSettings.security.oAuth.authorizeUrl.startsWith(jwt.issuer)) {
             tracer.error("Invalid OAuth issuer: ${jwt.issuer}")
             return null
         }
 
+        // Verify the audience to ensure the token was intended for this application.
         if (jwt.audience.isEmpty() || jwt.audience[0] != AppSettings.security.oAuth.clientId) {
             tracer.error("Invalid OAuth audience: ${jwt.audience}")
             return null
         }
 
-        val username: String? = jwt.claims["name"]?.asString()
-        if (username.isNullOrBlank()) {
-            tracer.error("Invalid OAuth username: $username")
+        // Resolve the username. Return null if username claim is missing or blank.
+        val username: String = jwt.claims["name"]?.asString()?.takeIf { it.isNotBlank() } ?: run {
+            tracer.error("Invalid OAuth username: Empty or missing username.")
             return null
         }
 
+        // Resolve the actor. Return null if no corresponding actor is found.
         val actorService: ActorService by inject()
-        val actor: ActorEntity? = actorService.findByUsername(username = username)
-        actor ?: run {
+        val actor: ActorEntity = actorService.findByUsername(username = username) ?: run {
             tracer.error("No actor found for username: $username")
             return null
         }
 
+        // Construct and return the SessionContext using actor details.
         return actor.let { actorDetails ->
             SessionContext(
                 actorId = actorDetails.id,

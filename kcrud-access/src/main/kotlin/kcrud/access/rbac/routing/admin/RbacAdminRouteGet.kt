@@ -9,51 +9,43 @@ import io.ktor.server.application.*
 import io.ktor.server.html.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.access.rbac.entity.role.RbacRoleEntity
+import io.ktor.server.sessions.*
 import kcrud.access.rbac.plugin.annotation.RbacAPI
-import kcrud.access.rbac.routing.login.getRbacAdminAccessActor
-import kcrud.access.rbac.service.RbacService
+import kcrud.access.rbac.service.RbacAdminPanelManager
 import kcrud.access.rbac.view.RbacAdminView
 import kcrud.access.rbac.view.RbacLoginView
-import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kcrud.base.env.SessionContext
 import kcrud.base.persistence.utils.toUuidOrNull
-import kotlin.uuid.Uuid
 
 /**
- * Handles the GET request for the RBAC admin panel.
+ * Handles the GET request for the RBAC admin panel. This function retrieves the current session context,
+ * validates user access, and renders the admin panel based on the user's RBAC permissions and role selections.
+ * It ensures secure and role-appropriate visibility of RBAC configurations.
  */
 @RbacAPI
-internal fun Route.rbacAdminRouteGet(rbacService: RbacService) {
+internal fun Route.rbacAdminRouteGet() {
     get("rbac/admin") {
-        val sessionContext: SessionContext? = getRbacAdminAccessActor(call = call)
-        sessionContext ?: run {
+        // Attempt to retrieve the session context for RBAC admin access. Redirect to the login screen if null.
+        val sessionContext: SessionContext = RbacAdminPanelManager.getSessionContext(call = call) ?: run {
+            call.sessions.clear(name = SessionContext.SESSION_NAME)
             call.respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
             return@get
         }
 
-        val rbacAccessLevel: RbacAccessLevel = rbacService.getPermissionLevel(
+        // Resolve the RBAC access details for the current session context.
+        val accessDetails: RbacAdminPanelManager.AccessDetails = RbacAdminPanelManager.determineAccessDetails(
             sessionContext = sessionContext,
-            scope = RbacScope.RBAC_ADMIN
+            roleId = call.parameters[RbacAdminView.ROLE_KEY].toUuidOrNull()
         )
 
-        val isViewOnly: Boolean = (rbacAccessLevel == RbacAccessLevel.VIEW)
-        val selectedRoleId: Uuid? = call.parameters[RbacAdminView.ROLE_KEY].toUuidOrNull()
-        val rbacRoles: List<RbacRoleEntity> = rbacService.findAllRoles()
-
-        // If no role is selected, default to the first role.
-        val currentRoleId: RbacRoleEntity = selectedRoleId?.let { roleId ->
-            rbacRoles.find { it.id == roleId }
-        } ?: rbacRoles.first()
-
+        // Respond with HTML view of the RBAC admin panel.
         call.respondHtml(status = HttpStatusCode.OK) {
             RbacAdminView.build(
                 html = this,
-                rbacRoles = rbacRoles,
-                currentRoleId = currentRoleId.id,
+                rbacRoles = accessDetails.rbacRoles,
+                currentRoleId = accessDetails.currentRole.id,
                 isUpdated = false,
-                isViewOnly = isViewOnly
+                isViewOnly = accessDetails.isViewOnly
             )
         }
     }
