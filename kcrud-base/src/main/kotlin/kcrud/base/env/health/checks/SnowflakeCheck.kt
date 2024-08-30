@@ -28,32 +28,18 @@ public data class SnowflakeCheck(
     val nanoTimeStart: Long = SnowflakeFactory.nanoTimeStart,
 ) {
     init {
-        // Generating testId and handling potential exceptions.
-        testId = try {
-            SnowflakeFactory.nextId()
+        // Attempt to generate testId and handle any exceptions.
+        try {
+            testId = SnowflakeFactory.nextId()
+            testResult = SnowflakeFactory.parse(id = testId!!)
         } catch (ex: Exception) {
-            null
-        }
-
-        testId ?: run {
             errors.add(
-                "${SnowflakeCheck::class.simpleName}. Error generating snowflake. " +
+                "${SnowflakeCheck::class.simpleName}: ${ex.message} - " +
                         "timestampEpoch: $timestampEpoch, nanoTimeStart: $nanoTimeStart."
             )
-        }
-
-        // Parsing testResult and handling potential exceptions.
-        testResult = try {
-            SnowflakeFactory.parse(id = testId!!)
-        } catch (ex: Exception) {
-            null
-        }
-
-        testResult ?: run {
-            errors.add(
-                "${SnowflakeCheck::class.simpleName}. Unable to parse testId '$testId'. " +
-                        "timestampEpoch: $timestampEpoch, nanoTimeStart: $nanoTimeStart."
-            )
+            // If any step fails, assign null to both to ensure consistency.
+            testId = null
+            testResult = null
         }
     }
 }

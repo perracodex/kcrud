@@ -35,22 +35,30 @@ public data class SessionContext(
     val schema: String? = null
 ) : Principal {
     public companion object {
-        /** The name of the sessions, so for cookies it will be the cookie name. */
+        /**
+         * Specifies the cookie name used for session tracking. This name is used to reference
+         * the cookie that carries session context information across requests.
+         */
         public const val SESSION_NAME: String = "_ctx"
 
-        /** The key used to store the session context in the payload claim. */
+        /**
+         * Identifies the key under which session context data is stored within JWT claims.
+         * This key is used to extract session context details from the token payload.
+         */
         public const val CLAIM_KEY: String = "session_context"
 
         /**
          * The default empty session context instance. when security is disabled
          * or the user is not authenticated.
          */
-        private val defaultEmptyInstance = SessionContext(
-            actorId = "00000000-0000-0000-0000-000000000000".toUuid(),
-            username = "no-user",
-            roleId = "00000000-0000-0000-0000-000000000000".toUuid(),
-            schema = null
-        )
+        private val defaultEmptyInstance: SessionContext by lazy {
+            SessionContext(
+                actorId = "00000000-0000-0000-0000-000000000000".toUuid(),
+                username = "no-user",
+                roleId = "00000000-0000-0000-0000-000000000000".toUuid(),
+                schema = null
+            )
+        }
 
         /**
          * Retrieves an existing [SessionContext] from the current authentication principal

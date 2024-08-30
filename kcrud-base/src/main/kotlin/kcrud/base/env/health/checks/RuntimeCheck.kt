@@ -32,11 +32,11 @@ public data class RuntimeCheck(
     val utc: KLocalDateTime,
     val local: KLocalDateTime,
 ) {
-    internal constructor(call: ApplicationCall?) : this(
+    internal constructor(call: ApplicationCall) : this(
         errors = mutableListOf(),
         machineId = AppSettings.runtime.machineId,
         environment = AppSettings.runtime.environment,
-        developmentModeEnabled = call?.application?.developmentMode ?: false,
+        developmentModeEnabled = call.application.developmentMode,
         utc = timestamp,
         local = DateTimeUtils.utcToLocal(utc = timestamp),
     )

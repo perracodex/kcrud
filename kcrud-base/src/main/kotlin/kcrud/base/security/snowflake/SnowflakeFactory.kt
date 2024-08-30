@@ -119,6 +119,12 @@ public object SnowflakeFactory {
             "Invalid System Clock. Current timestamp: $currentTimestampMs, last timestamp: $lastTimestampMs"
         }
 
+        // Verify the machine ID is set. If not defined, then log a warning and use a default value.
+        machineId ?: run {
+            tracer.warning("Machine ID not set.")
+            machineId = NO_MACHINE_ID
+        }
+
         // If it's a new millisecond, reset the sequence number.
         if (currentTimestampMs != lastTimestampMs) {
             sequence = 0L
@@ -134,12 +140,6 @@ public object SnowflakeFactory {
                 } while (currentTimestampMs <= lastTimestampMs)
                 lastTimestampMs = currentTimestampMs
             }
-        }
-
-        // Verify the machine ID is set.
-        machineId ?: run {
-            tracer.warning("Machine ID not set.")
-            machineId = NO_MACHINE_ID
         }
 
         // Construct the ID.

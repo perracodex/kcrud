@@ -5,7 +5,6 @@
 package kcrud.base.env.health.checks
 
 import io.ktor.server.application.*
-import io.ktor.server.engine.*
 import io.ktor.server.request.*
 import kcrud.base.env.EnvironmentType
 import kcrud.base.env.health.annotation.HealthCheckAPI
@@ -31,11 +30,11 @@ public data class DeploymentCheck(
     val serverSpec: ServerSpec,
     val connectors: MutableMap<String, List<String>>,
 ) {
-    internal constructor(call: ApplicationCall?) : this(
+    internal constructor(call: ApplicationCall) : this(
         errors = mutableListOf(),
         configured = Configured(),
-        serverSpec = ServerSpec(call = call),
-        connectors = getConnectors(call = call, errors = mutableListOf())
+        serverSpec = ServerSpec(request = call.request),
+        connectors = NetworkUtils.getConnectors(environment = call.application.environment, errors = mutableListOf())
     )
 
     /**
@@ -81,16 +80,16 @@ public data class DeploymentCheck(
         val httpVersion: String?,
         val scheme: String?
     ) {
-        internal constructor(call: ApplicationCall?) : this(
-            serverHost = call?.request?.local?.serverHost,
-            serverPort = call?.request?.local?.serverPort,
-            localHost = call?.request?.local?.localHost,
-            localPort = call?.request?.local?.localPort,
-            remoteHostHost = call?.request?.local?.remoteHost,
-            remoteAddress = call?.request?.local?.remoteAddress,
-            remotePort = call?.request?.local?.remotePort,
-            httpVersion = call?.request?.httpVersion,
-            scheme = call?.request?.local?.scheme
+        internal constructor(request: ApplicationRequest) : this(
+            serverHost = request.local.serverHost,
+            serverPort = request.local.serverPort,
+            localHost = request.local.localHost,
+            localPort = request.local.localPort,
+            remoteHostHost = request.local.remoteHost,
+            remoteAddress = request.local.remoteAddress,
+            remotePort = request.local.remotePort,
+            httpVersion = request.httpVersion,
+            scheme = request.local.scheme
         )
     }
 
@@ -150,46 +149,4 @@ public data class DeploymentCheck(
             }
         }
     }
-}
-
-private fun getConnectors(call: ApplicationCall?, errors: MutableList<String>): MutableMap<String, List<String>> {
-    val connectors: MutableMap<String, List<String>> = mutableMapOf()
-
-    call?.application?.environment.let {
-        (it as ApplicationEngineEnvironmentReloading).connectors.forEach { connection ->
-            val connectorData: String = connection.type.name
-            var attributes: MutableList<String>? = null
-
-            when (connection) {
-                is EngineSSLConnectorBuilder -> {
-                    attributes = mutableListOf(
-                        "host: ${connection.host}",
-                        "post: ${connection.port}",
-                        "keyStoreType: ${connection.keyStore.type}",
-                        "keyStoreProvider: ${connection.keyStore.provider}",
-                        "keyStorePath: ${connection.keyStorePath}",
-                        "keyAlias: ${connection.keyAlias}",
-                        "trustStorePath: ${connection.trustStorePath}",
-                        "trustStore: ${connection.trustStore}",
-                        "enabledProtocols: ${connection.enabledProtocols}"
-                    )
-                }
-
-                is EngineConnectorBuilder -> {
-                    attributes = mutableListOf(
-                        "host: ${connection.host}",
-                        "post: ${connection.port}"
-                    )
-                }
-            }
-
-            attributes?.let { data ->
-                connectors[connectorData] = data
-            } ?: run {
-                errors.add("Unknown Connector: $connection")
-            }
-        }
-    }
-
-    return connectors
 }

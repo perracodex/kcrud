@@ -5,6 +5,8 @@
 package kcrud.base.utils
 
 import io.ktor.http.*
+import io.ktor.server.application.*
+import io.ktor.server.engine.*
 import kcrud.base.env.Tracer
 import kcrud.base.settings.AppSettings
 
@@ -123,5 +125,52 @@ public object NetworkUtils {
      */
     public fun isSecurePort(port: Int): Boolean {
         return (port != 0) && (port != DEFAULT_PORT)
+    }
+
+    /**
+     * Retrieves the active connectors configurations from the application's server environment.
+     * Connectors detail the interfaces through which the server communicates over the network.
+     * This function maps each connector type to its configuration details, such as host, port, and security settings.
+     *
+     * @param environment [ApplicationEnvironment] providing context for accessing the application's runtime environment.
+     * @param errors A mutable list to log any errors encountered during connector retrieval.
+     * @return A map where each key represents a connector type and the value is a list of its configuration details.
+     */
+    internal fun getConnectors(environment: ApplicationEnvironment, errors: MutableList<String>): MutableMap<String, List<String>> {
+        val connectors: MutableMap<String, List<String>> = mutableMapOf()
+
+        (environment as ApplicationEngineEnvironmentReloading).connectors.forEach { connection ->
+            val connectorData: String = connection.type.name
+            var attributes: MutableList<String>? = null
+
+            when (connection) {
+                is EngineSSLConnectorBuilder -> {
+                    attributes = mutableListOf(
+                        "host: ${connection.host}",
+                        "post: ${connection.port}",
+                        "keyStoreType: ${connection.keyStore.type}",
+                        "keyStoreProvider: ${connection.keyStore.provider}",
+                        "keyStorePath: ${connection.keyStorePath}",
+                        "keyAlias: ${connection.keyAlias}",
+                        "trustStorePath: ${connection.trustStorePath}",
+                        "trustStore: ${connection.trustStore}",
+                        "enabledProtocols: ${connection.enabledProtocols}"
+                    )
+                }
+
+                is EngineConnectorBuilder -> {
+                    attributes = mutableListOf(
+                        "host: ${connection.host}",
+                        "post: ${connection.port}"
+                    )
+                }
+            }
+
+            attributes?.let { data ->
+                connectors[connectorData] = data
+            } ?: errors.add("Unknown Connector: $connection")
+        }
+
+        return connectors
     }
 }
