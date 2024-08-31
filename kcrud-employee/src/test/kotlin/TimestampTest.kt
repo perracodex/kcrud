@@ -8,8 +8,8 @@ import io.mockk.mockk
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
 import kcrud.base.env.SessionContext
+import kcrud.base.persistence.serializers.OffsetTimestamp
 import kcrud.base.utils.KLocalDate
-import kcrud.base.utils.KLocalDateTime
 import kcrud.base.utils.TestUtils
 import kcrud.domain.employee.di.EmployeeDomainInjection
 import kcrud.domain.employee.entity.EmployeeEntity
@@ -67,8 +67,8 @@ class TimestampTest : KoinComponent {
             actual = employee.meta.updatedAt
         )
 
-        val createdAt: KLocalDateTime = employee.meta.createdAt
-        val updatedAt: KLocalDateTime = employee.meta.updatedAt
+        val createdAt: OffsetTimestamp = employee.meta.createdAt
+        val updatedAt: OffsetTimestamp = employee.meta.updatedAt
         employeeRepository.update(employeeId = employeeId, employeeRequest = employeeRequest)
         val updatedEmployee: EmployeeEntity = employeeRepository.findById(employeeId = employeeId)!!
 

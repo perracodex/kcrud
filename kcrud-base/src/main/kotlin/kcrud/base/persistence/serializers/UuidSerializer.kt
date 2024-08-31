@@ -22,9 +22,13 @@ internal object UuidSerializer : KSerializer<Uuid> {
         kind = PrimitiveKind.STRING
     )
 
-    override fun serialize(encoder: Encoder, value: Uuid): Unit = encoder.encodeString(value = value.toString())
+    override fun serialize(encoder: Encoder, value: Uuid) {
+        encoder.encodeString(value = value.toString())
+    }
 
-    override fun deserialize(decoder: Decoder): Uuid = Uuid.parse(uuidString = decoder.decodeString())
+    override fun deserialize(decoder: Decoder): Uuid {
+        return Uuid.parse(uuidString = decoder.decodeString())
+    }
 }
 
 /**

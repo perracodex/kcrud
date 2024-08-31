@@ -13,9 +13,9 @@ import kcrud.base.database.schema.employee.types.MaritalStatus
 import kcrud.base.env.SessionContext
 import kcrud.base.persistence.entity.Meta
 import kcrud.base.persistence.pagination.Page
+import kcrud.base.persistence.serializers.OffsetTimestamp
 import kcrud.base.utils.DateTimeUtils
 import kcrud.base.utils.KLocalDate
-import kcrud.base.utils.KLocalDateTime
 import kcrud.base.utils.TestUtils
 import kcrud.domain.contact.entity.ContactEntity
 import kcrud.domain.employee.di.EmployeeDomainInjection
@@ -49,7 +49,7 @@ class EmployeeEntityServiceTest : KoinComponent {
         MaritalStatus.entries.forEachIndexed { index, maritalStatus ->
             Honorific.entries.forEach { honorific ->
 
-                val currentDateTime: KLocalDateTime = DateTimeUtils.currentUTCDateTime()
+                val currentDateTime: OffsetTimestamp = DateTimeUtils.currentZonedTimestamp()
                 val dob: KLocalDate = KLocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1 + index)
                 val firstName = "AnyName_$index"
                 val lastName = "AnySurname_$index"

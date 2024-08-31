@@ -5,6 +5,7 @@
 package kcrud.base.scheduler.audit.entity
 
 import kcrud.base.database.schema.scheduler.SchedulerAuditTable
+import kcrud.base.persistence.entity.Meta
 import kcrud.base.persistence.serializers.UuidS
 import kcrud.base.scheduler.service.task.TaskOutcome
 import kcrud.base.utils.KLocalDateTime
@@ -22,7 +23,7 @@ import org.jetbrains.exposed.sql.ResultRow
  * @property outcome The log outcome status.
  * @property log The audit log information.
  * @property detail The detail that provides more information about the audit log.
- * @property createdAt The creation date of the audit log.
+ * @property meta The metadata of the record.
  */
 @Serializable
 public data class AuditEntity(
@@ -34,7 +35,7 @@ public data class AuditEntity(
     val outcome: TaskOutcome,
     val log: String?,
     val detail: String?,
-    val createdAt: KLocalDateTime,
+    val meta: Meta
 ) {
     internal companion object {
         /**
@@ -53,7 +54,7 @@ public data class AuditEntity(
                 outcome = row[SchedulerAuditTable.outcome],
                 log = row[SchedulerAuditTable.log],
                 detail = row[SchedulerAuditTable.detail],
-                createdAt = row[SchedulerAuditTable.createdAt]
+                meta = Meta.from(row = row, table = SchedulerAuditTable)
             )
         }
     }

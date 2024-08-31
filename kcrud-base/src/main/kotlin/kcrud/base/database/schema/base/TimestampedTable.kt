@@ -4,11 +4,11 @@
 
 package kcrud.base.database.schema.base
 
-import kcrud.base.utils.KLocalDateTime
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.kotlin.datetime.CurrentDateTime
-import org.jetbrains.exposed.sql.kotlin.datetime.datetime
+import org.jetbrains.exposed.sql.kotlin.datetime.CurrentTimestampWithTimeZone
+import org.jetbrains.exposed.sql.kotlin.datetime.timestampWithTimeZone
+import java.time.OffsetDateTime
 
 /**
  * Base class for database tables holding entities with creation and modification timestamps.
@@ -16,12 +16,12 @@ import org.jetbrains.exposed.sql.kotlin.datetime.datetime
 public open class TimestampedTable(name: String) : Table(name = name) {
 
     /** The timestamp when the record was created. */
-    public val createdAt: Column<KLocalDateTime> = datetime(
+    public val createdAt: Column<OffsetDateTime> = timestampWithTimeZone(
         name = "created_at"
-    ).defaultExpression(defaultValue = CurrentDateTime)
+    ).defaultExpression(defaultValue = CurrentTimestampWithTimeZone)
 
     /** The timestamp when the record was last updated.  */
-    public val updatedAt: Column<KLocalDateTime> = datetime(
+    public val updatedAt: Column<OffsetDateTime> = timestampWithTimeZone(
         name = "updated_at"
-    ).defaultExpression(defaultValue = CurrentDateTime)
+    ).defaultExpression(defaultValue = CurrentTimestampWithTimeZone)
 }
