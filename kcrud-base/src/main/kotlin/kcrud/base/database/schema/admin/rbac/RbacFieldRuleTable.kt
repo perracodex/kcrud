@@ -58,6 +58,9 @@ public object RbacFieldRuleTable : TimestampedTable(name = "rbac_field_rule") {
         fromId = RbacAccessLevel::fromId
     )
 
+    /**
+     * The table's primary key.
+     */
     override val primaryKey: Table.PrimaryKey = PrimaryKey(
         firstColumn = id,
         name = "pk_field_rule_id"

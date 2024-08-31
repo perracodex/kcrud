@@ -72,6 +72,9 @@ public object ActorTable : TimestampedTable(name = "actor") {
         name = "is_locked"
     )
 
+    /**
+     * The table's primary key.
+     */
     override val primaryKey: Table.PrimaryKey = PrimaryKey(
         firstColumn = id,
         name = "pk_actor_id"

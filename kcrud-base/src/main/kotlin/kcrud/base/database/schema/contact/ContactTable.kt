@@ -78,6 +78,9 @@ public object ContactTable : TimestampedTable(name = "contact") {
         encryptor = encryptor
     )
 
+    /**
+     * The table's primary key.
+     */
     override val primaryKey: Table.PrimaryKey = PrimaryKey(
         firstColumn = id,
         name = "pk_contact_id"

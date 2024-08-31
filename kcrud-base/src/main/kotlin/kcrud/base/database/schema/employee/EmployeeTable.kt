@@ -71,6 +71,9 @@ public object EmployeeTable : TimestampedTable(name = "employee") {
         fromId = Honorific::fromId
     )
 
+    /**
+     * The table's primary key.
+     */
     override val primaryKey: Table.PrimaryKey = PrimaryKey(
         firstColumn = id,
         name = "pk_employee_id"

@@ -49,6 +49,9 @@ public object RbacRoleTable : TimestampedTable(name = "rbac_role") {
         name = "is_super"
     )
 
+    /**
+     * The table's primary key.
+     */
     override val primaryKey: Table.PrimaryKey = PrimaryKey(
         firstColumn = id,
         name = "pk_role_id"

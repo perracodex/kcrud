@@ -75,6 +75,9 @@ public object EmploymentTable : PeriodTable(name = "employment") {
         length = 512
     ).nullable()
 
+    /**
+     * The table's primary key.
+     */
     override val primaryKey: Table.PrimaryKey = PrimaryKey(
         firstColumn = id,
         name = "pk_employment_id"
