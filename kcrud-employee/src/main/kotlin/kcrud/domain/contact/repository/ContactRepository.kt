@@ -9,7 +9,7 @@ import kcrud.base.database.service.transactionWithSchema
 import kcrud.base.env.SessionContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
-import kcrud.base.persistence.pagination.applyPagination
+import kcrud.base.persistence.pagination.paginate
 import kcrud.domain.contact.entity.ContactEntity
 import kcrud.domain.contact.entity.ContactRequest
 import kcrud.domain.employee.entity.EmployeeRequest
@@ -55,7 +55,7 @@ internal class ContactRepository(
 
             val content: List<ContactEntity> = ContactTable
                 .selectAll()
-                .applyPagination(pageable = pageable)
+                .paginate(pageable = pageable)
                 .map { resultRow ->
                     ContactEntity.from(row = resultRow)
                 }

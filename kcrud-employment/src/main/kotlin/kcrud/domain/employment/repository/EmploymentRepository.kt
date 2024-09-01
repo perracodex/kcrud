@@ -11,7 +11,7 @@ import kcrud.base.database.service.transactionWithSchema
 import kcrud.base.env.SessionContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
-import kcrud.base.persistence.pagination.applyPagination
+import kcrud.base.persistence.pagination.paginate
 import kcrud.domain.employment.entity.EmploymentEntity
 import kcrud.domain.employment.entity.EmploymentRequest
 import org.jetbrains.exposed.sql.*
@@ -33,7 +33,7 @@ internal class EmploymentRepository(
 
             val content: List<EmploymentEntity> = (EmploymentTable innerJoin EmployeeTable leftJoin ContactTable)
                 .selectAll()
-                .applyPagination(pageable = pageable)
+                .paginate(pageable = pageable)
                 .map { resultRow ->
                     EmploymentEntity.from(row = resultRow)
                 }

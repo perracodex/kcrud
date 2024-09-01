@@ -10,7 +10,7 @@ import kcrud.base.database.service.transactionWithSchema
 import kcrud.base.env.SessionContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
-import kcrud.base.persistence.pagination.applyPagination
+import kcrud.base.persistence.pagination.paginate
 import kcrud.domain.contact.repository.IContactRepository
 import kcrud.domain.employee.entity.EmployeeEntity
 import kcrud.domain.employee.entity.EmployeeFilterSet
@@ -54,7 +54,7 @@ internal class EmployeeRepository(
                 onColumn = EmployeeTable.id,
                 otherColumn = ContactTable.employeeId
             ).selectAll()
-                .applyPagination(pageable = pageable)
+                .paginate(pageable = pageable)
                 .map { resultRow ->
                     EmployeeEntity.from(row = resultRow)
                 }
@@ -104,7 +104,7 @@ internal class EmployeeRepository(
             val totalFilteredElements: Int = query.count().toInt()
 
             val content: List<EmployeeEntity> = query
-                .applyPagination(pageable = pageable)
+                .paginate(pageable = pageable)
                 .map { resultRow ->
                     EmployeeEntity.from(row = resultRow)
                 }
