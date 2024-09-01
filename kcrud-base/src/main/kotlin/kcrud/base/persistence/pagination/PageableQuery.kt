@@ -134,12 +134,12 @@ private object QueryOrderingHelper {
                 }
         }
     }
-}
 
-/**
- * Represents a key for the column cache.
- *
- * @param tableClass The class of the table containing the column.
- * @param fieldName The name of the field representing the column.
- */
-private data class TableColumnKey(val tableClass: KClass<*>, val fieldName: String)
+    /**
+     * Represents a key for the column cache.
+     *
+     * @param tableClass The class of the table containing the column.
+     * @param fieldName The name of the field representing the column.
+     */
+    private data class TableColumnKey(val tableClass: KClass<*>, val fieldName: String)
+}
