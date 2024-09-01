@@ -108,13 +108,13 @@ private object SortParser {
     /** Delimiter used to split a field segment into table name and field name (e.g., "table.fieldName"). */
     private const val FIELD_SEGMENT_DELIMITER: Char = '.'
 
-    /** Index position for the field name in a split sort segment (assuming the segment is split by SORT_SEGMENT_DELIMITER). */
+    /** Index position for the field name in a split sort segment (assuming the segment is split by [SORT_SEGMENT_DELIMITER]). */
     const val FIELD_SEGMENT_INDEX: Int = 0
 
     /** Index position for the direction (ASC or DESC) in a split sort segment. */
     const val DIRECTION_SEGMENT_INDEX: Int = 1
 
-    /** Index position for the table name in a split field segment (assuming the segment is split by FIELD_SEGMENT_DELIMITER). */
+    /** Index position for the table name in a split field segment (assuming the segment is split by [FIELD_SEGMENT_DELIMITER]). */
     private const val TABLE_NAME_INDEX: Int = 0
 
     /** Index position for the field name in a split field segment. */
