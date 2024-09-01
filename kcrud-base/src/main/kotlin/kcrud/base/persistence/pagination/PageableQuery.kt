@@ -69,12 +69,14 @@ private object QueryOrderingHelper {
                 getSortColumn(targets = query.targets, fieldName = order.field)
             } else {
                 // If a table name is specified, find the corresponding table from the query targets.
-                val table: Table = query.targets.firstOrNull { it.tableName.equals(order.table, ignoreCase = true) }
-                    ?: throw IllegalArgumentException("Invalid sort table: ${order.table}")
+                val table: Table = query.targets.firstOrNull { table ->
+                    table.tableName.equals(order.table, ignoreCase = true)
+                } ?: throw IllegalArgumentException("Invalid sort table: ${order.table}")
+
                 getSortColumn(targets = listOf(table), fieldName = order.field)
             }
 
-            val sortOrder: SortOrder = if (order.direction == Pageable.Direction.ASC) SortOrder.ASC else SortOrder.DESC
+            val sortOrder: SortOrder = SortOrder.ASC.takeIf { order.direction == Pageable.Direction.ASC } ?: SortOrder.DESC
             query.orderBy(column to sortOrder)
         }
     }

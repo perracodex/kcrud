@@ -53,7 +53,7 @@ public data class Page<out T : Any>(
 
             // Calculate total pages, ensuring totalPages is 0 if there are no elements.
             val totalPages: Int = if (totalElements > 0 && pageSize > 0) {
-                max(1, (totalElements + pageSize - 1) / pageSize)
+                max(a = 1, b = (totalElements + pageSize - 1) / pageSize)
             } else {
                 0
             }

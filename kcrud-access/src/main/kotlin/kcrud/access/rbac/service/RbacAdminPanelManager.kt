@@ -114,25 +114,26 @@ internal object RbacAdminPanelManager : KoinComponent {
         val scopeRulesRequests: MutableList<RbacScopeRuleRequest> = mutableListOf()
 
         // Decode and prepare new access rules from received parameters.
-        updates.filter { it.key.startsWith(prefix = RbacAdminView.ROLE_ITEM_KEY) }
-            .map {
-                it to Json.decodeFromString<RbacAdminView.AccessLevelKeyData>(
-                    it.key.removePrefix(prefix = RbacAdminView.ROLE_ITEM_KEY)
-                )
-            }
-            .filter { (_, accessKey) -> !accessKey.isLocked }
-            .forEach { (paramEntry, accessKey) ->
-                val accessLevel: RbacAccessLevel = RbacAccessLevel.valueOf(paramEntry.value)
+        updates.filter {
+            it.key.startsWith(prefix = RbacAdminView.ROLE_ITEM_KEY)
+        }.map {
+            it to Json.decodeFromString<RbacAdminView.AccessLevelKeyData>(
+                it.key.removePrefix(prefix = RbacAdminView.ROLE_ITEM_KEY)
+            )
+        }.filter { (_, accessKey) ->
+            !accessKey.isLocked
+        }.forEach { (paramEntry, accessKey) ->
+            val accessLevel: RbacAccessLevel = RbacAccessLevel.valueOf(paramEntry.value)
 
-                // Add valid scope rule requests for update.
-                if (accessLevel != RbacAccessLevel.NONE) {
-                    val scopeRuleRequest = RbacScopeRuleRequest(
-                        scope = RbacScope.valueOf(accessKey.scope),
-                        accessLevel = accessLevel
-                    )
-                    scopeRulesRequests.add(scopeRuleRequest)
-                }
+            // Add valid scope rule requests for update.
+            if (accessLevel != RbacAccessLevel.NONE) {
+                val scopeRuleRequest = RbacScopeRuleRequest(
+                    scope = RbacScope.valueOf(accessKey.scope),
+                    accessLevel = accessLevel
+                )
+                scopeRulesRequests.add(scopeRuleRequest)
             }
+        }
 
         // Update role with new access rules.
         val rbacService: RbacService by inject()
