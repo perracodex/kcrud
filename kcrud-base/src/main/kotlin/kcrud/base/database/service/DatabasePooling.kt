@@ -30,19 +30,35 @@ internal object DatabasePooling {
         require(value = settings.connectionPoolSize > 0) { "Database connection pooling must be >= 1." }
 
         val hikariConfig: HikariConfig = HikariConfig().apply {
+            // Specifies the class name of the JDBC driver to be used,
+            // and JDBC URL for the database connection.
             driverClassName = settings.jdbcDriver
             jdbcUrl = settings.jdbcUrl
+
+            // Maximum number of connections in the pool.
             maximumPoolSize = settings.connectionPoolSize
+
+            // Maximum wait time in milliseconds for an application component to get a connection from the pool.
             connectionTimeout = settings.connectionPoolTimeoutMs
+
+            // Transaction isolation level for the connections within the pool.
             transactionIsolation = isolationLevel.name
+
+            // Minimum number of idle connections maintained by HikariCP in the pool.
             minimumIdle = settings.minimumPoolIdle
+
+            // Disables auto-commit on connections to allow explicit transaction management,
+            // thereby ensuring each transaction is atomic and preventing automatic commits
+            // after each individual statement.
             isAutoCommit = false
 
+            // Database credentials for authentication.
             if (!settings.username.isNullOrBlank()) {
                 this.username = settings.username
                 this.password = settings.password!!
             }
 
+            // Integrates a micrometer registry for monitoring and metrics.
             micrometerRegistry?.let {
                 metricRegistry = it
             }
