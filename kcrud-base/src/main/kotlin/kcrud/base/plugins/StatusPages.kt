@@ -29,7 +29,7 @@ public fun Application.configureStatusPages() {
     install(plugin = StatusPages) {
         // Custom application exceptions.
         exception<AppException> { call: ApplicationCall, cause ->
-            tracer.error(message = cause.messageDetail(), throwable = cause)
+            tracer.error(message = cause.messageDetail(), cause = cause)
             call.respondError(cause = cause)
         }
 
@@ -52,24 +52,24 @@ public fun Application.configureStatusPages() {
 
         // Bad request exception handling.
         exception<BadRequestException> { call: ApplicationCall, cause: Throwable ->
-            tracer.error(message = cause.message, throwable = cause)
+            tracer.error(message = cause.message, cause = cause)
             val message: String = buildErrorMessage(cause)
             call.respond(status = HttpStatusCode.BadRequest, message = message)
         }
 
         // Additional exception handling.
         exception<IllegalArgumentException> { call: ApplicationCall, cause: Throwable ->
-            tracer.error(message = cause.message, throwable = cause)
+            tracer.error(message = cause.message, cause = cause)
             val message: String = buildErrorMessage(throwable = cause)
             call.respond(status = HttpStatusCode.BadRequest, message = message)
         }
         exception<NotFoundException> { call: ApplicationCall, cause: Throwable ->
-            tracer.error(message = cause.message, throwable = cause)
+            tracer.error(message = cause.message, cause = cause)
             val message: String = buildErrorMessage(throwable = cause)
             call.respond(status = HttpStatusCode.NotFound, message = message)
         }
         exception<Throwable> { call: ApplicationCall, cause: Throwable ->
-            tracer.error(message = cause.message, throwable = cause)
+            tracer.error(message = cause.message, cause = cause)
             call.respond(status = HttpStatusCode.InternalServerError, message = HttpStatusCode.InternalServerError.description)
         }
     }

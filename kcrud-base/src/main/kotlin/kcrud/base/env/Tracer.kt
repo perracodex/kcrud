@@ -44,10 +44,13 @@ public class Tracer(private val logger: Logger) {
     }
 
     /**
-     * Logs a message with error severity level and an associated throwable.
+     * Logs a message with error severity level and an associated [Throwable].
+     *
+     * @param message The message to log.
+     * @param cause The [Throwable] associated with the error.
      */
-    public fun error(message: String? = "Unexpected Exception", throwable: Throwable) {
-        logger.error(message, throwable)
+    public fun error(message: String? = "Unexpected Exception", cause: Throwable) {
+        logger.error(message, cause)
     }
 
     /**

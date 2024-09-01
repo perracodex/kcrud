@@ -207,7 +207,7 @@ internal object DatabaseService {
                 true
             }
         } catch (e: Exception) {
-            tracer.error("Database is not alive.", e)
+            tracer.error(message = "Database is not alive.", cause = e)
             false
         }
     }
@@ -263,7 +263,7 @@ internal object DatabaseService {
                 currentDialect.allTablesNames()
             }
         } catch (e: Exception) {
-            tracer.error("Failed to dump tables.", e)
+            tracer.error(message = "Failed to dump tables.", cause = e)
             return emptyList()
         }
     }

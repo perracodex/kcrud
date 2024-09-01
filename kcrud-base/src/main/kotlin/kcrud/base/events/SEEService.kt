@@ -60,7 +60,7 @@ public object SEEService {
                         writer.appendLine() // SSE messages should be followed by two newlines.
                         writer.flush()
                     } catch (e: IOException) {
-                        tracer.warning("IOException during writing response: ${e.message}")
+                        tracer.error(message = "IOException during writing response.", cause = e)
                         throw e
                     }
                 }
@@ -68,7 +68,7 @@ public object SEEService {
         } catch (e: CancellationException) {
             tracer.info("Collection cancelled.")
         } catch (e: IOException) {
-            tracer.warning("IOException during event flow collection: ${e.message}")
+            tracer.error(message = "IOException during event flow collection.", cause = e)
             throw e
         }
     }

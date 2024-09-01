@@ -92,13 +92,13 @@ private suspend fun ApplicationCall.respondWithToken() {
         val newJwtToken: String = AuthenticationTokenService.generate(sessionContext = sessionContext)
         respond(status = HttpStatusCode.OK, message = newJwtToken)
     } catch (e: IllegalArgumentException) {
-        tracer.error("Failed to generate token due to invalid session context.", e)
+        tracer.error(message = "Failed to generate token due to invalid session context.", cause = e)
         respond(
             status = HttpStatusCode.BadRequest,
             message = e.message ?: "Invalid session context. ${CredentialService.HINT}"
         )
     } catch (e: Exception) {
-        tracer.error("Failed to generate token due to an unexpected error.", e)
+        tracer.error(message = "Failed to generate token due to an unexpected error.", cause = e)
         respond(status = HttpStatusCode.InternalServerError, message = "Failed to generate token.")
     }
 }

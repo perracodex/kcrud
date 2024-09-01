@@ -76,7 +76,7 @@ public fun ApplicationCall.getPageable(): Pageable? {
                     try {
                         Pageable.Direction.valueOf(directionString.uppercase())
                     } catch (e: IllegalArgumentException) {
-                        Tracer(ref = ::getPageable).error("Invalid sorting direction: $directionString", e)
+                        Tracer(ref = ::getPageable).error(message = "Invalid sorting direction: $directionString", cause = e)
                         throw PaginationError.InvalidOrderDirection(direction = directionString)
                     }
                 } else {

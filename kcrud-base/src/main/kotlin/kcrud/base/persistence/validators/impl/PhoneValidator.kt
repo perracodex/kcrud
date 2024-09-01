@@ -31,7 +31,7 @@ public object PhoneValidator : IValidator {
                 return IValidator.Result.Failure(reason = "Invalid phone number. $value")
             }
         } catch (e: NumberParseException) {
-            tracer.error("Error parsing phone number: $value", e)
+            tracer.error(message = "Error parsing phone number: $value", cause = e)
             return IValidator.Result.Failure(reason = e.message ?: "Error parsing phone number. $value")
         }
 
