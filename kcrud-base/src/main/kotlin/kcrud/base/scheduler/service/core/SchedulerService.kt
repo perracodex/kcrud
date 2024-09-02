@@ -214,7 +214,7 @@ internal object SchedulerService {
             }
 
             // Return the current state of the scheduler.
-            state().name
+            return@change state().name
         }
     }
 
@@ -250,7 +250,7 @@ internal object SchedulerService {
             }
 
             // Return the current state of the scheduler.
-            state().name
+            return@change state().name
         }
     }
 
