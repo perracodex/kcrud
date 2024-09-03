@@ -75,14 +75,13 @@ internal object DefaultActorFactory : KoinComponent {
         }
     }
 
+    /**
+     * Creates default Actors with their respective roles.
+     *
+     * @param actorService The [ActorService] instance to create the Actors.
+     */
     private suspend fun createActors(actorService: ActorService) {
-        val rbacService: RbacService by inject()
-        var rbacRoles: List<RbacRoleEntity> = rbacService.findAllRoles()
-
-        // Create roles if none are found.
-        if (rbacRoles.isEmpty()) {
-            rbacRoles = createRoles(rbacService = rbacService)
-        }
+        val rbacRoles: List<RbacRoleEntity> = getRoles()
 
         rbacRoles.forEach { role ->
             val credential: String = role.roleName.lowercase()
@@ -98,7 +97,17 @@ internal object DefaultActorFactory : KoinComponent {
         }
     }
 
-    private suspend fun createRoles(rbacService: RbacService): List<RbacRoleEntity> {
+    /**
+     * Gets the default roles, creating them if none are found in the database.
+     */
+    private suspend fun getRoles(): List<RbacRoleEntity> {
+        val rbacService: RbacService by inject()
+        val rbacRoles: List<RbacRoleEntity> = rbacService.findAllRoles()
+        if (rbacRoles.isNotEmpty()) {
+            return rbacRoles
+        }
+
+        // Create default roles if none are found.
         RoleName.entries.forEach { role ->
             val adminScopeRules: List<RbacScopeRuleRequest> = if (role == RoleName.ADMIN) {
                 RbacScope.entries.map { scope ->
