@@ -4,11 +4,10 @@
 
 package kcrud.base.persistence.entity
 
+import kcrud.base.database.schema.base.PeriodTable
 import kcrud.base.utils.KLocalDate
 import kotlinx.serialization.Serializable
-import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.Table
 
 /**
  * Represents a time period.
@@ -30,20 +29,15 @@ public data class Period(
          * Maps a [ResultRow] to a [Period] instance.
          *
          * @param row The [ResultRow] to map.
-         * @param table The [Table] that the [ResultRow] is from.
+         * @param table The [PeriodTable] that the [ResultRow] is from.
          * @return The mapped [Period] instance.
          */
-        public fun from(row: ResultRow, table: Table): Period {
-            val isActiveColumn: Column<*> = table.columns.single { it.name == "is_active" }
-            val startDateColumn: Column<*> = table.columns.single { it.name == "start_date" }
-            val endDateColumn: Column<*> = table.columns.single { it.name == "end_date" }
-            val commentsColumn: Column<*> = table.columns.single { it.name == "comments" }
-
+        public fun from(row: ResultRow, table: PeriodTable): Period {
             return Period(
-                isActive = row[isActiveColumn] as Boolean,
-                startDate = row[startDateColumn] as KLocalDate,
-                endDate = row[endDateColumn] as KLocalDate?,
-                comments = row[commentsColumn] as String?
+                isActive = row[table.isActive],
+                startDate = row[table.startDate],
+                endDate = row[table.endDate],
+                comments = row[table.comments]
             )
         }
     }

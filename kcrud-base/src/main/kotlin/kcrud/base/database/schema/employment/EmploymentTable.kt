@@ -68,14 +68,6 @@ public object EmploymentTable : PeriodTable(name = "employment") {
     )
 
     /**
-     * Optional comments or notes for the employment.
-     */
-    public val comments: Column<String?> = varchar(
-        name = "comments",
-        length = 512
-    ).nullable()
-
-    /**
      * The table's primary key.
      */
     override val primaryKey: Table.PrimaryKey = PrimaryKey(
