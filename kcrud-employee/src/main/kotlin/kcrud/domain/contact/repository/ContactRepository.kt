@@ -83,7 +83,7 @@ internal class ContactRepository(
                 newContactId.takeIf { updateCount > 0 }
             } ?: create(employeeId = employeeId, contactRequest = employeeRequest.contact)
         } ?: run {
-            // If the request does not contain a contact, delete the existing one.
+            // If the request does not contain a contact, delete any existing one.
             deleteByEmployeeId(employeeId = employeeId)
             null
         }

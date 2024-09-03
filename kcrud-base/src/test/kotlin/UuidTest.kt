@@ -13,40 +13,40 @@ import kotlin.uuid.Uuid
 class UuidTest {
 
     @Test
-    fun testValidUUID() {
+    fun testValidUuid() {
         val uuidString = "6679c48b-dfb1-475d-9de4-3570b7456b08"
         val uuid: Uuid? = uuidString.toUuidOrNull()
         assertEquals(expected = Uuid.parse(uuidString = uuidString), actual = uuid)
     }
 
     @Test
-    fun testInvalidUUIDToNull() {
+    fun testInvalidUuidToNull() {
         val uuid: Uuid? = "invalid-uuid-string".toUuidOrNull()
         assertNull(actual = uuid)
     }
 
     @Test
-    fun testInvalidUUIDException() {
+    fun testInvalidUuidException() {
         assertFailsWith<IllegalArgumentException> {
             "invalid-uuid-string".toUuid()
         }
     }
 
     @Test
-    fun testNullUUIDToNull() {
+    fun testNullUuidToNull() {
         val nullString: String? = null
         val uuid: Uuid? = nullString.toUuidOrNull()
         assertNull(actual = uuid)
     }
 
     @Test
-    fun testBlankUUIDToNull() {
+    fun testBlankUuidToNull() {
         val uuid: Uuid? = " ".toUuidOrNull()
         assertNull(actual = uuid)
     }
 
     @Test
-    fun testBlankUUIDException() {
+    fun testBlankUuidException() {
         assertFailsWith<IllegalArgumentException> {
             " ".toUuid()
         }

@@ -15,7 +15,7 @@ import org.jetbrains.exposed.sql.ResultRow
  *
  * @property id The contact's id.
  * @property email The contact's email.
- * @property phone The contact's phone.
+ * @property phone The contact's phone number.
  * @property meta The metadata of the record.
  */
 @Serializable

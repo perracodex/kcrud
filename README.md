@@ -44,7 +44,7 @@ For convenience, it is included a *[Postman Collection](./.postman/kcrud.postman
 
 The code intentionally contains redundancies and inconsistencies to illustrate different approaches and strategies to achieve
 similar results. For example, different authentication methods (JWT, OAuth, and Basic, despite Basic being discouraged);
-different approaches to exception handling and validations across layers. The project also delves into data persistence,
+different approaches to exception handling and validations across layers. The project also examines data persistence,
 illustrating custom columns with validation, field level encryption, different ways to store enums in a database, etc.
 
 ---

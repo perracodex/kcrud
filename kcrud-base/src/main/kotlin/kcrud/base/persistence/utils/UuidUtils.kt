@@ -17,7 +17,7 @@ public fun String?.toUuidOrNull(): Uuid? {
     return try {
         Uuid.parse(uuidString = this)
     } catch (e: IllegalArgumentException) {
-        Tracer(ref = ::toUuidOrNull).error(message = "Failed to parse UUID from string: '$this'", cause = e)
+        Tracer(ref = ::toUuidOrNull).error(message = "Failed to parse Uuid from string: '$this'", cause = e)
         null
     }
 }

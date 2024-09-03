@@ -10,14 +10,15 @@ import kotlinx.serialization.Serializable
 /**
  * Represents the request to create/update an employee's contact details.
  *
- * The phone and email are verified at server layer level, throwing custom errors
- * if invalid.
- * For the email field, it could alternatively be verified at serializer level
- * by using the [EmailString] type. Such approach although simpler, would not
- * allow to send a more detailed error message to the client.
+ * The phone and email are verified at service layer level, throwing custom
+ * errors when invalid.
+ * For the email field, it could alternatively be verified using instead
+ * the [EmailString] serializer, but such approach although simpler,
+ * would not allow to send a more detailed custom error to the client
+ * which could include more contextually relevant information.
  *
- * @property email The contact's email. Must be a valid email.
- * @property phone The contact's phone. Must be a valid phone number.
+ * @property email The contact's email.
+ * @property phone The contact's phone number.
  */
 @Serializable
 public data class ContactRequest(
