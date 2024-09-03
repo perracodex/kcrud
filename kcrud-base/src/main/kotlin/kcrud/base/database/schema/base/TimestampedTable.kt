@@ -11,16 +11,16 @@ import org.jetbrains.exposed.sql.kotlin.datetime.timestampWithTimeZone
 import java.time.OffsetDateTime
 
 /**
- * Base class for database tables holding entities with creation and modification timestamps.
+ * Base class for database tables that automatically track the creation and last update timestamps of records.
  */
 public open class TimestampedTable(name: String) : Table(name = name) {
 
-    /** The timestamp when the record was created. */
+    /** Timestamp for when the record was initially created. */
     public val createdAt: Column<OffsetDateTime> = timestampWithTimeZone(
         name = "created_at"
     ).defaultExpression(defaultValue = CurrentTimestampWithTimeZone)
 
-    /** The timestamp when the record was last updated.  */
+    /** Timestamp for the most recent update to the record. */
     public val updatedAt: Column<OffsetDateTime> = timestampWithTimeZone(
         name = "updated_at"
     ).defaultExpression(defaultValue = CurrentTimestampWithTimeZone)
