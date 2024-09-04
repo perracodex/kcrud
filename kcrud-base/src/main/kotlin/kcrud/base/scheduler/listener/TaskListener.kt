@@ -100,6 +100,11 @@ internal class TaskListener : JobListener {
             log = jobException?.message,
             detail = context.jobDetail.jobDataMap.toMap().toString()
         ).also { request ->
+            // Use `runBlocking` here to ensure that the coroutine for creating
+            // the audit log completes synchronously within this Quartz callback method,
+            // which is necessary because Quartz, being a Java-based library,
+            // does not support suspending functions and requires that the execution
+            // context completes before exiting the job.
             runBlocking {
                 AuditService.create(request = request)
             }
