@@ -23,7 +23,7 @@ public fun Route.healthCheckRoute() {
     authenticate(AppSettings.security.basicAuth.providerName, optional = !AppSettings.security.isEnabled) {
         // Healthcheck providing the current operational status.
         get("/health") {
-            val healthCheck = HealthCheck(call = call)
+            val healthCheck: HealthCheck = HealthCheck.create(call = call)
             call.respond(status = HttpStatusCode.OK, message = healthCheck)
         }
     }

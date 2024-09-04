@@ -6,7 +6,6 @@ package kcrud.base.env.health.checks
 
 import kcrud.base.env.health.annotation.HealthCheckAPI
 import kcrud.base.scheduler.service.core.SchedulerService
-import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 
 /**
@@ -19,20 +18,30 @@ import kotlinx.serialization.Serializable
  */
 @HealthCheckAPI
 @Serializable
-public data class SchedulerCheck(
+public data class SchedulerCheck internal constructor(
     val errors: MutableList<String>,
     val isStarted: Boolean,
     val isPaused: Boolean,
-    val totalTasks: Int,
+    val totalTasks: Int
 ) {
-    internal constructor() : this(
-        errors = mutableListOf(),
-        isStarted = SchedulerService.isStarted(),
-        isPaused = SchedulerService.isPaused(),
-        totalTasks = runBlocking { SchedulerService.totalTasks() },
-    ) {
+    init {
         if (!isStarted) {
-            errors.add("${this::class.simpleName}. Scheduler is not started.")
+            errors.add("SchedulerCheck. Scheduler is not started.")
+        }
+    }
+
+    internal companion object {
+        /**
+         * Creates a new [SchedulerCheck] instance.
+         * We need to use a suspendable factory method as totalTasks is a suspend function.
+         */
+        suspend fun create(): SchedulerCheck {
+            return SchedulerCheck(
+                errors = mutableListOf(),
+                isStarted = SchedulerService.isStarted(),
+                isPaused = SchedulerService.isPaused(),
+                totalTasks = SchedulerService.totalTasks()
+            )
         }
     }
 }
