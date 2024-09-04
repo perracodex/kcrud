@@ -17,9 +17,9 @@ import java.time.format.DateTimeFormatter
 /**
  * Serializer for [OffsetDateTime] objects.
  */
-internal object OffsetDateTimeSerializer : KSerializer<OffsetDateTime> {
+internal object OffsetTimestampSerializer : KSerializer<OffsetDateTime> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
-        serialName = "OffsetDateTime",
+        serialName = "OffsetTimestamp",
         kind = PrimitiveKind.STRING
     )
 
@@ -39,6 +39,6 @@ internal object OffsetDateTimeSerializer : KSerializer<OffsetDateTime> {
  *
  * @property OffsetDateTime The type representing the serializable [OffsetDateTime].
  * @see OffsetDateTime
- * @see OffsetDateTimeSerializer
+ * @see OffsetTimestampSerializer
  */
-public typealias OffsetTimestamp = @Serializable(with = OffsetDateTimeSerializer::class) OffsetDateTime
+public typealias OffsetTimestamp = @Serializable(with = OffsetTimestampSerializer::class) OffsetDateTime
