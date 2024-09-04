@@ -92,14 +92,15 @@ internal object ConfigurationParser {
                     } ?: throw IllegalArgumentException("Config argument for ${configClassMap.mappingName} not found.")
 
                     // Return the mapping of the constructor argument parameter to its value.
-                    ParameterMapping(parameter = parameter, value = configInstance)
+                    return@async ParameterMapping(parameter = parameter, value = configInstance)
                 }
             }
 
             // Await all results and construct the arguments map.
-            tasks.map { mapping -> mapping.await() }.associate { mapping ->
-                mapping.parameter to mapping.value
-            }
+            return@withContext tasks.map { mapping -> mapping.await() }
+                .associate { mapping ->
+                    mapping.parameter to mapping.value
+                }
         }
 
         // Create the instance of the ConfigurationCatalog class with the parsed configuration values.
@@ -134,19 +135,19 @@ internal object ConfigurationParser {
 
             if (parameterType.isData) {
                 // Recursive instantiation for nested data classes.
-                instantiateConfig(
+                return@associateWith instantiateConfig(
                     config = config,
                     keyPath = parameterKeyPath,
                     kClass = parameterType
                 )
             } else {
                 // Find the target property attribute corresponding to the parameter in the class.
-                val property: KProperty1<T, *> = kClass.memberProperties.find {
-                    it.name == parameter.name
+                val property: KProperty1<T, *> = kClass.memberProperties.find { property ->
+                    property.name == parameter.name
                 }!!
 
                 // Convert and return the configuration value for the parameter.
-                convertToType(
+                return@associateWith convertToType(
                     config = config,
                     keyPath = parameterKeyPath,
                     type = parameterType,

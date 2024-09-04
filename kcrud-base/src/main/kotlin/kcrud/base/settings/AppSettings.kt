@@ -75,6 +75,9 @@ public object AppSettings {
                 ConfigClassMap(mappingName = "security", path = "security", kClass = SecuritySettings::class)
             )
 
+            // Since the configuration is loaded only once, it is safe to use runBlocking here,
+            // which should happen only during application startup. The parsing is through a
+            // suspend function, as the configuration sections are parsed asynchronously in parallel.
             runBlocking {
                 configuration = ConfigurationParser.parse(
                     configuration = applicationConfig,
@@ -88,7 +91,8 @@ public object AppSettings {
 
     /**
      * Serializes the current settings configuration to a JSON string.
-     * The [load] method must be called before this method.
+     * The [load] method must have been called at least once before
+     * ever using this method, usually during application startup.
      *
      * @return The JSON string representation of the current settings.
      */
