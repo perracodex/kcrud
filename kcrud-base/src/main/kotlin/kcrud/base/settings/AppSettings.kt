@@ -61,11 +61,10 @@ public object AppSettings {
         tracer.info("Loading application settings.")
 
         val timeTaken = measureTimeMillis {
-            // Map connecting configuration paths.
-            // Where the first argument is the path to the configuration section,
-            // the second argument is the name of the constructor argument in the
-            // ConfigurationCatalog class, and the third argument is the data class
-            // that will be instantiated with the configuration values.
+            // List of configuration mappings. Each entry maps a section in the configuration file
+            // to a data class that will hold the configuration values. The 'mappingName' is used as a key
+            // for the mapping, 'path' specifies the location in the configuration file, and 'kClass' refers
+            // to the Kotlin class used for data instantiation.
             val configMappings: List<ConfigClassMap<out IConfigSection>> = listOf(
                 ConfigClassMap(mappingName = "apiSchema", path = "apiSchema", kClass = ApiSchemaSettings::class),
                 ConfigClassMap(mappingName = "cors", path = "cors", kClass = CorsSettings::class),
