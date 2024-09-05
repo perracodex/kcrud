@@ -69,9 +69,9 @@ internal fun Application.kcrudModule() {
 
     configureSessions()
 
-    configureRoutes()
-
     configuredApiSchema()
+
+    configureRoutes()
 
     configureMicroMeterMetrics()
 
