@@ -54,14 +54,14 @@ paths:
         \ in Postman set the endpoint and in the Headers add an Authorization key\
         \ <br> with a 'Bearer' holding a previous valid token."
       responses:
-        "400":
-          description: "Bad Request"
+        "200":
+          description: "OK"
           content:
             '*/*':
               schema:
                 type: "string"
-        "200":
-          description: "OK"
+        "400":
+          description: "Bad Request"
           content:
             '*/*':
               schema:
@@ -97,7 +97,7 @@ paths:
                 type: "string"
               examples:
                 Example#1:
-                  value: "All employees deleted."
+                  value: ""
     get:
       description: "Return demo records interactive HTML."
       responses:
@@ -150,12 +150,28 @@ paths:
             items:
               type: "string"
       responses:
+        "400":
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                type: "string"
         "200":
           description: "OK"
           content:
             '*/*':
               schema:
                 $ref: "#/components/schemas/Page_? extends EmploymentEntity"
+  /events:
+    get:
+      description: "Server-Sent Events (SSE) endpoint."
+      responses:
+        "500":
+          description: "Internal Server Error"
+          content:
+            '*/*':
+              schema:
+                type: "string"
   /health:
     get:
       description: "Healthcheck providing the current operational status."
@@ -187,7 +203,7 @@ paths:
                   description: ""
                   value: "/rbac/login"
         "200":
-          description: "OK"
+          description: "OK <br> Respond with HTML view of the RBAC admin panel."
           content:
             text/plain:
               schema:
@@ -218,6 +234,15 @@ paths:
                 Example#2:
                   description: ""
                   value: "/rbac/login"
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Invalid or missing role ID."
         "200":
           description: "OK"
           content:
@@ -232,6 +257,17 @@ paths:
     get:
       description: ""
       responses:
+        "302":
+          description: "Found <br> If the actor is not null, redirect to the admin\
+            \ view."
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  description: ""
+                  value: "/rbac/admin"
         "200":
           description: "OK"
           content:
@@ -242,16 +278,6 @@ paths:
                 text/html:
                   description: "HTML document"
                   value: ""
-        "302":
-          description: "Found <br> Redirect"
-          content:
-            text/plain:
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  description: ""
-                  value: "/rbac/admin"
     post:
       description: ""
       responses:
@@ -279,9 +305,65 @@ paths:
                 Example#1:
                   description: ""
                   value: "/rbac/login"
+  /scheduler/audit:
+    get:
+      description: "Returns the audit logs for the scheduler."
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/AuditEntity"
+  /scheduler/audit/{name}/{group}:
+    get:
+      description: "Returns the audit log for a specific task."
+      parameters:
+        - name: "name"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "group"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "object"
+        "404":
+          description: "Not Found"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "No audit logs found for the task."
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/AuditEntity"
   /scheduler/dashboard:
     get:
       description: "The scheduler dashboard route."
+      parameters:
+        - name: "group"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
       responses:
         "200":
           description: "OK"
@@ -293,7 +375,7 @@ paths:
                 Example#1:
                   description: ""
                   value:
-                    template: "scheduler-dashboard"
+                    template: "scheduler/dashboard"
                     model: "null"
                     etag: "null"
                     contentType: "null"
@@ -309,6 +391,22 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/TaskStateChangeEntity"
+  /scheduler/restart:
+    post:
+      description: "Restart the task scheduler."
+      parameters:
+        - name: "interrupt"
+          in: "query"
+          required: false
+          schema:
+            type: "boolean"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
   /scheduler/resume:
     post:
       description: "Resume all the scheduler tasks."
@@ -342,6 +440,12 @@ paths:
                 format: "int32"
     get:
       description: "Gets all scheduler tasks."
+      parameters:
+        - name: "group"
+          in: "query"
+          required: false
+          schema:
+            type: "string"
       responses:
         "200":
           description: "OK"
@@ -394,6 +498,27 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/TaskStateChangeEntity"
+  /scheduler/task/{name}/{group}/resend:
+    post:
+      description: "Resends a concrete scheduler task."
+      parameters:
+        - name: "name"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "group"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "object"
   /scheduler/task/{name}/{group}/resume:
     post:
       description: "Resume a concrete scheduled task."
@@ -446,7 +571,21 @@ paths:
   /v1/employees:
     post:
       description: "Search (Filter) employees."
+      parameters:
+        - name: "sort"
+          in: "query"
+          required: false
+          schema:
+            type: "array"
+            items:
+              type: "string"
       responses:
+        "400":
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                type: "string"
         "200":
           description: "OK"
           content:
@@ -488,6 +627,9 @@ paths:
         "400":
           description: "Bad Request"
           content:
+            application/json:
+              schema:
+                type: "string"
             '*/*':
               schema:
                 type: "string"
@@ -497,6 +639,12 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/EmployeeEntity"
+        "404":
+          description: "Not Found"
+          content:
+            application/json:
+              schema:
+                type: "string"
     put:
       description: "Update an employee by ID."
       parameters:
@@ -509,7 +657,16 @@ paths:
         "400":
           description: "Bad Request"
           content:
+            application/json:
+              schema:
+                type: "string"
             '*/*':
+              schema:
+                type: "string"
+        "404":
+          description: "Not Found"
+          content:
+            application/json:
               schema:
                 type: "string"
         "200":
@@ -576,7 +733,16 @@ paths:
         "400":
           description: "Bad Request"
           content:
+            application/json:
+              schema:
+                type: "string"
             '*/*':
+              schema:
+                type: "string"
+        "404":
+          description: "Not Found"
+          content:
+            application/json:
               schema:
                 type: "string"
         "201":
@@ -630,6 +796,9 @@ paths:
         "400":
           description: "Bad Request"
           content:
+            application/json:
+              schema:
+                type: "string"
             '*/*':
               schema:
                 type: "string"
@@ -639,6 +808,12 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/EmploymentEntity"
+        "404":
+          description: "Not Found"
+          content:
+            application/json:
+              schema:
+                type: "string"
     put:
       description: "Update an employment by ID."
       parameters:
@@ -656,7 +831,16 @@ paths:
         "400":
           description: "Bad Request"
           content:
+            application/json:
+              schema:
+                type: "string"
             '*/*':
+              schema:
+                type: "string"
+        "404":
+          description: "Not Found"
+          content:
+            application/json:
               schema:
                 type: "string"
         "200":
@@ -762,104 +946,6 @@ components:
           type: "boolean"
       required:
         - "errors"
-    Datasource:
-      type: "object"
-      properties:
-        totalConnections:
-          type: "integer"
-          format: "int32"
-        activeConnections:
-          type: "integer"
-          format: "int32"
-        idleConnections:
-          type: "integer"
-          format: "int32"
-        threadsAwaitingConnection:
-          type: "integer"
-          format: "int32"
-        connectionTimeout:
-          type: "integer"
-          format: "int64"
-        maxLifetime:
-          type: "integer"
-          format: "int64"
-        keepaliveTime:
-          type: "integer"
-          format: "int64"
-        maxPoolSize:
-          type: "integer"
-          format: "int32"
-    ConnectionTest:
-      type: "object"
-      properties:
-        established:
-          type: "boolean"
-        name:
-          type: "string"
-        version:
-          type: "string"
-        dialect:
-          type: "string"
-        url:
-          type: "string"
-        vendor:
-          type: "string"
-        autoCommit:
-          type: "boolean"
-        catalog:
-          type: "string"
-      required:
-        - "name"
-        - "version"
-        - "dialect"
-        - "url"
-        - "vendor"
-        - "catalog"
-    Configuration:
-      type: "object"
-      properties:
-        poolSize:
-          type: "integer"
-          format: "int32"
-        connectionTimeout:
-          type: "integer"
-          format: "int64"
-        transactionRetryAttempts:
-          type: "integer"
-          format: "int32"
-        warnLongQueriesDurationMs:
-          type: "integer"
-          format: "int64"
-        jdbcDriver:
-          type: "string"
-        jdbcUrl:
-          type: "string"
-      required:
-        - "jdbcDriver"
-        - "jdbcUrl"
-    DatabaseCheck:
-      type: "object"
-      properties:
-        errors:
-          type: "array"
-          items:
-            type: "string"
-        alive:
-          type: "boolean"
-        datasource:
-          $ref: "#/components/schemas/Datasource"
-        connectionTest:
-          $ref: "#/components/schemas/ConnectionTest"
-        configuration:
-          $ref: "#/components/schemas/Configuration"
-        tables:
-          type: "array"
-          items:
-            type: "string"
-      required:
-        - "errors"
-        - "configuration"
-        - "tables"
     Configured:
       type: "object"
       properties:
@@ -1030,6 +1116,104 @@ components:
           format: "int64"
       required:
         - "errors"
+    Datasource:
+      type: "object"
+      properties:
+        totalConnections:
+          type: "integer"
+          format: "int32"
+        activeConnections:
+          type: "integer"
+          format: "int32"
+        idleConnections:
+          type: "integer"
+          format: "int32"
+        threadsAwaitingConnection:
+          type: "integer"
+          format: "int32"
+        connectionTimeout:
+          type: "integer"
+          format: "int64"
+        maxLifetime:
+          type: "integer"
+          format: "int64"
+        keepaliveTime:
+          type: "integer"
+          format: "int64"
+        maxPoolSize:
+          type: "integer"
+          format: "int32"
+    ConnectionTest:
+      type: "object"
+      properties:
+        established:
+          type: "boolean"
+        name:
+          type: "string"
+        version:
+          type: "string"
+        dialect:
+          type: "string"
+        url:
+          type: "string"
+        vendor:
+          type: "string"
+        autoCommit:
+          type: "boolean"
+        catalog:
+          type: "string"
+      required:
+        - "name"
+        - "version"
+        - "dialect"
+        - "url"
+        - "vendor"
+        - "catalog"
+    Configuration:
+      type: "object"
+      properties:
+        poolSize:
+          type: "integer"
+          format: "int32"
+        connectionTimeout:
+          type: "integer"
+          format: "int64"
+        transactionRetryAttempts:
+          type: "integer"
+          format: "int32"
+        warnLongQueriesDurationMs:
+          type: "integer"
+          format: "int64"
+        jdbcDriver:
+          type: "string"
+        jdbcUrl:
+          type: "string"
+      required:
+        - "jdbcDriver"
+        - "jdbcUrl"
+    DatabaseCheck:
+      type: "object"
+      properties:
+        errors:
+          type: "array"
+          items:
+            type: "string"
+        alive:
+          type: "boolean"
+        datasource:
+          $ref: "#/components/schemas/Datasource"
+        connectionTest:
+          $ref: "#/components/schemas/ConnectionTest"
+        configuration:
+          $ref: "#/components/schemas/Configuration"
+        tables:
+          type: "array"
+          items:
+            type: "string"
+      required:
+        - "errors"
+        - "configuration"
+        - "tables"
     HealthCheck:
       type: "object"
       properties:
@@ -1039,14 +1223,8 @@ components:
             type: "string"
         application:
           $ref: "#/components/schemas/ApplicationCheck"
-        database:
-          $ref: "#/components/schemas/DatabaseCheck"
         deployment:
           $ref: "#/components/schemas/DeploymentCheck"
-        endpoints:
-          type: "array"
-          items:
-            type: "string"
         runtime:
           $ref: "#/components/schemas/RuntimeCheck"
         scheduler:
@@ -1055,16 +1233,75 @@ components:
           $ref: "#/components/schemas/SecurityCheck"
         snowflake:
           $ref: "#/components/schemas/SnowflakeCheck"
+        database:
+          $ref: "#/components/schemas/DatabaseCheck"
+        endpoints:
+          type: "array"
+          items:
+            type: "string"
       required:
         - "health"
         - "application"
-        - "database"
         - "deployment"
-        - "endpoints"
         - "runtime"
         - "scheduler"
         - "security"
         - "snowflake"
+        - "database"
+        - "endpoints"
+    Uuid:
+      type: "object"
+      properties:
+        mostSignificantBits:
+          type: "integer"
+          format: "int64"
+        leastSignificantBits:
+          type: "integer"
+          format: "int64"
+    Meta:
+      type: "object"
+      properties:
+        createdAt:
+          type: "string"
+          format: "date-time"
+        updatedAt:
+          type: "string"
+          format: "date-time"
+      required:
+        - "createdAt"
+        - "updatedAt"
+    AuditEntity:
+      type: "object"
+      properties:
+        id:
+          $ref: "#/components/schemas/Uuid"
+        taskName:
+          type: "string"
+        taskGroup:
+          type: "string"
+        fireTime:
+          $ref: "#/components/schemas/LocalDateTime"
+        runTime:
+          type: "integer"
+          format: "int64"
+        outcome:
+          type: "string"
+          enum:
+            - "SUCCESS"
+            - "ERROR"
+        log:
+          type: "string"
+        detail:
+          type: "string"
+        meta:
+          $ref: "#/components/schemas/Meta"
+      required:
+        - "id"
+        - "taskName"
+        - "taskGroup"
+        - "fireTime"
+        - "outcome"
+        - "meta"
     HeaderValueParam:
       type: "object"
       properties:
@@ -1130,10 +1367,16 @@ components:
         totalTasks:
           type: "integer"
           format: "int32"
+        state:
+          type: "string"
+      required:
+        - "state"
     TaskScheduleEntity:
       type: "object"
       properties:
         name:
+          type: "string"
+        snowflakeData:
           type: "string"
         group:
           type: "string"
@@ -1143,7 +1386,13 @@ components:
           $ref: "#/components/schemas/LocalDateTime"
         state:
           type: "string"
-        interval:
+        outcome:
+          type: "string"
+        log:
+          type: "string"
+        schedule:
+          type: "string"
+        scheduleInfo:
           type: "string"
         runs:
           type: "integer"
@@ -1154,6 +1403,7 @@ components:
             type: "string"
       required:
         - "name"
+        - "snowflakeData"
         - "group"
         - "consumer"
         - "state"
@@ -1193,22 +1443,11 @@ components:
     LocalDate:
       type: "object"
       properties: { }
-    Meta:
-      type: "object"
-      properties:
-        createdAt:
-          $ref: "#/components/schemas/LocalDateTime"
-        updatedAt:
-          $ref: "#/components/schemas/LocalDateTime"
-      required:
-        - "createdAt"
-        - "updatedAt"
     ContactEntity:
       type: "object"
       properties:
         id:
-          type: "string"
-          format: "uuid"
+          $ref: "#/components/schemas/Uuid"
         email:
           type: "string"
         phone:
@@ -1224,8 +1463,7 @@ components:
       type: "object"
       properties:
         id:
-          type: "string"
-          format: "uuid"
+          $ref: "#/components/schemas/Uuid"
         firstName:
           type: "string"
         lastName:
@@ -1281,8 +1519,7 @@ components:
       type: "object"
       properties:
         id:
-          type: "string"
-          format: "uuid"
+          $ref: "#/components/schemas/Uuid"
         period:
           $ref: "#/components/schemas/Period"
         status:
