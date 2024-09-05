@@ -16,13 +16,13 @@ import kcrud.base.scheduler.audit.entity.AuditEntity
  */
 internal fun Route.schedulerAuditRoute() {
     // Returns the audit logs for the scheduler.
-    get("audit") {
+    get("scheduler/audit") {
         val audit: List<AuditEntity> = AuditService.findAll()
         call.respond(status = HttpStatusCode.OK, message = audit)
     }
 
     // Returns the audit log for a specific task.
-    get("audit/{name}/{group}") {
+    get("scheduler/audit/{name}/{group}") {
         val taskName: String = call.parameters["name"] ?: return@get call.respond(HttpStatusCode.BadRequest)
         val taskGroup: String = call.parameters["group"] ?: return@get call.respond(HttpStatusCode.BadRequest)
         val audit: List<AuditEntity> = AuditService.find(taskName = taskName, taskGroup = taskGroup)

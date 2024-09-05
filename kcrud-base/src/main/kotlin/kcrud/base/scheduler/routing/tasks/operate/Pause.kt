@@ -16,7 +16,7 @@ import kcrud.base.scheduler.service.core.SchedulerService
  */
 internal fun Route.pauseSchedulerTaskRoute() {
     // Pause a concrete scheduler task.
-    post("{name}/{group}/pause") {
+    post("scheduler/task/{name}/{group}/pause") {
         val name: String = call.parameters["name"]!!
         val group: String = call.parameters["group"]!!
         val state: TaskStateChangeEntity = SchedulerService.tasks.pause(name = name, group = group)

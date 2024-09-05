@@ -22,7 +22,7 @@ import kotlin.uuid.Uuid
 internal fun Route.schedulerDashboardRoute() {
 
     // The scheduler dashboard route.
-    get("dashboard") {
+    get("scheduler/dashboard") {
         val groupId: Uuid? = call.parameters["group"]?.toUuidOrNull()
         val tasks: List<TaskScheduleEntity> = SchedulerService.tasks.all(groupId = groupId)
         val content = ThymeleafContent(template = "scheduler/dashboard", model = mapOf("data" to tasks))

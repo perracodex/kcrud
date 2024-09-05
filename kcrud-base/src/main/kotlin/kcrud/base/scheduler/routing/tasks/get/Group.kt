@@ -15,7 +15,7 @@ import kcrud.base.scheduler.service.core.SchedulerService
  */
 internal fun Route.getSchedulerTaskGroupsRoute() {
     // Gets all scheduler task groups.
-    get("group") {
+    get("scheduler/task/group") {
         val groups: List<String> = SchedulerService.tasks.groups()
         call.respond(status = HttpStatusCode.OK, message = groups)
     }

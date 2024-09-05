@@ -18,7 +18,7 @@ import kotlin.uuid.Uuid
  */
 internal fun Route.getSchedulerTasksRoute() {
     // Gets all scheduler tasks.
-    get {
+    get("scheduler/task") {
         val groupId: Uuid? = call.parameters["group"]?.toUuidOrNull()
         val tasks: List<TaskScheduleEntity> = SchedulerService.tasks.all(groupId = groupId)
         call.respond(status = HttpStatusCode.OK, message = tasks)

@@ -15,7 +15,7 @@ import kcrud.base.scheduler.service.core.SchedulerService
  */
 internal fun Route.deleteSchedulerTaskRoute() {
     // Deletes a concrete scheduler task.
-    delete("{name}/{group}") {
+    delete("scheduler/task/{name}/{group}") {
         val name: String = call.parameters["name"]!!
         val group: String = call.parameters["group"]!!
         val deletedCount: Int = SchedulerService.tasks.delete(name = name, group = group)

@@ -24,25 +24,20 @@ public fun Route.schedulerRoutes() {
     // Sets up the routing to serve resources as static content for the scheduler.
     staticResources(remotePath = "/templates/scheduler", basePackage = "/templates/scheduler")
 
-    route("scheduler") {
-        schedulerDashboardRoute()
-        schedulerStateRoute()
-        pauseSchedulerRoute()
-        resumeSchedulerRoute()
-        restartSchedulerRoute()
-        schedulerAuditRoute()
+    // Maintenance related routes.
+    schedulerDashboardRoute()
+    schedulerStateRoute()
+    pauseSchedulerRoute()
+    resumeSchedulerRoute()
+    restartSchedulerRoute()
+    schedulerAuditRoute()
 
-        route("task") {
-            getSchedulerTasksRoute()
-            getSchedulerTaskGroupsRoute()
-
-            deleteSchedulerTaskRoute()
-            deleteAllSchedulerTasksRoute()
-
-            pauseSchedulerTaskRoute()
-            resumeSchedulerTaskRoute()
-
-            resendSchedulerTaskRoute()
-        }
-    }
+    // Task related routes.
+    getSchedulerTasksRoute()
+    getSchedulerTaskGroupsRoute()
+    deleteSchedulerTaskRoute()
+    deleteAllSchedulerTasksRoute()
+    pauseSchedulerTaskRoute()
+    resumeSchedulerTaskRoute()
+    resendSchedulerTaskRoute()
 }

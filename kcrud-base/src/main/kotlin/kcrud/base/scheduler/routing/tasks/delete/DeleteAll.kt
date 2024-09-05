@@ -15,7 +15,7 @@ import kcrud.base.scheduler.service.core.SchedulerService
  */
 internal fun Route.deleteAllSchedulerTasksRoute() {
     // Deletes all scheduler tasks.
-    delete {
+    delete("scheduler/task") {
         val deletedCount: Int = SchedulerService.tasks.deleteAll()
         call.respond(status = HttpStatusCode.OK, message = deletedCount)
     }

@@ -16,7 +16,7 @@ import kcrud.base.scheduler.service.core.SchedulerService
  */
 internal fun Route.resumeSchedulerTaskRoute() {
     // Resume a concrete scheduled task.
-    post("{name}/{group}/resume") {
+    post("scheduler/task/{name}/{group}/resume") {
         val name: String = call.parameters["name"]!!
         val group: String = call.parameters["group"]!!
         val state: TaskStateChangeEntity = SchedulerService.tasks.resume(name = name, group = group)

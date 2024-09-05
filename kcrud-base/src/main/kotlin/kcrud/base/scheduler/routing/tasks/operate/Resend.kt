@@ -15,7 +15,7 @@ import kcrud.base.scheduler.service.core.SchedulerService
  */
 internal fun Route.resendSchedulerTaskRoute() {
     // Resends a concrete scheduler task.
-    post("{name}/{group}/resend") {
+    post("scheduler/task/{name}/{group}/resend") {
         val name: String = call.parameters["name"]!!
         val group: String = call.parameters["group"]!!
         SchedulerService.tasks.resend(name = name, group = group)
