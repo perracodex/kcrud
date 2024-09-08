@@ -106,16 +106,12 @@ internal class CredentialService : KoinComponent {
         val actors: List<ActorEntity> = actorService.findAll()
         check(actors.isNotEmpty()) { "No actors found in the system." }
 
-        val newCache: ConcurrentHashMap<String, SecureHash> = ConcurrentHashMap()
-
-        actors.forEach { actor ->
-            val hashedPassword: SecureHash = HashedPasswordTableAuth.hashPassword(
+        val newCache: ConcurrentHashMap<String, SecureHash> = actors.associate { actor ->
+            actor.username.lowercase() to HashedPasswordTableAuth.hashPassword(
                 password = actor.password,
                 salt = SecureSalt.generate()
             )
-
-            newCache[actor.username.lowercase()] = hashedPassword
-        }
+        }.toMap(ConcurrentHashMap())
 
         // Replace the current cache with the new one if refreshing all actors.
         lock.withLock {
