@@ -23,7 +23,7 @@ import kcrud.base.persistence.utils.toUuidOrNull
  * It ensures secure and role-appropriate visibility of RBAC configurations.
  */
 @RbacAPI
-internal fun Route.rbacAdminRouteGet() {
+internal fun Route.rbacAdminLoadRoute() {
     get("rbac/admin") {
         // Attempt to retrieve the session context for RBAC admin access. Redirect to the login screen if null.
         val sessionContext: SessionContext = RbacAdminPanelManager.getSessionContext(call = call) ?: run {

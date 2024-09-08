@@ -25,7 +25,7 @@ import kotlin.uuid.Uuid
  * that only authorized modifications are applied, with redirects handling any unauthorized access attempts.
  */
 @RbacAPI
-internal fun Route.rbacAdminRoutePost() {
+internal fun Route.rbacAdminUpdateRoute() {
     post("rbac/admin") {
         // Retrieve session context or redirect to the login screen if it's missing.
         val sessionContext: SessionContext = RbacAdminPanelManager.getSessionContext(call = call) ?: run {
@@ -52,6 +52,7 @@ internal fun Route.rbacAdminRoutePost() {
 
         // Respond based on the result of the update operation.
         when (result) {
+            // If the update was successful, render the updated RBAC admin panel.
             is RbacAdminPanelManager.UpdateResult.Success -> {
                 call.respondHtml(HttpStatusCode.OK) {
                     RbacAdminView.build(
@@ -64,6 +65,7 @@ internal fun Route.rbacAdminRoutePost() {
                 }
             }
 
+            // If the update was unauthorized, clear the session and redirect to the login screen.
             is RbacAdminPanelManager.UpdateResult.Unauthorized -> {
                 call.sessions.clear(name = SessionContext.SESSION_NAME)
                 call.respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
