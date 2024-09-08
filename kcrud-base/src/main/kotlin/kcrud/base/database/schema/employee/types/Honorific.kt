@@ -7,28 +7,26 @@ package kcrud.base.database.schema.employee.types
 import kcrud.base.persistence.utils.IEnumWithId
 
 /**
- * Example in which each item has an id,
- * which is the actual value that will be stored in the database,
- * instead of the name of the enum item.
+ * List of honorifics that can be used for an employee.
  *
- * @property id The unique identifier of the honorific.
+ * @property id The unique identifier for the honorific.
  */
 public enum class Honorific(override val id: Int) : IEnumWithId {
+    /** Unknown honorific. */
+    UNKNOWN(id = 100),
+
     /** Honorific for Mister. */
-    MR(id = 100),
+    MR(id = 101),
 
     /** Honorific for Missus. */
-    MRS(id = 101),
+    MRS(id = 102),
 
     /** Honorific for Miss. */
-    MS(id = 102),
+    MS(id = 103),
 
     /** Honorific for Doctor. */
-    DR(id = 103),
+    DR(id = 104),
 
     /** Honorific for Miss. */
-    MISS(id = 104),
-
-    /** Unknown honorific. */
-    UNKNOWN(id = 105);
+    MISS(id = 105);
 }

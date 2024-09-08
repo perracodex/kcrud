@@ -56,10 +56,9 @@ public object EmployeeTable : TimestampedTable(name = "employee") {
      *
      * Example of an enum that is stored as a string in the database.
      */
-    public val maritalStatus: Column<MaritalStatus> = enumerationByName(
+    public val maritalStatus: Column<MaritalStatus> = enumerationById(
         name = "marital_status",
-        length = 64,
-        klass = MaritalStatus::class
+        fromId = ::getEnumById
     )
 
     /**

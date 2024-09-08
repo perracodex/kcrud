@@ -4,20 +4,24 @@
 
 package kcrud.base.database.schema.employee.types
 
+import kcrud.base.persistence.utils.IEnumWithId
+
 /**
- * Example of employee marital status. Ideally these should be defined
- * at database level instead of being hardcoded.
+ * List of marital statuses that can be used for an employee.
+ *
+ * @property id The unique identifier for the marital status.
  */
-public enum class MaritalStatus {
+public enum class MaritalStatus(override val id: Int) : IEnumWithId {
+    /** Unknown marital status. */
+    UNKNOWN(id = 100),
+
     /** Married marital status. */
-    MARRIED,
+    MARRIED(id = 101),
 
     /** Single marital status. */
-    SINGLE,
+    SINGLE(id = 102),
 
     /** Divorced marital status. */
-    DIVORCED,
+    DIVORCED(id = 103),
 
-    /** Unknown marital status. */
-    UNKNOWN
 }
