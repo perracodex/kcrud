@@ -20,16 +20,4 @@ public enum class WorkModality(override val id: Int) : IEnumWithId {
 
     /** The employee works in a hybrid modality, so both on-site and remotely. */
     HYBRID(id = 102);
-
-    internal companion object {
-        private val map: Map<Int, WorkModality> = WorkModality.entries.associateBy(WorkModality::id)
-
-        /**
-         * Retrieves the work modality from its unique identifier.
-         *
-         * @param id The unique identifier of the work modality.
-         * @return The work modality associated with the given identifier.
-         */
-        fun fromId(id: Int): WorkModality? = map[id]
-    }
 }

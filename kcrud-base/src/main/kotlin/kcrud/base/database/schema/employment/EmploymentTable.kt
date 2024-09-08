@@ -12,6 +12,7 @@ import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.database.schema.employment.types.EmploymentStatus
 import kcrud.base.database.schema.employment.types.WorkModality
 import kcrud.base.persistence.utils.enumerationById
+import kcrud.base.persistence.utils.getEnumById
 import kcrud.base.utils.KLocalDate
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ReferenceOption
@@ -49,7 +50,7 @@ public object EmploymentTable : PeriodTable(name = "employment") {
      */
     public val status: Column<EmploymentStatus> = enumerationById(
         name = "status_id",
-        fromId = EmploymentStatus::fromId
+        fromId = ::getEnumById
     )
 
     /**
@@ -64,7 +65,7 @@ public object EmploymentTable : PeriodTable(name = "employment") {
      */
     public val workModality: Column<WorkModality> = enumerationById(
         name = "work_modality_id",
-        fromId = WorkModality::fromId
+        fromId = ::getEnumById
     )
 
     /**

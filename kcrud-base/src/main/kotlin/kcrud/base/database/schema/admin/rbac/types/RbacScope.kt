@@ -34,16 +34,4 @@ public enum class RbacScope(override val id: Int) : IEnumWithId {
 
     /** Employee employment records scope, allows access to the employee employment records. */
     EMPLOYMENT_RECORDS(id = 104);
-
-    internal companion object {
-        private val map: Map<Int, RbacScope> = RbacScope.entries.associateBy(RbacScope::id)
-
-        /**
-         * Get the [RbacScope] from its [id].
-         *
-         * @param id The id of the [RbacScope].
-         * @return The [RbacScope] associated with the [id], or null if not found.
-         */
-        fun fromId(id: Int): RbacScope? = map[id]
-    }
 }

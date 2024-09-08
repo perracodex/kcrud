@@ -31,16 +31,4 @@ public enum class Honorific(override val id: Int) : IEnumWithId {
 
     /** Unknown honorific. */
     UNKNOWN(id = 105);
-
-    internal companion object {
-        private val map: Map<Int, Honorific> = Honorific.entries.associateBy(Honorific::id)
-
-        /**
-         * Retrieves the [Honorific] item corresponding to the given [id].
-         *
-         * @param id The unique identifier of the honorific.
-         * @return The [Honorific] item corresponding to the given [id].
-         */
-        fun fromId(id: Int): Honorific? = map[id]
-    }
 }

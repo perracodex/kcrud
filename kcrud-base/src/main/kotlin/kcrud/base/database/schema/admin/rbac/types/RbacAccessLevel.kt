@@ -47,16 +47,4 @@ public enum class RbacAccessLevel(override val id: Int) : IEnumWithId {
             NONE -> false
         }
     }
-
-    internal companion object {
-        private val map: Map<Int, RbacAccessLevel> = RbacAccessLevel.entries.associateBy(RbacAccessLevel::id)
-
-        /**
-         * Retrieves an [RbacAccessLevel] from its unique identifier.
-         *
-         * @param id The unique identifier of the access level.
-         * @return The [RbacAccessLevel] corresponding to the unique identifier, or null if not found.
-         */
-        fun fromId(id: Int): RbacAccessLevel? = map[id]
-    }
 }

@@ -23,16 +23,4 @@ public enum class EmploymentStatus(override val id: Int) : IEnumWithId {
 
     /** The employee employment has been terminated. */
     TERMINATED(id = 103);
-
-    internal companion object {
-        private val map: Map<Int, EmploymentStatus> = EmploymentStatus.entries.associateBy(EmploymentStatus::id)
-
-        /**
-         * Get the [EmploymentStatus] from the given [id].
-         *
-         * @param id The id of the [EmploymentStatus].
-         * @return The [EmploymentStatus] with the given [id].
-         */
-        fun fromId(id: Int): EmploymentStatus? = map[id]
-    }
 }
