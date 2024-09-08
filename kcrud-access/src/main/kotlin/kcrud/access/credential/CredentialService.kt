@@ -56,25 +56,15 @@ internal class CredentialService : KoinComponent {
      * Authenticates an Actor based on the provided credentials.
      */
     suspend fun authenticate(credential: UserPasswordCredential): UserIdPrincipal? {
-        return if (isCacheEmpty()) {
-            null
-        } else {
-            store.authenticate(credential = credential)
-        }
-    }
-
-    /**
-     * Checks if the cache has been populated with credentials.
-     * If empty, it refreshes it.
-     *
-     * @return True if the cache is empty, false if populated.
-     */
-    private suspend fun isCacheEmpty(): Boolean {
         if (cache.isEmpty()) {
             refreshActors()
         }
 
-        return cache.isEmpty()
+        return if (cache.isEmpty()) {
+            null
+        } else {
+            store.authenticate(credential = credential)
+        }
     }
 
     /**
