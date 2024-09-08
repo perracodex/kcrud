@@ -52,7 +52,7 @@ internal object DefaultActorFactory : KoinComponent {
 
             launch {
                 val credentialService: CredentialService by inject()
-                credentialService.refresh()
+                credentialService.refreshActors()
             }
 
             launch {

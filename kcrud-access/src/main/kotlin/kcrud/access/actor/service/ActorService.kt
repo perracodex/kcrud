@@ -114,7 +114,7 @@ internal class ActorService(
         tracer.info("Triggering refresh in Credentials and RBAC services for actor with ID: $actorId")
 
         val credentialService: CredentialService by inject()
-        credentialService.refresh(actorId = actorId)
+        credentialService.refreshActor(actorId = actorId)
 
         val rbacService: RbacService by inject()
         rbacService.refresh(actorId = actorId)
