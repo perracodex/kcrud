@@ -5,14 +5,13 @@
 package kcrud.base.database.schema.employment
 
 import kcrud.base.database.columns.autoGenerate
+import kcrud.base.database.columns.enumerationById
 import kcrud.base.database.columns.kotlinUuid
 import kcrud.base.database.columns.references
 import kcrud.base.database.schema.base.PeriodTable
 import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.database.schema.employment.types.EmploymentStatus
 import kcrud.base.database.schema.employment.types.WorkModality
-import kcrud.base.persistence.utils.enumerationById
-import kcrud.base.persistence.utils.getEnumById
 import kcrud.base.utils.KLocalDate
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ReferenceOption
@@ -49,8 +48,7 @@ public object EmploymentTable : PeriodTable(name = "employment") {
      * The status of the employment.
      */
     public val status: Column<EmploymentStatus> = enumerationById(
-        name = "status_id",
-        fromId = ::getEnumById
+        name = "status_id"
     )
 
     /**
@@ -64,8 +62,7 @@ public object EmploymentTable : PeriodTable(name = "employment") {
      * The [WorkModality] of the employment.
      */
     public val workModality: Column<WorkModality> = enumerationById(
-        name = "work_modality_id",
-        fromId = ::getEnumById
+        name = "work_modality_id"
     )
 
     /**

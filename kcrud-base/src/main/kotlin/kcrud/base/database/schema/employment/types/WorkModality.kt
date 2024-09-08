@@ -4,7 +4,7 @@
 
 package kcrud.base.database.schema.employment.types
 
-import kcrud.base.persistence.utils.IEnumWithId
+import kcrud.base.database.columns.IEnumWithId
 
 /**
  * The possible employment work modalities.

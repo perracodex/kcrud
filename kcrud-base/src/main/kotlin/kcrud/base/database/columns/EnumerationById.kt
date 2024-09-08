@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.base.persistence.utils
+package kcrud.base.database.columns
 
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
@@ -16,7 +16,6 @@ import kotlin.enums.enumEntries
  * @property id The integer ID of the enum item.
  *
  * @see enumerationById
- * @see getEnumById
  */
 public interface IEnumWithId {
     public val id: Int
@@ -37,44 +36,25 @@ public interface IEnumWithId {
  *
  * object SomeTable : Table() {
  *     val status: Column<SomeEnum> = enumerationById(
- *         name = "field_name",
- *         fromId = ::getEnumById
+ *         name = "field_name"
  *     )
  *     ...
  * }
  * ```
  * @param E The enum class type. This class must implement the IEnumWithId interface.
  * @param name The name of the column in the database.
- * @param fromId A function that takes an integer ID and returns the corresponding enum value.
- *               It should return null if the ID does not correspond to any enum value.
  * @return A Column<E> representing the enum in the Exposed table.
  * @throws IllegalArgumentException if an unknown enum id is encountered in the database.
  *
  * @see IEnumWithId
- * @see getEnumById
  */
-internal fun <E : IEnumWithId> Table.enumerationById(
-    name: String,
-    fromId: (Int) -> E?
-): Column<E> {
+internal inline fun <reified E> Table.enumerationById(name: String): Column<E>
+        where E : Enum<E>, E : IEnumWithId {
     return integer(name = name).transform(
-        wrap = { dbId -> fromId(dbId) ?: throw IllegalArgumentException("Unknown enum id: $dbId") },
+        wrap = { dbId ->
+            enumEntries<E>().firstOrNull { enum -> enum.id == dbId }
+                ?: throw IllegalArgumentException("Unknown enum id: $dbId")
+        },
         unwrap = { enum -> enum.id }
     )
-}
-
-/**
- * Retrieves an enum instance of type `E` by its ID.
- *
- * Searches through all entries of an enum implementing `IEnumWithId`
- * and returns the one where the ID matches the specified value.
- *
- * @param id The ID of the enum to retrieve.
- * @return The matching enum instance or `null` if no match is found.
- *
- * @see IEnumWithId
- * @see enumerationById
- */
-public inline fun <reified E> getEnumById(id: Int): E? where E : Enum<E>, E : IEnumWithId {
-    return enumEntries<E>().firstOrNull { enum -> enum.id == id }
 }

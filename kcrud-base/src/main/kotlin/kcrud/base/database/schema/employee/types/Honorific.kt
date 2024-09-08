@@ -4,7 +4,7 @@
 
 package kcrud.base.database.schema.employee.types
 
-import kcrud.base.persistence.utils.IEnumWithId
+import kcrud.base.database.columns.IEnumWithId
 
 /**
  * List of honorifics that can be used for an employee.

@@ -4,7 +4,7 @@
 
 package kcrud.base.database.schema.admin.rbac.types
 
-import kcrud.base.persistence.utils.IEnumWithId
+import kcrud.base.database.columns.IEnumWithId
 
 /**
  * Enum to represent the scopes that can be accessed.
