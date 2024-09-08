@@ -51,9 +51,9 @@ public interface IEnumWithId {
 internal inline fun <reified E> Table.enumerationById(name: String): Column<E>
         where E : Enum<E>, E : IEnumWithId {
     return integer(name = name).transform(
-        wrap = { dbId ->
-            enumEntries<E>().firstOrNull { enum -> enum.id == dbId }
-                ?: throw IllegalArgumentException("Unknown enum id: $dbId")
+        wrap = { dbEnumId ->
+            enumEntries<E>().firstOrNull { enum -> enum.id == dbEnumId }
+                ?: throw IllegalArgumentException("Unknown enum id: $dbEnumId")
         },
         unwrap = { enum -> enum.id }
     )
