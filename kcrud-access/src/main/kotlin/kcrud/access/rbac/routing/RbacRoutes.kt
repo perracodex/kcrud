@@ -23,7 +23,7 @@ import kcrud.base.plugins.RateLimitScope
 @OptIn(RbacAPI::class)
 public fun Route.rbacRoute() {
 
-    // Required so the HTML for can find its respective CSS file.
+    // Required so the HTML can find its respective CSS file.
     staticResources(remotePath = "/static-rbac", basePackage = "rbac")
 
     rateLimit(configuration = RateLimitName(name = RateLimitScope.PRIVATE_API.key)) {
