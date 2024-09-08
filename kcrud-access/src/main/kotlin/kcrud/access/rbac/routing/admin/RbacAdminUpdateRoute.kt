@@ -43,11 +43,10 @@ internal fun Route.rbacAdminUpdateRoute() {
 
         // Fetch the role-specific scope rules for the current role,
         // and update the rules based on the submitted parameters.
-        val updates: Map<String, String> = parameters.entries().associate { it.key to it.value.first() }
         val result: RbacAdminPanelManager.UpdateResult = RbacAdminPanelManager.processAdminUpdate(
             sessionContext = sessionContext,
             roleId = currentRoleId,
-            updates = updates
+            updates = parameters.entries().associate { it.key to it.value.first() }
         )
 
         // Respond based on the result of the update operation.
