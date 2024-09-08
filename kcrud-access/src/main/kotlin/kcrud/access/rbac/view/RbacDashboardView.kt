@@ -6,16 +6,16 @@ package kcrud.access.rbac.view
 
 import kcrud.access.rbac.entity.role.RbacRoleEntity
 import kcrud.access.rbac.plugin.annotation.RbacAPI
+import kcrud.access.rbac.service.RbacDashboardManager
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kotlinx.html.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import kotlin.uuid.Uuid
 
 @RbacAPI
-internal object RbacAdminView {
-    const val RBAC_ADMIN_PATH: String = "/rbac/admin"
+internal object RbacDashboardView {
+    const val RBAC_DASHBOARD_PATH: String = "/rbac/dashboard"
     const val ROLE_KEY: String = "role"
     const val ROLE_ITEM_KEY: String = "{role_item}"
 
@@ -24,51 +24,47 @@ internal object RbacAdminView {
 
     fun build(
         html: HTML,
-        rbacRoles: List<RbacRoleEntity>,
-        currentRoleId: Uuid,
         isUpdated: Boolean,
-        isViewOnly: Boolean
+        dashboardContext: RbacDashboardManager.Context
     ) {
         with(html) {
             head {
                 title { +"RBAC Permissions" }
-                link(rel = "stylesheet", type = "text/css", href = "/static-rbac/admin.css")
+                link(rel = "stylesheet", type = "text/css", href = "/static-rbac/dashboard.css")
             }
             buildForm(
-                rbacRoles = rbacRoles,
-                currentRoleId = currentRoleId,
                 isUpdated = isUpdated,
-                isViewOnly = isViewOnly
+                dashboardContext = dashboardContext
             )
         }
     }
 
     private fun HTML.buildForm(
-        rbacRoles: List<RbacRoleEntity>,
-        currentRoleId: Uuid,
         isUpdated: Boolean,
-        isViewOnly: Boolean
+        dashboardContext: RbacDashboardManager.Context
     ) {
         body {
             h1 { +"RBAC Permissions" }
+            h3 { +"Logged-In Role: ${dashboardContext.sessionRoleName}" }
 
-            form(action = RBAC_ADMIN_PATH, method = FormMethod.get) {
-                showRoleSelector(rbacRoles = rbacRoles, currentRoleId = currentRoleId)
+            form(action = RBAC_DASHBOARD_PATH, method = FormMethod.get) {
+                showRoleSelector(dashboardContext = dashboardContext)
             }
 
             // If no role is selected, default to the first role.
-            val currentRole: RbacRoleEntity = rbacRoles.find { it.id == currentRoleId } ?: rbacRoles.first()
-            val isLocked: Boolean = (currentRole.isSuper || isViewOnly)
+            val currentRole: RbacRoleEntity = dashboardContext.rbacRoles.find { role ->
+                role.id == dashboardContext.targetRole.id
+            } ?: dashboardContext.rbacRoles.first()
 
-            form(action = RBAC_ADMIN_PATH, method = FormMethod.post) {
+            form(action = RBAC_DASHBOARD_PATH, method = FormMethod.post) {
                 input(type = InputType.hidden, name = ROLE_KEY) { value = currentRole.id.toString() }
 
                 table {
                     buildTableHeader()
-                    buildTableRows(role = currentRole, isLocked = isLocked)
+                    buildTableRows(dashboardContext = dashboardContext)
                 }
 
-                if (!isLocked) {
+                if (!dashboardContext.isViewOnly) {
                     button(type = ButtonType.submit) { +"Update Permissions" }
                 }
             }
@@ -81,20 +77,26 @@ internal object RbacAdminView {
         }
     }
 
-    private fun FORM.showRoleSelector(rbacRoles: List<RbacRoleEntity>, currentRoleId: Uuid) {
-        select {
-            id = "roleSelect"
-            attributes["name"] = ROLE_KEY
-            attributes["onChange"] = "this.form.submit()"
+    private fun FORM.showRoleSelector(dashboardContext: RbacDashboardManager.Context) {
+        div(classes = "role-selector") {
+            label {
+                htmlFor = "roleSelect"
+                +"Edit Role:"
+            }
+            select {
+                id = "roleSelect"
+                attributes["name"] = ROLE_KEY
+                attributes["onChange"] = "this.form.submit()"
 
-            rbacRoles.forEach { role ->
-                val isSelected: Boolean = (role.id == currentRoleId)
-                option {
-                    value = role.id.toString()
-                    if (isSelected) {
-                        attributes["selected"] = "selected"
+                dashboardContext.rbacRoles.forEach { role ->
+                    val isSelected: Boolean = (role.id == dashboardContext.targetRole.id)
+                    option {
+                        value = role.id.toString()
+                        if (isSelected) {
+                            attributes["selected"] = "selected"
+                        }
+                        +role.roleName
                     }
-                    +role.roleName
                 }
             }
         }
@@ -135,15 +137,16 @@ internal object RbacAdminView {
         }
     }
 
-    private fun TABLE.buildTableRows(role: RbacRoleEntity, isLocked: Boolean) {
+    private fun TABLE.buildTableRows(dashboardContext: RbacDashboardManager.Context) {
         RbacScope.entries.forEach { scope ->
-            val accessLevel: RbacAccessLevel = role.scopeRules
-                .find { it.scope == scope }?.accessLevel ?: RbacAccessLevel.NONE
+            val accessLevel: RbacAccessLevel = dashboardContext.targetRole.scopeRules.find { scopeRule ->
+                scopeRule.scope == scope
+            }?.accessLevel ?: RbacAccessLevel.NONE
 
             buildRowForRoleAndScope(
-                roleName = role.roleName,
+                roleName = dashboardContext.targetRole.roleName,
                 scope = scope,
-                isLocked = isLocked,
+                isLocked = dashboardContext.isViewOnly,
                 accessLevel = accessLevel
             )
         }

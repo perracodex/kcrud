@@ -10,7 +10,7 @@ body {
     padding: 20px;
 }
 
-h1 {
+h1, h3 {
     text-align: center;
     margin-bottom: 30px;
 }
@@ -101,6 +101,11 @@ select option {
 #roleSelect {
     width: 256px; /* Fixed width for the role dropdown */
     margin: 10px auto; /* Center the dropdown */
+}
+
+.role-selector label {
+    margin-right: 20px; /* Increase the margin for more space between the role selector and its label */
+    white-space: nowrap; /* Prevents the label from wrapping */
 }
 
 /* Responsive styles */

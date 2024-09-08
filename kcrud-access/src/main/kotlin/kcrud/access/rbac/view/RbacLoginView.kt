@@ -29,7 +29,7 @@ internal object RbacLoginView {
         with(html) {
             head {
                 title { +"RBAC Login" }
-                link(rel = "stylesheet", type = "text/css", href = "/static-rbac/admin.css")
+                link(rel = "stylesheet", type = "text/css", href = "/static-rbac/dashboard.css")
             }
             buildForm()
         }

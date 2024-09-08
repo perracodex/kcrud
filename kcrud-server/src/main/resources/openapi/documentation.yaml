@@ -203,7 +203,7 @@ paths:
                   description: ""
                   value: "/rbac/login"
         "200":
-          description: "OK <br> Respond with HTML view of the RBAC admin panel."
+          description: "OK <br> Respond with HTML view of the RBAC dashboard."
           content:
             text/plain:
               schema:

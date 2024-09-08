@@ -20,8 +20,8 @@ import kcrud.base.persistence.utils.IEnumWithId
  * @see RbacAccessLevel
  */
 public enum class RbacScope(override val id: Int) : IEnumWithId {
-    /** Admin scope, allows access to all other scopes. */
-    RBAC_ADMIN(id = 100),
+    /** RBAC dashboard, allows access to RBAC administrative functions. */
+    RBAC_DASHBOARD(id = 100),
 
     /** System scope, allows access to the system settings. */
     SYSTEM(id = 101),
