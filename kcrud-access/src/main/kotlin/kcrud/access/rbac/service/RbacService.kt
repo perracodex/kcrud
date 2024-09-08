@@ -125,8 +125,8 @@ internal class RbacService(
             actor.role.scopeRules.isNotEmpty()
         }.associateTo(ConcurrentHashMap()) { actor ->
             actor.id to ActorRole(isLocked = actor.isLocked, role = actor.role)
-        }.also {
-            if (it.isEmpty()) {
+        }.also { actors ->
+            if (actors.isEmpty()) {
                 tracer.warning("No actors found with scope rules. RBAC cache is empty.")
             }
         }
