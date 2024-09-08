@@ -5,7 +5,6 @@
 package kcrud.base.persistence.pagination
 
 import kotlinx.serialization.Serializable
-import kotlin.math.max
 
 /**
  * Holds the data for a page of results.
@@ -53,7 +52,7 @@ public data class Page<out T : Any>(
 
             // Calculate total pages, ensuring totalPages is 0 if there are no elements.
             val totalPages: Int = if (totalElements > 0 && pageSize > 0) {
-                max(a = 1, b = (totalElements + pageSize - 1) / pageSize)
+                ((totalElements + pageSize - 1) / pageSize).coerceAtLeast(minimumValue = 1)
             } else {
                 0
             }
