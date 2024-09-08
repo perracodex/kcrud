@@ -23,7 +23,8 @@ import kcrud.base.plugins.RateLimitScope
 @OptIn(RbacAPI::class)
 public fun Route.rbacRoute() {
 
-    // Required so the HTML can find its respective CSS file.
+    // Configures the server to serve CSS files located in the 'rbac' resources folder,
+    // necessary for styling the RBAC Admin panel built with HTML DSL.
     staticResources(remotePath = "/static-rbac", basePackage = "rbac")
 
     rateLimit(configuration = RateLimitName(name = RateLimitScope.PRIVATE_API.key)) {
