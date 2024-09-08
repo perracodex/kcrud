@@ -31,9 +31,9 @@ public fun Query.paginate(pageable: Pageable?): Query {
     pageable?.let {
         QueryOrderingHelper.applyOrder(query = this, pageable = pageable)
 
-        if (it.size > 0) {
-            val startIndex: Int = it.page * it.size
-            this.limit(n = it.size, offset = startIndex.toLong())
+        if (pageable.size > 0) {
+            val startIndex: Int = pageable.page * pageable.size
+            this.limit(n = pageable.size, offset = startIndex.toLong())
         }
     }
 
