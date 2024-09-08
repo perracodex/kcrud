@@ -138,10 +138,6 @@ internal class RbacService(
             cache.putAll(newCache)
         }
 
-        if (cache.isEmpty()) {
-            tracer.warning("No actors found with scope rules. RBAC cache is empty.")
-        }
-
         tracer.info("RBAC cache refreshed. ${newCache.size} out of $totalActors actors have scope rules.")
     }
 
