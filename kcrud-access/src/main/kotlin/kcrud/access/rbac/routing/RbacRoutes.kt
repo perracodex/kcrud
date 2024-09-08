@@ -19,6 +19,8 @@ import kcrud.base.plugins.RateLimitScope
 
 /**
  * Contains the RBAC endpoints.
+ *
+ * These include the login and logout routes, as well as the admin panel routes.
  */
 @OptIn(RbacAPI::class)
 public fun Route.rbacRoute() {
