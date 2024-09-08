@@ -117,6 +117,6 @@ internal class ActorService(
         credentialService.refreshActor(actorId = actorId)
 
         val rbacService: RbacService by inject()
-        rbacService.refresh(actorId = actorId)
+        rbacService.refreshActor(actorId = actorId)
     }
 }

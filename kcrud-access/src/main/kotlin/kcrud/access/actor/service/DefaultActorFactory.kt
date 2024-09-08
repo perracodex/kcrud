@@ -57,7 +57,7 @@ internal object DefaultActorFactory : KoinComponent {
 
             launch {
                 val rbacService: RbacService by inject()
-                rbacService.refresh()
+                rbacService.refreshActors()
             }
         }
     }

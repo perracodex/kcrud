@@ -8,7 +8,6 @@ import kcrud.access.actor.entity.ActorEntity
 import kcrud.access.actor.repository.IActorRepository
 import kcrud.access.rbac.entity.role.RbacRoleEntity
 import kcrud.access.rbac.entity.role.RbacRoleRequest
-import kcrud.access.rbac.entity.scope.RbacScopeRuleEntity
 import kcrud.access.rbac.entity.scope.RbacScopeRuleRequest
 import kcrud.access.rbac.repository.role.IRbacRoleRepository
 import kcrud.access.rbac.repository.scope.IRbacScopeRuleRepository
@@ -63,57 +62,87 @@ internal class RbacService(
      */
     private suspend fun isCacheEmpty(): Boolean {
         if (cache.isEmpty()) {
-            refresh()
+            refreshActors()
         }
 
         return cache.isEmpty()
     }
 
     /**
-     * Refreshes the cache of [RbacScopeRuleEntity] entries, ensuring the service reflects
-     * the latest permissions. If an [actorId] is provided, only the permissions for that actor are refreshed;
-     * otherwise permissions for all actors are refreshed.
+     * Refreshes the permissions cache for the given actor, ensuring the service reflects
+     * the latest system permissions.
      *
-     * @param actorId The id of the Actor to refresh. If null, refreshes permissions for all Actors.
+     * If the actor has no scope rules, for example a superuser, it will be removed from
+     * the cache if previously cached.
+     *
+     * @param actorId The id of the Actor to refresh.
+     * @throws IllegalStateException If no actor is found with the provided id.
      */
-    suspend fun refresh(actorId: Uuid? = null): Unit = withContext(Dispatchers.IO) {
-        tracer.info("Refreshing RBAC cache.")
+    suspend fun refreshActor(actorId: Uuid): Unit = withContext(Dispatchers.IO) {
+        tracer.info("Refreshing RBAC cache for actor with ID: $actorId")
 
-        var targetActors: List<ActorEntity> = actorId?.let {
-            actorRepository.findById(actorId = actorId)?.let { listOf(it) } ?: emptyList()
-        } ?: actorRepository.findAll()
+        val actor: ActorEntity? = actorRepository.findById(actorId = actorId)
+        checkNotNull(actor) { "No actor found with id $actorId." }
 
-        // Filter out Actors without any scope rules.
-        targetActors = targetActors.filter { actor ->
+        // Filter out Actors without any scope rules. Maybe a superuser.
+        if (actor.role.scopeRules.isEmpty()) {
+            if (cache.containsKey(actorId)) {
+                tracer.warning("Removing actor with ID: $actorId from RBAC cache.")
+                lock.withLock {
+                    cache.remove(actorId)
+                }
+            } else {
+                tracer.warning("Actor with ID: $actorId not found in RBAC cache.")
+            }
+
+            return@withContext
+        }
+
+        // Set the new ActorRole entry in the cache.
+        val actorRole = ActorRole(isLocked = actor.isLocked, role = actor.role)
+        lock.withLock {
+            cache[actorId] = actorRole
+        }
+
+        tracer.info("RBAC cache refreshed for actor with ID: $actorId.")
+    }
+
+    /**
+     * Refreshes the permissions cache for all actors, ensuring the service reflects
+     * the latest system permissions.
+     *
+     * Actors that no longer have any scope rules will be removed from the cache.
+     */
+    suspend fun refreshActors(): Unit = withContext(Dispatchers.IO) {
+        tracer.info("Refreshing RBAC cache for all actors.")
+
+        var totalActors: Int
+
+        // Retrieve all actors from the database, filtering out those without any scope rules.
+        val newCache: ConcurrentHashMap<Uuid, ActorRole> = actorRepository.findAll().also { actors ->
+            totalActors = actors.size
+        }.filter { actor ->
             actor.role.scopeRules.isNotEmpty()
-        }
-
-        if (actorId != null && targetActors.isNotEmpty()) {
-            // When refreshing a single actor, update only their cache entry.
-            val actor: ActorEntity = targetActors.first() // There should only be one actor in this case.
-            val actorRole = ActorRole(isLocked = actor.isLocked, role = actor.role)
-
-            lock.withLock {
-                cache[actorId] = actorRole
-            }
-        } else {
-            // Prepare the new cache mapping for all actors.
-            val newCache: ConcurrentHashMap<Uuid, ActorRole> = ConcurrentHashMap()
-            newCache.putAll(
-                targetActors.associateBy(
-                    { actor -> actor.id },
-                    { actor -> ActorRole(isLocked = actor.isLocked, role = actor.role) }
-                )
-            )
-
-            // Replace the current cache with the new one.
-            lock.withLock {
-                cache.clear()
-                cache.putAll(newCache)
+        }.associateTo(ConcurrentHashMap()) { actor ->
+            actor.id to ActorRole(isLocked = actor.isLocked, role = actor.role)
+        }.also {
+            if (it.isEmpty()) {
+                tracer.warning("No actors found with scope rules. RBAC cache is empty.")
             }
         }
 
-        tracer.info("RBAC cache refreshed.")
+        // Replace the current cache with the new updated one.
+        // The cache can be empty if no actors have scope rules.
+        lock.withLock {
+            cache.clear()
+            cache.putAll(newCache)
+        }
+
+        if (cache.isEmpty()) {
+            tracer.warning("No actors found with scope rules. RBAC cache is empty.")
+        }
+
+        tracer.info("RBAC cache refreshed. ${newCache.size} out of $totalActors actors have scope rules.")
     }
 
     /**
@@ -207,7 +236,7 @@ internal class RbacService(
         val roleId: Uuid = roleRepository.create(roleRequest = roleRequest)
 
         // After creating the role must refresh the cache to reflect the new role.
-        refresh()
+        refreshActors()
 
         return@withContext roleRepository.findById(roleId = roleId)!!
     }
@@ -232,7 +261,7 @@ internal class RbacService(
         )
 
         // After updating the role must refresh the cache to reflect the changes.
-        refresh()
+        refreshActors()
 
         return@withContext if (updateCount > 0) {
             roleRepository.findById(roleId = roleId)
@@ -262,7 +291,7 @@ internal class RbacService(
         )
 
         // After updating the scope rules must refresh the cache to reflect the changes.
-        refresh()
+        refreshActors()
 
         return@withContext updateCount
     }
