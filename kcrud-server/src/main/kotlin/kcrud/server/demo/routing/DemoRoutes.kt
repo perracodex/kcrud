@@ -7,10 +7,10 @@ package kcrud.server.demo.routing
 import io.ktor.server.http.content.*
 import io.ktor.server.routing.*
 import kcrud.server.demo.DemoAPI
-import kcrud.server.demo.routing.operations.createRecordsRoute
-import kcrud.server.demo.routing.operations.deleteRecordsRoute
-import kcrud.server.demo.routing.view.dumpJsonRoute
-import kcrud.server.demo.routing.view.renderViewRoute
+import kcrud.server.demo.routing.dashboard.dumpJsonRoute
+import kcrud.server.demo.routing.dashboard.renderViewRoute
+import kcrud.server.demo.routing.operate.createRecordsRoute
+import kcrud.server.demo.routing.operate.deleteRecordsRoute
 
 /**
  * Interactive employees demo endpoint.
