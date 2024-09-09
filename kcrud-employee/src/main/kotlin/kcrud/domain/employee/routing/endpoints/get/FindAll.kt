@@ -10,7 +10,6 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.base.env.SessionContext
 import kcrud.base.persistence.pagination.Page
-import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.pagination.getPageable
 import kcrud.domain.employee.entity.EmployeeEntity
 import kcrud.domain.employee.routing.annotation.EmployeeRouteAPI
@@ -23,9 +22,8 @@ internal fun Route.findAllEmployees() {
     // Find all employees.
     get {
         val sessionContext: SessionContext? = SessionContext.from(call = call)
-        val pageable: Pageable? = call.getPageable()
         val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }
-        val employees: Page<EmployeeEntity> = service.findAll(pageable = pageable)
+        val employees: Page<EmployeeEntity> = service.findAll(pageable = call.getPageable())
         call.respond(status = HttpStatusCode.OK, message = employees)
     }
 }

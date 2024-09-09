@@ -10,7 +10,6 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.base.env.SessionContext
 import kcrud.base.persistence.pagination.Page
-import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.pagination.getPageable
 import kcrud.domain.employment.entity.EmploymentEntity
 import kcrud.domain.employment.service.EmploymentService
@@ -24,8 +23,7 @@ internal fun Route.dumpJsonRoute() {
     get("json") {
         val sessionContext: SessionContext? = SessionContext.from(call = call)
         val service: EmploymentService = call.scope.get<EmploymentService> { parametersOf(sessionContext) }
-        val pageable: Pageable? = call.getPageable()
-        val page: Page<EmploymentEntity> = service.findAll(pageable = pageable)
+        val page: Page<EmploymentEntity> = service.findAll(pageable = call.getPageable())
         call.respond(status = HttpStatusCode.OK, message = page)
     }
 }
