@@ -51,12 +51,13 @@ public fun Route.accessTokenRoute() {
         // For example, in Postman set the endpoint and in the Headers add an Authorization key
         // with a 'Bearer' holding a previous valid token.
         post("refresh") {
-            val tokenState: AuthenticationTokenService.TokenState = AuthenticationTokenService.getState(call = call)
+            val headers: Headers = call.request.headers
+            val tokenState: AuthenticationTokenService.TokenState = AuthenticationTokenService.getState(headers = headers)
 
             when (tokenState) {
                 AuthenticationTokenService.TokenState.VALID -> {
                     // Token is still valid; return the same token to the client.
-                    val jwtToken: String = AuthenticationTokenService.fromHeader(call = call)
+                    val jwtToken: String = AuthenticationTokenService.fromHeader(headers = call.request.headers)
                     call.respond(status = HttpStatusCode.OK, message = jwtToken)
                 }
 

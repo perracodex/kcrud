@@ -12,7 +12,6 @@ import com.auth0.jwt.exceptions.JWTVerificationException
 import com.auth0.jwt.exceptions.TokenExpiredException
 import io.ktor.http.*
 import io.ktor.http.auth.*
-import io.ktor.server.application.*
 import kcrud.base.env.SessionContext
 import kcrud.base.env.Tracer
 import kcrud.base.settings.AppSettings
@@ -47,10 +46,12 @@ internal object AuthenticationTokenService {
 
     /**
      * Returns the current [TokenState] from the header authorization token.
+     *
+     * @param headers The request [Headers] to extract the token from.
      */
-    fun getState(call: ApplicationCall): TokenState {
+    fun getState(headers: Headers): TokenState {
         return try {
-            val token: String = fromHeader(call = call)
+            val token: String = fromHeader(headers = headers)
             val algorithm: Algorithm = Algorithm.HMAC256(AppSettings.security.jwtAuth.secretKey)
             val verifier: JWTVerifier = JWT.require(algorithm).build()
             val decodedToken = JWT.decode(token)
@@ -73,10 +74,12 @@ internal object AuthenticationTokenService {
 
     /**
      * Returns the current authorization token from the headers.
+     *
+     * @param headers The request [Headers] to extract the token from.
      */
-    fun fromHeader(call: ApplicationCall): String {
-        val authHeader: String? = call.request.headers.entries().find {
-            it.key.equals(other = HttpHeaders.Authorization, ignoreCase = true)
+    fun fromHeader(headers: Headers): String {
+        val authHeader: String? = headers.entries().find { header ->
+            header.key.equals(other = HttpHeaders.Authorization, ignoreCase = true)
         }?.value?.get(index = 0)
 
         require(!authHeader.isNullOrBlank() && authHeader.startsWith(prefix = AuthScheme.Bearer, ignoreCase = true)) {
