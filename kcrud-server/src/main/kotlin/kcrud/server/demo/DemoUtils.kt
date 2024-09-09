@@ -4,12 +4,10 @@
 
 package kcrud.server.demo
 
-import io.ktor.server.application.*
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
 import kcrud.base.database.schema.employment.types.EmploymentStatus
 import kcrud.base.database.schema.employment.types.WorkModality
-import kcrud.base.env.SessionContext
 import kcrud.base.persistence.entity.Period
 import kcrud.base.utils.KLocalDate
 import kcrud.base.utils.TestUtils
@@ -22,8 +20,6 @@ import kcrud.domain.employment.service.EmploymentService
 import kotlinx.coroutines.*
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.plus
-import org.koin.core.parameter.parametersOf
-import org.koin.ktor.plugin.scope
 import kotlin.random.Random
 
 /**
@@ -35,14 +31,15 @@ internal object DemoUtils {
     /**
      * Creates demo records.
      *
-     * @param call The application call.
+     * @param employeeService A reference to the [EmployeeService].
+     * @param employmentService A reference to the [EmploymentService].
      * @param count The number of records to create.
      */
-    suspend fun createDemoRecords(call: ApplicationCall, count: Int) {
-        val sessionContext: SessionContext? = SessionContext.from(call = call)
-        val employeeService: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }
-        val employmentService: EmploymentService = call.scope.get<EmploymentService> { parametersOf(sessionContext) }
-
+    suspend fun createDemoRecords(
+        employeeService: EmployeeService,
+        employmentService: EmploymentService,
+        count: Int
+    ) {
         // List to keep track of all the jobs.
         val jobs: MutableList<Deferred<Unit>> = mutableListOf()
 

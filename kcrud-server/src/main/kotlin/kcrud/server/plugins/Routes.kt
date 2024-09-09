@@ -20,7 +20,7 @@ import kcrud.base.security.snowflake.snowflakeRoute
 import kcrud.base.settings.AppSettings
 import kcrud.domain.employee.routing.employeeRoute
 import kcrud.domain.employment.routing.employmentRoute
-import kcrud.server.demo.employeesDemoRoute
+import kcrud.server.demo.routing.demoRoutes
 
 /**
  * Initializes and sets up routing for the application.
@@ -50,7 +50,7 @@ internal fun Application.configureRoutes() {
 
         // Demo route.
         authenticate(AppSettings.security.basicAuth.providerName, optional = !AppSettings.security.isEnabled) {
-            employeesDemoRoute()
+            demoRoutes()
         }
 
         accessTokenRoute()

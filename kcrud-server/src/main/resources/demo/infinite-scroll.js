@@ -6,7 +6,7 @@
 
 /**
  * Interactive demo.
- * It fetches data from the server as the user scrolls and updates the table content dynamically.
+ * It fetches data from the server as the actor scrolls and updates the table content dynamically.
  * It also provides functionality to dump records in JSON format.
  */
 document.addEventListener('DOMContentLoaded', () => {
