@@ -9,8 +9,8 @@ import io.ktor.server.auth.*
 import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.access.rbac.routing.rbacRoute
-import kcrud.access.token.accessTokenRoute
+import kcrud.access.rbac.routing.rbacRoutes
+import kcrud.access.token.routing.accessTokenRoutes
 import kcrud.base.env.SessionContext
 import kcrud.base.env.health.routing.healthCheckRoute
 import kcrud.base.events.sseRoute
@@ -53,10 +53,10 @@ internal fun Application.configureRoutes() {
             demoRoutes()
         }
 
-        accessTokenRoute()
+        accessTokenRoutes()
         healthCheckRoute()
         snowflakeRoute()
-        rbacRoute()
+        rbacRoutes()
         schedulerRoutes()
         sseRoute()
 

@@ -24,7 +24,7 @@ import kcrud.base.plugins.RateLimitScope
  * These include the login and logout routes, as well as the dashboard routes.
  */
 @OptIn(RbacAPI::class)
-public fun Route.rbacRoute() {
+public fun Route.rbacRoutes() {
 
     // Configures the server to serve CSS files located in the 'rbac' resources folder,
     // necessary for styling the RBAC dashboard built with HTML DSL.
