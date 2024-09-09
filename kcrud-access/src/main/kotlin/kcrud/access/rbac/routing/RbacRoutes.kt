@@ -11,7 +11,8 @@ import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.plugin.withRbac
 import kcrud.access.rbac.routing.dashboard.rbacDashboardLoadRoute
 import kcrud.access.rbac.routing.dashboard.rbacDashboardUpdateRoute
-import kcrud.access.rbac.routing.login.rbacLoginRoute
+import kcrud.access.rbac.routing.login.rbacLoginAccessRoute
+import kcrud.access.rbac.routing.login.rbacLoginSubmissionRoute
 import kcrud.access.rbac.routing.login.rbacLogoutRoute
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacScope
@@ -30,7 +31,8 @@ public fun Route.rbacRoute() {
     staticResources(remotePath = "/static-rbac", basePackage = "rbac")
 
     rateLimit(configuration = RateLimitName(name = RateLimitScope.PRIVATE_API.key)) {
-        rbacLoginRoute()
+        rbacLoginAccessRoute()
+        rbacLoginSubmissionRoute()
         rbacLogoutRoute()
 
         withRbac(scope = RbacScope.RBAC_DASHBOARD, accessLevel = RbacAccessLevel.VIEW) {

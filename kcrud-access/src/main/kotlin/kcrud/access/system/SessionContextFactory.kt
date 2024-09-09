@@ -71,7 +71,7 @@ internal object SessionContextFactory : KoinComponent {
 
     /**
      * Creates a [SessionContext] by authenticating a [UserPasswordCredential].
-     * Authenticates the user's credentials and retrieves actor details from the database.
+     * Authenticates the actor's credentials and retrieves actor details from the database.
      *
      * @param credential The [UserPasswordCredential] of the actor attempting to authenticate.
      * @return A [SessionContext] instance if actor details and validations pass; null otherwise.

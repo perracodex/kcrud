@@ -59,7 +59,7 @@ class SchemaChangeTest {
 
                 // Insert data into PublicTable
                 val newUserId: Int = PublicTable.insert {
-                    it[name] = "User $index in public"
+                    it[name] = "Actor $index in public"
                 } get PublicTable.id
 
                 // Verify that the data was inserted into the PublicTable
@@ -87,7 +87,7 @@ class SchemaChangeTest {
                     }
 
                 assertEquals(expected = 1, actual = joinResult.size)
-                assertEquals(expected = "User $index in public", actual = joinResult.first().first)
+                assertEquals(expected = "Actor $index in public", actual = joinResult.first().first)
                 assertEquals(expected = 100 + (index + 1), actual = joinResult.first().second)
             }
         }

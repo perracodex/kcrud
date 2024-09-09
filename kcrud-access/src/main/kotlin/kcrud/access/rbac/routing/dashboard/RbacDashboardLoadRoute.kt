@@ -18,8 +18,8 @@ import kcrud.base.env.SessionContext
 import kcrud.base.persistence.utils.toUuidOrNull
 
 /**
- * Retrieves the current session context and renders the RBAC dashboard based on the
- * user's permissions and role selections.
+ * Retrieves the current session context and renders the RBAC dashboard based
+ * on the actor's permissions and role selections.
  * Redirects to the login screen if the session context is invalid.
  */
 @RbacAPI

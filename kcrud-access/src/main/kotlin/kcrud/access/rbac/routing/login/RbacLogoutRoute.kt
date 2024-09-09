@@ -13,10 +13,12 @@ import kcrud.access.rbac.view.RbacLoginView
 import kcrud.base.env.SessionContext
 
 /**
- * The route for logging out of the RBAC dashboard.
+ * Manages the session termination and redirection to the login page.
+ * Clears the current session and redirects the actor to ensure a clean logout process.
  */
 @RbacAPI
 internal fun Route.rbacLogoutRoute() {
+    // Clears the session and redirects to the login page.
     post("rbac/logout") {
         call.sessions.clear(name = SessionContext.SESSION_NAME)
         call.respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)

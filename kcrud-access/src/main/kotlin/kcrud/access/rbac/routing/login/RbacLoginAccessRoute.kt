@@ -6,7 +6,6 @@ package kcrud.access.rbac.routing.login
 
 import io.ktor.http.*
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
 import io.ktor.server.html.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -18,28 +17,22 @@ import kcrud.access.rbac.view.RbacLoginView
 import kcrud.base.env.SessionContext
 
 /**
- * The route for logging into the RBAC dashboard.
+ * Manages access to the RBAC login page. If a valid session is already exists, the actor
+ * is directly redirected to the dashboard. Otherwise, any existing session cookies are
+ * cleared and the login page is presented.
  */
 @RbacAPI
-internal fun Route.rbacLoginRoute() {
-
+internal fun Route.rbacLoginAccessRoute() {
+    // Redirects actors to the dashboard if they have an existing session
+    // or to the login page if no valid session is found.
     get("rbac/login") {
         RbacDashboardManager.getSessionContext(call = call)?.let {
-            // If the actor is not null, redirect to the dashboard.
             call.respondRedirect(url = RbacDashboardView.RBAC_DASHBOARD_PATH)
         } ?: run {
-            // If the actor is null, clear the session and show the login view.
             call.sessions.clear(name = SessionContext.SESSION_NAME)
             call.respondHtml(status = HttpStatusCode.OK) {
                 RbacLoginView.build(html = this)
             }
         }
     }
-
-    authenticate(RbacLoginView.RBAC_LOGIN_PATH) {
-        post("rbac/login") {
-            call.respondRedirect(url = RbacDashboardView.RBAC_DASHBOARD_PATH)
-        }
-    }
 }
-

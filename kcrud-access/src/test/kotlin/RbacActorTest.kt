@@ -77,12 +77,12 @@ class RbacActorTest : KoinComponent {
         )
 
         var actor: ActorEntity? = actorService.findByUsername(username = username)
-        assertNotNull(actual = actor, message = "The user was not found in the database after it was created.")
+        assertNotNull(actual = actor, message = "The actor was not found in the database after it was created.")
         assertEquals(expected = username, actual = actor.username)
         assertEquals(expected = password, actual = actor.password)
 
         actor = actorService.findById(actorId = actorId)
-        assertNotNull(actual = actor, message = "The user was not found in the database after it was created.")
+        assertNotNull(actual = actor, message = "The actor was not found in the database after it was created.")
         assertEquals(expected = username, actual = actor.username)
         assertEquals(expected = password, actual = actor.password)
 

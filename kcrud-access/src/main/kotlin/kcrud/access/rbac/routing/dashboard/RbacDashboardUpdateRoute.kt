@@ -20,7 +20,7 @@ import kcrud.base.persistence.utils.toUuidOrNull
 import kotlin.uuid.Uuid
 
 /**
- * Processes updates to RBAC settings based on user submissions from the dashboard form.
+ * Processes updates to RBAC settings based on actor submissions from the dashboard form.
  * Validates session context and authorizes modifications, redirecting to the login screen if unauthorized.
  */
 @RbacAPI
