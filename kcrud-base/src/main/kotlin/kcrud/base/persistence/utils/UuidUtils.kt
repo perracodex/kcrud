@@ -14,12 +14,11 @@ import kotlin.uuid.Uuid
  */
 public fun String?.toUuidOrNull(): Uuid? {
     if (this.isNullOrBlank()) return null
-    return try {
+    return runCatching {
         Uuid.parse(uuidString = this)
-    } catch (e: IllegalArgumentException) {
+    }.onFailure { e ->
         Tracer(ref = ::toUuidOrNull).error(message = "Failed to parse Uuid from string: '$this'", cause = e)
-        null
-    }
+    }.getOrNull()
 }
 
 /**

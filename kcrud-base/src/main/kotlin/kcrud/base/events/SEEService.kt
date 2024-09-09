@@ -32,7 +32,10 @@ public object SEEService {
      */
     private const val BUFFER_CAPACITY: Int = 10_000
 
-    private val eventFlow = MutableSharedFlow<String>(replay = REPLAY, extraBufferCapacity = BUFFER_CAPACITY)
+    private val eventFlow = MutableSharedFlow<String>(
+        replay = REPLAY,
+        extraBufferCapacity = BUFFER_CAPACITY
+    )
 
     /**
      * Pushes a new event message to the event flow.
@@ -54,22 +57,33 @@ public object SEEService {
     internal suspend fun write(writer: Writer) {
         try {
             eventFlow.buffer(capacity = BUFFER_CAPACITY).collect { message ->
-                withContext(Dispatchers.IO) {
-                    try {
-                        writer.appendLine("data: $message")
-                        writer.appendLine() // SSE messages should be followed by two newlines.
-                        writer.flush()
-                    } catch (e: IOException) {
-                        tracer.error(message = "IOException during writing response.", cause = e)
-                        throw e
-                    }
-                }
+                writeMessage(writer = writer, message = message)
             }
         } catch (e: CancellationException) {
             tracer.info("Collection cancelled.")
         } catch (e: IOException) {
             tracer.error(message = "IOException during event flow collection.", cause = e)
             throw e
+        }
+    }
+
+    /**
+     * Writes a message to the provided Writer in the SSE format.
+     *
+     * @param writer The [Writer] to which the SSE events will be written.
+     * @param message The message to write.
+     * @throws IOException If an I/O error occurs during writing.
+     */
+    private suspend fun writeMessage(writer: Writer, message: String) {
+        withContext(Dispatchers.IO) {
+            try {
+                writer.appendLine("data: $message")
+                writer.appendLine() // SSE messages should be followed by two newlines.
+                writer.flush()
+            } catch (e: IOException) {
+                tracer.error(message = "IOException during writing response", cause = e)
+                throw e
+            }
         }
     }
 }

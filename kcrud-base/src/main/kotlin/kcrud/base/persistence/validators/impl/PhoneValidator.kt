@@ -21,21 +21,33 @@ public object PhoneValidator : IValidator {
             return IValidator.Result.Failure(reason = "Phone number must be a string.")
         }
 
-        try {
+        return runCatching {
             val phoneUtil: PhoneNumberUtil = PhoneNumberUtil.getInstance()
 
             // Region code is null for international numbers.
-            val numberProto: Phonenumber.PhoneNumber? = phoneUtil.parse(value, null)
+            val numberProto: Phonenumber.PhoneNumber = phoneUtil.parse(value, null)
 
             if (!phoneUtil.isValidNumber(numberProto)) {
-                return IValidator.Result.Failure(reason = "Invalid phone number. $value")
+                throw IllegalArgumentException("Invalid phone number. $value")
             }
-        } catch (e: NumberParseException) {
-            tracer.error(message = "Error parsing phone number: $value", cause = e)
-            return IValidator.Result.Failure(reason = e.message ?: "Error parsing phone number. $value")
-        }
 
-        return IValidator.Result.Success
+            return@runCatching IValidator.Result.Success
+        }.getOrElse { e ->
+            when (e) {
+                is NumberParseException -> {
+                    tracer.error(message = "Error parsing phone number: $value", cause = e)
+                    return@getOrElse IValidator.Result.Failure(reason = e.message ?: "Error parsing phone number. $value")
+                }
+
+                is IllegalArgumentException -> {
+                    return@getOrElse IValidator.Result.Failure(reason = e.message ?: "Invalid phone number.")
+                }
+
+                else -> {
+                    return@getOrElse IValidator.Result.Failure(reason = "Unexpected error: ${e.message}")
+                }
+            }
+        }
     }
 
     override fun message(text: String): String {

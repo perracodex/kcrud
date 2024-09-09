@@ -200,15 +200,15 @@ internal object DatabaseService {
      * Checks whether the database is alive.
      */
     private fun ping(): Boolean {
-        return try {
+        return runCatching {
             transaction(db = database) {
                 @Suppress("SqlDialectInspection", "SqlNoDataSourceInspection")
                 exec(stmt = "SELECT 1;")
-                true
+                return@transaction true
             }
-        } catch (e: Exception) {
+        }.getOrElse { e ->
             tracer.error(message = "Database is not alive.", cause = e)
-            false
+            return@getOrElse false
         }
     }
 
