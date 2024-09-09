@@ -56,7 +56,8 @@ public object EmployeeTable : TimestampedTable(name = "employee") {
      * Example of an enum that is stored as a string in the database.
      */
     public val maritalStatus: Column<MaritalStatus> = enumerationById(
-        name = "marital_status"
+        name = "marital_status",
+        entries = MaritalStatus.entries
     )
 
     /**
@@ -65,7 +66,8 @@ public object EmployeeTable : TimestampedTable(name = "employee") {
      * Example of an enum that is stored as an integer in the database.
      */
     public val honorific: Column<Honorific> = enumerationById(
-        name = "honorific_id"
+        name = "honorific_id",
+        entries = Honorific.entries
     )
 
     /**

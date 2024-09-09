@@ -48,7 +48,8 @@ public object EmploymentTable : PeriodTable(name = "employment") {
      * The status of the employment.
      */
     public val status: Column<EmploymentStatus> = enumerationById(
-        name = "status_id"
+        name = "status_id",
+        entries = EmploymentStatus.entries
     )
 
     /**
@@ -62,7 +63,8 @@ public object EmploymentTable : PeriodTable(name = "employment") {
      * The [WorkModality] of the employment.
      */
     public val workModality: Column<WorkModality> = enumerationById(
-        name = "work_modality_id"
+        name = "work_modality_id",
+        entries = WorkModality.entries
     )
 
     /**

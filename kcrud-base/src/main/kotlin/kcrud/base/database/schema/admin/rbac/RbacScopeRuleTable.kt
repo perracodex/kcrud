@@ -49,14 +49,16 @@ public object RbacScopeRuleTable : TimestampedTable(name = "rbac_scope_rule") {
      * The [RbacScope] the rule is meant to target.
      */
     public val scope: Column<RbacScope> = enumerationById(
-        name = "scope_id"
+        name = "scope_id",
+        entries = RbacScope.entries
     )
 
     /**
      * The [RbacAccessLevel] representing the access level for the [RbacScope].
      */
     public val accessLevel: Column<RbacAccessLevel> = enumerationById(
-        name = "access_level_id"
+        name = "access_level_id",
+        entries = RbacAccessLevel.entries
     )
 
     /**

@@ -6,7 +6,7 @@ package kcrud.base.database.columns
 
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
-import kotlin.enums.enumEntries
+import kotlin.enums.EnumEntries
 
 /**
  * Example in which each item has an id,
@@ -36,23 +36,25 @@ public interface IEnumWithId {
  *
  * object SomeTable : Table() {
  *     val status: Column<SomeEnum> = enumerationById(
- *         name = "field_name"
+ *         name = "field_name",
+ *         entries = SomeEnum.entries
  *     )
  *     ...
  * }
  * ```
  * @param E The enum class type. This class must implement the IEnumWithId interface.
  * @param name The name of the column in the database.
+ * @param entries The list of enum entries to be stored in the database.
  * @return A Column<E> representing the enum in the Exposed table.
  * @throws IllegalArgumentException if an unknown enum id is encountered in the database.
  *
  * @see IEnumWithId
  */
-internal inline fun <reified E> Table.enumerationById(name: String): Column<E>
+internal fun <E> Table.enumerationById(name: String, entries: EnumEntries<E>): Column<E>
         where E : Enum<E>, E : IEnumWithId {
     return integer(name = name).transform(
         wrap = { dbEnumId ->
-            enumEntries<E>().firstOrNull { enum -> enum.id == dbEnumId }
+            entries.firstOrNull { enum -> enum.id == dbEnumId }
                 ?: throw IllegalArgumentException("Unknown enum id: $dbEnumId")
         },
         unwrap = { enum -> enum.id }
