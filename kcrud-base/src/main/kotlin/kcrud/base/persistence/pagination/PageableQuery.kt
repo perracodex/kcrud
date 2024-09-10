@@ -10,7 +10,6 @@ import org.jetbrains.exposed.sql.Query
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.Table
 import java.util.concurrent.ConcurrentHashMap
-import kotlin.reflect.KClass
 import kotlin.reflect.full.memberProperties
 
 /**
@@ -52,18 +51,11 @@ private object QueryOrderingHelper {
     private val tracer = Tracer<QueryOrderingHelper>()
 
     /**
-     * Represents a key for the [columnCache].
-     *
-     * @param tableClass The class of the table containing the column.
-     * @param fieldName The name of the field representing the column.
+     * Cache storing column references.
+     * Used to optimize the reflection process of finding table columns.
+     * The key expected format is "tableName::fieldName", in lowercase.
      */
-    private data class CacheKey(val tableClass: KClass<out Table>, val fieldName: String)
-
-    /**
-     * Cache storing column references with table class and column name as the key.
-     * Used to optimize the reflection process of finding columns.
-     */
-    private val columnCache: MutableMap<CacheKey, Column<*>> = ConcurrentHashMap()
+    private val columnCache: MutableMap<String, Column<*>> = ConcurrentHashMap()
 
     /**
      * Applies ordering to a query based on the provided Pageable object.
@@ -109,12 +101,12 @@ private object QueryOrderingHelper {
      */
     private fun getColumn(targets: List<Table>, fieldName: String): Column<*>? {
         return targets.asSequence().mapNotNull { table ->
-            val key = CacheKey(tableClass = table::class, fieldName = fieldName.lowercase())
+            val key: String = "${table.tableName}::$fieldName".lowercase()
 
             // Retrieve from cache, or resolve and cache if not found.
             return@mapNotNull columnCache[key] ?: resolveTableColumn(
                 table = table,
-                fieldName = fieldName
+                fieldName = fieldName,
             )?.also { column ->
                 columnCache[key] = column
             }
