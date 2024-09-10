@@ -26,6 +26,7 @@ import kotlin.reflect.full.memberProperties
  *
  * @param pageable An optional [Pageable] object containing pagination information.
  * @return The Query with pagination applied if Pageable is provided, otherwise the original Query.
+ * @throws IllegalArgumentException If an invalid sort table or column is specified.
  */
 public fun Query.paginate(pageable: Pageable?): Query {
     pageable?.let {
@@ -60,79 +61,81 @@ private object QueryOrderingHelper {
      *
      * @param query The query to apply ordering to.
      * @param pageable An optional Pageable object containing ordering information.
+     * @throws IllegalArgumentException If an invalid sort table or column is specified.
      */
     fun applyOrder(query: Query, pageable: Pageable?) {
         pageable?.sort?.forEach { order ->
 
-            val column: Column<*> = if (order.table.isNullOrBlank()) {
-                // No specific table, search among all targets.
-                getSortColumn(targets = query.targets, fieldName = order.field)
-            } else {
-                // If a table name is specified, find the corresponding table from the query targets.
-                val table: Table = query.targets.firstOrNull { table ->
-                    table.tableName.equals(order.table, ignoreCase = true)
-                } ?: throw IllegalArgumentException("Invalid sort table: ${order.table}")
+            // Filter query targets to find matching tables if a specific table name is provided.
+            // If no matching tables are found, throw an IllegalArgumentException.
+            // If no table is provided, all query targets are considered for column search.
+            val targetTables: List<Table> = order.table?.let { tableName ->
+                query.targets.filter { table ->
+                    table.tableName.equals(other = tableName, ignoreCase = true)
+                }.takeIf { queryTables -> queryTables.isNotEmpty() }
+                    ?: throw IllegalArgumentException("Invalid sort table: $tableName")
+            } ?: query.targets
 
-                getSortColumn(targets = listOf(table), fieldName = order.field)
-            }
+            // Retrieve the column from the target tables based on the field name.
+            val column: Column<*> = getColumn(targets = targetTables, fieldName = order.field)
+                ?: throw IllegalArgumentException(
+                    "Invalid sort column: '${order.field}'" +
+                            (order.table?.let { table -> " in table '$table'" } ?: "")
+                )
 
+            // Apply the sorting order to the query based on the direction specified in the Pageable.
             val sortOrder: SortOrder = SortOrder.ASC.takeIf { order.direction == Pageable.Direction.ASC } ?: SortOrder.DESC
             query.orderBy(column to sortOrder)
         }
     }
 
     /**
-     * Iterates over a list of tables to find a column matching the specified field name.
+     * Attempts to retrieve a column, first from the cache, or of not found, try to resolve
+     * it via reflection from the given list of table [targets] and cache it.
      *
      * @param targets A list of tables to search for the column.
      * @param fieldName The name of the field representing the column.
-     * @return The found Column reference.
-     * @throws IllegalArgumentException If the column is not found in any of the tables.
+     * @return The found Column reference, or null if not found.
      */
-    private fun getSortColumn(targets: List<Table>, fieldName: String): Column<*> {
-        targets.forEach { table ->
-            try {
-                return findColumn(table = table, fieldName = fieldName)
-            } catch (e: IllegalArgumentException) {
-                // Ignore and try the next table.
+    private fun getColumn(targets: List<Table>, fieldName: String): Column<*>? {
+        return targets.asSequence().mapNotNull { table ->
+            val tableClass: KClass<out Table> = table::class
+            val cacheKey = TableColumnKey(tableClass = tableClass, fieldName = fieldName.lowercase())
+
+            // Retrieve from cache, or resolve and cache if not found.
+            return@mapNotNull columnCache[cacheKey] ?: resolveTableColumn(
+                table = table,
+                fieldName = fieldName
+            )?.also { column ->
+                columnCache[cacheKey] = column
             }
-        }
-        throw IllegalArgumentException("Invalid sort column: '$fieldName'. Not found in any of the queried tables.")
+        }.firstOrNull()
     }
 
     /**
-     * Retrieves a column reference for a given table and field name.
-     * Uses cached data or performs reflection if not already cached.
+     * Searches for a column in the given [table] by matching its property names
+     * with the given [fieldName].
      *
      * @param table The table to search for the column.
      * @param fieldName The name of the field representing the column.
-     * @return The Column reference from the table.
-     * @throws IllegalArgumentException If the column is not found in the table.
+     * @return The Column reference from the table, or null if not found.
      */
-    private fun findColumn(table: Table, fieldName: String): Column<*> {
-        val tableClass: KClass<out Table> = table::class
-
-        // Create a key to identify the column in the cache.
-        val cacheKey = TableColumnKey(tableClass = tableClass, fieldName = fieldName.lowercase())
-
-        // Try to get the column from the cache; if not found, search for it in the table.
-        return columnCache.getOrPut(key = cacheKey) {
-            tableClass.memberProperties
-                .firstOrNull { property ->
-                    // Look for a property in the table class that matches the field name and is a Column type.
-                    property.name.equals(other = fieldName, ignoreCase = true) &&
-                            property.returnType.classifier == Column::class
-                }?.also { column ->
-                    // Log a message if the column is found in the table.
-                    tracer.debug("Column found: '${column.name}' in table '${table.tableName}'.")
-                }?.getter?.call(table) as? Column<*> // Attempt to retrieve the Column property from the table.
-                ?: let {
-                    // If the column could not be retrieved then log a message and throw an exception.
-                    val traceMessage = "Column '$fieldName' not found in table '${table.tableName}'."
-                    tracer.debug(traceMessage)
-                    throw IllegalArgumentException(traceMessage)
-                }
-        }
+    private fun resolveTableColumn(table: Table, fieldName: String): Column<*>? {
+        return table::class.memberProperties
+            .firstOrNull { property ->
+                // Look for a property in the table class that matches the field name and is a Column type.
+                property.name.equals(fieldName, ignoreCase = true) &&
+                        property.returnType.classifier == Column::class
+            }?.let { property ->
+                runCatching {
+                    // Attempt to retrieve the Column property from the table.
+                    tracer.debug("Column matched. ${table.tableName}::${property.name}.")
+                    return property.getter.call(table) as? Column<*>
+                }.onFailure { exception ->
+                    // Log the exception if the reflection call fails, as it may indicate a misconfiguration.
+                    tracer.error(message = "Failed to access column. ${table.tableName}::${property.name}", cause = exception)
+                }.getOrNull()
+            }
     }
 
     /**

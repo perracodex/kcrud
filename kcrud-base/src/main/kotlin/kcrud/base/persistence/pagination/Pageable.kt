@@ -51,6 +51,7 @@ public data class Pageable(
     ) {
         init {
             require(value = field.isNotBlank()) { "The sorting field name must not be blank." }
+            require(value = table == null || table.isNotBlank()) { "The table name must not be an empty string if provided." }
         }
     }
 }
