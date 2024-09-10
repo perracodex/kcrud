@@ -99,15 +99,14 @@ private object QueryOrderingHelper {
      */
     private fun getColumn(targets: List<Table>, fieldName: String): Column<*>? {
         return targets.asSequence().mapNotNull { table ->
-            val tableClass: KClass<out Table> = table::class
-            val cacheKey = TableColumnKey(tableClass = tableClass, fieldName = fieldName.lowercase())
+            val key = TableColumnKey(tableClass = table::class, fieldName = fieldName.lowercase())
 
             // Retrieve from cache, or resolve and cache if not found.
-            return@mapNotNull columnCache[cacheKey] ?: resolveTableColumn(
+            return@mapNotNull columnCache[key] ?: resolveTableColumn(
                 table = table,
                 fieldName = fieldName
             )?.also { column ->
-                columnCache[cacheKey] = column
+                columnCache[key] = column
             }
         }.firstOrNull()
     }
@@ -144,5 +143,5 @@ private object QueryOrderingHelper {
      * @param tableClass The class of the table containing the column.
      * @param fieldName The name of the field representing the column.
      */
-    private data class TableColumnKey(val tableClass: KClass<*>, val fieldName: String)
+    private data class TableColumnKey(val tableClass: KClass<out Table>, val fieldName: String)
 }
