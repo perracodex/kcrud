@@ -51,9 +51,19 @@ public fun Query.paginate(pageable: Pageable?): Query {
 private object QueryOrderingHelper {
     private val tracer = Tracer<QueryOrderingHelper>()
 
-    // Cache storing column references with table class and column name as the key.
-    // Used to optimize the reflection process of finding columns.
-    private val columnCache: MutableMap<TableColumnKey, Column<*>> = ConcurrentHashMap()
+    /**
+     * Represents a key for the [columnCache].
+     *
+     * @param tableClass The class of the table containing the column.
+     * @param fieldName The name of the field representing the column.
+     */
+    private data class CacheKey(val tableClass: KClass<out Table>, val fieldName: String)
+
+    /**
+     * Cache storing column references with table class and column name as the key.
+     * Used to optimize the reflection process of finding columns.
+     */
+    private val columnCache: MutableMap<CacheKey, Column<*>> = ConcurrentHashMap()
 
     /**
      * Applies ordering to a query based on the provided Pageable object.
@@ -99,7 +109,7 @@ private object QueryOrderingHelper {
      */
     private fun getColumn(targets: List<Table>, fieldName: String): Column<*>? {
         return targets.asSequence().mapNotNull { table ->
-            val key = TableColumnKey(tableClass = table::class, fieldName = fieldName.lowercase())
+            val key = CacheKey(tableClass = table::class, fieldName = fieldName.lowercase())
 
             // Retrieve from cache, or resolve and cache if not found.
             return@mapNotNull columnCache[key] ?: resolveTableColumn(
@@ -136,12 +146,4 @@ private object QueryOrderingHelper {
                 }.getOrNull()
             }
     }
-
-    /**
-     * Represents a key for the column cache.
-     *
-     * @param tableClass The class of the table containing the column.
-     * @param fieldName The name of the field representing the column.
-     */
-    private data class TableColumnKey(val tableClass: KClass<out Table>, val fieldName: String)
 }
