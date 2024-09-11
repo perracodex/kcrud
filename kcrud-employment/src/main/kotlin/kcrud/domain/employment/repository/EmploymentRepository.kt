@@ -29,10 +29,9 @@ internal class EmploymentRepository(
 
     override fun findAll(pageable: Pageable?): Page<EmploymentEntity> {
         return transactionWithSchema(schema = sessionContext.schema) {
-            // For pagination, we need to count the total elements before applying the limit.
-            // Querying a count is by a large margin much faster than performing a <count over>
-            // expression, especially when dealing with large datasets, so there is no performance
-            // penalty for this approach.
+            // Need counting the overall elements before applying pagination.
+            // A separate simple count query is by far more performant
+            // than having 'count over' expression as part of the main query.
             val totalElements: Int = EmploymentTable.selectAll().count().toInt()
 
             val content: List<EmploymentEntity> = (EmploymentTable innerJoin EmployeeTable leftJoin ContactTable)
