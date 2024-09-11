@@ -31,7 +31,7 @@ internal class EmploymentRepository(
         return transactionWithSchema(schema = sessionContext.schema) {
             // Need counting the overall elements before applying pagination.
             // A separate simple count query is by far more performant
-            // than having 'count over' expression as part of the main query.
+            // than having a 'count over' expression as part of the main query.
             val totalElements: Int = EmploymentTable.selectAll().count().toInt()
 
             val content: List<EmploymentEntity> = (EmploymentTable innerJoin EmployeeTable leftJoin ContactTable)
