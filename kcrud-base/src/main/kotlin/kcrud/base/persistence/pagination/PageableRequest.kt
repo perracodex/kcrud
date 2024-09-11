@@ -31,10 +31,9 @@ import kcrud.base.env.Tracer
  * This explicit specification prevents ambiguity and ensures accurate sorting when queries involve
  * multiple tables with potentially overlapping field names.
  *
- * If the field name does not include a table prefix, the function applies the sort order to the first
- * matching field found among the query's target tables. It's important to note that without specifying
- * table names, there might be ambiguity in queries targeting multiple tables with identical field names;
- * hence, prefixing field names with table names is recommended for clarity and precision.
+ * If the field name does not include a table prefix, and ambiguity arises due to multiple tables
+ * sharing the same field name, an exception is raised. To avoid this, it is recommended to prefix
+ * field names with table names for clarity and precision.
  *
  * If no pagination or sorting is requested, the function returns null, indicating the absence of
  * pageable constraints.

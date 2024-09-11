@@ -26,6 +26,19 @@ internal sealed class PaginationError(
 ) : AppException(status = status, code = code, description = description, reason = reason, cause = cause) {
 
     /**
+     * Error when provided sorting fields are ambiguous as they may exist in multiple tables.
+     *
+     * @property fieldName The ambiguous field name that was provided.
+     * @property reason The reason for the ambiguity.
+     */
+    class AmbiguousOrderField(val fieldName: String, reason: String) : PaginationError(
+        status = HttpStatusCode.BadRequest,
+        code = "${TAG}AOF",
+        description = "Field '$fieldName' is ambiguous; specify the table name.",
+        reason = reason
+    )
+
+    /**
      * Error when the page attributes are invalid.
      * This is when only one either the page or size is present.
      * Both must be present or none of them.
@@ -43,12 +56,23 @@ internal sealed class PaginationError(
      *
      * @property direction The sort direction that was provided is not valid.
      */
-    class InvalidOrderDirection(val direction: String?, reason: String? = null, cause: Throwable? = null) : PaginationError(
+    class InvalidOrderDirection(val direction: String, reason: String? = null, cause: Throwable? = null) : PaginationError(
         status = HttpStatusCode.BadRequest,
         code = "${TAG}IOD",
         description = "Ordering sort direction is invalid. Received: '$direction'",
         reason = reason,
         cause = cause
+    )
+
+    /**
+     * Error when provided sorting field is invalid.
+     *
+     * @property fieldName The invalid field name that was provided.
+     */
+    class InvalidOrderField(val fieldName: String) : PaginationError(
+        status = HttpStatusCode.BadRequest,
+        code = "${TAG}AOF",
+        description = "Invalid sort field '$fieldName'."
     )
 
     private companion object {
