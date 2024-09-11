@@ -6,7 +6,6 @@ package kcrud.domain.employee.errors
 
 import io.ktor.http.*
 import kcrud.base.errors.AppException
-import kcrud.base.errors.ErrorCodeRegistry
 import kotlin.uuid.Uuid
 
 /**
@@ -24,7 +23,14 @@ internal sealed class EmployeeError(
     description: String,
     reason: String? = null,
     cause: Throwable? = null
-) : AppException(status = status, code = code, description = description, reason = reason, cause = cause) {
+) : AppException(
+    status = status,
+    context = "EMPLOYEE",
+    code = code,
+    description = description,
+    reason = reason,
+    cause = cause
+) {
 
     /**
      * Error for when an employee is not found.
@@ -37,7 +43,7 @@ internal sealed class EmployeeError(
         cause: Throwable? = null
     ) : EmployeeError(
         status = HttpStatusCode.NotFound,
-        code = "${TAG}ENF",
+        code = "EMPLOYEE_NOT_FOUND",
         description = "Employee not found. Employee Id: $employeeId",
         reason = reason,
         cause = cause
@@ -56,7 +62,7 @@ internal sealed class EmployeeError(
         cause: Throwable? = null
     ) : EmployeeError(
         status = HttpStatusCode.BadRequest,
-        code = "${TAG}IEF",
+        code = "INVALID_EMAIL_FORMAT",
         description = "Invalid email format: '$email'. Employee Id: $employeeId",
         reason = reason,
         cause = cause
@@ -75,17 +81,9 @@ internal sealed class EmployeeError(
         cause: Throwable? = null
     ) : EmployeeError(
         status = HttpStatusCode.BadRequest,
-        code = "${TAG}IPF",
+        code = "INVALID_PHONE_FORMAT",
         description = "Invalid phone format: '$phone'. Employee Id: $employeeId",
         reason = reason,
         cause = cause
     )
-
-    private companion object {
-        const val TAG: String = "EMP."
-
-        init {
-            ErrorCodeRegistry.registerTag(tag = TAG)
-        }
-    }
 }

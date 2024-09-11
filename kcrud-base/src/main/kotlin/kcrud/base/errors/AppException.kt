@@ -11,6 +11,7 @@ import kotlinx.serialization.Serializable
  * The application exception class, directly incorporating HTTP status, error code, and description.
  *
  * @param status The HTTP status code associated with this error.
+ * @param context A context identifier for the error, typically the module or feature where it occurred.
  * @param code A unique code identifying the type of error.
  * @param description A human-readable description of the error.
  * @param reason An optional human-readable reason for the exception, providing more context.
@@ -18,6 +19,7 @@ import kotlinx.serialization.Serializable
  */
 public open class AppException(
     public val status: HttpStatusCode,
+    public val context: String,
     public val code: String,
     public val description: String,
     private val reason: String? = null,
@@ -32,7 +34,7 @@ public open class AppException(
      */
     public fun messageDetail(): String {
         val formattedReason: String = reason?.let { "| $it" } ?: ""
-        return "Status: ${status.value} | $code | $description $formattedReason"
+        return "Status: ${status.value} | $context | $code | $description $formattedReason"
     }
 
     /**
@@ -43,6 +45,7 @@ public open class AppException(
     public fun toErrorResponse(): ErrorResponse {
         return ErrorResponse(
             status = status.value,
+            context = context,
             code = code,
             description = description,
             reason = reason
@@ -54,6 +57,7 @@ public open class AppException(
      * encapsulating the structured error information that can be sent in an HTTP response.
      *
      * @param status The HTTP status code associated with the error.
+     * @param context A context identifier for the error, typically the module or feature where it occurred.
      * @param code The unique code identifying the error.
      * @param description A brief description of the error.
      * @param reason An optional human-readable reason for the error, providing more context.
@@ -61,6 +65,7 @@ public open class AppException(
     @Serializable
     public data class ErrorResponse(
         val status: Int,
+        val context: String,
         val code: String,
         val description: String,
         val reason: String?

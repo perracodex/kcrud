@@ -6,7 +6,6 @@ package kcrud.base.persistence.pagination
 
 import io.ktor.http.*
 import kcrud.base.errors.AppException
-import kcrud.base.errors.ErrorCodeRegistry
 
 /**
  * Pagination concrete errors.
@@ -23,18 +22,25 @@ internal sealed class PaginationError(
     description: String,
     reason: String? = null,
     cause: Throwable? = null
-) : AppException(status = status, code = code, description = description, reason = reason, cause = cause) {
+) : AppException(
+    status = status,
+    context = "PAGINATION",
+    code = code,
+    description = description,
+    reason = reason,
+    cause = cause
+) {
 
     /**
      * Error when provided sorting fields are ambiguous as they may exist in multiple tables.
      *
-     * @property fieldName The ambiguous field name that was provided.
+     * @property sort The sort directive that was provided.
      * @property reason The reason for the ambiguity.
      */
-    class AmbiguousOrderField(val fieldName: String, reason: String) : PaginationError(
+    class AmbiguousSortField(val sort: Pageable.Sort, reason: String) : PaginationError(
         status = HttpStatusCode.BadRequest,
-        code = "${TAG}AOF",
-        description = "Field '$fieldName' is ambiguous; specify the table name.",
+        code = "AMBIGUOUS_SORT_FIELD",
+        description = "Ambiguous field: ${sort.field}",
         reason = reason
     )
 
@@ -45,7 +51,7 @@ internal sealed class PaginationError(
      */
     class InvalidPageablePair(reason: String? = null, cause: Throwable? = null) : PaginationError(
         status = HttpStatusCode.BadRequest,
-        code = "${TAG}IPP",
+        code = "INVALID_PAGEABLE_PAIR",
         description = "Page attributes mismatch. Expected both 'page' and 'size', or none of them.",
         reason = reason,
         cause = cause
@@ -58,7 +64,7 @@ internal sealed class PaginationError(
      */
     class InvalidOrderDirection(val direction: String, reason: String? = null, cause: Throwable? = null) : PaginationError(
         status = HttpStatusCode.BadRequest,
-        code = "${TAG}IOD",
+        code = "INVALID_ORDER_DIRECTION",
         description = "Ordering sort direction is invalid. Received: '$direction'",
         reason = reason,
         cause = cause
@@ -67,19 +73,13 @@ internal sealed class PaginationError(
     /**
      * Error when provided sorting field is invalid.
      *
-     * @property fieldName The invalid field name that was provided.
+     * @property sort The sort directive that was provided.
+     * @property reason The reason for the invalid field.
      */
-    class InvalidOrderField(val fieldName: String) : PaginationError(
+    class InvalidSortDirective(val sort: Pageable.Sort, reason: String) : PaginationError(
         status = HttpStatusCode.BadRequest,
-        code = "${TAG}AOF",
-        description = "Invalid sort field '$fieldName'."
+        code = "INVALID_SORT_DIRECTIVE",
+        description = "Invalid sort directive: $sort",
+        reason = reason
     )
-
-    private companion object {
-        const val TAG: String = "PGN."
-
-        init {
-            ErrorCodeRegistry.registerTag(tag = TAG)
-        }
-    }
 }

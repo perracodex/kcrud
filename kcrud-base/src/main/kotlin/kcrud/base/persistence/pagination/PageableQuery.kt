@@ -28,8 +28,8 @@ import kotlin.reflect.full.memberProperties
  */
 public fun Query.paginate(pageable: Pageable?): Query {
     pageable?.let {
-        pageable.sort?.let { sort ->
-            QueryOrderingHelper.applyOrder(query = this, sort = sort)
+        pageable.sort?.let { sortDirectives ->
+            QueryOrderingHelper.applyOrder(query = this, sortDirectives = sortDirectives)
         }
 
         if (pageable.size > 0) {
@@ -59,38 +59,30 @@ private object QueryOrderingHelper {
      * Applies ordering to a query based on the provided list of [Pageable.Sort] directives.
      *
      * @param query The query to apply ordering to.
-     * @param sort The list of sorting directives to apply to the query.
+     * @param sortDirectives The list of sorting directives to apply to the query.
      */
-    fun applyOrder(query: Query, sort: List<Pageable.Sort>) {
-        if (sort.isEmpty()) {
+    fun applyOrder(query: Query, sortDirectives: List<Pageable.Sort>) {
+        if (sortDirectives.isEmpty()) {
             return
         }
 
         val queryTables: List<Table> = query.targets.distinct()
 
-        sort.forEach { order ->
-            // Filter query targets to find matching tables if a specific table name is provided.
-            // If no matching tables are found, throw an InvalidOrderField.
-            // If no table is provided, all query targets are considered for column search.
-            val targetTables: List<Table> = order.table?.let { tableName ->
-                queryTables.filter { table ->
-                    table.tableName.equals(other = tableName, ignoreCase = true)
-                }.distinct().takeIf { queryTables ->
-                    queryTables.isNotEmpty()
-                } ?: throw PaginationError.InvalidOrderField(fieldName = order.field)
-            } ?: queryTables
+        sortDirectives.forEach { sort ->
+            // Get the list of query tables to resolve the field from the sort directive.
+            val targetTables: List<Table> = findTargetTables(queryTables = queryTables, sort = sort)
 
-            // Retrieve the column from the target tables based on the field name.
-            val key: String = generateCacheKey(context = queryTables, order = order)
+            // Retrieve the column from the target tables.
+            val key: String = generateCacheKey(context = queryTables, sort = sort)
             val column: Column<*> = getColumn(
                 key = key,
-                fieldName = order.field,
+                sort = sort,
                 targets = targetTables
             )
 
             // Apply the sorting order to the query based on the direction
             // specified in the Pageable.
-            val sortOrder: SortOrder = when (order.direction) {
+            val sortOrder: SortOrder = when (sort.direction) {
                 Pageable.Direction.ASC -> SortOrder.ASC
                 Pageable.Direction.DESC -> SortOrder.DESC
             }
@@ -99,28 +91,51 @@ private object QueryOrderingHelper {
     }
 
     /**
+     * Filters the list of query tables needed to resolve the field from the sort directive.
+     *
+     * If a table name is provided in the sort directive, only tables with a matching name are returned.
+     * If no table name is provided, all query tables are returned as potential targets.
+     *
+     * @param queryTables The list of tables involved in the query.
+     * @param sort The sorting directive containing the table name.
+     * @return The list of target tables based on the sort directive.
+     */
+    fun findTargetTables(queryTables: List<Table>, sort: Pageable.Sort): List<Table> {
+        return sort.table?.let { tableName ->
+            queryTables.filter { table ->
+                table.tableName.equals(other = tableName, ignoreCase = true)
+            }.distinct().takeIf { tables ->
+                tables.isNotEmpty()
+            } ?: throw PaginationError.InvalidSortDirective(
+                sort = sort,
+                reason = "'$tableName' is not recognized as part of the Query tables."
+            )
+        } ?: queryTables
+    }
+
+    /**
      * Attempts to retrieve a column, first from the cache, or of not found, try to resolve
      * it via reflection from the given list of table [targets] and cache it.
      *
      * @param key The cache key to retrieve/store the column reference.
-     * @param fieldName The name of the field representing the column.
+     * @param sort The sorting directive containing the field name.
      * @param targets A list of tables to search for the column.
      * @return The found Column reference, or null if not found.
      */
-    private fun getColumn(key: String, fieldName: String, targets: List<Table>): Column<*> {
+    private fun getColumn(key: String, sort: Pageable.Sort, targets: List<Table>): Column<*> {
         columnCache[key]?.let { column ->
             return column
         }
 
         val columns: List<Column<*>> = targets.asSequence().flatMap { table ->
-            resolveTableColumn(table = table, fieldName = fieldName)
+            resolveTableColumn(table = table, fieldName = sort.field)
         }.distinct().toList()
 
         if (columns.isEmpty()) {
-            throw PaginationError.InvalidOrderField(fieldName = fieldName)
+            throw PaginationError.InvalidSortDirective(sort = sort, reason = "Field not found in query tables.")
         } else if (columns.size > 1) {
-            val reason = "'$fieldName' found in: ${columns.joinToString { it.table.tableName }}"
-            throw PaginationError.AmbiguousOrderField(fieldName = fieldName, reason = reason)
+            val reason = "'${sort.field}' found in: ${columns.joinToString { it.table.tableName }}"
+            throw PaginationError.AmbiguousSortField(sort = sort, reason = reason)
         }
 
         val column: Column<*> = columns.single()
@@ -165,11 +180,11 @@ private object QueryOrderingHelper {
      * tables in different queries.
      *
      * @param context A list of tables involved in the query.
-     * @param order The sorting directive used to refine the key.
+     * @param sort The sorting directive used to refine the key.
      * @return A string representing the cache key, uniquely identifying a column within the query context.
      */
-    private fun generateCacheKey(context: List<Table>, order: Pageable.Sort): String {
+    private fun generateCacheKey(context: List<Table>, sort: Pageable.Sort): String {
         val tableNames: String = context.joinToString("::") { it.tableName.lowercase() }
-        return "$tableNames=${order.table?.lowercase()}.${order.field.lowercase()}"
+        return "$tableNames=${sort.table?.lowercase()}.${sort.field.lowercase()}"
     }
 }

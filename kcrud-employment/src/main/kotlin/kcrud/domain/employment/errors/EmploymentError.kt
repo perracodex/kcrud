@@ -6,7 +6,6 @@ package kcrud.domain.employment.errors
 
 import io.ktor.http.*
 import kcrud.base.errors.AppException
-import kcrud.base.errors.ErrorCodeRegistry
 import kcrud.base.utils.KLocalDate
 import kotlin.uuid.Uuid
 
@@ -25,7 +24,14 @@ internal sealed class EmploymentError(
     description: String,
     reason: String? = null,
     cause: Throwable? = null
-) : AppException(status = status, code = code, description = description, reason = reason, cause = cause) {
+) : AppException(
+    status = status,
+    context = "EMPLOYMENT",
+    code = code,
+    description = description,
+    reason = reason,
+    cause = cause
+) {
 
     /**
      * Error for when an employment is not found for a concrete employee.
@@ -40,7 +46,7 @@ internal sealed class EmploymentError(
         cause: Throwable? = null
     ) : EmploymentError(
         status = HttpStatusCode.NotFound,
-        code = "${TAG}ENF",
+        code = "EMPLOYMENT_NOT_FOUND",
         description = "Employment not found. Employee Id: $employeeId. Employment Id: $employmentId.",
         reason = reason,
         cause = cause
@@ -64,7 +70,7 @@ internal sealed class EmploymentError(
         cause: Throwable? = null
     ) : EmploymentError(
         status = HttpStatusCode.BadRequest,
-        code = "${TAG}PDM",
+        code = "PERIOD_DATES_MISMATCH",
         description = "Employment end date cannot be prior to the start date. " +
                 "Employee Id: $employeeId. Employment Id: $employmentId. " +
                 "Start Date: $startDate. End Date: $endDate.",
@@ -89,19 +95,11 @@ internal sealed class EmploymentError(
         cause: Throwable? = null
     ) : EmploymentError(
         status = HttpStatusCode.BadRequest,
-        code = "${TAG}IPD",
+        code = "INVALID_PROBATION_END_DATE",
         description = "Employment probation end date cannot be prior to the start date. " +
                 "Employee Id: $employeeId. Employment Id: $employmentId. " +
                 "Start Date: $startDate. Probation End Date: $probationEndDate.",
         reason = reason,
         cause = cause
     )
-
-    private companion object {
-        const val TAG: String = "EMT."
-
-        init {
-            ErrorCodeRegistry.registerTag(tag = TAG)
-        }
-    }
 }
