@@ -73,7 +73,7 @@ private object QueryOrderingHelper {
             val targetTables: List<Table> = findTargetTables(queryTables = queryTables, sort = sort)
 
             // Retrieve the column from the target tables.
-            val key: String = generateCacheKey(context = queryTables, sort = sort)
+            val key: String = generateCacheKey(queryTables = queryTables, sort = sort)
             val column: Column<*> = getColumn(
                 key = key,
                 sort = sort,
@@ -179,12 +179,12 @@ private object QueryOrderingHelper {
      * This approach prevents skipping essential ambiguity checks for fields that appear across different
      * tables in different queries.
      *
-     * @param context A list of tables involved in the query.
+     * @param queryTables All the tables involved in the query.
      * @param sort The sorting directive used to refine the key.
      * @return A string representing the cache key, uniquely identifying a column within the query context.
      */
-    private fun generateCacheKey(context: List<Table>, sort: Pageable.Sort): String {
-        val tableNames: String = context.joinToString("::") { it.tableName.lowercase() }
+    private fun generateCacheKey(queryTables: List<Table>, sort: Pageable.Sort): String {
+        val tableNames: String = queryTables.joinToString("::") { it.tableName.lowercase() }
         return "$tableNames=${sort.table?.lowercase()}.${sort.field.lowercase()}"
     }
 }
