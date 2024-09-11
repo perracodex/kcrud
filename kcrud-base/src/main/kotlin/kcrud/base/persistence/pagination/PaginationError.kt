@@ -30,14 +30,12 @@ internal sealed class PaginationError(
     reason = reason,
     cause = cause
 ) {
-
     /**
      * Error when provided sorting fields are ambiguous as they may exist in multiple tables.
      *
-     * @property sort The sort directive that was provided.
-     * @property reason The reason for the ambiguity.
+     * @param sort The sort directive that was provided.
      */
-    class AmbiguousSortField(val sort: Pageable.Sort, reason: String) : PaginationError(
+    class AmbiguousSortField(sort: Pageable.Sort, reason: String) : PaginationError(
         status = HttpStatusCode.BadRequest,
         code = "AMBIGUOUS_SORT_FIELD",
         description = "Ambiguous field: ${sort.field}",
@@ -60,9 +58,9 @@ internal sealed class PaginationError(
     /**
      * Error when the provided sort direction is invalid.
      *
-     * @property direction The sort direction that was provided is not valid.
+     * @param direction The sort direction that was provided is not valid.
      */
-    class InvalidOrderDirection(val direction: String, reason: String? = null, cause: Throwable? = null) : PaginationError(
+    class InvalidOrderDirection(direction: String, reason: String? = null, cause: Throwable? = null) : PaginationError(
         status = HttpStatusCode.BadRequest,
         code = "INVALID_ORDER_DIRECTION",
         description = "Ordering sort direction is invalid. Received: '$direction'",
@@ -73,10 +71,9 @@ internal sealed class PaginationError(
     /**
      * Error when provided sorting field is invalid.
      *
-     * @property sort The sort directive that was provided.
-     * @property reason The reason for the invalid field.
+     * @param sort The sort directive that was provided.
      */
-    class InvalidSortDirective(val sort: Pageable.Sort, reason: String) : PaginationError(
+    class InvalidSortDirective(sort: Pageable.Sort, reason: String) : PaginationError(
         status = HttpStatusCode.BadRequest,
         code = "INVALID_SORT_DIRECTIVE",
         description = "Invalid sort directive: $sort",

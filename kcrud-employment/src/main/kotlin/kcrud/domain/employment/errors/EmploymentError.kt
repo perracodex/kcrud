@@ -32,16 +32,15 @@ internal sealed class EmploymentError(
     reason = reason,
     cause = cause
 ) {
-
     /**
      * Error for when an employment is not found for a concrete employee.
      *
-     * @property employeeId The affected employee id.
-     * @property employmentId The employment id that was not found.
+     * @param employeeId The affected employee id.
+     * @param employmentId The employment id that was not found.
      */
     class EmploymentNotFound(
-        val employeeId: Uuid,
-        val employmentId: Uuid,
+        employeeId: Uuid,
+        employmentId: Uuid,
         reason: String? = null,
         cause: Throwable? = null
     ) : EmploymentError(
@@ -56,16 +55,16 @@ internal sealed class EmploymentError(
      * Error when there is an inconsistency in the period dates,
      * where the end date is prior to the start date.
      *
-     * @property employeeId The affected employee id.
-     * @property employmentId The employment id associated with the error.
-     * @property startDate The start date of the employment period.
-     * @property endDate The end date of the employment period.
+     * @param employeeId The affected employee id.
+     * @param employmentId The employment id associated with the error.
+     * @param startDate The start date of the employment period.
+     * @param endDate The end date of the employment period.
      */
     class PeriodDatesMismatch(
-        val employeeId: Uuid,
-        val employmentId: Uuid?,
-        val startDate: KLocalDate,
-        val endDate: KLocalDate,
+        employeeId: Uuid,
+        employmentId: Uuid?,
+        startDate: KLocalDate,
+        endDate: KLocalDate,
         reason: String? = null,
         cause: Throwable? = null
     ) : EmploymentError(
@@ -81,16 +80,16 @@ internal sealed class EmploymentError(
     /**
      * Error when the probation end date is prior to the employment start date.
      *
-     * @property employeeId The affected employee id.
-     * @property employmentId The employment id associated with the error.
-     * @property startDate The start date of the employment period.
-     * @property probationEndDate The probation end date of the employment period.
+     * @param employeeId The affected employee id.
+     * @param employmentId The employment id associated with the error.
+     * @param startDate The start date of the employment period.
+     * @param probationEndDate The probation end date of the employment period.
      */
     class InvalidProbationEndDate(
-        val employeeId: Uuid,
-        val employmentId: Uuid?,
-        val startDate: KLocalDate,
-        val probationEndDate: KLocalDate,
+        employeeId: Uuid,
+        employmentId: Uuid?,
+        startDate: KLocalDate,
+        probationEndDate: KLocalDate,
         reason: String? = null,
         cause: Throwable? = null
     ) : EmploymentError(

@@ -31,14 +31,13 @@ internal sealed class EmployeeError(
     reason = reason,
     cause = cause
 ) {
-
     /**
      * Error for when an employee is not found.
      *
-     * @property employeeId The employee id that was not found.
+     * @param employeeId The employee id that was not found.
      */
     class EmployeeNotFound(
-        val employeeId: Uuid,
+        employeeId: Uuid,
         reason: String? = null,
         cause: Throwable? = null
     ) : EmployeeError(
@@ -52,12 +51,12 @@ internal sealed class EmployeeError(
     /**
      * Error for when an email has an invalid format.
      *
-     * @property employeeId The affected employee id.
-     * @property email The email that is already registered.
+     * @param employeeId The affected employee id.
+     * @param email The email that is already registered.
      */
     class InvalidEmailFormat(
-        val employeeId: Uuid?,
-        val email: String,
+        employeeId: Uuid?,
+        email: String,
         reason: String? = null,
         cause: Throwable? = null
     ) : EmployeeError(
@@ -71,12 +70,12 @@ internal sealed class EmployeeError(
     /**
      * Error for when a phone has an invalid format.
      *
-     * @property employeeId The affected employee id.
-     * @property phone The phone value with the invalid format.
+     * @param employeeId The affected employee id.
+     * @param phone The phone value with the invalid format.
      */
     class InvalidPhoneFormat(
-        val employeeId: Uuid?,
-        val phone: String,
+        employeeId: Uuid?,
+        phone: String,
         reason: String? = null,
         cause: Throwable? = null
     ) : EmployeeError(
