@@ -17,7 +17,7 @@ import kotlinx.serialization.Serializable
  * @param reason An optional human-readable reason for the exception, providing more context.
  * @param cause The underlying cause of the exception, if any.
  */
-public open class AppException(
+public abstract class AppException(
     public val status: HttpStatusCode,
     public val context: String,
     public val code: String,
