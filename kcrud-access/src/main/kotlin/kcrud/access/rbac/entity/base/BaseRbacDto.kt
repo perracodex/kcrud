@@ -99,9 +99,9 @@ public abstract class BaseRbacDto {
                     val nestedPropertyName = property.name
 
                     if (nestedPropertyName in nestedFields.keys) {
-                        val nestedDto: BaseRbacDto? = property.get(this as T) as? BaseRbacDto
+                        val nestedInstance: BaseRbacDto? = property.get(this as T) as? BaseRbacDto
                         val newFields: List<String>? = nestedFields[nestedPropertyName]?.map { it.substringAfter(delimiter = '.') }
-                        return@associateWith nestedDto?.internalAnonymize(newFields, nestedDto::class) ?: property.get(this)
+                        return@associateWith nestedInstance?.internalAnonymize(newFields, nestedInstance::class) ?: property.get(this)
                     } else {
                         // If not a nested field or no anonymization needed, keep the original value.
                         return@associateWith property.get(this as T)
