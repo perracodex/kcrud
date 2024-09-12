@@ -6,7 +6,6 @@ package kcrud.base.persistence.pagination
 
 import io.ktor.http.*
 import io.ktor.server.application.*
-import kcrud.base.env.Tracer
 
 /**
  * Extension function to construct a [Pageable] instance from [ApplicationCall] request parameters.
@@ -53,7 +52,7 @@ public fun ApplicationCall.getPageable(): Pageable? {
         throw PaginationError.InvalidPageablePair()
     }
 
-    // Parse multiple 'sort' parameters. Each can contain a field name and a sort direction.
+    // Retrieve the 'sort' parameters. Each can contain a field name and a sort direction.
     val sortParameters: List<String>? = parameters.getAll(name = "sort")
 
     // If no parameters are provided, means no pagination is requested.
@@ -61,36 +60,9 @@ public fun ApplicationCall.getPageable(): Pageable? {
         return null
     }
 
-    // Parse sorting parameters into a list of Sort objects.
-    val sort: List<Pageable.Sort>? = sortParameters?.mapNotNull { parameter ->
-        val sortSegments: List<String> = parameter.split(SortParser.SORT_SEGMENT_DELIMITER).map { it.trim() }
-
-        when {
-            sortSegments.isNotEmpty() -> {
-                val fieldSegment: String = sortSegments[SortParser.FIELD_SEGMENT_INDEX]
-                val tableColumnPair: SortParser.TableColumnPair = SortParser.parseTableAndField(segment = fieldSegment)
-
-                val direction: Pageable.Direction = if (sortSegments.size >= 2) {
-                    val directionString: String = sortSegments[SortParser.DIRECTION_SEGMENT_INDEX]
-                    try {
-                        Pageable.Direction.valueOf(directionString.uppercase())
-                    } catch (e: IllegalArgumentException) {
-                        Tracer(ref = ::getPageable).error(message = "Invalid sorting direction: $directionString", cause = e)
-                        throw PaginationError.InvalidOrderDirection(direction = directionString)
-                    }
-                } else {
-                    Pageable.Direction.ASC // Default direction.
-                }
-
-                Pageable.Sort(
-                    table = tableColumnPair.table,
-                    field = tableColumnPair.field,
-                    direction = direction
-                )
-            }
-
-            else -> null // This case should never happen due to initial validation.
-        }
+    // Parse sorting parameters into a list of Sort directives.
+    val sort: List<Pageable.Sort>? = sortParameters?.let {
+        SortParser.getSortDirectives(sortParameters = sortParameters)
     }
 
     return Pageable(
@@ -102,22 +74,82 @@ public fun ApplicationCall.getPageable(): Pageable? {
 
 private object SortParser {
     /** Delimiter used to split the sort parameter into field name and direction (e.g., "fieldName,ASC"). */
-    const val SORT_SEGMENT_DELIMITER: Char = ','
+    private const val SORT_SEGMENT_DELIMITER: Char = ','
 
     /** Delimiter used to split a field segment into table name and field name (e.g., "table.fieldName"). */
     private const val FIELD_SEGMENT_DELIMITER: Char = '.'
 
-    /** Index position for the field name in a split sort segment (assuming the segment is split by [SORT_SEGMENT_DELIMITER]). */
-    const val FIELD_SEGMENT_INDEX: Int = 0
+    /**
+     * Index position for the field name in a split sort segment
+     * (assuming the segment is split by [SORT_SEGMENT_DELIMITER]).
+     * For example, in the segment "fieldName,ASC", the field name is at index 0.
+     */
+    private const val FIELD_SEGMENT_INDEX: Int = 0
 
-    /** Index position for the direction (ASC or DESC) in a split sort segment. */
-    const val DIRECTION_SEGMENT_INDEX: Int = 1
+    /**
+     * Index position for the direction (ASC or DESC) in a split sort segment.
+     * For example, in the segment "fieldName,ASC", the direction is at index 1
+     * corresponding to the value "ASC".
+     */
+    private const val DIRECTION_SEGMENT_INDEX: Int = 1
 
-    /** Index position for the table name in a split field segment (assuming the segment is split by [FIELD_SEGMENT_DELIMITER]). */
+    /**
+     * Index position for the table name in a split field segment
+     * (assuming the segment is split by [FIELD_SEGMENT_DELIMITER]).
+     * For example, in the segment "table.fieldName", the table name is at index 0.
+     */
     private const val TABLE_NAME_INDEX: Int = 0
 
-    /** Index position for the field name in a split field segment. */
+    /**
+     * Index position for the field name in a split field segment.
+     * For example, in the segment "table.fieldName", the field name is at index 1.
+     */
     private const val FIELD_NAME_INDEX: Int = 1
+
+    /**
+     * Parses the sorting parameters into a list of [Pageable.Sort] directives.
+     *
+     * @param sortParameters The list of sorting parameters to parse.
+     * @return A list of [Pageable.Sort] directives representing the sorting configuration.
+     */
+    fun getSortDirectives(sortParameters: List<String>): List<Pageable.Sort>? {
+        return sortParameters.mapNotNull { parameter ->
+            if (parameter.isBlank()) {
+                throw PaginationError.MissingSortDirective()
+            }
+
+            val sortSegments: List<String> = parameter.split(SORT_SEGMENT_DELIMITER)
+                .map(String::trim)
+
+            return@mapNotNull if (sortSegments.isEmpty()) {
+                null
+            } else {
+                // Resolve the table and field names from the field segment.
+                val fieldSegment: String = sortSegments[FIELD_SEGMENT_INDEX]
+                val tableColumnPair: TableColumnPair = parseTableAndField(segment = fieldSegment)
+
+                // Resolve the sorting direction from the segment.
+                val direction: Pageable.Direction = if (sortSegments.size >= 2) {
+                    runCatching {
+                        Pageable.Direction.valueOf(sortSegments[DIRECTION_SEGMENT_INDEX].uppercase())
+                    }.getOrElse {
+                        throw PaginationError.InvalidOrderDirection(direction = sortSegments[DIRECTION_SEGMENT_INDEX])
+                    }
+                } else {
+                    // If no direction is specified, default to ascending.
+                    Pageable.Direction.ASC
+                }
+
+                Pageable.Sort(
+                    table = tableColumnPair.table,
+                    field = tableColumnPair.field,
+                    direction = direction
+                )
+            }
+        }.takeIf { sortDirectives ->
+            sortDirectives.isNotEmpty()
+        }
+    }
 
     /**
      * Parses the table name and field name from a segment of a sort parameter.
@@ -125,7 +157,7 @@ private object SortParser {
      * @param segment The segment of a sort parameter to parse the table and field names from.
      * @return A [TableColumnPair] object containing the table and field names.
      */
-    fun parseTableAndField(segment: String): TableColumnPair {
+    private fun parseTableAndField(segment: String): TableColumnPair {
         return if (segment.contains(FIELD_SEGMENT_DELIMITER)) {
             val fieldParts: List<String> = segment.split(FIELD_SEGMENT_DELIMITER)
             TableColumnPair(table = fieldParts[TABLE_NAME_INDEX], field = fieldParts[FIELD_NAME_INDEX])
@@ -141,5 +173,5 @@ private object SortParser {
      * @property table Optional name of the table the field belongs to. Used to avoid ambiguity.
      * @property field The name of the field to sort by.
      */
-    data class TableColumnPair(val table: String?, val field: String)
+    private data class TableColumnPair(val table: String?, val field: String)
 }

@@ -38,7 +38,7 @@ internal sealed class PaginationError(
     class AmbiguousSortField(sort: Pageable.Sort, reason: String) : PaginationError(
         status = HttpStatusCode.BadRequest,
         code = "AMBIGUOUS_SORT_FIELD",
-        description = "Ambiguous field: ${sort.field}",
+        description = "Detected ambiguous field: ${sort.field}",
         reason = reason
     )
 
@@ -76,7 +76,17 @@ internal sealed class PaginationError(
     class InvalidSortDirective(sort: Pageable.Sort, reason: String) : PaginationError(
         status = HttpStatusCode.BadRequest,
         code = "INVALID_SORT_DIRECTIVE",
-        description = "Invalid sort directive: $sort",
+        description = "Unexpected sort directive: $sort",
         reason = reason
+    )
+
+    /**
+     * Error when the provided sort directive is missing.
+     * So, that no field name was specified.
+     */
+    class MissingSortDirective : PaginationError(
+        status = HttpStatusCode.BadRequest,
+        code = "MISSING_SORT_DIRECTIVE",
+        description = "Must specify a sort field name.",
     )
 }
