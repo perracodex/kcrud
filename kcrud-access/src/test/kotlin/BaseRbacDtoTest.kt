@@ -43,7 +43,7 @@ class BaseRbacDtoTest {
     }
 
     @Test
-    fun testNestedEntities() {
+    fun testNestedInstances() {
         data class ChildClass(
             val id: Int,
             val name: String,

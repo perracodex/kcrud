@@ -13,7 +13,7 @@ import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.primaryConstructor
 
 /**
- * Base class for entities that should support field level anonymization.
+ * Base class for classes that should support field level anonymization.
  *
  * It provides functionality to anonymize specified fields using reflection,
  * creating a new instance with certain fields replaced by predefined placeholders.
@@ -25,7 +25,7 @@ import kotlin.reflect.full.primaryConstructor
  * the anonymized instance remains consistent with its original structure, which is important for
  * serialization and maintains immutability.
  *
- * This class has scope for improvement, such as handling nested entities, and caching the reflection
+ * This class has scope for improvement, such as handling nested classes, and caching the reflection
  * results for performance optimization.
  *
  * @see [RbacFieldAnonymization]

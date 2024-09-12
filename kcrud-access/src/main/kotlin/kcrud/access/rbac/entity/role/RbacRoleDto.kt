@@ -44,7 +44,7 @@ public data class RbacRoleDto(
          * @return The mapped [RbacRoleDto] instance.
          */
         fun from(roleId: Uuid, rows: List<ResultRow>): RbacRoleDto {
-            // Construct the child entities (if any).
+            // Construct the child entries (if any).
             val scopeRules: List<RbacScopeRuleDto> = rows
                 .filter { it.getOrNull(RbacScopeRuleTable.id) != null }
                 .distinctBy { it[RbacScopeRuleTable.id] }
@@ -52,10 +52,10 @@ public data class RbacRoleDto(
                     val fieldRuleRows: List<ResultRow> = rows.filter {
                         it[RbacFieldRuleTable.scopeRuleId] == scopeRuleRow[RbacScopeRuleTable.id]
                     }
-                    val fieldRuleEntities: List<RbacFieldRuleDto> = fieldRuleRows.map {
+                    val fieldRules: List<RbacFieldRuleDto> = fieldRuleRows.map {
                         RbacFieldRuleDto.from(row = it)
                     }
-                    RbacScopeRuleDto.from(row = scopeRuleRow, fieldRules = fieldRuleEntities)
+                    RbacScopeRuleDto.from(row = scopeRuleRow, fieldRules = fieldRules)
                 }
 
             // Use the first row as the role of the 1-N relationship,

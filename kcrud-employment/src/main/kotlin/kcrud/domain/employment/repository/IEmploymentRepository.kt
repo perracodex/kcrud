@@ -19,7 +19,7 @@ internal interface IEmploymentRepository {
      * Retrieves all employments.
      *
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
-     * @return List of [EmploymentDto] entities.
+     * @return List of [EmploymentDto] entries.
      */
     fun findAll(pageable: Pageable? = null): Page<EmploymentDto>
 
@@ -33,10 +33,10 @@ internal interface IEmploymentRepository {
     fun findById(employeeId: Uuid, employmentId: Uuid): EmploymentDto?
 
     /**
-     * Retrieves all employment entities for a given employee.
+     * Retrieves all employment entries for a given employee.
      *
      * @param employeeId The ID of the employee associated with the employment.
-     * @return List of [EmploymentDto] entities.
+     * @return List of [EmploymentDto] entries.
      */
     fun findByEmployeeId(employeeId: Uuid): List<EmploymentDto>
 

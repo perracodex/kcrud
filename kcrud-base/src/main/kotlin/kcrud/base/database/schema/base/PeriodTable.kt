@@ -9,9 +9,9 @@ import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.kotlin.datetime.date
 
 /**
- * Base class for database tables that manage temporal aspects of entities. Designed to be extended,
+ * Base class for database tables that manage temporal data modelling. Designed to be extended,
  * this class provides foundational columns for tracking the active status and temporal boundaries
- * of periods associated with various entities.
+ * of periods associated with various entries.
  * This structure supports applications needing to capture historical data or manage ongoing events.
  */
 public open class PeriodTable(name: String) : TimestampedTable(name = name) {

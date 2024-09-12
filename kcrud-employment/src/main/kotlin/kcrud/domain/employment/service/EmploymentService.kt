@@ -29,7 +29,7 @@ public class EmploymentService internal constructor(
      * Retrieves all employments.
      *
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
-     * @return List of [EmploymentDto] entities.
+     * @return List of [EmploymentDto] entries.
      */
     public suspend fun findAll(pageable: Pageable? = null): Page<EmploymentDto> = withContext(Dispatchers.IO) {
         return@withContext employmentRepository.findAll(pageable = pageable)
@@ -47,10 +47,10 @@ public class EmploymentService internal constructor(
     }
 
     /**
-     * Retrieves all employment entities for a given employee.
+     * Retrieves all employment entries for a given employee.
      *
      * @param employeeId The ID of the employee associated with the employment.
-     * @return List of [EmploymentDto] entities.
+     * @return List of [EmploymentDto] entries.
      */
     public suspend fun findByEmployeeId(employeeId: Uuid): List<EmploymentDto> = withContext(Dispatchers.IO) {
         return@withContext employmentRepository.findByEmployeeId(employeeId = employeeId)
