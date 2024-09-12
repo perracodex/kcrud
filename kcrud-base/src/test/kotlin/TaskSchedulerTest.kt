@@ -110,7 +110,7 @@ class SchedulerServiceTest {
             .build()
 
         // Configure the trigger to misfire by using a tight schedule and a short misfire threshold.
-        val trigger = TriggerBuilder.newTrigger()
+        val trigger: SimpleTrigger = TriggerBuilder.newTrigger()
             .withIdentity("misfireTestTrigger", "testGroup")
             .startAt(DateBuilder.futureDate(2, DateBuilder.IntervalUnit.SECOND)) // Start in the near future.
             .withSchedule(

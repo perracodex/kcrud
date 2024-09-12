@@ -12,12 +12,12 @@ import kcrud.base.persistence.entity.Meta
 import kcrud.base.persistence.serializers.UuidS
 import kcrud.base.utils.DateTimeUtils
 import kcrud.base.utils.KLocalDate
-import kcrud.domain.contact.entity.ContactEntity
+import kcrud.domain.contact.entity.ContactDto
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 
 /**
- * Represents the entity for an employee.
+ * Represents a concrete employee.
  *
  * @property id The employee's id.
  * @property firstName The first name of the employee.
@@ -31,7 +31,7 @@ import org.jetbrains.exposed.sql.ResultRow
  * @property meta The metadata of the record.
  */
 @Serializable
-public data class EmployeeEntity(
+public data class EmployeeDto(
     val id: UuidS,
     val firstName: String,
     val lastName: String,
@@ -40,26 +40,26 @@ public data class EmployeeEntity(
     val age: Int,
     val maritalStatus: MaritalStatus,
     val honorific: Honorific,
-    val contact: ContactEntity?,
+    val contact: ContactDto?,
     val meta: Meta
 ) {
     public companion object {
         /**
-         * Maps a [ResultRow] to a [EmployeeEntity] instance.
+         * Maps a [ResultRow] to a [EmployeeDto] instance.
          *
          * @param row The [ResultRow] to map.
-         * @return The mapped [EmployeeEntity] instance.
+         * @return The mapped [EmployeeDto] instance.
          */
-        public fun from(row: ResultRow): EmployeeEntity {
-            val contact: ContactEntity? = row.getOrNull(ContactTable.id)?.let {
-                ContactEntity.from(row = row)
+        public fun from(row: ResultRow): EmployeeDto {
+            val contact: ContactDto? = row.getOrNull(ContactTable.id)?.let {
+                ContactDto.from(row = row)
             }
 
             val dob: KLocalDate = row[EmployeeTable.dob]
             val firstName: String = row[EmployeeTable.firstName]
             val lastName: String = row[EmployeeTable.lastName]
 
-            return EmployeeEntity(
+            return EmployeeDto(
                 id = row[EmployeeTable.id],
                 firstName = firstName,
                 lastName = lastName,

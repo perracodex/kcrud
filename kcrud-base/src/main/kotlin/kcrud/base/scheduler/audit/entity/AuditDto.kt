@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 
 /**
- * Represents a scheduler audit log entity.
+ * Represents a concrete scheduler audit log.
  *
  * @property id The unique identifier of the audit log.
  * @property taskName The name of the task.
@@ -26,7 +26,7 @@ import org.jetbrains.exposed.sql.ResultRow
  * @property meta The metadata of the record.
  */
 @Serializable
-public data class AuditEntity(
+public data class AuditDto(
     val id: UuidS,
     val taskName: String,
     val taskGroup: String,
@@ -39,13 +39,13 @@ public data class AuditEntity(
 ) {
     internal companion object {
         /**
-         * Maps a [ResultRow] to a [AuditEntity] instance.
+         * Maps a [ResultRow] to a [AuditDto] instance.
          *
          * @param row The [ResultRow] to map.
-         * @return The mapped [AuditEntity] instance.
+         * @return The mapped [AuditDto] instance.
          */
-        fun from(row: ResultRow): AuditEntity {
-            return AuditEntity(
+        fun from(row: ResultRow): AuditDto {
+            return AuditDto(
                 id = row[SchedulerAuditTable.id],
                 taskName = row[SchedulerAuditTable.taskName],
                 taskGroup = row[SchedulerAuditTable.taskGroup],

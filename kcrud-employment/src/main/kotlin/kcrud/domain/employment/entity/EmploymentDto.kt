@@ -11,12 +11,12 @@ import kcrud.base.persistence.entity.Meta
 import kcrud.base.persistence.entity.Period
 import kcrud.base.persistence.serializers.UuidS
 import kcrud.base.utils.KLocalDate
-import kcrud.domain.employee.entity.EmployeeEntity
+import kcrud.domain.employee.entity.EmployeeDto
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 
 /**
- * Represents the entity for an employment.
+ * Represents a concrete employment.
  *
  * @property id The employment's id.
  * @property period The employment's period details.
@@ -27,30 +27,30 @@ import org.jetbrains.exposed.sql.ResultRow
  * @property meta The metadata of the record.
  */
 @Serializable
-public data class EmploymentEntity(
+public data class EmploymentDto(
     val id: UuidS,
     val period: Period,
     val status: EmploymentStatus,
     val probationEndDate: KLocalDate?,
     val workModality: WorkModality,
-    val employee: EmployeeEntity,
+    val employee: EmployeeDto,
     val meta: Meta
 ) {
     internal companion object {
         /**
-         * Maps a [ResultRow] to a [EmploymentEntity] instance.
+         * Maps a [ResultRow] to a [EmploymentDto] instance.
          *
          * @param row The [ResultRow] to map.
-         * @return The mapped [EmploymentEntity] instance.
+         * @return The mapped [EmploymentDto] instance.
          */
-        fun from(row: ResultRow): EmploymentEntity {
-            return EmploymentEntity(
+        fun from(row: ResultRow): EmploymentDto {
+            return EmploymentDto(
                 id = row[EmploymentTable.id],
                 period = Period.from(row = row, table = EmploymentTable),
                 status = row[EmploymentTable.status],
                 probationEndDate = row[EmploymentTable.probationEndDate],
                 workModality = row[EmploymentTable.workModality],
-                employee = EmployeeEntity.from(row = row),
+                employee = EmployeeDto.from(row = row),
                 meta = Meta.from(row = row, table = EmploymentTable)
             )
         }

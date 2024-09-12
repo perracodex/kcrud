@@ -8,7 +8,7 @@ import kcrud.base.utils.KLocalDateTime
 import kotlinx.serialization.Serializable
 
 /**
- * Entity representing the details of a scheduled task.
+ * Represents the details of a scheduled task.
  *
  * @property name The name of the task.
  * @property group The group of the task.
@@ -24,7 +24,7 @@ import kotlinx.serialization.Serializable
  * @property dataMap Concrete parameters of the task.
  */
 @Serializable
-public data class TaskScheduleEntity(
+public data class TaskScheduleDto(
     val name: String,
     val snowflakeData: String,
     val group: String,

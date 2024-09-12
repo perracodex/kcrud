@@ -6,7 +6,7 @@ package kcrud.domain.employee.repository
 
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
-import kcrud.domain.employee.entity.EmployeeEntity
+import kcrud.domain.employee.entity.EmployeeDto
 import kcrud.domain.employee.entity.EmployeeFilterSet
 import kcrud.domain.employee.entity.EmployeeRequest
 import kotlin.uuid.Uuid
@@ -20,26 +20,26 @@ internal interface IEmployeeRepository {
      * Retrieves an employee by its ID.
      *
      * @param employeeId The ID of the employee to be retrieved.
-     * @return The resolved [EmployeeEntity] if found, null otherwise.
+     * @return The resolved [EmployeeDto] if found, null otherwise.
      */
-    fun findById(employeeId: Uuid): EmployeeEntity?
+    fun findById(employeeId: Uuid): EmployeeDto?
 
     /**
-     * Retrieves all employee entities.
+     * Retrieves all employees.
      *
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
-     * @return List of [EmployeeEntity] entries.
+     * @return List of [EmployeeDto] entries.
      */
-    fun findAll(pageable: Pageable? = null): Page<EmployeeEntity>
+    fun findAll(pageable: Pageable? = null): Page<EmployeeDto>
 
     /**
-     * Retrieves all employee entities matching the provided [filterSet].
+     * Retrieves all employees matching the provided [filterSet].
      *
      * @param filterSet The [EmployeeFilterSet] to be applied.
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
-     * @return List of [EmployeeEntity] entries.
+     * @return List of [EmployeeDto] entries.
      */
-    fun search(filterSet: EmployeeFilterSet, pageable: Pageable? = null): Page<EmployeeEntity>
+    fun search(filterSet: EmployeeFilterSet, pageable: Pageable? = null): Page<EmployeeDto>
 
     /**
      * Creates a new employee.

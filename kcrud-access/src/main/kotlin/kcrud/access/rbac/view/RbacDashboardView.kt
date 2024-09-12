@@ -4,7 +4,7 @@
 
 package kcrud.access.rbac.view
 
-import kcrud.access.rbac.entity.role.RbacRoleEntity
+import kcrud.access.rbac.entity.role.RbacRoleDto
 import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.service.RbacDashboardManager
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
@@ -52,7 +52,7 @@ internal object RbacDashboardView {
             }
 
             // If no role is selected, default to the first role.
-            val currentRole: RbacRoleEntity = dashboardContext.rbacRoles.find { role ->
+            val currentRole: RbacRoleDto = dashboardContext.rbacRoles.find { role ->
                 role.id == dashboardContext.targetRole.id
             } ?: dashboardContext.rbacRoles.first()
 

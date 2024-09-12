@@ -8,7 +8,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.base.scheduler.entity.TaskStateChangeEntity
+import kcrud.base.scheduler.entity.TaskStateChangeDto
 import kcrud.base.scheduler.service.core.SchedulerService
 
 /**
@@ -17,7 +17,7 @@ import kcrud.base.scheduler.service.core.SchedulerService
 internal fun Route.pauseSchedulerRoute() {
     // Pauses all the scheduler tasks.
     post("scheduler/pause") {
-        val state: TaskStateChangeEntity = SchedulerService.pause()
+        val state: TaskStateChangeDto = SchedulerService.pause()
         call.respond(status = HttpStatusCode.OK, message = state)
     }
 }

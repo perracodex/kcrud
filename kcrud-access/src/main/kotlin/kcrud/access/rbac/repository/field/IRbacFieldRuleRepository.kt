@@ -4,13 +4,13 @@
 
 package kcrud.access.rbac.repository.field
 
-import kcrud.access.rbac.entity.field.RbacFieldRuleEntity
+import kcrud.access.rbac.entity.field.RbacFieldRuleDto
 import kcrud.access.rbac.entity.field.RbacFieldRuleRequest
 import kcrud.access.rbac.entity.scope.RbacScopeRuleRequest
 import kotlin.uuid.Uuid
 
 /**
- * Repository for [RbacFieldRuleEntity] data.
+ * Repository for [RbacFieldRuleDto] data.
  *
  * @see RbacFieldRuleRequest
  */

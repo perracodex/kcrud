@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 
 /**
- * Represents the entity for an employee's contact details.
+ * Represents a concrete contact detail for an employee.
  *
  * @property id The contact's id.
  * @property email The contact's email.
@@ -19,7 +19,7 @@ import org.jetbrains.exposed.sql.ResultRow
  * @property meta The metadata of the record.
  */
 @Serializable
-public data class ContactEntity(
+public data class ContactDto(
     val id: UuidS,
     val email: String,
     val phone: String,
@@ -27,13 +27,13 @@ public data class ContactEntity(
 ) {
     internal companion object {
         /**
-         * Maps a [ResultRow] to a [ContactEntity] instance.
+         * Maps a [ResultRow] to a [ContactDto] instance.
          *
          * @param row The [ResultRow] to map.
-         * @return The mapped [ContactEntity] instance.
+         * @return The mapped [ContactDto] instance.
          */
-        fun from(row: ResultRow): ContactEntity {
-            return ContactEntity(
+        fun from(row: ResultRow): ContactDto {
+            return ContactDto(
                 id = row[ContactTable.id],
                 email = row[ContactTable.email],
                 phone = row[ContactTable.phone],

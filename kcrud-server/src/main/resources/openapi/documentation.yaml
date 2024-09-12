@@ -4,8 +4,7 @@ info:
   description: "Kcrud API"
   version: "1.0.0"
 servers:
-  - url: "http://127.0.0.1:8080"
-  - url: "https://127.0.0.1:8443"
+  - url: "https://Kcrud"
 paths:
   /:
     get:
@@ -176,7 +175,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/Page_? extends EmploymentEntity"
+                $ref: "#/components/schemas/Page_? extends EmploymentDto"
   /events:
     get:
       description: "Server-Sent Events (SSE) endpoint."
@@ -331,7 +330,7 @@ paths:
               schema:
                 type: "array"
                 items:
-                  $ref: "#/components/schemas/AuditEntity"
+                  $ref: "#/components/schemas/AuditDto"
   /scheduler/audit/{name}/{group}:
     get:
       description: "Returns the audit log for a specific task."
@@ -369,7 +368,7 @@ paths:
               schema:
                 type: "array"
                 items:
-                  $ref: "#/components/schemas/AuditEntity"
+                  $ref: "#/components/schemas/AuditDto"
   /scheduler/dashboard:
     get:
       description: "The scheduler dashboard route."
@@ -405,7 +404,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/TaskStateChangeEntity"
+                $ref: "#/components/schemas/TaskStateChangeDto"
   /scheduler/restart:
     post:
       description: "Restart the task scheduler."
@@ -431,7 +430,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/TaskStateChangeEntity"
+                $ref: "#/components/schemas/TaskStateChangeDto"
   /scheduler/state:
     get:
       description: "Returns the state of the task scheduler."
@@ -469,7 +468,7 @@ paths:
               schema:
                 type: "array"
                 items:
-                  $ref: "#/components/schemas/TaskScheduleEntity"
+                  $ref: "#/components/schemas/TaskScheduleDto"
   /scheduler/task/{name}/{group}:
     delete:
       description: "Deletes a concrete scheduler task."
@@ -512,7 +511,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/TaskStateChangeEntity"
+                $ref: "#/components/schemas/TaskStateChangeDto"
   /scheduler/task/{name}/{group}/resend:
     post:
       description: "Resends a concrete scheduler task."
@@ -554,7 +553,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/TaskStateChangeEntity"
+                $ref: "#/components/schemas/TaskStateChangeDto"
   /scheduler/task/group:
     get:
       description: "Gets all scheduler task groups."
@@ -606,7 +605,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/Page_? extends EmployeeEntity"
+                $ref: "#/components/schemas/Page_? extends EmployeeDto"
   /v1/employees/{employee_id}:
     delete:
       description: "Delete an employee by ID."
@@ -653,7 +652,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/EmployeeEntity"
+                $ref: "#/components/schemas/EmployeeDto"
         "404":
           description: "Not Found"
           content:
@@ -689,7 +688,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/EmployeeEntity"
+                $ref: "#/components/schemas/EmployeeDto"
   /v1/employees/{employee_id}/employments:
     delete:
       description: "Delete all employments for an employee ID."
@@ -735,7 +734,7 @@ paths:
               schema:
                 type: "array"
                 items:
-                  $ref: "#/components/schemas/EmploymentEntity"
+                  $ref: "#/components/schemas/EmploymentDto"
     post:
       description: "Create a new employment."
       parameters:
@@ -765,7 +764,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/EmploymentEntity"
+                $ref: "#/components/schemas/EmploymentDto"
   /v1/employees/{employee_id}/employments/{employment_id}:
     delete:
       description: "Delete an employment by ID."
@@ -822,7 +821,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/EmploymentEntity"
+                $ref: "#/components/schemas/EmploymentDto"
         "404":
           description: "Not Found"
           content:
@@ -863,7 +862,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/EmploymentEntity"
+                $ref: "#/components/schemas/EmploymentDto"
 components:
   schemas:
     Function1:
@@ -920,7 +919,7 @@ components:
           type: "array"
       required:
         - "content"
-    Page_? extends EmploymentEntity:
+    Page_? extends EmploymentDto:
       type: "object"
       properties:
         totalPages:
@@ -1287,7 +1286,7 @@ components:
       required:
         - "createdAt"
         - "updatedAt"
-    AuditEntity:
+    AuditDto:
       type: "object"
       properties:
         id:
@@ -1372,7 +1371,7 @@ components:
         - "contentType"
         - "locale"
         - "fragments"
-    TaskStateChangeEntity:
+    TaskStateChangeDto:
       type: "object"
       properties:
         totalAffected:
@@ -1388,7 +1387,7 @@ components:
           type: "string"
       required:
         - "state"
-    TaskScheduleEntity:
+    TaskScheduleDto:
       type: "object"
       properties:
         name:
@@ -1425,7 +1424,7 @@ components:
         - "consumer"
         - "state"
         - "dataMap"
-    Page_? extends EmployeeEntity:
+    Page_? extends EmployeeDto:
       type: "object"
       properties:
         totalPages:
@@ -1460,7 +1459,7 @@ components:
     LocalDate:
       type: "object"
       properties: { }
-    ContactEntity:
+    ContactDto:
       type: "object"
       properties:
         id:
@@ -1476,7 +1475,7 @@ components:
         - "email"
         - "phone"
         - "meta"
-    EmployeeEntity:
+    EmployeeDto:
       type: "object"
       properties:
         id:
@@ -1509,7 +1508,7 @@ components:
             - "DR"
             - "MISS"
         contact:
-          $ref: "#/components/schemas/ContactEntity"
+          $ref: "#/components/schemas/ContactDto"
         meta:
           $ref: "#/components/schemas/Meta"
       required:
@@ -1532,7 +1531,7 @@ components:
           type: "string"
       required:
         - "startDate"
-    EmploymentEntity:
+    EmploymentDto:
       type: "object"
       properties:
         id:
@@ -1555,7 +1554,7 @@ components:
             - "REMOTE"
             - "HYBRID"
         employee:
-          $ref: "#/components/schemas/EmployeeEntity"
+          $ref: "#/components/schemas/EmployeeDto"
         meta:
           $ref: "#/components/schemas/Meta"
       required:

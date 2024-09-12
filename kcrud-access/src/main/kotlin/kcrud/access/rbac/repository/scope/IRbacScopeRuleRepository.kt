@@ -4,12 +4,12 @@
 
 package kcrud.access.rbac.repository.scope
 
-import kcrud.access.rbac.entity.scope.RbacScopeRuleEntity
+import kcrud.access.rbac.entity.scope.RbacScopeRuleDto
 import kcrud.access.rbac.entity.scope.RbacScopeRuleRequest
 import kotlin.uuid.Uuid
 
 /**
- * Repository for [RbacScopeRuleEntity] data.
+ * Repository for [RbacScopeRuleDto] data.
  * Responsible for managing [RbacScopeRuleRequest] data.
  *
  * @see RbacScopeRuleRequest

@@ -15,14 +15,14 @@ import kotlin.reflect.full.primaryConstructor
 /**
  * Base class for entities that should support field level anonymization.
  *
- * It provides functionality to anonymize specified fields of an entity using reflection,
- * creating a new instance of the entity with certain fields replaced by predefined placeholders.
+ * It provides functionality to anonymize specified fields using reflection,
+ * creating a new instance with certain fields replaced by predefined placeholders.
  *
  * While this class defines the core functionality for anonymization, it still requires concrete
  * implementations to utilize the [anonymize] method to specify which fields should be anonymized.
  *
- * Using placeholders instead of enforcing the target entity to use null arguments, ensures that
- * the anonymized entity remains consistent with its original structure, which is important for
+ * Using placeholders instead of enforcing the target to use null arguments, ensures that
+ * the anonymized instance remains consistent with its original structure, which is important for
  * serialization and maintains immutability.
  *
  * This class has scope for improvement, such as handling nested entities, and caching the reflection
@@ -30,45 +30,45 @@ import kotlin.reflect.full.primaryConstructor
  *
  * @see [RbacFieldAnonymization]
  */
-public abstract class BaseRbacEntity {
+public abstract class BaseRbacDto {
 
     /**
-     * Anonymizes specified fields by using reflection to create a new instance
-     * of the entity with the fields anonymized.
+     * Anonymizes specified fields by using reflection to create a new class instance
+     * with the fields anonymized.
      *
      * Anonymized fields are replaced with predefined placeholders based on their type.
-     * Nested entity fields are also supported.
+     * Fields of nested instances are also supported.
      *
      * Usage example:
      * ```
-     * data class SomeEntity(val name: String, val phone: String): RbacEntity()
-     * val entity = SomeEntity(...)
-     * val anonymizedEntity = entity.anonymize(listOf("phone"))
+     * data class SomeDto(val name: String, val phone: String): RbacDto()
+     * val instance = SomeDto(...)
+     * val anonymizedInstance = instance.anonymize(listOf("phone"))
      * ```
      *
-     * @param T The type of the entity, automatically inferred from the inheriting class.
-     * @param fields A list of strings indicating which fields of the entity should be anonymized.
+     * @param T The target type, automatically inferred from the inheriting class.
+     * @param fields A list of strings indicating which fields should be anonymized.
      *               The fields are case-insensitive and should match the exact name of the property.
-     *               If null or empty, the original entity is returned without changes.
-     * @return A new instance of the entity with specified fields anonymized.
+     *               If null or empty, the original instance is returned without changes.
+     * @return A new instance with specified fields anonymized.
      */
-    public inline fun <reified T : BaseRbacEntity> anonymize(fields: List<String>?): T {
+    public inline fun <reified T : BaseRbacDto> anonymize(fields: List<String>?): T {
         // Delegate to the internal, non-inline anonymization method while preserving the type information.
         return internalAnonymize(fields, T::class) as T
     }
 
     /**
-     * Handles the actual anonymization logic, capable of handling nested entities. This method is not inline,
+     * Handles the actual anonymization logic, capable of handling nesting. This method is not inline,
      * enabling it to be recursively called without causing issues related to inline recursion.
      *
      * @param fields A list of strings representing the fields to be anonymized, supporting nested notation.
-     * @param clazz The KClass instance of the entity type, used for reflection.
-     * @return A new instance of the entity (or nested entity) with specified fields anonymized.
+     * @param clazz The KClass instance of the class type, used for reflection.
+     * @return A new instance (or nested instance) with specified fields anonymized.
      */
     @Suppress("UNCHECKED_CAST")
-    public fun <T : BaseRbacEntity> internalAnonymize(fields: List<String>?, clazz: KClass<T>): BaseRbacEntity {
+    public fun <T : BaseRbacDto> internalAnonymize(fields: List<String>?, clazz: KClass<T>): BaseRbacDto {
         if (fields.isNullOrEmpty()) {
-            // If no fields are specified for anonymization, return the entity as is.
+            // If no fields are specified for anonymization, return the instance as is.
             return this
         }
 
@@ -82,7 +82,7 @@ public abstract class BaseRbacEntity {
             it.substringBefore(delimiter = '.')
         }
 
-        // Retrieve the primary constructor of the entity class.
+        // Retrieve the primary constructor of the class.
         val constructor: KFunction<T> = clazz.primaryConstructor!!
 
         // Create a map of constructor parameters and their corresponding anonymized values where applicable.
@@ -95,13 +95,13 @@ public abstract class BaseRbacEntity {
                     // Anonymize top-level fields directly.
                     return@associateWith RbacFieldAnonymization.anonymize(value = property.get(this as T))
                 } else {
-                    // Handle nested fields: find the nested entity and recursively anonymize it.
+                    // Handle nested fields: find the nested class and recursively anonymize it.
                     val nestedPropertyName = property.name
 
                     if (nestedPropertyName in nestedFields.keys) {
-                        val nestedEntity: BaseRbacEntity? = property.get(this as T) as? BaseRbacEntity
+                        val nestedDto: BaseRbacDto? = property.get(this as T) as? BaseRbacDto
                         val newFields: List<String>? = nestedFields[nestedPropertyName]?.map { it.substringAfter(delimiter = '.') }
-                        return@associateWith nestedEntity?.internalAnonymize(newFields, nestedEntity::class) ?: property.get(this)
+                        return@associateWith nestedDto?.internalAnonymize(newFields, nestedDto::class) ?: property.get(this)
                     } else {
                         // If not a nested field or no anonymization needed, keep the original value.
                         return@associateWith property.get(this as T)
@@ -110,7 +110,7 @@ public abstract class BaseRbacEntity {
             } ?: return@associateWith null // Return null for non-existent properties. Unlikely with well-formed data.
         }
 
-        // Construct and return the new instance of the entity with anonymized fields.
+        // Construct and return the new instance of the class with anonymized fields.
         return constructor.callBy(args = arguments)
     }
 }

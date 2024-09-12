@@ -9,7 +9,7 @@ import com.auth0.jwt.exceptions.JWTDecodeException
 import com.auth0.jwt.interfaces.DecodedJWT
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
-import kcrud.access.actor.entity.ActorEntity
+import kcrud.access.actor.entity.ActorDto
 import kcrud.access.actor.service.ActorService
 import kcrud.access.credential.CredentialService
 import kcrud.base.env.SessionContext
@@ -87,7 +87,7 @@ internal object SessionContextFactory : KoinComponent {
         // Resolve the actor. Return null if no actor corresponds to the provided username.
         val username: String = userIdPrincipal.name
         val actorService: ActorService by inject()
-        val actor: ActorEntity = actorService.findByUsername(username = username) ?: run {
+        val actor: ActorDto = actorService.findByUsername(username = username) ?: run {
             tracer.error("No actor found for username: $username")
             return null
         }
@@ -143,7 +143,7 @@ internal object SessionContextFactory : KoinComponent {
 
         // Resolve the actor. Return null if no corresponding actor is found.
         val actorService: ActorService by inject()
-        val actor: ActorEntity = actorService.findByUsername(username = username) ?: run {
+        val actor: ActorDto = actorService.findByUsername(username = username) ?: run {
             tracer.error("No actor found for username: $username")
             return null
         }

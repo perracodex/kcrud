@@ -10,7 +10,7 @@ import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kotlinx.serialization.Serializable
 
 /**
- * Entity to create a RBAC scope rule.
+ * Request to create a RBAC scope rule.
  * Scope rules are never updated, only re-created and deleted.
  * Therefore, when updating an RBAC role, all its associated scope rules are deleted and re-created.
  *

@@ -14,7 +14,7 @@ import kcrud.base.utils.KLocalDate
 import kcrud.base.utils.TestUtils
 import kcrud.domain.contact.entity.ContactRequest
 import kcrud.domain.employee.di.EmployeeDomainInjection
-import kcrud.domain.employee.entity.EmployeeEntity
+import kcrud.domain.employee.entity.EmployeeDto
 import kcrud.domain.employee.entity.EmployeeRequest
 import kcrud.domain.employee.service.EmployeeService
 import kotlinx.coroutines.Deferred
@@ -67,7 +67,7 @@ class StressTest : KoinComponent {
 
         val totalElements = 10000
 
-        val jobs: List<Deferred<EmployeeEntity>> = List(size = totalElements) { index ->
+        val jobs: List<Deferred<EmployeeDto>> = List(size = totalElements) { index ->
             val randomYears = (20..65).random()
             val randomMonths = (1..12).random()
             val randomDays = (1..28).random()
@@ -94,7 +94,7 @@ class StressTest : KoinComponent {
         jobs.awaitAll()
 
         // Verify all employees after all insertions are complete.
-        val employees: Page<EmployeeEntity> = employeeService.findAll()
+        val employees: Page<EmployeeDto> = employeeService.findAll()
         assertEquals(expected = totalElements, actual = employees.content.size)
         assertEquals(expected = totalElements, actual = employees.totalElements)
 
@@ -146,7 +146,7 @@ class StressTest : KoinComponent {
         }
 
         // Verify all employees.
-        val employees: Page<EmployeeEntity> = employeeService.findAll()
+        val employees: Page<EmployeeDto> = employeeService.findAll()
         assertEquals(expected = totalElements, actual = employees.content.size)
         assertEquals(expected = totalElements, actual = employees.totalElements)
     }

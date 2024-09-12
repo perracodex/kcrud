@@ -9,9 +9,9 @@ import kcrud.base.env.Tracer
 import kcrud.base.events.SEEService
 import kcrud.base.scheduler.annotation.SchedulerAPI
 import kcrud.base.scheduler.audit.AuditService
-import kcrud.base.scheduler.audit.entity.AuditEntity
-import kcrud.base.scheduler.entity.TaskScheduleEntity
-import kcrud.base.scheduler.entity.TaskStateChangeEntity
+import kcrud.base.scheduler.audit.entity.AuditDto
+import kcrud.base.scheduler.entity.TaskScheduleDto
+import kcrud.base.scheduler.entity.TaskStateChangeDto
 import kcrud.base.scheduler.service.core.SchedulerTasks.Companion.create
 import kcrud.base.scheduler.service.task.TaskState
 import kcrud.base.security.snowflake.SnowflakeFactory
@@ -48,9 +48,9 @@ internal class SchedulerTasks private constructor(private val scheduler: Schedul
      *
      * @param name The name of the task to pause.
      * @param group The group of the task to pause.
-     * @return [TaskStateChangeEntity] containing details of the operation.
+     * @return [TaskStateChangeDto] containing details of the operation.
      */
-    fun pause(name: String, group: String): TaskStateChangeEntity {
+    fun pause(name: String, group: String): TaskStateChangeDto {
         return TaskState.change(scheduler = scheduler, targetState = Trigger.TriggerState.PAUSED) {
             val jobKey: JobKey = JobKey.jobKey(name, group)
             scheduler.pauseJob(JobKey.jobKey(name, group))
@@ -63,9 +63,9 @@ internal class SchedulerTasks private constructor(private val scheduler: Schedul
      *
      * @param name The name of the task to resume.
      * @param group The group of the task to resume.
-     * @return [TaskStateChangeEntity] containing details of the operation.
+     * @return [TaskStateChangeDto] containing details of the operation.
      */
-    fun resume(name: String, group: String): TaskStateChangeEntity {
+    fun resume(name: String, group: String): TaskStateChangeDto {
         return TaskState.change(scheduler = scheduler, targetState = Trigger.TriggerState.NORMAL) {
             val jobKey: JobKey = JobKey.jobKey(name, group)
             scheduler.resumeJob(jobKey)
@@ -144,14 +144,14 @@ internal class SchedulerTasks private constructor(private val scheduler: Schedul
      * @param groupId Optional group ID to filter the tasks by.
      * @param executing True if only actively executing tasks should be returned; false to return all tasks.
      * @param groupId The group ID of the tasks to return. Null to return all tasks.
-     * @return A list of [TaskScheduleEntity] objects representing the scheduled tasks.
+     * @return A list of [TaskScheduleDto] objects representing the scheduled tasks.
      */
-    suspend fun all(groupId: Uuid? = null, executing: Boolean = false): List<TaskScheduleEntity> {
-        var taskList: List<TaskScheduleEntity> = if (executing) {
-            scheduler.currentlyExecutingJobs.map { task -> toEntity(taskDetail = task.jobDetail) }
+    suspend fun all(groupId: Uuid? = null, executing: Boolean = false): List<TaskScheduleDto> {
+        var taskList: List<TaskScheduleDto> = if (executing) {
+            scheduler.currentlyExecutingJobs.map { task -> toDto(taskDetail = task.jobDetail) }
         } else {
             scheduler.getJobKeys(GroupMatcher.anyGroup()).mapNotNull { jobKey ->
-                scheduler.getJobDetail(jobKey)?.let { detail -> toEntity(taskDetail = detail) }
+                scheduler.getJobDetail(jobKey)?.let { detail -> toDto(taskDetail = detail) }
             }
         }
 
@@ -165,12 +165,12 @@ internal class SchedulerTasks private constructor(private val scheduler: Schedul
     }
 
     /**
-     * Helper method to create a [TaskScheduleEntity] from a [JobDetail] including the next fire time.
+     * Helper method to create a [TaskScheduleDto] from a [JobDetail] including the next fire time.
      *
-     * @param taskDetail The task detail from which to create the [TaskScheduleEntity].
-     * @return The constructed [TaskScheduleEntity].
+     * @param taskDetail The task detail from which to create the [TaskScheduleDto].
+     * @return The constructed [TaskScheduleDto].
      */
-    private suspend fun toEntity(taskDetail: JobDetail): TaskScheduleEntity {
+    private suspend fun toDto(taskDetail: JobDetail): TaskScheduleDto {
         val jobKey: JobKey = taskDetail.key
         val triggers: List<Trigger> = scheduler.getTriggersOfJob(jobKey)
 
@@ -181,7 +181,7 @@ internal class SchedulerTasks private constructor(private val scheduler: Schedul
         )
 
         // Resolve the last execution outcome.
-        val mostRecentAudit: AuditEntity? = AuditService.mostRecent(taskName = jobKey.name, taskGroup = jobKey.group)
+        val mostRecentAudit: AuditDto? = AuditService.mostRecent(taskName = jobKey.name, taskGroup = jobKey.group)
         val outcome: String? = mostRecentAudit?.outcome?.name
 
         // Get how many times the task has been executed.
@@ -215,7 +215,7 @@ internal class SchedulerTasks private constructor(private val scheduler: Schedul
         // Resolve the snowflake data.
         val snowflakeData: String = SnowflakeFactory.parse(id = jobKey.name).toString()
 
-        return TaskScheduleEntity(
+        return TaskScheduleDto(
             name = jobKey.name,
             snowflakeData = snowflakeData,
             group = jobKey.group,

@@ -10,7 +10,7 @@ import kcrud.base.env.SessionContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.pagination.paginate
-import kcrud.domain.contact.entity.ContactEntity
+import kcrud.domain.contact.entity.ContactDto
 import kcrud.domain.contact.entity.ContactRequest
 import kcrud.domain.employee.entity.EmployeeRequest
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -23,41 +23,41 @@ import kotlin.uuid.Uuid
 
 /**
  * Implementation of [IContactRepository].
- * Responsible for managing [ContactEntity] data.
+ * Responsible for managing [ContactDto] data.
  */
 internal class ContactRepository(
     private val sessionContext: SessionContext
 ) : IContactRepository {
 
-    override fun findById(contactId: Uuid): ContactEntity? {
+    override fun findById(contactId: Uuid): ContactDto? {
         return transactionWithSchema(schema = sessionContext.schema) {
             ContactTable.selectAll().where {
                 ContactTable.id eq contactId
             }.singleOrNull()?.let { resultRow ->
-                ContactEntity.from(row = resultRow)
+                ContactDto.from(row = resultRow)
             }
         }
     }
 
-    override fun findByEmployeeId(employeeId: Uuid): ContactEntity? {
+    override fun findByEmployeeId(employeeId: Uuid): ContactDto? {
         return transactionWithSchema(schema = sessionContext.schema) {
             ContactTable.selectAll().where {
                 ContactTable.employeeId eq employeeId
             }.singleOrNull()?.let { resultRow ->
-                ContactEntity.from(row = resultRow)
+                ContactDto.from(row = resultRow)
             }
         }
     }
 
-    override fun findAll(pageable: Pageable?): Page<ContactEntity> {
+    override fun findAll(pageable: Pageable?): Page<ContactDto> {
         return transactionWithSchema(schema = sessionContext.schema) {
             val totalElements: Int = ContactTable.selectAll().count().toInt()
 
-            val content: List<ContactEntity> = ContactTable
+            val content: List<ContactDto> = ContactTable
                 .selectAll()
                 .paginate(pageable = pageable)
                 .map { resultRow ->
-                    ContactEntity.from(row = resultRow)
+                    ContactDto.from(row = resultRow)
                 }
 
             Page.build(

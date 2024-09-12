@@ -5,7 +5,7 @@
 package kcrud.base.scheduler.service.task
 
 import kcrud.base.scheduler.annotation.SchedulerAPI
-import kcrud.base.scheduler.entity.TaskStateChangeEntity
+import kcrud.base.scheduler.entity.TaskStateChangeDto
 import org.quartz.JobDetail
 import org.quartz.JobKey
 import org.quartz.Scheduler
@@ -25,9 +25,9 @@ internal object TaskState {
      * @param scheduler The scheduler instance to use for the state change.
      * @param targetState The expected state of tasks after the operation.
      * @param action The lambda function that executes the state change.
-     * @return [TaskStateChangeEntity] detailing the affected task counts.
+     * @return [TaskStateChangeDto] detailing the affected task counts.
      */
-    fun change(scheduler: Scheduler, targetState: TriggerState, action: () -> String): TaskStateChangeEntity {
+    fun change(scheduler: Scheduler, targetState: TriggerState, action: () -> String): TaskStateChangeDto {
         // Retrieve the states of all tasks before and after performing the state change action.
         val beforeStates: Map<JobKey, TriggerState> = getAllStates(scheduler = scheduler)
         val schedulerState: String = action()
@@ -47,7 +47,7 @@ internal object TaskState {
             state == targetState && beforeStates[key]?.let { it == state } ?: false
         }
 
-        return TaskStateChangeEntity(
+        return TaskStateChangeDto(
             totalAffected = totalAffected,
             alreadyInState = alreadyInState,
             totalTasks = afterStates.size,

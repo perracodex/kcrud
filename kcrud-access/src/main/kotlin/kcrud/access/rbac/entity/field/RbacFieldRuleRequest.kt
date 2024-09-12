@@ -8,7 +8,7 @@ import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kotlinx.serialization.Serializable
 
 /**
- * Entity to create a RBAC field rule.
+ * Request to create a RBAC field rule.
  * Field rules are never updated, only re-created and deleted.
  * So, when updating a scope rule, all field rules are deleted and re-created.
  *

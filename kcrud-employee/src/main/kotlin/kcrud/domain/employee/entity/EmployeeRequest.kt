@@ -15,7 +15,7 @@ import kotlinx.serialization.Serializable
 /**
  * Represents the request to create/update an employee.
  *
- * This entity serves as example of how to use the [NoBlankString],
+ * This request serves as example of how to use the [NoBlankString],
  * which is a typealias for a serializable String that cannot be blank.
  *
  * Note that the project also includes examples demonstrating how perform verifications

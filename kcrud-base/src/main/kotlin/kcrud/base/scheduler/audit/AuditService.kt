@@ -6,7 +6,7 @@ package kcrud.base.scheduler.audit
 
 import kcrud.base.env.Tracer
 import kcrud.base.scheduler.annotation.SchedulerAPI
-import kcrud.base.scheduler.audit.entity.AuditEntity
+import kcrud.base.scheduler.audit.entity.AuditDto
 import kcrud.base.scheduler.audit.entity.AuditRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -32,9 +32,9 @@ internal object AuditService {
     /**
      * Finds all the audit entries, ordered bby the most recent first.
      *
-     * @return The list of [AuditEntity] instances.
+     * @return The list of [AuditDto] instances.
      */
-    suspend fun findAll(): List<AuditEntity> = withContext(Dispatchers.IO) {
+    suspend fun findAll(): List<AuditDto> = withContext(Dispatchers.IO) {
         tracer.debug("Finding all audit entries.")
         return@withContext AuditRepository.findAll()
     }
@@ -44,9 +44,9 @@ internal object AuditService {
      *
      * @param taskName The name of the task.
      * @param taskGroup The group of the task.
-     * @return The list of [AuditEntity] instances, or an empty list if none found.
+     * @return The list of [AuditDto] instances, or an empty list if none found.
      */
-    suspend fun find(taskName: String, taskGroup: String): List<AuditEntity> = withContext(Dispatchers.IO) {
+    suspend fun find(taskName: String, taskGroup: String): List<AuditDto> = withContext(Dispatchers.IO) {
         tracer.debug("Finding all audit entries for task '$taskName' in group '$taskGroup'.")
         return@withContext AuditRepository.find(taskName = taskName, taskGroup = taskGroup)
     }
@@ -56,9 +56,9 @@ internal object AuditService {
      *
      * @param taskName The name of the task.
      * @param taskGroup The group of the task.
-     * @return The most recent [AuditEntity] instance, or `null` if none found.
+     * @return The most recent [AuditDto] instance, or `null` if none found.
      */
-    suspend fun mostRecent(taskName: String, taskGroup: String): AuditEntity? = withContext(Dispatchers.IO) {
+    suspend fun mostRecent(taskName: String, taskGroup: String): AuditDto? = withContext(Dispatchers.IO) {
         tracer.debug("Finding the most recent audit entry for task '$taskName' in group '$taskGroup'.")
         return@withContext AuditRepository.mostRecent(taskName = taskName, taskGroup = taskGroup)
     }

@@ -11,7 +11,7 @@ import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.validators.IValidator
 import kcrud.base.persistence.validators.impl.EmailValidator
 import kcrud.base.persistence.validators.impl.PhoneValidator
-import kcrud.domain.employee.entity.EmployeeEntity
+import kcrud.domain.employee.entity.EmployeeDto
 import kcrud.domain.employee.entity.EmployeeFilterSet
 import kcrud.domain.employee.entity.EmployeeRequest
 import kcrud.domain.employee.errors.EmployeeError
@@ -30,33 +30,33 @@ public class EmployeeService internal constructor(
     private val tracer = Tracer<EmployeeService>()
 
     /**
-     * Retrieves an employee entity by its ID.
+     * Retrieves an employee by its ID.
      *
      * @param employeeId The ID of the employee to be retrieved.
-     * @return The resolved [EmployeeEntity] if found, null otherwise.
+     * @return The resolved [EmployeeDto] if found, null otherwise.
      */
-    public suspend fun findById(employeeId: Uuid): EmployeeEntity? = withContext(Dispatchers.IO) {
+    public suspend fun findById(employeeId: Uuid): EmployeeDto? = withContext(Dispatchers.IO) {
         return@withContext employeeRepository.findById(employeeId = employeeId)
     }
 
     /**
-     * Retrieves all employee entities.
+     * Retrieves all employees.
      *
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
-     * @return List of [EmployeeEntity] entries.
+     * @return List of [EmployeeDto] entries.
      */
-    public suspend fun findAll(pageable: Pageable? = null): Page<EmployeeEntity> = withContext(Dispatchers.IO) {
+    public suspend fun findAll(pageable: Pageable? = null): Page<EmployeeDto> = withContext(Dispatchers.IO) {
         return@withContext employeeRepository.findAll(pageable = pageable)
     }
 
     /**
-     * Retrieves all employee entities matching the provided [filterSet].
+     * Retrieves all employees matching the provided [filterSet].
      *
      * @param filterSet The [EmployeeFilterSet] to be applied.
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
-     * @return List of [EmployeeEntity] entries.
+     * @return List of [EmployeeDto] entries.
      */
-    public suspend fun search(filterSet: EmployeeFilterSet, pageable: Pageable? = null): Page<EmployeeEntity> {
+    public suspend fun search(filterSet: EmployeeFilterSet, pageable: Pageable? = null): Page<EmployeeDto> {
         return withContext(Dispatchers.IO) {
             employeeRepository.search(filterSet = filterSet, pageable = pageable)
         }
@@ -68,7 +68,7 @@ public class EmployeeService internal constructor(
      * @param employeeRequest The employee to be created.
      * @return The ID of the created employee.
      */
-    public suspend fun create(employeeRequest: EmployeeRequest): EmployeeEntity {
+    public suspend fun create(employeeRequest: EmployeeRequest): EmployeeDto {
         tracer.debug("Creating a new employee.")
 
         verifyIntegrity(employeeId = null, employeeRequest = employeeRequest, reason = "Create Employee.")
@@ -89,7 +89,7 @@ public class EmployeeService internal constructor(
     public suspend fun update(
         employeeId: Uuid,
         employeeRequest: EmployeeRequest
-    ): EmployeeEntity? {
+    ): EmployeeDto? {
         tracer.debug("Updating employee with ID: $employeeId.")
 
         verifyIntegrity(employeeId = employeeId, employeeRequest = employeeRequest, reason = "Update Employee.")

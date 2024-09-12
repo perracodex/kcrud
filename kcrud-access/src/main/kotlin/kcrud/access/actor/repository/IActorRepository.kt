@@ -4,58 +4,58 @@
 
 package kcrud.access.actor.repository
 
-import kcrud.access.actor.entity.ActorEntity
+import kcrud.access.actor.entity.ActorDto
 import kcrud.access.actor.entity.ActorRequest
 import kotlin.uuid.Uuid
 
 /**
- * Repository responsible for [ActorEntity] data.
+ * Repository responsible for [ActorDto] data.
  */
 internal interface IActorRepository {
 
     /**
-     * Finds the [ActorEntity] for the given username.
+     * Finds the [ActorDto] for the given username.
      *
-     * @param username The username of the [ActorEntity] to find.
-     * @return The [ActorEntity] for the given username, or null if it doesn't exist.
+     * @param username The username of the [ActorDto] to find.
+     * @return The [ActorDto] for the given username, or null if it doesn't exist.
      */
-    suspend fun findByUsername(username: String): ActorEntity?
+    suspend fun findByUsername(username: String): ActorDto?
 
     /**
-     * Finds all existing [ActorEntity] entries.
-     * @return A list with all existing [ActorEntity] entries.
+     * Finds all existing [ActorDto] entries.
+     * @return A list with all existing [ActorDto] entries.
      */
-    suspend fun findAll(): List<ActorEntity>
+    suspend fun findAll(): List<ActorDto>
 
     /**
-     * Finds the [ActorEntity] for the given id.
+     * Finds the [ActorDto] for the given id.
      *
-     * @param actorId The id of the [ActorEntity] to find.
-     * @return The [ActorEntity] for the given id, or null if it doesn't exist.
+     * @param actorId The id of the [ActorDto] to find.
+     * @return The [ActorDto] for the given id, or null if it doesn't exist.
      */
-    suspend fun findById(actorId: Uuid): ActorEntity?
+    suspend fun findById(actorId: Uuid): ActorDto?
 
     /**
-     * Creates a new [ActorEntity].
+     * Creates a new [ActorDto].
      * @param actorRequest The [ActorRequest] to create.
-     * @return The id of the [ActorEntity] created.
+     * @return The id of the [ActorDto] created.
      */
     suspend fun create(actorRequest: ActorRequest): Uuid
 
     /**
-     * Updates an existing [ActorEntity].
+     * Updates an existing [ActorDto].
      *
      * @param actorId The id of the actor to update.
-     * @param actorRequest The new details for the [ActorEntity].
+     * @param actorRequest The new details for the [ActorDto].
      * @return How many records were updated.
      */
     suspend fun update(actorId: Uuid, actorRequest: ActorRequest): Int
 
     /**
-     * Sets the lock status for the given [ActorEntity].
+     * Sets the lock status for the given [ActorDto].
      *
-     * @param actorId The id of the [ActorEntity] to lock/unlock.
-     * @param isLocked Whether the [ActorEntity] should be locked or unlocked.
+     * @param actorId The id of the [ActorDto] to lock/unlock.
+     * @param isLocked Whether the [ActorDto] should be locked or unlocked.
      */
     suspend fun setLockedState(actorId: Uuid, isLocked: Boolean)
 

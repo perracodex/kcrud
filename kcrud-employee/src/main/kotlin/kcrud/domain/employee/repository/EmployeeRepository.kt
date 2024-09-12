@@ -12,7 +12,7 @@ import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.pagination.paginate
 import kcrud.domain.contact.repository.IContactRepository
-import kcrud.domain.employee.entity.EmployeeEntity
+import kcrud.domain.employee.entity.EmployeeDto
 import kcrud.domain.employee.entity.EmployeeFilterSet
 import kcrud.domain.employee.entity.EmployeeRequest
 import org.jetbrains.exposed.sql.*
@@ -29,7 +29,7 @@ internal class EmployeeRepository(
     private val contactRepository: IContactRepository
 ) : IEmployeeRepository {
 
-    override fun findById(employeeId: Uuid): EmployeeEntity? {
+    override fun findById(employeeId: Uuid): EmployeeDto? {
         return transactionWithSchema(schema = sessionContext.schema) {
             EmployeeTable.join(
                 otherTable = ContactTable,
@@ -39,19 +39,19 @@ internal class EmployeeRepository(
             ).selectAll().where {
                 EmployeeTable.id eq employeeId
             }.singleOrNull()?.let { resultRow ->
-                EmployeeEntity.from(row = resultRow)
+                EmployeeDto.from(row = resultRow)
             }
         }
     }
 
-    override fun findAll(pageable: Pageable?): Page<EmployeeEntity> {
+    override fun findAll(pageable: Pageable?): Page<EmployeeDto> {
         return transactionWithSchema(schema = sessionContext.schema) {
             // Need counting the overall elements before applying pagination.
             // A separate simple count query is by far more performant
             // than having a 'count over' expression as part of the main query.
             val totalElements: Int = EmployeeTable.selectAll().count().toInt()
 
-            val content: List<EmployeeEntity> = EmployeeTable.join(
+            val content: List<EmployeeDto> = EmployeeTable.join(
                 otherTable = ContactTable,
                 joinType = JoinType.LEFT,
                 onColumn = EmployeeTable.id,
@@ -59,7 +59,7 @@ internal class EmployeeRepository(
             ).selectAll()
                 .paginate(pageable = pageable)
                 .map { resultRow ->
-                    EmployeeEntity.from(row = resultRow)
+                    EmployeeDto.from(row = resultRow)
                 }
 
             Page.build(
@@ -70,7 +70,7 @@ internal class EmployeeRepository(
         }
     }
 
-    override fun search(filterSet: EmployeeFilterSet, pageable: Pageable?): Page<EmployeeEntity> {
+    override fun search(filterSet: EmployeeFilterSet, pageable: Pageable?): Page<EmployeeDto> {
         return transactionWithSchema(schema = sessionContext.schema) {
             // Start with a base query selecting all the records.
             val query: Query = EmployeeTable.selectAll()
@@ -106,10 +106,10 @@ internal class EmployeeRepository(
             // Count total elements after applying filters.
             val totalFilteredElements: Int = query.count().toInt()
 
-            val content: List<EmployeeEntity> = query
+            val content: List<EmployeeDto> = query
                 .paginate(pageable = pageable)
                 .map { resultRow ->
-                    EmployeeEntity.from(row = resultRow)
+                    EmployeeDto.from(row = resultRow)
                 }
 
             Page.build(

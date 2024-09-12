@@ -4,55 +4,55 @@
 
 package kcrud.access.rbac.repository.role
 
-import kcrud.access.rbac.entity.role.RbacRoleEntity
+import kcrud.access.rbac.entity.role.RbacRoleDto
 import kcrud.access.rbac.entity.role.RbacRoleRequest
 import kotlin.uuid.Uuid
 
 /**
- * Repository for [RbacRoleEntity] data.
+ * Repository for [RbacRoleDto] data.
  *
  * @see RbacRoleRequest
  */
 internal interface IRbacRoleRepository {
 
     /**
-     * Finds the [RbacRoleEntity] for the given [roleId]
+     * Finds the [RbacRoleDto] for the given [roleId]
      *
-     * @param roleId The unique id of the [RbacRoleEntity] to find.
-     * @return The [RbacRoleEntity] for the given [roleId], or null if not found.
+     * @param roleId The unique id of the [RbacRoleDto] to find.
+     * @return The [RbacRoleDto] for the given [roleId], or null if not found.
      */
-    fun findById(roleId: Uuid): RbacRoleEntity?
+    fun findById(roleId: Uuid): RbacRoleDto?
 
     /**
-     * Finds the [RbacRoleEntity] for the given [actorId]
+     * Finds the [RbacRoleDto] for the given [actorId]
      *
      * @param actorId The id of the actor to which the role is associated.
-     * @return The [RbacRoleEntity] for the given [actorId], or null if it doesn't exist.
+     * @return The [RbacRoleDto] for the given [actorId], or null if it doesn't exist.
      */
-    fun findByActorId(actorId: Uuid): RbacRoleEntity?
+    fun findByActorId(actorId: Uuid): RbacRoleDto?
 
     /**
-     * Finds all existing [RbacRoleEntity] entries.
+     * Finds all existing [RbacRoleDto] entries.
      *
-     * @return List of all [RbacRoleEntity] entries.
+     * @return List of all [RbacRoleDto] entries.
      */
-    fun findAll(): List<RbacRoleEntity>
+    fun findAll(): List<RbacRoleDto>
 
     /**
-     * Creates a new [RbacRoleEntity].
+     * Creates a new [RbacRoleDto].
      *
-     * @param roleRequest The [RbacRoleRequest] to create the [RbacRoleEntity] from.
-     * @return The id of the newly created [RbacRoleEntity].
+     * @param roleRequest The [RbacRoleRequest] to create the [RbacRoleDto] from.
+     * @return The id of the newly created [RbacRoleDto].
      */
     fun create(roleRequest: RbacRoleRequest): Uuid
 
     /**
-     * Updates an existing [RbacRoleEntity] for the given [roleId].
+     * Updates an existing [RbacRoleDto] for the given [roleId].
      *
      * The current existing roles will be replaced by the new ones.
      *
-     * @param roleId The id of the [RbacRoleEntity] to update.
-     * @param roleRequest The [RbacRoleRequest] to update the [RbacRoleEntity] from.
+     * @param roleId The id of the [RbacRoleDto] to update.
+     * @param roleRequest The [RbacRoleRequest] to update the [RbacRoleDto] from.
      * @return The number of rows updated.
      */
     fun update(roleId: Uuid, roleRequest: RbacRoleRequest): Int

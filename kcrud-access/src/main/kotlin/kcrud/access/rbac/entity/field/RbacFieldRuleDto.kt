@@ -22,7 +22,7 @@ import org.jetbrains.exposed.sql.ResultRow
  * @property meta The metadata of the record.
  */
 @Serializable
-public data class RbacFieldRuleEntity(
+public data class RbacFieldRuleDto(
     val id: UuidS,
     val scopeRuleId: UuidS,
     val fieldName: String,
@@ -31,13 +31,13 @@ public data class RbacFieldRuleEntity(
 ) {
     public companion object {
         /**
-         * Maps a [ResultRow] to a [RbacFieldRuleEntity] instance.
+         * Maps a [ResultRow] to a [RbacFieldRuleDto] instance.
          *
          * @param row The [ResultRow] to map.
-         * @return The mapped [RbacFieldRuleEntity] instance.
+         * @return The mapped [RbacFieldRuleDto] instance.
          */
-        public fun from(row: ResultRow): RbacFieldRuleEntity {
-            return RbacFieldRuleEntity(
+        public fun from(row: ResultRow): RbacFieldRuleDto {
+            return RbacFieldRuleDto(
                 id = row[RbacFieldRuleTable.id],
                 scopeRuleId = row[RbacFieldRuleTable.scopeRuleId],
                 fieldName = row[RbacFieldRuleTable.fieldName],

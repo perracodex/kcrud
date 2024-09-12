@@ -4,7 +4,7 @@
 
 package kcrud.access.rbac.repository.role
 
-import kcrud.access.rbac.entity.role.RbacRoleEntity
+import kcrud.access.rbac.entity.role.RbacRoleDto
 import kcrud.access.rbac.entity.role.RbacRoleRequest
 import kcrud.access.rbac.repository.scope.IRbacScopeRuleRepository
 import kcrud.base.database.schema.admin.actor.ActorTable
@@ -21,7 +21,7 @@ import kotlin.uuid.Uuid
 
 /**
  * Implementation of [IRbacRoleRepository].
- * Handles the persistence of [RbacRoleEntity] data.
+ * Handles the persistence of [RbacRoleDto] data.
  *
  * @see IRbacRoleRepository
  */
@@ -29,7 +29,7 @@ internal class RbacRoleRepository(
     private val scopeRuleRepository: IRbacScopeRuleRepository
 ) : IRbacRoleRepository {
 
-    override fun findById(roleId: Uuid): RbacRoleEntity? {
+    override fun findById(roleId: Uuid): RbacRoleDto? {
         return transaction {
             RbacRoleTable
                 .leftJoin(otherTable = RbacScopeRuleTable)
@@ -38,12 +38,12 @@ internal class RbacRoleRepository(
                 .where { RbacRoleTable.id eq roleId }
                 .groupBy { it[RbacRoleTable.id] }
                 .map { (_, rows) ->
-                    RbacRoleEntity.from(roleId = roleId, rows = rows)
+                    RbacRoleDto.from(roleId = roleId, rows = rows)
                 }.singleOrNull()
         }
     }
 
-    override fun findByActorId(actorId: Uuid): RbacRoleEntity? {
+    override fun findByActorId(actorId: Uuid): RbacRoleDto? {
         return transaction {
             // Filter out the Actor table columns. Only include the RBAC columns.
             val columns: List<Column<*>> = listOf(
@@ -60,12 +60,12 @@ internal class RbacRoleRepository(
                 .where { ActorTable.id eq actorId }
                 .groupBy { it[RbacRoleTable.id] }
                 .map { (roleId, rows) ->
-                    RbacRoleEntity.from(roleId = roleId, rows = rows)
+                    RbacRoleDto.from(roleId = roleId, rows = rows)
                 }.singleOrNull()
         }
     }
 
-    override fun findAll(): List<RbacRoleEntity> {
+    override fun findAll(): List<RbacRoleDto> {
         return transaction {
             RbacRoleTable
                 .leftJoin(otherTable = RbacScopeRuleTable)
@@ -73,7 +73,7 @@ internal class RbacRoleRepository(
                 .selectAll()
                 .groupBy { it[RbacRoleTable.id] }
                 .map { (roleId, rows) ->
-                    RbacRoleEntity.from(roleId = roleId, rows = rows)
+                    RbacRoleDto.from(roleId = roleId, rows = rows)
                 }
         }
     }

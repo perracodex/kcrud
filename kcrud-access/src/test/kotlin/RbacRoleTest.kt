@@ -5,7 +5,7 @@
 import io.ktor.test.dispatcher.*
 import kcrud.access.actor.di.ActorDomainInjection
 import kcrud.access.rbac.di.RbacDomainInjection
-import kcrud.access.rbac.entity.role.RbacRoleEntity
+import kcrud.access.rbac.entity.role.RbacRoleDto
 import kcrud.access.rbac.entity.role.RbacRoleRequest
 import kcrud.access.rbac.entity.scope.RbacScopeRuleRequest
 import kcrud.access.rbac.service.RbacService
@@ -56,11 +56,11 @@ class RbacRoleTest : KoinComponent {
         val rbacService: RbacService by inject()
 
         // Create the role.
-        val roleEntity: RbacRoleEntity = rbacService.createRole(roleRequest = roleRequest)
-        val existingRoleEntity: RbacRoleEntity? = rbacService.findRoleById(roleId = roleEntity.id)
-        assertNotNull(actual = existingRoleEntity, message = "The role was not found in the database after it was created.")
-        assertEquals(expected = roleName, actual = existingRoleEntity.roleName)
-        assertEquals(expected = description, actual = existingRoleEntity.description)
+        val rbacRole: RbacRoleDto = rbacService.createRole(roleRequest = roleRequest)
+        val existingRole: RbacRoleDto? = rbacService.findRoleById(roleId = rbacRole.id)
+        assertNotNull(actual = existingRole, message = "The role was not found in the database after it was created.")
+        assertEquals(expected = roleName, actual = existingRole.roleName)
+        assertEquals(expected = description, actual = existingRole.description)
 
         // Try to create the same role again.
         assertFailsWith<ExposedSQLException> {
@@ -70,15 +70,15 @@ class RbacRoleTest : KoinComponent {
         // Update the role.
         val newRoleName = "new_role_name"
         val newDescription = "New role description"
-        val updatedRoleEntity: RbacRoleEntity? = rbacService.updateRole(
-            roleId = roleEntity.id,
+        val updatedRole: RbacRoleDto? = rbacService.updateRole(
+            roleId = rbacRole.id,
             roleRequest = roleRequest.copy(
                 roleName = newRoleName,
                 description = newDescription
             )
         )
-        assertNotNull(actual = updatedRoleEntity, message = "The role was not updated.")
-        assertEquals(expected = newRoleName, actual = updatedRoleEntity.roleName)
-        assertEquals(expected = newDescription, actual = updatedRoleEntity.description)
+        assertNotNull(actual = updatedRole, message = "The role was not updated.")
+        assertEquals(expected = newRoleName, actual = updatedRole.roleName)
+        assertEquals(expected = newDescription, actual = updatedRole.description)
     }
 }

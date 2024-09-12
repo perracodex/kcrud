@@ -4,11 +4,11 @@
 
 import io.ktor.test.dispatcher.*
 import kcrud.access.actor.di.ActorDomainInjection
-import kcrud.access.actor.entity.ActorEntity
+import kcrud.access.actor.entity.ActorDto
 import kcrud.access.actor.entity.ActorRequest
 import kcrud.access.actor.service.ActorService
 import kcrud.access.rbac.di.RbacDomainInjection
-import kcrud.access.rbac.entity.role.RbacRoleEntity
+import kcrud.access.rbac.entity.role.RbacRoleDto
 import kcrud.access.rbac.entity.role.RbacRoleRequest
 import kcrud.access.rbac.entity.scope.RbacScopeRuleRequest
 import kcrud.access.rbac.service.RbacService
@@ -60,7 +60,7 @@ class RbacActorTest : KoinComponent {
         val rbacService: RbacService by inject()
 
         // Create the role.
-        val roleEntity: RbacRoleEntity = rbacService.createRole(roleRequest = roleRequest)
+        val rbacRole: RbacRoleDto = rbacService.createRole(roleRequest = roleRequest)
 
         // Create the actor.
         val actorService: ActorService by inject()
@@ -69,14 +69,14 @@ class RbacActorTest : KoinComponent {
         val password = "any_password"
         val actorId: Uuid = actorService.create(
             actorRequest = ActorRequest(
-                roleId = roleEntity.id,
+                roleId = rbacRole.id,
                 username = username,
                 password = password,
                 isLocked = false
             )
         )
 
-        var actor: ActorEntity? = actorService.findByUsername(username = username)
+        var actor: ActorDto? = actorService.findByUsername(username = username)
         assertNotNull(actual = actor, message = "The actor was not found in the database after it was created.")
         assertEquals(expected = username, actual = actor.username)
         assertEquals(expected = password, actual = actor.password)
@@ -91,7 +91,7 @@ class RbacActorTest : KoinComponent {
         assertFailsWith<ExposedSQLException> {
             actorService.create(
                 actorRequest = ActorRequest(
-                    roleId = roleEntity.id,
+                    roleId = rbacRole.id,
                     username = username,
                     password = password,
                     isLocked = false
@@ -100,7 +100,7 @@ class RbacActorTest : KoinComponent {
         }
 
         // Find a role by Actor ID.
-        val roleByActor: RbacRoleEntity? = rbacService.findRoleByActorId(actorId = actorId)
+        val roleByActor: RbacRoleDto? = rbacService.findRoleByActorId(actorId = actorId)
         assertNotNull(actual = roleByActor, message = "The role was not found in the database after it was created.")
         assertEquals(expected = roleName, actual = roleByActor.roleName)
         assertEquals(expected = description, actual = roleByActor.description)

@@ -7,7 +7,7 @@ package kcrud.base.scheduler.service.core
 import io.ktor.server.application.*
 import kcrud.base.env.Tracer
 import kcrud.base.scheduler.annotation.SchedulerAPI
-import kcrud.base.scheduler.entity.TaskStateChangeEntity
+import kcrud.base.scheduler.entity.TaskStateChangeDto
 import kcrud.base.scheduler.listener.TaskListener
 import kcrud.base.scheduler.listener.TriggerListener
 import kcrud.base.scheduler.service.task.TaskFactory
@@ -169,9 +169,9 @@ internal object SchedulerService {
      * of the overall scheduler state. Thus, individual tasks can be
      * actively executing even when the scheduler is paused.
      *
-     * @return [TaskStateChangeEntity] containing details of the operation.
+     * @return [TaskStateChangeDto] containing details of the operation.
      */
-    fun pause(): TaskStateChangeEntity {
+    fun pause(): TaskStateChangeDto {
         return TaskState.change(scheduler = scheduler, targetState = TriggerState.PAUSED) {
             // Attempt to pause all triggers
             tracer.info("Attempting to pause all triggers...")
@@ -221,9 +221,9 @@ internal object SchedulerService {
     /**
      * Resumes all tasks currently paused in the scheduler.
      *
-     * @return [TaskStateChangeEntity] containing details of the operation.
+     * @return [TaskStateChangeDto] containing details of the operation.
      */
-    fun resume(): TaskStateChangeEntity {
+    fun resume(): TaskStateChangeDto {
         return TaskState.change(scheduler = scheduler, targetState = TriggerState.NORMAL) {
             // Attempt to resume all triggers.
             tracer.info("Attempting to resume all triggers.")

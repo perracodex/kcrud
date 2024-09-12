@@ -17,7 +17,7 @@ import kcrud.base.env.SessionContext
 import kcrud.base.utils.KLocalDate
 import kcrud.base.utils.TestUtils
 import kcrud.domain.contact.entity.ContactRequest
-import kcrud.domain.employee.entity.EmployeeEntity
+import kcrud.domain.employee.entity.EmployeeDto
 import kcrud.domain.employee.entity.EmployeeRequest
 import kcrud.domain.employee.service.EmployeeService
 import kotlinx.serialization.encodeToString
@@ -187,7 +187,7 @@ class RbacTest : KoinComponent {
         }
     }
 
-    private suspend fun createEmployee(): EmployeeEntity {
+    private suspend fun createEmployee(): EmployeeDto {
         val firstName = TestUtils.randomName()
         val lastName = TestUtils.randomName()
         val employeeRequest = EmployeeRequest(

@@ -6,7 +6,7 @@ package kcrud.domain.employment.repository
 
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
-import kcrud.domain.employment.entity.EmploymentEntity
+import kcrud.domain.employment.entity.EmploymentDto
 import kcrud.domain.employment.entity.EmploymentRequest
 import kotlin.uuid.Uuid
 
@@ -19,26 +19,26 @@ internal interface IEmploymentRepository {
      * Retrieves all employments.
      *
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
-     * @return List of [EmploymentEntity] entities.
+     * @return List of [EmploymentDto] entities.
      */
-    fun findAll(pageable: Pageable? = null): Page<EmploymentEntity>
+    fun findAll(pageable: Pageable? = null): Page<EmploymentDto>
 
     /**
      * Retrieves an employment by its ID.
      *
      * @param employeeId The ID of the employee associated with the employment.
      * @param employmentId The ID of the employment to be retrieved.
-     * @return The resolved [EmploymentEntity] if found, null otherwise.
+     * @return The resolved [EmploymentDto] if found, null otherwise.
      */
-    fun findById(employeeId: Uuid, employmentId: Uuid): EmploymentEntity?
+    fun findById(employeeId: Uuid, employmentId: Uuid): EmploymentDto?
 
     /**
      * Retrieves all employment entities for a given employee.
      *
      * @param employeeId The ID of the employee associated with the employment.
-     * @return List of [EmploymentEntity] entities.
+     * @return List of [EmploymentDto] entities.
      */
-    fun findByEmployeeId(employeeId: Uuid): List<EmploymentEntity>
+    fun findByEmployeeId(employeeId: Uuid): List<EmploymentDto>
 
     /**
      * Creates a new employment.

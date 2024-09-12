@@ -12,7 +12,7 @@ import kcrud.base.persistence.serializers.OffsetTimestamp
 import kcrud.base.utils.KLocalDate
 import kcrud.base.utils.TestUtils
 import kcrud.domain.employee.di.EmployeeDomainInjection
-import kcrud.domain.employee.entity.EmployeeEntity
+import kcrud.domain.employee.entity.EmployeeDto
 import kcrud.domain.employee.entity.EmployeeRequest
 import kcrud.domain.employee.repository.IEmployeeRepository
 import org.koin.core.component.KoinComponent
@@ -54,7 +54,7 @@ class TimestampTest : KoinComponent {
         )
 
         val employeeId: Uuid = employeeRepository.create(employeeRequest = employeeRequest)
-        val employee: EmployeeEntity = employeeRepository.findById(employeeId = employeeId)!!
+        val employee: EmployeeDto = employeeRepository.findById(employeeId = employeeId)!!
 
         // Assert that the record has timestamps.
         assertNotNull(actual = employee)
@@ -70,7 +70,7 @@ class TimestampTest : KoinComponent {
         val createdAt: OffsetTimestamp = employee.meta.createdAt
         val updatedAt: OffsetTimestamp = employee.meta.updatedAt
         employeeRepository.update(employeeId = employeeId, employeeRequest = employeeRequest)
-        val updatedEmployee: EmployeeEntity = employeeRepository.findById(employeeId = employeeId)!!
+        val updatedEmployee: EmployeeDto = employeeRepository.findById(employeeId = employeeId)!!
 
         // The createdAt timestamp should not change.
         assertEquals(
