@@ -12,8 +12,8 @@ import kcrud.base.env.SessionContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.pagination.paginate
-import kcrud.domain.employment.entity.EmploymentDto
-import kcrud.domain.employment.entity.EmploymentRequest
+import kcrud.domain.employment.model.EmploymentDto
+import kcrud.domain.employment.model.EmploymentRequest
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.UpdateBuilder

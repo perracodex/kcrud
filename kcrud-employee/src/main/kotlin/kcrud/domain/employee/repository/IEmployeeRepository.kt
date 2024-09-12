@@ -6,9 +6,9 @@ package kcrud.domain.employee.repository
 
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
-import kcrud.domain.employee.entity.EmployeeDto
-import kcrud.domain.employee.entity.EmployeeFilterSet
-import kcrud.domain.employee.entity.EmployeeRequest
+import kcrud.domain.employee.model.EmployeeDto
+import kcrud.domain.employee.model.EmployeeFilterSet
+import kcrud.domain.employee.model.EmployeeRequest
 import kotlin.uuid.Uuid
 
 /**

@@ -5,7 +5,7 @@
 package kcrud.access.credential
 
 import io.ktor.server.auth.*
-import kcrud.access.actor.entity.ActorDto
+import kcrud.access.actor.model.ActorDto
 import kcrud.access.actor.service.ActorService
 import kcrud.base.env.Tracer
 import kcrud.base.security.hash.SecureHash

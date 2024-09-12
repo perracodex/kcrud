@@ -12,8 +12,8 @@ import kcrud.base.persistence.serializers.OffsetTimestamp
 import kcrud.base.utils.KLocalDate
 import kcrud.base.utils.TestUtils
 import kcrud.domain.employee.di.EmployeeDomainInjection
-import kcrud.domain.employee.entity.EmployeeDto
-import kcrud.domain.employee.entity.EmployeeRequest
+import kcrud.domain.employee.model.EmployeeDto
+import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.repository.IEmployeeRepository
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

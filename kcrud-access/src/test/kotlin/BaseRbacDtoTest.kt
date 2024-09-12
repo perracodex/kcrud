@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-import kcrud.access.rbac.entity.base.BaseRbacDto
+import kcrud.access.rbac.model.base.BaseRbacDto
 import kcrud.access.rbac.service.RbacFieldAnonymization
 import kcrud.base.utils.KLocalDate
 import kcrud.base.utils.KLocalDateTime

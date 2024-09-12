@@ -12,10 +12,10 @@ import kcrud.base.database.schema.employee.types.MaritalStatus
 import kcrud.base.env.SessionContext
 import kcrud.base.utils.KLocalDate
 import kcrud.base.utils.TestUtils
-import kcrud.domain.contact.entity.ContactRequest
+import kcrud.domain.contact.model.ContactRequest
 import kcrud.domain.contact.repository.IContactRepository
 import kcrud.domain.employee.di.EmployeeDomainInjection
-import kcrud.domain.employee.entity.EmployeeRequest
+import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.repository.IEmployeeRepository
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction

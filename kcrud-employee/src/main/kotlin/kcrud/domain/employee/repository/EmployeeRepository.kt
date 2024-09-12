@@ -12,9 +12,9 @@ import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.pagination.paginate
 import kcrud.domain.contact.repository.IContactRepository
-import kcrud.domain.employee.entity.EmployeeDto
-import kcrud.domain.employee.entity.EmployeeFilterSet
-import kcrud.domain.employee.entity.EmployeeRequest
+import kcrud.domain.employee.model.EmployeeDto
+import kcrud.domain.employee.model.EmployeeFilterSet
+import kcrud.domain.employee.model.EmployeeRequest
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.UpdateBuilder

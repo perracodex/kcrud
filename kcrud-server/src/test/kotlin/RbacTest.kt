@@ -16,9 +16,9 @@ import kcrud.base.database.schema.employee.types.MaritalStatus
 import kcrud.base.env.SessionContext
 import kcrud.base.utils.KLocalDate
 import kcrud.base.utils.TestUtils
-import kcrud.domain.contact.entity.ContactRequest
-import kcrud.domain.employee.entity.EmployeeDto
-import kcrud.domain.employee.entity.EmployeeRequest
+import kcrud.domain.contact.model.ContactRequest
+import kcrud.domain.employee.model.EmployeeDto
+import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.service.EmployeeService
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

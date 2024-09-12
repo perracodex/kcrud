@@ -11,8 +11,8 @@ import io.ktor.server.routing.*
 import kcrud.base.env.SessionContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.getPageable
-import kcrud.domain.employee.entity.EmployeeDto
-import kcrud.domain.employee.entity.EmployeeFilterSet
+import kcrud.domain.employee.model.EmployeeDto
+import kcrud.domain.employee.model.EmployeeFilterSet
 import kcrud.domain.employee.routing.annotation.EmployeeRouteAPI
 import kcrud.domain.employee.service.EmployeeService
 import org.koin.core.parameter.parametersOf

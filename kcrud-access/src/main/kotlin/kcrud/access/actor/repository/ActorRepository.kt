@@ -4,9 +4,9 @@
 
 package kcrud.access.actor.repository
 
-import kcrud.access.actor.entity.ActorDto
-import kcrud.access.actor.entity.ActorRequest
-import kcrud.access.rbac.entity.role.RbacRoleDto
+import kcrud.access.actor.model.ActorDto
+import kcrud.access.actor.model.ActorRequest
+import kcrud.access.rbac.model.role.RbacRoleDto
 import kcrud.access.rbac.repository.role.IRbacRoleRepository
 import kcrud.base.database.schema.admin.actor.ActorTable
 import org.jetbrains.exposed.sql.insert

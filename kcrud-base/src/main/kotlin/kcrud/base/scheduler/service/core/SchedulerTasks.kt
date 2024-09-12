@@ -9,9 +9,9 @@ import kcrud.base.env.Tracer
 import kcrud.base.events.SEEService
 import kcrud.base.scheduler.annotation.SchedulerAPI
 import kcrud.base.scheduler.audit.AuditService
-import kcrud.base.scheduler.audit.entity.AuditDto
-import kcrud.base.scheduler.entity.TaskScheduleDto
-import kcrud.base.scheduler.entity.TaskStateChangeDto
+import kcrud.base.scheduler.audit.model.AuditDto
+import kcrud.base.scheduler.model.TaskScheduleDto
+import kcrud.base.scheduler.model.TaskStateChangeDto
 import kcrud.base.scheduler.service.core.SchedulerTasks.Companion.create
 import kcrud.base.scheduler.service.task.TaskState
 import kcrud.base.security.snowflake.SnowflakeFactory

@@ -8,7 +8,7 @@ import io.ktor.server.config.*
 import kcrud.base.database.schema.contact.ContactTable
 import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.database.service.DatabaseService
-import kcrud.base.persistence.entity.Period
+import kcrud.base.persistence.model.Period
 import kcrud.base.settings.AppSettings
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.core.context.stopKoin

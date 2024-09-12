@@ -8,9 +8,9 @@ import kcrud.base.env.SessionContext
 import kcrud.base.env.Tracer
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
-import kcrud.domain.employment.entity.EmploymentDto
-import kcrud.domain.employment.entity.EmploymentRequest
 import kcrud.domain.employment.errors.EmploymentError
+import kcrud.domain.employment.model.EmploymentDto
+import kcrud.domain.employment.model.EmploymentRequest
 import kcrud.domain.employment.repository.IEmploymentRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

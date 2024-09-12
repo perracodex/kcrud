@@ -11,10 +11,10 @@ import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.validators.IValidator
 import kcrud.base.persistence.validators.impl.EmailValidator
 import kcrud.base.persistence.validators.impl.PhoneValidator
-import kcrud.domain.employee.entity.EmployeeDto
-import kcrud.domain.employee.entity.EmployeeFilterSet
-import kcrud.domain.employee.entity.EmployeeRequest
 import kcrud.domain.employee.errors.EmployeeError
+import kcrud.domain.employee.model.EmployeeDto
+import kcrud.domain.employee.model.EmployeeFilterSet
+import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.repository.IEmployeeRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

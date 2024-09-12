@@ -6,8 +6,8 @@ package kcrud.base.scheduler.audit
 
 import kcrud.base.database.schema.scheduler.SchedulerAuditTable
 import kcrud.base.scheduler.annotation.SchedulerAPI
-import kcrud.base.scheduler.audit.entity.AuditDto
-import kcrud.base.scheduler.audit.entity.AuditRequest
+import kcrud.base.scheduler.audit.model.AuditDto
+import kcrud.base.scheduler.audit.model.AuditRequest
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.andWhere
 import org.jetbrains.exposed.sql.insert

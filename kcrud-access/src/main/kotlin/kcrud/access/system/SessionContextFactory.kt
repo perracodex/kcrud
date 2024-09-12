@@ -9,7 +9,7 @@ import com.auth0.jwt.exceptions.JWTDecodeException
 import com.auth0.jwt.interfaces.DecodedJWT
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
-import kcrud.access.actor.entity.ActorDto
+import kcrud.access.actor.model.ActorDto
 import kcrud.access.actor.service.ActorService
 import kcrud.access.credential.CredentialService
 import kcrud.base.env.SessionContext

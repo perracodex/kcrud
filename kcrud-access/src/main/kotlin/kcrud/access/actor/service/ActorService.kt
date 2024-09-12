@@ -4,8 +4,8 @@
 
 package kcrud.access.actor.service
 
-import kcrud.access.actor.entity.ActorDto
-import kcrud.access.actor.entity.ActorRequest
+import kcrud.access.actor.model.ActorDto
+import kcrud.access.actor.model.ActorRequest
 import kcrud.access.actor.repository.IActorRepository
 import kcrud.access.credential.CredentialService
 import kcrud.access.rbac.repository.role.IRbacRoleRepository

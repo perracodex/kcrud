@@ -4,11 +4,11 @@
 
 package kcrud.access.actor.service
 
-import kcrud.access.actor.entity.ActorRequest
+import kcrud.access.actor.model.ActorRequest
 import kcrud.access.credential.CredentialService
-import kcrud.access.rbac.entity.role.RbacRoleDto
-import kcrud.access.rbac.entity.role.RbacRoleRequest
-import kcrud.access.rbac.entity.scope.RbacScopeRuleRequest
+import kcrud.access.rbac.model.role.RbacRoleDto
+import kcrud.access.rbac.model.role.RbacRoleRequest
+import kcrud.access.rbac.model.scope.RbacScopeRuleRequest
 import kcrud.access.rbac.service.RbacService
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacScope

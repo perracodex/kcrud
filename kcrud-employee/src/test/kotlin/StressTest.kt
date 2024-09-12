@@ -12,10 +12,10 @@ import kcrud.base.env.SessionContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.utils.KLocalDate
 import kcrud.base.utils.TestUtils
-import kcrud.domain.contact.entity.ContactRequest
+import kcrud.domain.contact.model.ContactRequest
 import kcrud.domain.employee.di.EmployeeDomainInjection
-import kcrud.domain.employee.entity.EmployeeDto
-import kcrud.domain.employee.entity.EmployeeRequest
+import kcrud.domain.employee.model.EmployeeDto
+import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.service.EmployeeService
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async

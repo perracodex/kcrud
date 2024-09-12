@@ -12,8 +12,8 @@ import kcrud.access.utils.RbacTestUtils
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
 import kcrud.base.utils.TestUtils
-import kcrud.domain.contact.entity.ContactRequest
-import kcrud.domain.employee.entity.EmployeeRequest
+import kcrud.domain.contact.model.ContactRequest
+import kcrud.domain.employee.model.EmployeeRequest
 import kotlinx.coroutines.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

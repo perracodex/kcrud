@@ -4,7 +4,7 @@
 
 package kcrud.access.rbac.service
 
-import kcrud.access.rbac.entity.base.BaseRbacDto
+import kcrud.access.rbac.model.base.BaseRbacDto
 import kcrud.base.utils.KLocalDate
 import kcrud.base.utils.KLocalDateTime
 import kcrud.base.utils.KLocalTime

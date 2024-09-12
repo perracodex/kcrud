@@ -6,8 +6,8 @@ package kcrud.access.rbac.service
 
 import io.ktor.server.application.*
 import io.ktor.server.sessions.*
-import kcrud.access.rbac.entity.role.RbacRoleDto
-import kcrud.access.rbac.entity.scope.RbacScopeRuleRequest
+import kcrud.access.rbac.model.role.RbacRoleDto
+import kcrud.access.rbac.model.scope.RbacScopeRuleRequest
 import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.view.RbacDashboardView
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel

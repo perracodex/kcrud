@@ -4,8 +4,8 @@
 
 package kcrud.access.actor.repository
 
-import kcrud.access.actor.entity.ActorDto
-import kcrud.access.actor.entity.ActorRequest
+import kcrud.access.actor.model.ActorDto
+import kcrud.access.actor.model.ActorRequest
 import kotlin.uuid.Uuid
 
 /**

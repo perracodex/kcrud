@@ -4,8 +4,8 @@
 
 package kcrud.access.rbac.repository.scope
 
-import kcrud.access.rbac.entity.field.RbacFieldRuleRequest
-import kcrud.access.rbac.entity.scope.RbacScopeRuleRequest
+import kcrud.access.rbac.model.field.RbacFieldRuleRequest
+import kcrud.access.rbac.model.scope.RbacScopeRuleRequest
 import kcrud.access.rbac.repository.field.IRbacFieldRuleRepository
 import kcrud.base.database.schema.admin.rbac.RbacScopeRuleTable
 import org.jetbrains.exposed.sql.ResultRow

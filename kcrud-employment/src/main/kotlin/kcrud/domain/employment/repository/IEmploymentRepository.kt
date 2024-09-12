@@ -6,8 +6,8 @@ package kcrud.domain.employment.repository
 
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
-import kcrud.domain.employment.entity.EmploymentDto
-import kcrud.domain.employment.entity.EmploymentRequest
+import kcrud.domain.employment.model.EmploymentDto
+import kcrud.domain.employment.model.EmploymentRequest
 import kotlin.uuid.Uuid
 
 /**

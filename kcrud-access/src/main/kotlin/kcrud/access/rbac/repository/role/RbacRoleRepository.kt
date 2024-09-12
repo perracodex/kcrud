@@ -4,8 +4,8 @@
 
 package kcrud.access.rbac.repository.role
 
-import kcrud.access.rbac.entity.role.RbacRoleDto
-import kcrud.access.rbac.entity.role.RbacRoleRequest
+import kcrud.access.rbac.model.role.RbacRoleDto
+import kcrud.access.rbac.model.role.RbacRoleRequest
 import kcrud.access.rbac.repository.scope.IRbacScopeRuleRepository
 import kcrud.base.database.schema.admin.actor.ActorTable
 import kcrud.base.database.schema.admin.rbac.RbacFieldRuleTable

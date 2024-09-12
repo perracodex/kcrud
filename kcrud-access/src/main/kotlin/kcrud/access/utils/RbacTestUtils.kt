@@ -4,13 +4,13 @@
 
 package kcrud.access.utils
 
-import kcrud.access.actor.entity.ActorDto
-import kcrud.access.actor.entity.ActorRequest
+import kcrud.access.actor.model.ActorDto
+import kcrud.access.actor.model.ActorRequest
 import kcrud.access.actor.service.ActorService
 import kcrud.access.actor.service.DefaultActorFactory
-import kcrud.access.rbac.entity.role.RbacRoleDto
-import kcrud.access.rbac.entity.role.RbacRoleRequest
-import kcrud.access.rbac.entity.scope.RbacScopeRuleRequest
+import kcrud.access.rbac.model.role.RbacRoleDto
+import kcrud.access.rbac.model.role.RbacRoleRequest
+import kcrud.access.rbac.model.scope.RbacScopeRuleRequest
 import kcrud.access.rbac.service.RbacService
 import kcrud.access.token.annotation.TokenAPI
 import kcrud.access.token.service.AuthenticationTokenService

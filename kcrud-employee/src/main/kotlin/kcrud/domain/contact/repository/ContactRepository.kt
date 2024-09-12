@@ -10,9 +10,9 @@ import kcrud.base.env.SessionContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.pagination.paginate
-import kcrud.domain.contact.entity.ContactDto
-import kcrud.domain.contact.entity.ContactRequest
-import kcrud.domain.employee.entity.EmployeeRequest
+import kcrud.domain.contact.model.ContactDto
+import kcrud.domain.contact.model.ContactRequest
+import kcrud.domain.employee.model.EmployeeRequest
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert

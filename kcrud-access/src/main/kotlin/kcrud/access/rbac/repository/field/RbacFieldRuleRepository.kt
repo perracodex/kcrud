@@ -4,7 +4,7 @@
 
 package kcrud.access.rbac.repository.field
 
-import kcrud.access.rbac.entity.field.RbacFieldRuleRequest
+import kcrud.access.rbac.model.field.RbacFieldRuleRequest
 import kcrud.base.database.schema.admin.rbac.RbacFieldRuleTable
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq

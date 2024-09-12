@@ -10,7 +10,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.base.env.SessionContext
 import kcrud.base.persistence.utils.toUuid
-import kcrud.domain.employment.entity.EmploymentDto
+import kcrud.domain.employment.model.EmploymentDto
 import kcrud.domain.employment.routing.annotation.EmploymentRouteAPI
 import kcrud.domain.employment.service.EmploymentService
 import org.koin.core.parameter.parametersOf

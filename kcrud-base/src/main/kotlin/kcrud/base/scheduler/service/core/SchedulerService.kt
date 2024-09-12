@@ -7,9 +7,9 @@ package kcrud.base.scheduler.service.core
 import io.ktor.server.application.*
 import kcrud.base.env.Tracer
 import kcrud.base.scheduler.annotation.SchedulerAPI
-import kcrud.base.scheduler.entity.TaskStateChangeDto
 import kcrud.base.scheduler.listener.TaskListener
 import kcrud.base.scheduler.listener.TriggerListener
+import kcrud.base.scheduler.model.TaskStateChangeDto
 import kcrud.base.scheduler.service.task.TaskFactory
 import kcrud.base.scheduler.service.task.TaskState
 import org.quartz.Scheduler
