@@ -41,9 +41,9 @@ public abstract class BaseRbacDto {
      *
      * Usage example:
      * ```
-     * data class SomeDto(val name: String, val phone: String): RbacDto()
-     * val instance = SomeDto(...)
-     * val anonymizedInstance = instance.anonymize(listOf("phone"))
+     * data class Sample(val name: String, val phone: String): BaseRbac()
+     * val instance = Sample(...)
+     * val anonymized = instance.anonymize(listOf("phone"))
      * ```
      *
      * @param T The target type, automatically inferred from the inheriting class.
