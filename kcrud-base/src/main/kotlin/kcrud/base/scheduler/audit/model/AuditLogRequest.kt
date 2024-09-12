@@ -20,7 +20,7 @@ import kcrud.base.utils.KLocalDateTime
  * @property detail The detail that provides more information about the log.
  */
 @SchedulerAPI
-public data class AuditRequest(
+public data class AuditLogRequest(
     val taskName: String,
     val taskGroup: String,
     val fireTime: KLocalDateTime,

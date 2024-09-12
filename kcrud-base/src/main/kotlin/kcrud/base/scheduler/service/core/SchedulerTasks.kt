@@ -9,7 +9,7 @@ import kcrud.base.env.Tracer
 import kcrud.base.events.SEEService
 import kcrud.base.scheduler.annotation.SchedulerAPI
 import kcrud.base.scheduler.audit.AuditService
-import kcrud.base.scheduler.audit.model.AuditDto
+import kcrud.base.scheduler.audit.model.AuditLogDto
 import kcrud.base.scheduler.model.TaskScheduleDto
 import kcrud.base.scheduler.model.TaskStateChangeDto
 import kcrud.base.scheduler.service.core.SchedulerTasks.Companion.create
@@ -181,7 +181,7 @@ internal class SchedulerTasks private constructor(private val scheduler: Schedul
         )
 
         // Resolve the last execution outcome.
-        val mostRecentAudit: AuditDto? = AuditService.mostRecent(taskName = jobKey.name, taskGroup = jobKey.group)
+        val mostRecentAudit: AuditLogDto? = AuditService.mostRecent(taskName = jobKey.name, taskGroup = jobKey.group)
         val outcome: String? = mostRecentAudit?.outcome?.name
 
         // Get how many times the task has been executed.

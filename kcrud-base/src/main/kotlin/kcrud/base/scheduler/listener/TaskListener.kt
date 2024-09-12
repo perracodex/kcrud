@@ -10,7 +10,7 @@ import kcrud.base.env.MetricsRegistry
 import kcrud.base.env.Tracer
 import kcrud.base.scheduler.annotation.SchedulerAPI
 import kcrud.base.scheduler.audit.AuditService
-import kcrud.base.scheduler.audit.model.AuditRequest
+import kcrud.base.scheduler.audit.model.AuditLogRequest
 import kcrud.base.scheduler.service.task.TaskOutcome
 import kcrud.base.utils.DateTimeUtils
 import kotlinx.coroutines.runBlocking
@@ -91,7 +91,7 @@ internal class TaskListener : JobListener {
 
         // Create audit log for task execution.
 
-        AuditRequest(
+        AuditLogRequest(
             taskName = context.jobDetail.key.name,
             taskGroup = context.jobDetail.key.group,
             fireTime = DateTimeUtils.javaDateToLocalDateTime(datetime = context.fireTime),

@@ -9,7 +9,7 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.base.scheduler.audit.AuditService
-import kcrud.base.scheduler.audit.model.AuditDto
+import kcrud.base.scheduler.audit.model.AuditLogDto
 
 /**
  * Returns the scheduler audit routes.
@@ -17,7 +17,7 @@ import kcrud.base.scheduler.audit.model.AuditDto
 internal fun Route.schedulerAuditRoute() {
     // Returns the audit logs for the scheduler.
     get("scheduler/audit") {
-        val audit: List<AuditDto> = AuditService.findAll()
+        val audit: List<AuditLogDto> = AuditService.findAll()
         call.respond(status = HttpStatusCode.OK, message = audit)
     }
 
@@ -25,7 +25,7 @@ internal fun Route.schedulerAuditRoute() {
     get("scheduler/audit/{name}/{group}") {
         val taskName: String = call.parameters["name"] ?: return@get call.respond(HttpStatusCode.BadRequest)
         val taskGroup: String = call.parameters["group"] ?: return@get call.respond(HttpStatusCode.BadRequest)
-        val audit: List<AuditDto> = AuditService.find(taskName = taskName, taskGroup = taskGroup)
+        val audit: List<AuditLogDto> = AuditService.find(taskName = taskName, taskGroup = taskGroup)
 
         if (audit.isEmpty()) {
             call.respond(status = HttpStatusCode.NotFound, message = "No audit logs found for the task.")

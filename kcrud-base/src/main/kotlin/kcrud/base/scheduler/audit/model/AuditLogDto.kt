@@ -26,7 +26,7 @@ import org.jetbrains.exposed.sql.ResultRow
  * @property meta The metadata of the record.
  */
 @Serializable
-public data class AuditDto(
+public data class AuditLogDto(
     val id: UuidS,
     val taskName: String,
     val taskGroup: String,
@@ -39,13 +39,13 @@ public data class AuditDto(
 ) {
     internal companion object {
         /**
-         * Maps a [ResultRow] to a [AuditDto] instance.
+         * Maps a [ResultRow] to a [AuditLogDto] instance.
          *
          * @param row The [ResultRow] to map.
-         * @return The mapped [AuditDto] instance.
+         * @return The mapped [AuditLogDto] instance.
          */
-        fun from(row: ResultRow): AuditDto {
-            return AuditDto(
+        fun from(row: ResultRow): AuditLogDto {
+            return AuditLogDto(
                 id = row[SchedulerAuditTable.id],
                 taskName = row[SchedulerAuditTable.taskName],
                 taskGroup = row[SchedulerAuditTable.taskGroup],

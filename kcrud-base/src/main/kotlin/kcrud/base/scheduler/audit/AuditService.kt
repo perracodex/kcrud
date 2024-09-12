@@ -6,8 +6,8 @@ package kcrud.base.scheduler.audit
 
 import kcrud.base.env.Tracer
 import kcrud.base.scheduler.annotation.SchedulerAPI
-import kcrud.base.scheduler.audit.model.AuditDto
-import kcrud.base.scheduler.audit.model.AuditRequest
+import kcrud.base.scheduler.audit.model.AuditLogDto
+import kcrud.base.scheduler.audit.model.AuditLogRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlin.uuid.Uuid
@@ -22,9 +22,9 @@ internal object AuditService {
     /**
      * Creates a new audit entry.
      *
-     * @param request The [AuditRequest] to create.
+     * @param request The [AuditLogRequest] to create.
      */
-    suspend fun create(request: AuditRequest): Uuid = withContext(Dispatchers.IO) {
+    suspend fun create(request: AuditLogRequest): Uuid = withContext(Dispatchers.IO) {
         tracer.debug("Creating a new audit entry for task '${request.taskName}' in group '${request.taskGroup}'.")
         return@withContext AuditRepository.create(request = request)
     }
@@ -32,9 +32,9 @@ internal object AuditService {
     /**
      * Finds all the audit entries, ordered bby the most recent first.
      *
-     * @return The list of [AuditDto] instances.
+     * @return The list of [AuditLogDto] instances.
      */
-    suspend fun findAll(): List<AuditDto> = withContext(Dispatchers.IO) {
+    suspend fun findAll(): List<AuditLogDto> = withContext(Dispatchers.IO) {
         tracer.debug("Finding all audit entries.")
         return@withContext AuditRepository.findAll()
     }
@@ -44,9 +44,9 @@ internal object AuditService {
      *
      * @param taskName The name of the task.
      * @param taskGroup The group of the task.
-     * @return The list of [AuditDto] instances, or an empty list if none found.
+     * @return The list of [AuditLogDto] instances, or an empty list if none found.
      */
-    suspend fun find(taskName: String, taskGroup: String): List<AuditDto> = withContext(Dispatchers.IO) {
+    suspend fun find(taskName: String, taskGroup: String): List<AuditLogDto> = withContext(Dispatchers.IO) {
         tracer.debug("Finding all audit entries for task '$taskName' in group '$taskGroup'.")
         return@withContext AuditRepository.find(taskName = taskName, taskGroup = taskGroup)
     }
@@ -56,9 +56,9 @@ internal object AuditService {
      *
      * @param taskName The name of the task.
      * @param taskGroup The group of the task.
-     * @return The most recent [AuditDto] instance, or `null` if none found.
+     * @return The most recent [AuditLogDto] instance, or `null` if none found.
      */
-    suspend fun mostRecent(taskName: String, taskGroup: String): AuditDto? = withContext(Dispatchers.IO) {
+    suspend fun mostRecent(taskName: String, taskGroup: String): AuditLogDto? = withContext(Dispatchers.IO) {
         tracer.debug("Finding the most recent audit entry for task '$taskName' in group '$taskGroup'.")
         return@withContext AuditRepository.mostRecent(taskName = taskName, taskGroup = taskGroup)
     }
