@@ -6,7 +6,7 @@ package kcrud.base.env
 
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
-import kcrud.base.persistence.serializers.UuidS
+import kcrud.base.persistence.serializers.SUuid
 import kcrud.base.persistence.utils.toUuid
 import kcrud.base.settings.AppSettings
 import kotlinx.serialization.Serializable
@@ -29,9 +29,9 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 public data class SessionContext(
-    val actorId: UuidS,
+    val actorId: SUuid,
     val username: String,
-    val roleId: UuidS,
+    val roleId: SUuid,
     val schema: String? = null
 ) : Principal {
     public companion object {

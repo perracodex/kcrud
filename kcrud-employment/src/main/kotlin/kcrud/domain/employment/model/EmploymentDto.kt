@@ -9,7 +9,7 @@ import kcrud.base.database.schema.employment.types.EmploymentStatus
 import kcrud.base.database.schema.employment.types.WorkModality
 import kcrud.base.persistence.model.Meta
 import kcrud.base.persistence.model.Period
-import kcrud.base.persistence.serializers.UuidS
+import kcrud.base.persistence.serializers.SUuid
 import kcrud.base.utils.KLocalDate
 import kcrud.domain.employee.model.EmployeeDto
 import kotlinx.serialization.Serializable
@@ -28,7 +28,7 @@ import org.jetbrains.exposed.sql.ResultRow
  */
 @Serializable
 public data class EmploymentDto(
-    val id: UuidS,
+    val id: SUuid,
     val period: Period,
     val status: EmploymentStatus,
     val probationEndDate: KLocalDate?,

@@ -10,7 +10,7 @@ import kcrud.base.database.schema.admin.rbac.RbacScopeRuleTable
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kcrud.base.persistence.model.Meta
-import kcrud.base.persistence.serializers.UuidS
+import kcrud.base.persistence.serializers.SUuid
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 
@@ -30,8 +30,8 @@ import org.jetbrains.exposed.sql.ResultRow
  */
 @Serializable
 public data class RbacScopeRuleDto(
-    val id: UuidS,
-    val roleId: UuidS,
+    val id: SUuid,
+    val roleId: SUuid,
     val scope: RbacScope,
     val accessLevel: RbacAccessLevel,
     val fieldRules: List<RbacFieldRuleDto>?,

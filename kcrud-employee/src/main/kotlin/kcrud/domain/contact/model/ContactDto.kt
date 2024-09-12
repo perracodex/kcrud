@@ -6,7 +6,7 @@ package kcrud.domain.contact.model
 
 import kcrud.base.database.schema.contact.ContactTable
 import kcrud.base.persistence.model.Meta
-import kcrud.base.persistence.serializers.UuidS
+import kcrud.base.persistence.serializers.SUuid
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 
@@ -20,7 +20,7 @@ import org.jetbrains.exposed.sql.ResultRow
  */
 @Serializable
 public data class ContactDto(
-    val id: UuidS,
+    val id: SUuid,
     val email: String,
     val phone: String,
     val meta: Meta
