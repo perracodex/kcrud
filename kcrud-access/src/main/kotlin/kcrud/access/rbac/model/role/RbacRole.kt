@@ -47,19 +47,20 @@ public data class RbacRole(
             // Construct the child entries (if any).
             val scopeRules: List<RbacScopeRule> = rows
                 .filter { it.getOrNull(RbacScopeRuleTable.id) != null }
-                .distinctBy { it[RbacScopeRuleTable.id] }
-                .map { scopeRuleRow ->
-                    val fieldRuleRows: List<ResultRow> = rows.filter {
-                        it[RbacFieldRuleTable.scopeRuleId] == scopeRuleRow[RbacScopeRuleTable.id]
-                    }
-                    val fieldRules: List<RbacFieldRule> = fieldRuleRows.map {
-                        RbacFieldRule.from(row = it)
-                    }
+                .groupBy { it[RbacScopeRuleTable.id] }
+                .map { (_, scopeRows) ->
+                    val scopeRuleRow: ResultRow = scopeRows.first()
+
+                    // Extract field rules associated with the current scope rule
+                    val fieldRules: List<RbacFieldRule> = scopeRows
+                        .filter { it.getOrNull(RbacFieldRuleTable.id) != null }
+                        .map { RbacFieldRule.from(row = it) }
+
                     RbacScopeRule.from(row = scopeRuleRow, fieldRules = fieldRules)
                 }
 
-            // Use the first row as the role of the 1-N relationship,
-            // as the rows come in a flattened format due to the SQL joins.
+            // Use the first row for the main role information.
+            // Data comes from a flattened 1-N relationship.
             val record: ResultRow = rows.first()
 
             return RbacRole(
