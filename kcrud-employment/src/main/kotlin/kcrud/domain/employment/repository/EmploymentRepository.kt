@@ -71,7 +71,7 @@ internal class EmploymentRepository(
                 .innerJoin(EmployeeTable)
                 .leftJoin(ContactTable)
                 .selectAll().where {
-                    (EmploymentTable.employeeId eq employeeId)
+                    EmploymentTable.employeeId eq employeeId
                 }.map { resultRow ->
                     Employment.from(row = resultRow)
                 }
