@@ -29,13 +29,15 @@ internal class EmploymentRepository(
 
     override fun findAll(pageable: Pageable?): Page<Employment> {
         return transactionWithSchema(schema = sessionContext.schema) {
-            // Need counting the overall elements before applying pagination.
-            // A separate simple count query is by far more performant
-            // than having a 'count over' expression as part of the main query.
-            val totalElements: Int = EmploymentTable.selectAll().count().toInt()
-
-            val content: List<Employment> = (EmploymentTable innerJoin EmployeeTable leftJoin ContactTable)
+            val query: Query = EmploymentTable
+                .innerJoin(EmployeeTable)
+                .leftJoin(ContactTable)
                 .selectAll()
+
+            // Determine the total records involved in the query before applying pagination.
+            val totalElements: Int = query.count().toInt()
+
+            val content: List<Employment> = query
                 .paginate(pageable = pageable)
                 .map { resultRow ->
                     Employment.from(row = resultRow)
@@ -51,7 +53,9 @@ internal class EmploymentRepository(
 
     override fun findById(employeeId: Uuid, employmentId: Uuid): Employment? {
         return transactionWithSchema(schema = sessionContext.schema) {
-            (EmploymentTable innerJoin EmployeeTable leftJoin ContactTable)
+            EmploymentTable
+                .innerJoin(EmployeeTable)
+                .leftJoin(ContactTable)
                 .selectAll().where {
                     (EmploymentTable.id eq employmentId) and
                             (EmploymentTable.employeeId eq employeeId)
@@ -63,11 +67,12 @@ internal class EmploymentRepository(
 
     override fun findByEmployeeId(employeeId: Uuid): List<Employment> {
         return transactionWithSchema(schema = sessionContext.schema) {
-            (EmploymentTable innerJoin EmployeeTable leftJoin ContactTable)
+            EmploymentTable
+                .innerJoin(EmployeeTable)
+                .leftJoin(ContactTable)
                 .selectAll().where {
                     (EmploymentTable.employeeId eq employeeId)
-                }
-                .map { resultRow ->
+                }.map { resultRow ->
                     Employment.from(row = resultRow)
                 }
         }

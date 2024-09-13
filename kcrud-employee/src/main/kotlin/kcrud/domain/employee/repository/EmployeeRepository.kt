@@ -46,17 +46,17 @@ internal class EmployeeRepository(
 
     override fun findAll(pageable: Pageable?): Page<Employee> {
         return transactionWithSchema(schema = sessionContext.schema) {
-            // Need counting the overall elements before applying pagination.
-            // A separate simple count query is by far more performant
-            // than having a 'count over' expression as part of the main query.
-            val totalElements: Int = EmployeeTable.selectAll().count().toInt()
-
-            val content: List<Employee> = EmployeeTable.join(
+            val query: Query = EmployeeTable.join(
                 otherTable = ContactTable,
                 joinType = JoinType.LEFT,
                 onColumn = EmployeeTable.id,
                 otherColumn = ContactTable.employeeId
             ).selectAll()
+
+            // Determine the total records involved in the query before applying pagination.
+            val totalElements: Int = query.count().toInt()
+
+            val content: List<Employee> = query
                 .paginate(pageable = pageable)
                 .map { resultRow ->
                     Employee.from(row = resultRow)
@@ -103,8 +103,8 @@ internal class EmployeeRepository(
                 }
             }
 
-            // Count total elements after applying filters.
-            val totalFilteredElements: Int = query.count().toInt()
+            // Determine the total records involved in the query before applying pagination.
+            val totalElements: Int = query.count().toInt()
 
             val content: List<Employee> = query
                 .paginate(pageable = pageable)
@@ -114,7 +114,7 @@ internal class EmployeeRepository(
 
             Page.build(
                 content = content,
-                totalElements = totalFilteredElements,
+                totalElements = totalElements,
                 pageable = pageable
             )
         }
