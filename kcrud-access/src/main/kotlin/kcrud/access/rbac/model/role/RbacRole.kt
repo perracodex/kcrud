@@ -60,6 +60,7 @@ public data class RbacRole(
                     // Collect associated FieldRules.
                     val fieldRules: List<RbacFieldRule>? = scopeRows
                         .filter { it.getOrNull(RbacFieldRuleTable.id) != null }
+                        .distinctBy { it[RbacFieldRuleTable.id] }
                         .map { RbacFieldRule.from(row = it) }
                         .takeIf { it.isNotEmpty() }
 
