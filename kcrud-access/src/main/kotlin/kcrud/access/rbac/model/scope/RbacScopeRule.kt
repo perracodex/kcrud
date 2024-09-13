@@ -15,7 +15,7 @@ import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 
 /**
- * Represents a single RBAC scope rule for a concrete [RbacRole].
+ * Represents a concrete RBAC scope rule for a concrete [RbacRole].
  *
  * A scope can be any concept: a database table, a REST endpoint, a UI element, etc.
  * Is up to the designer to define what a scope is, and act accordingly when its
