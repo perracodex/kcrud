@@ -42,16 +42,16 @@ public data class RbacScopeRule(
          * Maps a [ResultRow] to a [RbacScopeRule] instance.
          *
          * @param row The [ResultRow] to map.
-         * @param fieldRules The list of [RbacFieldRule] to associate with the [RbacScopeRule].
+         * @param fieldRules Optional associated [RbacFieldRule] list.
          * @return The mapped [RbacScopeRule] instance.
          */
-        public fun from(row: ResultRow, fieldRules: List<RbacFieldRule>): RbacScopeRule {
+        public fun from(row: ResultRow, fieldRules: List<RbacFieldRule>?): RbacScopeRule {
             return RbacScopeRule(
                 id = row[RbacScopeRuleTable.id],
                 roleId = row[RbacScopeRuleTable.roleId],
                 scope = row[RbacScopeRuleTable.scope],
                 accessLevel = row[RbacScopeRuleTable.accessLevel],
-                fieldRules = fieldRules.takeIf { it.isNotEmpty() },
+                fieldRules = fieldRules?.takeIf { it.isNotEmpty() },
                 meta = Meta.from(row = row, table = RbacScopeRuleTable)
             )
         }
