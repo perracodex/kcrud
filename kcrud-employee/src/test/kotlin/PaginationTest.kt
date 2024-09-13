@@ -16,7 +16,7 @@ import kcrud.base.utils.KLocalDate
 import kcrud.base.utils.TestUtils
 import kcrud.domain.contact.model.ContactRequest
 import kcrud.domain.employee.di.EmployeeDomainInjection
-import kcrud.domain.employee.model.EmployeeDto
+import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.repository.IEmployeeRepository
 import kcrud.domain.employee.service.EmployeeService
@@ -234,7 +234,7 @@ class PaginationTest : KoinComponent {
 
             rollback()
 
-            val page: Page<EmployeeDto> = employeeService.findAll()
+            val page: Page<Employee> = employeeService.findAll()
             assertEquals(
                 expected = 0, actual = page.totalElements,
                 message = "After rollback total elements should be 0."
@@ -370,7 +370,7 @@ class PaginationTest : KoinComponent {
 
             rollback()
 
-            val page: Page<EmployeeDto> = employeeService.findAll()
+            val page: Page<Employee> = employeeService.findAll()
             assertEquals(
                 expected = 0,
                 actual = page.totalElements,
@@ -514,7 +514,7 @@ class PaginationTest : KoinComponent {
             val names: List<String> = List(totalRecords) { "Employee_${it + 1}" }
 
             // Create test records and store them for later validation.
-            val createdEmployees = mutableListOf<EmployeeDto>()
+            val createdEmployees = mutableListOf<Employee>()
             names.forEachIndexed { index, name ->
                 val employeeRequest = EmployeeRequest(
                     firstName = name,
@@ -633,7 +633,7 @@ class PaginationTest : KoinComponent {
         }
     }
 
-    private fun EmployeeDto.getSortValue(sortField: String): Comparable<*> {
+    private fun Employee.getSortValue(sortField: String): Comparable<*> {
         return when (sortField) {
             "firstName" -> this.firstName
             "lastName" -> this.lastName

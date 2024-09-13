@@ -17,9 +17,9 @@ import kcrud.base.persistence.serializers.OffsetTimestamp
 import kcrud.base.utils.DateTimeUtils
 import kcrud.base.utils.KLocalDate
 import kcrud.base.utils.TestUtils
-import kcrud.domain.contact.model.ContactDto
+import kcrud.domain.contact.model.Contact
 import kcrud.domain.employee.di.EmployeeDomainInjection
-import kcrud.domain.employee.model.EmployeeDto
+import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.repository.IEmployeeRepository
 import kcrud.domain.employee.service.EmployeeService
@@ -30,7 +30,7 @@ import org.koin.core.parameter.parametersOf
 import kotlin.test.*
 import kotlin.uuid.Uuid
 
-class EmployeeDtoServiceTest : KoinComponent {
+class EmployeeServiceTest : KoinComponent {
 
     @BeforeTest
     fun setUp() {
@@ -55,7 +55,7 @@ class EmployeeDtoServiceTest : KoinComponent {
                 val lastName = "AnySurname_$index"
                 val employeeId: Uuid = Uuid.random()
 
-                val mockEmployee = EmployeeDto(
+                val mockEmployee = Employee(
                     id = employeeId,
                     firstName = firstName,
                     lastName = lastName,
@@ -64,7 +64,7 @@ class EmployeeDtoServiceTest : KoinComponent {
                     age = DateTimeUtils.age(dob = dob),
                     honorific = honorific,
                     maritalStatus = maritalStatus,
-                    contact = ContactDto(
+                    contact = Contact(
                         id = Uuid.random(),
                         email = "$firstName.$lastName@kcrud.com",
                         phone = "+34-611-222-333",
@@ -121,7 +121,7 @@ class EmployeeDtoServiceTest : KoinComponent {
             )
 
             // Create
-            val employee: EmployeeDto = employeeService.create(employeeRequest = employeeRequest)
+            val employee: Employee = employeeService.create(employeeRequest = employeeRequest)
             assertEquals(expected = employeeRequest.firstName, actual = employee.firstName)
 
             // Update
@@ -134,7 +134,7 @@ class EmployeeDtoServiceTest : KoinComponent {
                     maritalStatus = maritalStatus
                 )
 
-                val updatedEmployee: EmployeeDto? = employeeService.update(
+                val updatedEmployee: Employee? = employeeService.update(
                     employeeId = employee.id,
                     employeeRequest = updateEmployeeRequest
                 )
@@ -167,7 +167,7 @@ class EmployeeDtoServiceTest : KoinComponent {
 
             rollback()
 
-            val page: Page<EmployeeDto> = employeeService.findAll()
+            val page: Page<Employee> = employeeService.findAll()
             assertEquals(
                 expected = 0,
                 actual = page.totalElements,

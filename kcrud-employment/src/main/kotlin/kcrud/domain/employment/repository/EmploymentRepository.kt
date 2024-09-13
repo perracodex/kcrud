@@ -12,7 +12,7 @@ import kcrud.base.env.SessionContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.pagination.paginate
-import kcrud.domain.employment.model.EmploymentDto
+import kcrud.domain.employment.model.Employment
 import kcrud.domain.employment.model.EmploymentRequest
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -27,18 +27,18 @@ internal class EmploymentRepository(
     private val sessionContext: SessionContext
 ) : IEmploymentRepository {
 
-    override fun findAll(pageable: Pageable?): Page<EmploymentDto> {
+    override fun findAll(pageable: Pageable?): Page<Employment> {
         return transactionWithSchema(schema = sessionContext.schema) {
             // Need counting the overall elements before applying pagination.
             // A separate simple count query is by far more performant
             // than having a 'count over' expression as part of the main query.
             val totalElements: Int = EmploymentTable.selectAll().count().toInt()
 
-            val content: List<EmploymentDto> = (EmploymentTable innerJoin EmployeeTable leftJoin ContactTable)
+            val content: List<Employment> = (EmploymentTable innerJoin EmployeeTable leftJoin ContactTable)
                 .selectAll()
                 .paginate(pageable = pageable)
                 .map { resultRow ->
-                    EmploymentDto.from(row = resultRow)
+                    Employment.from(row = resultRow)
                 }
 
             Page.build(
@@ -49,26 +49,26 @@ internal class EmploymentRepository(
         }
     }
 
-    override fun findById(employeeId: Uuid, employmentId: Uuid): EmploymentDto? {
+    override fun findById(employeeId: Uuid, employmentId: Uuid): Employment? {
         return transactionWithSchema(schema = sessionContext.schema) {
             (EmploymentTable innerJoin EmployeeTable leftJoin ContactTable)
                 .selectAll().where {
                     (EmploymentTable.id eq employmentId) and
                             (EmploymentTable.employeeId eq employeeId)
                 }.singleOrNull()?.let { resultRow ->
-                    EmploymentDto.from(row = resultRow)
+                    Employment.from(row = resultRow)
                 }
         }
     }
 
-    override fun findByEmployeeId(employeeId: Uuid): List<EmploymentDto> {
+    override fun findByEmployeeId(employeeId: Uuid): List<Employment> {
         return transactionWithSchema(schema = sessionContext.schema) {
             (EmploymentTable innerJoin EmployeeTable leftJoin ContactTable)
                 .selectAll().where {
                     (EmploymentTable.employeeId eq employeeId)
                 }
                 .map { resultRow ->
-                    EmploymentDto.from(row = resultRow)
+                    Employment.from(row = resultRow)
                 }
         }
     }

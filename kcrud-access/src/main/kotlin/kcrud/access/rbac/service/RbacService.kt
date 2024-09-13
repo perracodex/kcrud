@@ -4,9 +4,9 @@
 
 package kcrud.access.rbac.service
 
-import kcrud.access.actor.model.ActorDto
+import kcrud.access.actor.model.Actor
 import kcrud.access.actor.repository.IActorRepository
-import kcrud.access.rbac.model.role.RbacRoleDto
+import kcrud.access.rbac.model.role.RbacRole
 import kcrud.access.rbac.model.role.RbacRoleRequest
 import kcrud.access.rbac.model.scope.RbacScopeRuleRequest
 import kcrud.access.rbac.repository.role.IRbacRoleRepository
@@ -37,11 +37,11 @@ internal class RbacService(
     private val tracer = Tracer<RbacService>()
 
     /**
-     * Cache holding Actor IDs paired with their respective [RbacRoleDto],
+     * Cache holding Actor IDs paired with their respective [RbacRole],
      * allowing to quickly check if an Actor has permission to access a scope,
      * whether is locked, and its Role attributes.
      *
-     * This approach is better than holding the full [ActorDto] tree,
+     * This approach is better than holding the full [Actor] tree,
      * as it avoids exposing the Actor's password and other sensitive
      * information while cached.
      *
@@ -50,7 +50,7 @@ internal class RbacService(
     private val cache: ConcurrentHashMap<Uuid, ActorRole> = ConcurrentHashMap()
 
     /** Data class holding role attributes and the actor's locked status. */
-    private data class ActorRole(val isLocked: Boolean, val role: RbacRoleDto)
+    private data class ActorRole(val isLocked: Boolean, val role: RbacRole)
 
     /** Lock to ensure thread-safe access and updates to the service cache. */
     private val lock: Mutex = Mutex()
@@ -81,7 +81,7 @@ internal class RbacService(
     suspend fun refreshActor(actorId: Uuid): Unit = withContext(Dispatchers.IO) {
         tracer.info("Refreshing RBAC cache for actor with ID: $actorId")
 
-        val actor: ActorDto? = actorRepository.findById(actorId = actorId)
+        val actor: Actor? = actorRepository.findById(actorId = actorId)
         checkNotNull(actor) { "No actor found with id $actorId." }
 
         // Filter out Actors without any scope rules. Maybe a superuser.
@@ -190,31 +190,31 @@ internal class RbacService(
     }
 
     /**
-     * Retrieves all the [RbacRoleDto] entries.
+     * Retrieves all the [RbacRole] entries.
      *
-     * @return List with all the existing [RbacRoleDto] entries.
+     * @return List with all the existing [RbacRole] entries.
      */
-    suspend fun findAllRoles(): List<RbacRoleDto> = withContext(Dispatchers.IO) {
+    suspend fun findAllRoles(): List<RbacRole> = withContext(Dispatchers.IO) {
         return@withContext roleRepository.findAll()
     }
 
     /**
-     * Retrieves the [RbacRoleDto] for the given [roleId].
+     * Retrieves the [RbacRole] for the given [roleId].
      *
      * @param roleId The id of the role to retrieve.
-     * @return The [RbacRoleDto] for the given [roleId], or null if it doesn't exist.
+     * @return The [RbacRole] for the given [roleId], or null if it doesn't exist.
      */
-    suspend fun findRoleById(roleId: Uuid): RbacRoleDto? = withContext(Dispatchers.IO) {
+    suspend fun findRoleById(roleId: Uuid): RbacRole? = withContext(Dispatchers.IO) {
         return@withContext roleRepository.findById(roleId = roleId)
     }
 
     /**
-     * Retrieves the [RbacRoleDto] for the given [actorId].
+     * Retrieves the [RbacRole] for the given [actorId].
      *
      * @param actorId The id of the actor to which the role is associated.
-     * @return The [RbacRoleDto] for the given [actorId], or null if it doesn't exist.
+     * @return The [RbacRole] for the given [actorId], or null if it doesn't exist.
      */
-    suspend fun findRoleByActorId(actorId: Uuid): RbacRoleDto? = withContext(Dispatchers.IO) {
+    suspend fun findRoleByActorId(actorId: Uuid): RbacRole? = withContext(Dispatchers.IO) {
         return@withContext roleRepository.findByActorId(actorId = actorId)
     }
 
@@ -222,11 +222,11 @@ internal class RbacService(
      * Creates a new role.
      *
      * @param roleRequest The new [RbacRoleRequest] to create.
-     * @return The created [RbacRoleDto].
+     * @return The created [RbacRole].
      */
     suspend fun createRole(
         roleRequest: RbacRoleRequest
-    ): RbacRoleDto = withContext(Dispatchers.IO) {
+    ): RbacRole = withContext(Dispatchers.IO) {
         tracer.info("Creating new role: ${roleRequest.roleName}")
 
         val roleId: Uuid = roleRepository.create(roleRequest = roleRequest)
@@ -243,12 +243,12 @@ internal class RbacService(
      *
      * @param roleId The id of the role to update.
      * @param roleRequest The [RbacRoleRequest] to update the role from.
-     * @return The updated [RbacRoleDto] if the update was successful, null otherwise.
+     * @return The updated [RbacRole] if the update was successful, null otherwise.
      */
     suspend fun updateRole(
         roleId: Uuid,
         roleRequest: RbacRoleRequest
-    ): RbacRoleDto? = withContext(Dispatchers.IO) {
+    ): RbacRole? = withContext(Dispatchers.IO) {
         tracer.info("Updating role with ID: $roleId")
 
         val updateCount: Int = roleRepository.update(

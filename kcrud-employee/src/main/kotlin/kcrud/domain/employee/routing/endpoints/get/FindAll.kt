@@ -11,7 +11,7 @@ import io.ktor.server.routing.*
 import kcrud.base.env.SessionContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.getPageable
-import kcrud.domain.employee.model.EmployeeDto
+import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.routing.annotation.EmployeeRouteAPI
 import kcrud.domain.employee.service.EmployeeService
 import org.koin.core.parameter.parametersOf
@@ -23,7 +23,7 @@ internal fun Route.findAllEmployees() {
     get {
         val sessionContext: SessionContext? = SessionContext.from(call = call)
         val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }
-        val employees: Page<EmployeeDto> = service.findAll(pageable = call.getPageable())
+        val employees: Page<Employee> = service.findAll(pageable = call.getPageable())
         call.respond(status = HttpStatusCode.OK, message = employees)
     }
 }

@@ -15,7 +15,7 @@ import kcrud.base.utils.KLocalDateTime
  * @property taskGroup The group of the task.
  * @property fireTime The actual time the trigger fired.
  * @property runTime The amount of time the job ran for, in milliseconds.
- * @property outcome The log outcome status.
+ * @property outcome The log [TaskOutcome] status.
  * @property log The log information.
  * @property detail The detail that provides more information about the log.
  */

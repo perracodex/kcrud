@@ -26,9 +26,9 @@ import kotlinx.serialization.Serializable
  * @property firstName The first name of the employee. Must not be blank.
  * @property lastName The last name of the employee. Must not be blank.
  * @property dob The date of birth of the employee.
- * @property maritalStatus The marital status of the employee.
- * @property honorific The honorific or title of the employee.
- * @property contact Optional contact details of the employee.
+ * @property maritalStatus The [MaritalStatus] of the employee.
+ * @property honorific The [Honorific] or title of the employee.
+ * @property contact Optional [ContactRequest] details of the employee.
  */
 @Serializable
 public data class EmployeeRequest(

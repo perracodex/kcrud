@@ -6,7 +6,7 @@ package kcrud.access.rbac.service
 
 import io.ktor.server.application.*
 import io.ktor.server.sessions.*
-import kcrud.access.rbac.model.role.RbacRoleDto
+import kcrud.access.rbac.model.role.RbacRole
 import kcrud.access.rbac.model.scope.RbacScopeRuleRequest
 import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.view.RbacDashboardView
@@ -65,11 +65,11 @@ internal object RbacDashboardManager : KoinComponent {
         )
 
         // Retrieve all RBAC roles.
-        val rbacRoles: List<RbacRoleDto> = rbacService.findAllRoles()
+        val rbacRoles: List<RbacRole> = rbacService.findAllRoles()
         val sessionRoleName: String = rbacService.findRoleById(roleId = sessionContext.roleId)?.roleName ?: ""
 
         // Select the current role based on the role ID or default to the first role if none specified.
-        val targetRole: RbacRoleDto = roleId?.let { id ->
+        val targetRole: RbacRole = roleId?.let { id ->
             rbacRoles.find { it.id == id }
         } ?: rbacRoles.first()
         val isViewOnly: Boolean = (sessionRolePermissionLevel == RbacAccessLevel.VIEW) or (targetRole.isSuper)
@@ -105,8 +105,8 @@ internal object RbacDashboardManager : KoinComponent {
         }
 
         // Fetch updated roles for immediate feedback on the dashboard.
-        val rbacRoles: List<RbacRoleDto> = rbacService.findAllRoles()
-        val targetRole: RbacRoleDto = rbacRoles.first { it.id == roleId }
+        val rbacRoles: List<RbacRole> = rbacService.findAllRoles()
+        val targetRole: RbacRole = rbacRoles.first { it.id == roleId }
         val isViewOnly: Boolean = (sessionRolePermissionLevel == RbacAccessLevel.VIEW) or (targetRole.isSuper)
         val sessionRoleName: String = rbacService.findRoleById(roleId = sessionContext.roleId)?.roleName ?: ""
 
@@ -188,8 +188,8 @@ internal object RbacDashboardManager : KoinComponent {
      */
     data class Context(
         val isViewOnly: Boolean,
-        val rbacRoles: List<RbacRoleDto>,
-        val targetRole: RbacRoleDto,
+        val rbacRoles: List<RbacRole>,
+        val targetRole: RbacRole,
         val sessionRoleName: String
     )
 }

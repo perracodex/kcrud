@@ -24,7 +24,7 @@ import kotlinx.serialization.Serializable
  * @property dataMap Concrete parameters of the task.
  */
 @Serializable
-public data class TaskScheduleDto(
+public data class TaskSchedule(
     val name: String,
     val snowflakeData: String,
     val group: String,

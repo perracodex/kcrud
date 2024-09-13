@@ -6,7 +6,7 @@ package kcrud.base.scheduler.audit
 
 import kcrud.base.database.schema.scheduler.SchedulerAuditTable
 import kcrud.base.scheduler.annotation.SchedulerAPI
-import kcrud.base.scheduler.audit.model.AuditLogDto
+import kcrud.base.scheduler.audit.model.AuditLog
 import kcrud.base.scheduler.audit.model.AuditLogRequest
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.andWhere
@@ -45,14 +45,14 @@ internal object AuditRepository {
     /**
      * Finds all the audit entries, ordered bby the most recent first.
      *
-     * @return The list of [AuditLogDto] instances.
+     * @return The list of [AuditLog] instances.
      */
-    fun findAll(): List<AuditLogDto> {
+    fun findAll(): List<AuditLog> {
         return transaction {
             SchedulerAuditTable.selectAll()
                 .orderBy(SchedulerAuditTable.createdAt to SortOrder.DESC)
                 .map {
-                    AuditLogDto.from(row = it)
+                    AuditLog.from(row = it)
                 }
         }
     }
@@ -62,16 +62,16 @@ internal object AuditRepository {
      *
      * @param taskName The name of the task.
      * @param taskGroup The group of the task.
-     * @return The list of [AuditLogDto] instances, or an empty list if none found.
+     * @return The list of [AuditLog] instances, or an empty list if none found.
      */
-    fun find(taskName: String, taskGroup: String): List<AuditLogDto> {
+    fun find(taskName: String, taskGroup: String): List<AuditLog> {
         return transaction {
             SchedulerAuditTable.selectAll()
                 .where { SchedulerAuditTable.taskName eq taskName }
                 .andWhere { SchedulerAuditTable.taskGroup eq taskGroup }
                 .orderBy(SchedulerAuditTable.createdAt to SortOrder.DESC)
                 .map {
-                    AuditLogDto.from(row = it)
+                    AuditLog.from(row = it)
                 }
         }
     }
@@ -81,9 +81,9 @@ internal object AuditRepository {
      *
      * @param taskName The name of the task.
      * @param taskGroup The group of the task.
-     * @return The most recent [AuditLogDto] instance, or `null` if none found.
+     * @return The most recent [AuditLog] instance, or `null` if none found.
      */
-    fun mostRecent(taskName: String, taskGroup: String): AuditLogDto? {
+    fun mostRecent(taskName: String, taskGroup: String): AuditLog? {
         return transaction {
             SchedulerAuditTable.selectAll()
                 .where { SchedulerAuditTable.taskName eq taskName }
@@ -91,7 +91,7 @@ internal object AuditRepository {
                 .orderBy(SchedulerAuditTable.createdAt to SortOrder.DESC)
                 .limit(n = 1)
                 .map {
-                    AuditLogDto.from(row = it)
+                    AuditLog.from(row = it)
                 }.singleOrNull()
         }
     }

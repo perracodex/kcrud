@@ -11,7 +11,7 @@ import io.ktor.server.routing.*
 import kcrud.base.env.SessionContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.getPageable
-import kcrud.domain.employee.model.EmployeeDto
+import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeFilterSet
 import kcrud.domain.employee.routing.annotation.EmployeeRouteAPI
 import kcrud.domain.employee.service.EmployeeService
@@ -24,7 +24,7 @@ internal fun Route.searchEmployeeRoute() {
     post<EmployeeFilterSet>("/search") { request ->
         val sessionContext: SessionContext? = SessionContext.from(call = call)
         val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }
-        val employees: Page<EmployeeDto> = service.search(filterSet = request, pageable = call.getPageable())
+        val employees: Page<Employee> = service.search(filterSet = request, pageable = call.getPageable())
         call.respond(status = HttpStatusCode.OK, message = employees)
     }
 }

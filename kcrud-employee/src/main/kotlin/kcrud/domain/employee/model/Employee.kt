@@ -12,7 +12,7 @@ import kcrud.base.persistence.model.Meta
 import kcrud.base.persistence.serializers.SUuid
 import kcrud.base.utils.DateTimeUtils
 import kcrud.base.utils.KLocalDate
-import kcrud.domain.contact.model.ContactDto
+import kcrud.domain.contact.model.Contact
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 
@@ -25,13 +25,13 @@ import org.jetbrains.exposed.sql.ResultRow
  * @property fullName The full name of the employee, computed as "lastName, firstName".
  * @property dob The date of birth of the employee.
  * @property age The age of the employee, computed from [dob].
- * @property maritalStatus The marital status of the employee.
- * @property honorific The honorific or title of the employee.
- * @property contact Optional contact details of the employee.
+ * @property maritalStatus The [MaritalStatus] of the employee.
+ * @property honorific The [Honorific] or title of the employee.
+ * @property contact Optional [Contact] details of the employee.
  * @property meta The metadata of the record.
  */
 @Serializable
-public data class EmployeeDto(
+public data class Employee(
     val id: SUuid,
     val firstName: String,
     val lastName: String,
@@ -40,26 +40,26 @@ public data class EmployeeDto(
     val age: Int,
     val maritalStatus: MaritalStatus,
     val honorific: Honorific,
-    val contact: ContactDto?,
+    val contact: Contact?,
     val meta: Meta
 ) {
     public companion object {
         /**
-         * Maps a [ResultRow] to a [EmployeeDto] instance.
+         * Maps a [ResultRow] to a [Employee] instance.
          *
          * @param row The [ResultRow] to map.
-         * @return The mapped [EmployeeDto] instance.
+         * @return The mapped [Employee] instance.
          */
-        public fun from(row: ResultRow): EmployeeDto {
-            val contact: ContactDto? = row.getOrNull(ContactTable.id)?.let {
-                ContactDto.from(row = row)
+        public fun from(row: ResultRow): Employee {
+            val contact: Contact? = row.getOrNull(ContactTable.id)?.let {
+                Contact.from(row = row)
             }
 
             val dob: KLocalDate = row[EmployeeTable.dob]
             val firstName: String = row[EmployeeTable.firstName]
             val lastName: String = row[EmployeeTable.lastName]
 
-            return EmployeeDto(
+            return Employee(
                 id = row[EmployeeTable.id],
                 firstName = firstName,
                 lastName = lastName,

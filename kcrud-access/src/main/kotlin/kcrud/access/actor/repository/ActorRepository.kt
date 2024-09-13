@@ -4,9 +4,9 @@
 
 package kcrud.access.actor.repository
 
-import kcrud.access.actor.model.ActorDto
+import kcrud.access.actor.model.Actor
 import kcrud.access.actor.model.ActorRequest
-import kcrud.access.rbac.model.role.RbacRoleDto
+import kcrud.access.rbac.model.role.RbacRole
 import kcrud.access.rbac.repository.role.IRbacRoleRepository
 import kcrud.base.database.schema.admin.actor.ActorTable
 import org.jetbrains.exposed.sql.insert
@@ -19,39 +19,39 @@ import kotlin.uuid.Uuid
 
 /**
  * Implementation of [IActorRepository].
- * Responsible for managing [ActorDto] data.
+ * Responsible for managing [Actor] data.
  */
 internal class ActorRepository(private val roleRepository: IRbacRoleRepository) : IActorRepository {
 
-    override suspend fun findByUsername(username: String): ActorDto? {
+    override suspend fun findByUsername(username: String): Actor? {
         return transaction {
             ActorTable.selectAll().where {
                 ActorTable.username.eq(username)
             }.singleOrNull()?.let { resultRow ->
                 val actorId: Uuid = resultRow[ActorTable.id]
-                val role: RbacRoleDto = roleRepository.findByActorId(actorId = actorId)!!
-                ActorDto.from(row = resultRow, role = role)
+                val role: RbacRole = roleRepository.findByActorId(actorId = actorId)!!
+                Actor.from(row = resultRow, role = role)
             }
         }
     }
 
-    override suspend fun findAll(): List<ActorDto> {
+    override suspend fun findAll(): List<Actor> {
         return transaction {
             ActorTable.selectAll().map { resultRow ->
                 val actorId: Uuid = resultRow[ActorTable.id]
-                val role: RbacRoleDto = roleRepository.findByActorId(actorId = actorId)!!
-                ActorDto.from(row = resultRow, role = role)
+                val role: RbacRole = roleRepository.findByActorId(actorId = actorId)!!
+                Actor.from(row = resultRow, role = role)
             }
         }
     }
 
-    override suspend fun findById(actorId: Uuid): ActorDto? {
+    override suspend fun findById(actorId: Uuid): Actor? {
         return transaction {
             ActorTable.selectAll().where {
                 ActorTable.id eq actorId
             }.singleOrNull()?.let { resultRow ->
-                val role: RbacRoleDto = roleRepository.findByActorId(actorId = actorId)!!
-                ActorDto.from(row = resultRow, role = role)
+                val role: RbacRole = roleRepository.findByActorId(actorId = actorId)!!
+                Actor.from(row = resultRow, role = role)
             }
         }
     }

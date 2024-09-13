@@ -6,7 +6,7 @@ package kcrud.access.actor.service
 
 import kcrud.access.actor.model.ActorRequest
 import kcrud.access.credential.CredentialService
-import kcrud.access.rbac.model.role.RbacRoleDto
+import kcrud.access.rbac.model.role.RbacRole
 import kcrud.access.rbac.model.role.RbacRoleRequest
 import kcrud.access.rbac.model.scope.RbacScopeRuleRequest
 import kcrud.access.rbac.service.RbacService
@@ -81,7 +81,7 @@ internal object DefaultActorFactory : KoinComponent {
      * @param actorService The [ActorService] instance to create the Actors.
      */
     private suspend fun createActors(actorService: ActorService) {
-        val rbacRoles: List<RbacRoleDto> = getRoles()
+        val rbacRoles: List<RbacRole> = getRoles()
 
         rbacRoles.forEach { role ->
             val credential: String = role.roleName.lowercase()
@@ -100,9 +100,9 @@ internal object DefaultActorFactory : KoinComponent {
     /**
      * Gets the default roles, creating them if none are found in the database.
      */
-    private suspend fun getRoles(): List<RbacRoleDto> {
+    private suspend fun getRoles(): List<RbacRole> {
         val rbacService: RbacService by inject()
-        val rbacRoles: List<RbacRoleDto> = rbacService.findAllRoles()
+        val rbacRoles: List<RbacRole> = rbacService.findAllRoles()
         if (rbacRoles.isNotEmpty()) {
             return rbacRoles
         }

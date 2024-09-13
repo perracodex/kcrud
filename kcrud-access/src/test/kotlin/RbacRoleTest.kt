@@ -5,7 +5,7 @@
 import io.ktor.test.dispatcher.*
 import kcrud.access.actor.di.ActorDomainInjection
 import kcrud.access.rbac.di.RbacDomainInjection
-import kcrud.access.rbac.model.role.RbacRoleDto
+import kcrud.access.rbac.model.role.RbacRole
 import kcrud.access.rbac.model.role.RbacRoleRequest
 import kcrud.access.rbac.model.scope.RbacScopeRuleRequest
 import kcrud.access.rbac.service.RbacService
@@ -56,8 +56,8 @@ class RbacRoleTest : KoinComponent {
         val rbacService: RbacService by inject()
 
         // Create the role.
-        val rbacRole: RbacRoleDto = rbacService.createRole(roleRequest = roleRequest)
-        val existingRole: RbacRoleDto? = rbacService.findRoleById(roleId = rbacRole.id)
+        val rbacRole: RbacRole = rbacService.createRole(roleRequest = roleRequest)
+        val existingRole: RbacRole? = rbacService.findRoleById(roleId = rbacRole.id)
         assertNotNull(actual = existingRole, message = "The role was not found in the database after it was created.")
         assertEquals(expected = roleName, actual = existingRole.roleName)
         assertEquals(expected = description, actual = existingRole.description)
@@ -70,7 +70,7 @@ class RbacRoleTest : KoinComponent {
         // Update the role.
         val newRoleName = "new_role_name"
         val newDescription = "New role description"
-        val updatedRole: RbacRoleDto? = rbacService.updateRole(
+        val updatedRole: RbacRole? = rbacService.updateRole(
             roleId = rbacRole.id,
             roleRequest = roleRequest.copy(
                 roleName = newRoleName,

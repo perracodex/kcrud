@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-import kcrud.access.rbac.model.base.BaseRbacDto
+import kcrud.access.rbac.model.base.BaseRbac
 import kcrud.access.rbac.service.RbacFieldAnonymization
 import kcrud.base.utils.KLocalDate
 import kcrud.base.utils.KLocalDateTime
@@ -10,14 +10,14 @@ import kcrud.base.utils.KLocalTime
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class BaseRbacDtoTest {
+class BaseRbacTest {
 
     @Test
     fun testFields() {
         data class TestClass(
             val id: Int,
             val name: String
-        ) : BaseRbacDto()
+        ) : BaseRbac()
 
         val instance = TestClass(
             id = 1,
@@ -48,13 +48,13 @@ class BaseRbacDtoTest {
             val id: Int,
             val name: String,
             val nested: ChildClass? = null
-        ) : BaseRbacDto()
+        ) : BaseRbac()
 
         data class ParentClass(
             val id: Int,
             val name: String,
             val nested: ChildClass? = null
-        ) : BaseRbacDto()
+        ) : BaseRbac()
 
         val instance = ParentClass(
             id = 1,
@@ -96,7 +96,7 @@ class BaseRbacDtoTest {
             val date: KLocalDate,
             val time: KLocalTime,
             val dateTime: KLocalDateTime
-        ) : BaseRbacDto()
+        ) : BaseRbac()
 
         val instance = TestClass(
             id = 1,
@@ -132,7 +132,7 @@ class BaseRbacDtoTest {
             val float: Float,
             val long: Long,
             val int: Int
-        ) : BaseRbacDto()
+        ) : BaseRbac()
 
         val instance = TestClass(
             id = 1,

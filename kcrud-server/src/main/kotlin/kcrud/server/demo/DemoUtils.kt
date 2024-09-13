@@ -12,7 +12,7 @@ import kcrud.base.persistence.model.Period
 import kcrud.base.utils.KLocalDate
 import kcrud.base.utils.TestUtils
 import kcrud.domain.contact.model.ContactRequest
-import kcrud.domain.employee.model.EmployeeDto
+import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.service.EmployeeService
 import kcrud.domain.employment.model.EmploymentRequest
@@ -48,7 +48,7 @@ internal object DemoUtils {
             repeat(times = count) {
                 // Launch each employee creation as a separate coroutine job.
                 val job: Deferred<Unit> = async {
-                    val employee: EmployeeDto = employeeService.create(employeeRequest = newEmployeeRequest())
+                    val employee: Employee = employeeService.create(employeeRequest = newEmployeeRequest())
                     employmentService.create(
                         employeeId = employee.id,
                         employmentRequest = newEmploymentRequest(employee = employee)
@@ -79,7 +79,7 @@ internal object DemoUtils {
         )
     }
 
-    private fun newEmploymentRequest(employee: EmployeeDto): EmploymentRequest {
+    private fun newEmploymentRequest(employee: Employee): EmploymentRequest {
         val period: Period = TestUtils.randomPeriod(threshold = employee.dob)
         val probationEndDate: KLocalDate = period.startDate.plus(
             value = Random.nextInt(from = 3, until = 6),

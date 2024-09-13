@@ -5,7 +5,7 @@
 package kcrud.access.credential
 
 import io.ktor.server.auth.*
-import kcrud.access.actor.model.ActorDto
+import kcrud.access.actor.model.Actor
 import kcrud.access.actor.service.ActorService
 import kcrud.base.env.Tracer
 import kcrud.base.security.hash.SecureHash
@@ -78,7 +78,7 @@ internal class CredentialService : KoinComponent {
         tracer.info("Refreshing credentials cache for actor with ID: $actorId")
 
         val actorService: ActorService by inject()
-        val actor: ActorDto? = actorService.findById(actorId)
+        val actor: Actor? = actorService.findById(actorId)
         checkNotNull(actor) { "No actor found with id $actorId." }
 
         val hashedPassword: SecureHash = HashedPasswordTableAuth.hashPassword(
@@ -103,7 +103,7 @@ internal class CredentialService : KoinComponent {
         tracer.info("Refreshing credentials cache for all actors.")
 
         val actorService: ActorService by inject()
-        val actors: List<ActorDto> = actorService.findAll()
+        val actors: List<Actor> = actorService.findAll()
         check(actors.isNotEmpty()) { "No actors found in the system." }
 
         val newCache: ConcurrentHashMap<String, SecureHash> = actors.associateTo(ConcurrentHashMap()) { actor ->

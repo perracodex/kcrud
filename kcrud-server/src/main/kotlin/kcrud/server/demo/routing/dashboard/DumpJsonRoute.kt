@@ -11,7 +11,7 @@ import io.ktor.server.routing.*
 import kcrud.base.env.SessionContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.getPageable
-import kcrud.domain.employment.model.EmploymentDto
+import kcrud.domain.employment.model.Employment
 import kcrud.domain.employment.service.EmploymentService
 import kcrud.server.demo.DemoAPI
 import org.koin.core.parameter.parametersOf
@@ -23,7 +23,7 @@ internal fun Route.dumpJsonRoute() {
     get("json") {
         val sessionContext: SessionContext? = SessionContext.from(call = call)
         val service: EmploymentService = call.scope.get<EmploymentService> { parametersOf(sessionContext) }
-        val page: Page<EmploymentDto> = service.findAll(pageable = call.getPageable())
+        val page: Page<Employment> = service.findAll(pageable = call.getPageable())
         call.respond(status = HttpStatusCode.OK, message = page)
     }
 }

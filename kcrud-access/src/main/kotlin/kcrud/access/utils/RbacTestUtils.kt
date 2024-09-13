@@ -4,11 +4,11 @@
 
 package kcrud.access.utils
 
-import kcrud.access.actor.model.ActorDto
+import kcrud.access.actor.model.Actor
 import kcrud.access.actor.model.ActorRequest
 import kcrud.access.actor.service.ActorService
 import kcrud.access.actor.service.DefaultActorFactory
-import kcrud.access.rbac.model.role.RbacRoleDto
+import kcrud.access.rbac.model.role.RbacRole
 import kcrud.access.rbac.model.role.RbacRoleRequest
 import kcrud.access.rbac.model.scope.RbacScopeRuleRequest
 import kcrud.access.rbac.service.RbacService
@@ -35,7 +35,7 @@ public object RbacTestUtils {
     public suspend fun newAuthenticationToken(): String {
         val actorService: ActorService = getKoin().get()
         val username: String = DefaultActorFactory.RoleName.ADMIN.name.lowercase()
-        val actor: ActorDto? = actorService.findByUsername(username = username)
+        val actor: Actor? = actorService.findByUsername(username = username)
         assertNotNull(actual = actor)
 
         val sessionContext = SessionContext(
@@ -57,7 +57,7 @@ public object RbacTestUtils {
      */
     @OptIn(TokenAPI::class)
     public suspend fun newAuthenticationToken(accessLevel: RbacAccessLevel, testIteration: Int): String {
-        val actor: ActorDto = createActor(accessLevel = accessLevel, iteration = testIteration)
+        val actor: Actor = createActor(accessLevel = accessLevel, iteration = testIteration)
 
         val sessionContext = SessionContext(
             actorId = actor.id,
@@ -76,7 +76,7 @@ public object RbacTestUtils {
      * @param iteration The test iteration.
      * @return The created actor.
      */
-    private suspend fun createActor(accessLevel: RbacAccessLevel, iteration: Int): ActorDto {
+    private suspend fun createActor(accessLevel: RbacAccessLevel, iteration: Int): Actor {
         // Setup actor and role for the test.
         val scopeRuleRequest = RbacScopeRuleRequest(
             scope = RbacScope.EMPLOYEE_RECORDS,
@@ -91,7 +91,7 @@ public object RbacTestUtils {
         )
 
         val rbacService: RbacService = getKoin().get()
-        val role: RbacRoleDto = rbacService.createRole(roleRequest = roleRequest)
+        val role: RbacRole = rbacService.createRole(roleRequest = roleRequest)
         assertNotNull(actual = role, message = "Role should not be null")
 
         // Create the Actor with the associated role.
@@ -109,7 +109,7 @@ public object RbacTestUtils {
         assertNotNull(actual = actorId, message = "Actor ID should not be null")
 
         // Retrieve the Actor.
-        val actor: ActorDto? = actorService.findById(actorId = actorId)
+        val actor: Actor? = actorService.findById(actorId = actorId)
         assertNotNull(actual = actor, message = "Actor should not be null")
 
         return actor

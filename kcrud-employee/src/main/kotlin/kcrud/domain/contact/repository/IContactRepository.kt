@@ -6,13 +6,13 @@ package kcrud.domain.contact.repository
 
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
-import kcrud.domain.contact.model.ContactDto
+import kcrud.domain.contact.model.Contact
 import kcrud.domain.contact.model.ContactRequest
 import kcrud.domain.employee.model.EmployeeRequest
 import kotlin.uuid.Uuid
 
 /**
- * Responsible for managing [ContactDto] data.
+ * Responsible for managing [Contact] data.
  */
 internal interface IContactRepository {
 
@@ -20,25 +20,25 @@ internal interface IContactRepository {
      * Finds a contact by its ID.
      *
      * @param contactId The id of the contact to be retrieved.
-     * @return The resolved [ContactDto] if it exists, null otherwise.
+     * @return The resolved [Contact] if it exists, null otherwise.
      */
-    fun findById(contactId: Uuid): ContactDto?
+    fun findById(contactId: Uuid): Contact?
 
     /**
      * Finds a contact by the provided [employeeId].
      *
      * @param employeeId The id of the employee whose contact is to be retrieved.
-     * @return The resolve [ContactDto] if it exists, null otherwise.
+     * @return The resolve [Contact] if it exists, null otherwise.
      */
-    fun findByEmployeeId(employeeId: Uuid): ContactDto?
+    fun findByEmployeeId(employeeId: Uuid): Contact?
 
     /**
      * Retrieves all contacts.
      *
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
-     * @return List of [ContactDto] entries.
+     * @return List of [Contact] entries.
      */
-    fun findAll(pageable: Pageable? = null): Page<ContactDto>
+    fun findAll(pageable: Pageable? = null): Page<Contact>
 
     /**
      * Sets the contact of an employee, either by creating it, updating it

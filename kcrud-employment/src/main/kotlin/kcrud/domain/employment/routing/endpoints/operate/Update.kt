@@ -11,7 +11,7 @@ import io.ktor.server.routing.*
 import kcrud.base.env.SessionContext
 import kcrud.base.persistence.utils.toUuid
 import kcrud.domain.employment.errors.EmploymentError
-import kcrud.domain.employment.model.EmploymentDto
+import kcrud.domain.employment.model.Employment
 import kcrud.domain.employment.model.EmploymentRequest
 import kcrud.domain.employment.routing.annotation.EmploymentRouteAPI
 import kcrud.domain.employment.service.EmploymentService
@@ -28,7 +28,7 @@ internal fun Route.updateEmploymentById() {
 
         val sessionContext: SessionContext? = SessionContext.from(call = call)
         val service: EmploymentService = call.scope.get<EmploymentService> { parametersOf(sessionContext) }
-        val updatedEmployment: EmploymentDto? = service.update(
+        val updatedEmployment: Employment? = service.update(
             employeeId = employeeId,
             employmentId = employmentId,
             employmentRequest = request

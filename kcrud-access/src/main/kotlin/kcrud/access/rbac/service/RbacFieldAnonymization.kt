@@ -4,7 +4,7 @@
 
 package kcrud.access.rbac.service
 
-import kcrud.access.rbac.model.base.BaseRbacDto
+import kcrud.access.rbac.model.base.BaseRbac
 import kcrud.base.utils.KLocalDate
 import kcrud.base.utils.KLocalDateTime
 import kcrud.base.utils.KLocalTime
@@ -27,7 +27,7 @@ import kcrud.base.utils.KLocalTime
  * to a slightly different time (e.g., "00:00:00.001") to prevent confusion with the anonymized time placeholder.
  * Another approach could be to just change Time fields to Text fields, and anonymize them as strings.
  *
- * @see [BaseRbacDto]
+ * @see [BaseRbac]
  */
 public object RbacFieldAnonymization {
     private const val ANONYMIZED_STRING: String = "##########"

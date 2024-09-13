@@ -19,7 +19,7 @@ import org.jetbrains.exposed.sql.ResultRow
  * @property meta The metadata of the record.
  */
 @Serializable
-public data class ContactDto(
+public data class Contact(
     val id: SUuid,
     val email: String,
     val phone: String,
@@ -27,13 +27,13 @@ public data class ContactDto(
 ) {
     internal companion object {
         /**
-         * Maps a [ResultRow] to a [ContactDto] instance.
+         * Maps a [ResultRow] to a [Contact] instance.
          *
          * @param row The [ResultRow] to map.
-         * @return The mapped [ContactDto] instance.
+         * @return The mapped [Contact] instance.
          */
-        fun from(row: ResultRow): ContactDto {
-            return ContactDto(
+        fun from(row: ResultRow): Contact {
+            return Contact(
                 id = row[ContactTable.id],
                 email = row[ContactTable.email],
                 phone = row[ContactTable.phone],

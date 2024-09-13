@@ -30,7 +30,7 @@ import kotlin.reflect.full.primaryConstructor
  *
  * @see [RbacFieldAnonymization]
  */
-public abstract class BaseRbacDto {
+public abstract class BaseRbac {
 
     /**
      * Anonymizes specified fields by using reflection to create a new class instance
@@ -52,7 +52,7 @@ public abstract class BaseRbacDto {
      *               If null or empty, the original instance is returned without changes.
      * @return A new instance with specified fields anonymized.
      */
-    public inline fun <reified T : BaseRbacDto> anonymize(fields: List<String>?): T {
+    public inline fun <reified T : BaseRbac> anonymize(fields: List<String>?): T {
         // Delegate to the internal, non-inline anonymization method while preserving the type information.
         return internalAnonymize(fields, T::class) as T
     }
@@ -66,7 +66,7 @@ public abstract class BaseRbacDto {
      * @return A new instance (or nested instance) with specified fields anonymized.
      */
     @Suppress("UNCHECKED_CAST")
-    public fun <T : BaseRbacDto> internalAnonymize(fields: List<String>?, clazz: KClass<T>): BaseRbacDto {
+    public fun <T : BaseRbac> internalAnonymize(fields: List<String>?, clazz: KClass<T>): BaseRbac {
         if (fields.isNullOrEmpty()) {
             // If no fields are specified for anonymization, return the instance as is.
             return this
@@ -99,7 +99,7 @@ public abstract class BaseRbacDto {
                     val nestedPropertyName = property.name
 
                     if (nestedPropertyName in nestedFields.keys) {
-                        val nestedInstance: BaseRbacDto? = property.get(this as T) as? BaseRbacDto
+                        val nestedInstance: BaseRbac? = property.get(this as T) as? BaseRbac
                         val newFields: List<String>? = nestedFields[nestedPropertyName]?.map { it.substringAfter(delimiter = '.') }
                         return@associateWith nestedInstance?.internalAnonymize(newFields, nestedInstance::class) ?: property.get(this)
                     } else {

@@ -11,7 +11,7 @@ import io.ktor.server.routing.*
 import kcrud.base.env.SessionContext
 import kcrud.base.persistence.utils.toUuid
 import kcrud.domain.employment.errors.EmploymentError
-import kcrud.domain.employment.model.EmploymentDto
+import kcrud.domain.employment.model.Employment
 import kcrud.domain.employment.routing.annotation.EmploymentRouteAPI
 import kcrud.domain.employment.service.EmploymentService
 import org.koin.core.parameter.parametersOf
@@ -27,7 +27,7 @@ internal fun Route.findEmploymentById() {
 
         val sessionContext: SessionContext? = SessionContext.from(call = call)
         val service: EmploymentService = call.scope.get<EmploymentService> { parametersOf(sessionContext) }
-        val employment: EmploymentDto? = service.findById(
+        val employment: Employment? = service.findById(
             employeeId = employeeId,
             employmentId = employmentId
         )

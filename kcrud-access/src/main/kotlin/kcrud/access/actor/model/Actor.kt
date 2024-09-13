@@ -5,7 +5,7 @@
 package kcrud.access.actor.model
 
 import kcrud.access.credential.CredentialService
-import kcrud.access.rbac.model.role.RbacRoleDto
+import kcrud.access.rbac.model.role.RbacRole
 import kcrud.base.database.schema.admin.actor.ActorTable
 import kcrud.base.env.SessionContext
 import kcrud.base.persistence.model.Meta
@@ -27,24 +27,24 @@ import kotlin.uuid.Uuid
  * @property isLocked Whether the Actor is locked, so its role and associated rules are ignored, loosing all accesses.
  * @property meta The metadata of the record.
  */
-internal data class ActorDto(
+internal data class Actor(
     var id: Uuid,
     val username: String,
     val password: String,
-    val role: RbacRoleDto,
+    val role: RbacRole,
     val isLocked: Boolean,
     val meta: Meta
 ) {
     companion object {
         /**
-         * Maps a [ResultRow] to an [ActorDto] instance.
+         * Maps a [ResultRow] to an [Actor] instance.
          *
          * @param row The [ResultRow] to map.
-         * @param role The associated [RbacRoleDto] instance.
-         * @return The mapped [ActorDto] instance.
+         * @param role The associated [RbacRole] instance.
+         * @return The mapped [Actor] instance.
          */
-        fun from(row: ResultRow, role: RbacRoleDto): ActorDto {
-            return ActorDto(
+        fun from(row: ResultRow, role: RbacRole): Actor {
+            return Actor(
                 id = row[ActorTable.id],
                 username = row[ActorTable.username],
                 password = row[ActorTable.password],

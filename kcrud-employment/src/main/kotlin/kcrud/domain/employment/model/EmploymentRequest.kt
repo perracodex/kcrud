@@ -15,9 +15,9 @@ import kotlinx.serialization.Serializable
  * Represents the request to create/update an employment.
  *
  * @property period The employment's period details.
- * @property status The employment's current status.
+ * @property status The [EmploymentStatus] to set.
  * @property probationEndDate Optional employment's probation end date.
- * @property workModality The employment's work modality.
+ * @property workModality The employment's [WorkModality] to set.
  */
 @Serializable
 public data class EmploymentRequest(

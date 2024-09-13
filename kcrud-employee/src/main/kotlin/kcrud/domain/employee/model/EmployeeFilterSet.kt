@@ -9,13 +9,15 @@ import kcrud.base.database.schema.employee.types.MaritalStatus
 import kotlinx.serialization.Serializable
 
 /**
- * A set of filters that can be applied to an employee query.
- * All fields are optional, so that the filter can be used with any data combination.
+ * Represents a set of optional filters for querying employees.
  *
- * @property firstName The first name of the employee.
- * @property lastName The last name of the employee.
- * @property honorific The honorific of the employee.
- * @property maritalStatus The marital status of the employee.
+ * Each non-null field in this filter set is combined using logical AND conditions.
+ * Only employees matching **all** specified conditions will be returned.
+ *
+ * @property firstName The first name of the employee to filter by.
+ * @property lastName The last name of the employee to filter by.
+ * @property honorific A [Honorific] list choices to filter the employees.
+ * @property maritalStatus A list of [MaritalStatus] choices to filter the employees.
  */
 @Serializable
 public data class EmployeeFilterSet(

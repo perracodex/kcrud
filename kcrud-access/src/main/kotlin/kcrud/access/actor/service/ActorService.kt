@@ -4,7 +4,7 @@
 
 package kcrud.access.actor.service
 
-import kcrud.access.actor.model.ActorDto
+import kcrud.access.actor.model.Actor
 import kcrud.access.actor.model.ActorRequest
 import kcrud.access.actor.repository.IActorRepository
 import kcrud.access.credential.CredentialService
@@ -30,36 +30,36 @@ internal class ActorService(
     private val tracer = Tracer<ActorService>()
 
     /**
-     * Finds the [ActorDto] for the given username.
-     * @param username The username of the [ActorDto] to find.
-     * @return The [ActorDto] for the given username, or null if it doesn't exist.
+     * Finds the [Actor] for the given username.
+     * @param username The username of the [Actor] to find.
+     * @return The [Actor] for the given username, or null if it doesn't exist.
      */
-    suspend fun findByUsername(username: String): ActorDto? = withContext(Dispatchers.IO) {
+    suspend fun findByUsername(username: String): Actor? = withContext(Dispatchers.IO) {
         return@withContext actorRepository.findByUsername(username = username)
     }
 
     /**
-     * Finds the [ActorDto] for the given id.
+     * Finds the [Actor] for the given id.
      *
-     * @param actorId The id of the [ActorDto] to find.
-     * @return The [ActorDto] for the given id, or null if it doesn't exist.
+     * @param actorId The id of the [Actor] to find.
+     * @return The [Actor] for the given id, or null if it doesn't exist.
      */
-    suspend fun findById(actorId: Uuid): ActorDto? = withContext(Dispatchers.IO) {
+    suspend fun findById(actorId: Uuid): Actor? = withContext(Dispatchers.IO) {
         return@withContext actorRepository.findById(actorId = actorId)
     }
 
     /**
-     * Finds all existing [ActorDto] entries.
-     * @return A list with all existing [ActorDto] entries.
+     * Finds all existing [Actor] entries.
+     * @return A list with all existing [Actor] entries.
      */
-    suspend fun findAll(): List<ActorDto> = withContext(Dispatchers.IO) {
+    suspend fun findAll(): List<Actor> = withContext(Dispatchers.IO) {
         return@withContext actorRepository.findAll()
     }
 
     /**
-     * Creates a new [ActorDto].
+     * Creates a new [Actor].
      * @param actorRequest The [ActorRequest] to create.
-     * @return The id of the [ActorDto] created.
+     * @return The id of the [Actor] created.
      */
     suspend fun create(actorRequest: ActorRequest): Uuid = withContext(Dispatchers.IO) {
         tracer.debug("Creating actor with username: ${actorRequest.username}")
@@ -69,10 +69,10 @@ internal class ActorService(
     }
 
     /**
-     * Updates an existing [ActorDto].
+     * Updates an existing [Actor].
      *
      * @param actorId The id of the Actor to update.
-     * @param actorRequest The new details for the [ActorDto].
+     * @param actorRequest The new details for the [Actor].
      * @return How many records were updated.
      */
     suspend fun update(actorId: Uuid, actorRequest: ActorRequest): Int = withContext(Dispatchers.IO) {
@@ -83,10 +83,10 @@ internal class ActorService(
     }
 
     /**
-     * Sets the lock status for the given [ActorDto].
+     * Sets the lock status for the given [Actor].
      *
-     * @param actorId The id of the [ActorDto] to lock/unlock.
-     * @param isLocked Whether the [ActorDto] should be locked or unlocked.
+     * @param actorId The id of the [Actor] to lock/unlock.
+     * @param isLocked Whether the [Actor] should be locked or unlocked.
      */
     @Suppress("unused")
     suspend fun setLockedState(actorId: Uuid, isLocked: Boolean): Unit = withContext(Dispatchers.IO) {

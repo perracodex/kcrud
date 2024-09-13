@@ -9,7 +9,7 @@ import kcrud.base.env.Tracer
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
 import kcrud.domain.employment.errors.EmploymentError
-import kcrud.domain.employment.model.EmploymentDto
+import kcrud.domain.employment.model.Employment
 import kcrud.domain.employment.model.EmploymentRequest
 import kcrud.domain.employment.repository.IEmploymentRepository
 import kotlinx.coroutines.Dispatchers
@@ -29,9 +29,9 @@ public class EmploymentService internal constructor(
      * Retrieves all employments.
      *
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
-     * @return List of [EmploymentDto] entries.
+     * @return List of [Employment] entries.
      */
-    public suspend fun findAll(pageable: Pageable? = null): Page<EmploymentDto> = withContext(Dispatchers.IO) {
+    public suspend fun findAll(pageable: Pageable? = null): Page<Employment> = withContext(Dispatchers.IO) {
         return@withContext employmentRepository.findAll(pageable = pageable)
     }
 
@@ -40,9 +40,9 @@ public class EmploymentService internal constructor(
      *
      * @param employeeId The ID of the employee associated with the employment.
      * @param employmentId The ID of the employment to be retrieved.
-     * @return The resolved [EmploymentDto] if found, null otherwise.
+     * @return The resolved [Employment] if found, null otherwise.
      */
-    public suspend fun findById(employeeId: Uuid, employmentId: Uuid): EmploymentDto? = withContext(Dispatchers.IO) {
+    public suspend fun findById(employeeId: Uuid, employmentId: Uuid): Employment? = withContext(Dispatchers.IO) {
         return@withContext employmentRepository.findById(employeeId = employeeId, employmentId = employmentId)
     }
 
@@ -50,9 +50,9 @@ public class EmploymentService internal constructor(
      * Retrieves all employment entries for a given employee.
      *
      * @param employeeId The ID of the employee associated with the employment.
-     * @return List of [EmploymentDto] entries.
+     * @return List of [Employment] entries.
      */
-    public suspend fun findByEmployeeId(employeeId: Uuid): List<EmploymentDto> = withContext(Dispatchers.IO) {
+    public suspend fun findByEmployeeId(employeeId: Uuid): List<Employment> = withContext(Dispatchers.IO) {
         return@withContext employmentRepository.findByEmployeeId(employeeId = employeeId)
     }
 
@@ -66,7 +66,7 @@ public class EmploymentService internal constructor(
     public suspend fun create(
         employeeId: Uuid,
         employmentRequest: EmploymentRequest
-    ): EmploymentDto {
+    ): Employment {
         tracer.debug("Creating employment for employee with ID: $employeeId")
 
         verify(
@@ -98,7 +98,7 @@ public class EmploymentService internal constructor(
         employeeId: Uuid,
         employmentId: Uuid,
         employmentRequest: EmploymentRequest
-    ): EmploymentDto? {
+    ): Employment? {
         tracer.debug("Updating employment with ID: $employmentId")
 
         verify(

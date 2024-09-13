@@ -9,7 +9,7 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.base.env.SessionContext
-import kcrud.domain.employee.model.EmployeeDto
+import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.routing.annotation.EmployeeRouteAPI
 import kcrud.domain.employee.service.EmployeeService
@@ -22,7 +22,7 @@ internal fun Route.createEmployee() {
     post<EmployeeRequest> { request ->
         val sessionContext: SessionContext? = SessionContext.from(call = call)
         val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }
-        val createdEmployee: EmployeeDto = service.create(employeeRequest = request)
+        val createdEmployee: Employee = service.create(employeeRequest = request)
         call.respond(status = HttpStatusCode.Created, message = createdEmployee)
     }
 }
