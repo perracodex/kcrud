@@ -51,7 +51,7 @@ public data class RbacScopeRule(
                 roleId = row[RbacScopeRuleTable.roleId],
                 scope = row[RbacScopeRuleTable.scope],
                 accessLevel = row[RbacScopeRuleTable.accessLevel],
-                fieldRules = fieldRules,
+                fieldRules = fieldRules.takeIf { it.isNotEmpty() },
                 meta = Meta.from(row = row, table = RbacScopeRuleTable)
             )
         }
