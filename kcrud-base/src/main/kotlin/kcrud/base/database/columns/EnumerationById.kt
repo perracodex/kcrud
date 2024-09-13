@@ -29,7 +29,7 @@ public interface IEnumWithId {
  *
  * Usage example:
  * ```
- * enum class SomeEnum(override val id: Int) : EnumWithId {
+ * enum class SomeEnum(override val id: Int) : IEnumWithId {
  *     ELEMENT_A(100), ELEMENT_B(101), ...
  * }
  *
