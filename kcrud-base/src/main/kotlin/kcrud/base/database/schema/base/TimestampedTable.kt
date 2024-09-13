@@ -13,7 +13,7 @@ import java.time.OffsetDateTime
 /**
  * Base class for database tables that automatically track the creation and last update timestamps of records.
  */
-public open class TimestampedTable(name: String) : Table(name = name) {
+public abstract class TimestampedTable(name: String) : Table(name = name) {
 
     /** Timestamp for when the record was initially created. */
     public val createdAt: Column<OffsetDateTime> = timestampWithTimeZone(
