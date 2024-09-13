@@ -25,7 +25,7 @@ import org.jetbrains.exposed.sql.ResultRow
  * @property roleId The associated parent [RbacRole] id.
  * @property scope The [RbacScope] to which the scope rule belong.
  * @property accessLevel The required [RbacAccessLevel] for the [RbacScope].
- * @property fieldRules Optional list of [RbacFieldRule] associated with the scope rule.
+ * @property fieldRules Optional [RbacFieldRule] list associated with the [RbacScopeRule].
  * @property meta The metadata of the record.
  */
 @Serializable
@@ -42,7 +42,7 @@ public data class RbacScopeRule(
          * Maps a [ResultRow] to a [RbacScopeRule] instance.
          *
          * @param row The [ResultRow] to map.
-         * @param fieldRules Optional associated [RbacFieldRule] list.
+         * @param fieldRules Optional [RbacFieldRule] list associated with the [RbacScopeRule].
          * @return The mapped [RbacScopeRule] instance.
          */
         public fun from(row: ResultRow, fieldRules: List<RbacFieldRule>?): RbacScopeRule {
