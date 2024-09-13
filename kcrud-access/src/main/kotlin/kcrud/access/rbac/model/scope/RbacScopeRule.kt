@@ -21,11 +21,11 @@ import org.jetbrains.exposed.sql.ResultRow
  * Is up to the designer to define what a scope is, and act accordingly when its
  * associated RBAC rule is verified.
  *
- * @property id The unique id of the scope rule record.
+ * @property id The unique id of the Scope Rule record.
  * @property roleId The associated parent [RbacRole] id.
  * @property scope The [RbacScope] to which the scope rule belong.
  * @property accessLevel The required [RbacAccessLevel] for the [RbacScope].
- * @property fieldRules Optional [RbacFieldRule] list associated with the [RbacScopeRule].
+ * @property fieldRules Optional [RbacFieldRule] list associated with the Scope Rule.
  * @property meta The metadata of the record.
  */
 @Serializable
