@@ -44,14 +44,20 @@ public data class RbacRole(
          * @return The mapped [RbacRole] instance.
          */
         fun from(roleId: Uuid, rows: List<ResultRow>): RbacRole {
-            // Construct the child entries (if any).
+            // Construct the list of RbacScopeRule child entries, (if any).
+            // - Filter out rows without a valid ScopeRule ID.
+            // - Group the remaining rows by ScopeRule ID.
+            // - For each group:
+            //   - Use the first row as the representative ScopeRule.
+            //   - Collect associated FieldRules from rows with a valid FieldRule ID.
+            //   - Create an RbacScopeRule with its FieldRules.
             val scopeRules: List<RbacScopeRule> = rows
                 .filter { it.getOrNull(RbacScopeRuleTable.id) != null }
                 .groupBy { it[RbacScopeRuleTable.id] }
                 .map { (_, scopeRows) ->
                     val scopeRuleRow: ResultRow = scopeRows.first()
 
-                    // Extract field rules associated with the current scope rule
+                    // Collect associated FieldRules.
                     val fieldRules: List<RbacFieldRule> = scopeRows
                         .filter { it.getOrNull(RbacFieldRuleTable.id) != null }
                         .map { RbacFieldRule.from(row = it) }
