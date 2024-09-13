@@ -9,11 +9,10 @@ import org.jetbrains.exposed.sql.Table
 import kotlin.enums.EnumEntries
 
 /**
- * Example in which each item has an id,
- * which is the actual value that will be stored in the database,
- * instead of the name of the enum item.
+ * Interface for enums that require a stored ID for persistence
+ * in the database, instead of the enum name or ordinal.
  *
- * @property id The integer ID of the enum item.
+ * @property id The integer ID of the enum item. Expected to be unique across all enum items.
  *
  * @see enumerationById
  */
