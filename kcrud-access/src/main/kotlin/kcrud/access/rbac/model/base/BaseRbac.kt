@@ -83,7 +83,8 @@ public abstract class BaseRbac {
         }
 
         // Retrieve the primary constructor of the class.
-        val constructor: KFunction<T> = clazz.primaryConstructor!!
+        val constructor: KFunction<T> = clazz.primaryConstructor
+            ?: throw IllegalArgumentException("Primary constructor not found for class: ${clazz.simpleName}")
 
         // Create a map of constructor parameters and their corresponding anonymized values where applicable.
         val arguments: Map<KParameter, Any?> = constructor.parameters.associateWith { parameter ->

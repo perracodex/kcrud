@@ -28,8 +28,9 @@ public fun String?.toUuidOrNull(): Uuid? {
  * @throws IllegalArgumentException if the string is not a valid [Uuid].
  */
 public fun String?.toUuid(): Uuid {
+    requireNotNull(this) { "Uuid string cannot be null." }
     return try {
-        Uuid.parse(uuidString = this!!)
+        Uuid.parse(uuidString = this)
     } catch (e: IllegalArgumentException) {
         throw IllegalArgumentException("String '$this' is not a valid Uuid.", e)
     }

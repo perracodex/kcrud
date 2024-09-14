@@ -43,6 +43,11 @@ internal class RbacRoleRepository(
         }
     }
 
+    override fun findByIdOrThrow(roleId: Uuid): RbacRole {
+        return findById(roleId = roleId)
+            ?: throw IllegalStateException("Role not found with ID: $roleId")
+    }
+
     override fun findByActorId(actorId: Uuid): RbacRole? {
         return transaction {
             // Filter out the Actor table columns. Only include the RBAC columns.
@@ -63,6 +68,11 @@ internal class RbacRoleRepository(
                     RbacRole.from(roleId = roleId, rows = rows)
                 }.singleOrNull()
         }
+    }
+
+    override fun findByActorIdOrThrow(actorId: Uuid): RbacRole {
+        return findByActorId(actorId = actorId)
+            ?: throw IllegalStateException("Role not found for actor with ID: $actorId")
     }
 
     override fun findAll(): List<RbacRole> {
@@ -93,6 +103,13 @@ internal class RbacRoleRepository(
             }
 
             roleId
+        }
+    }
+
+    override fun createAndGet(roleRequest: RbacRoleRequest): RbacRole {
+        return transaction {
+            val roleId: Uuid = create(roleRequest = roleRequest)
+            findByIdOrThrow(roleId = roleId)
         }
     }
 

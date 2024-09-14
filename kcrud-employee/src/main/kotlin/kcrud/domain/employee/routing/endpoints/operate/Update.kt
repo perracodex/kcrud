@@ -8,9 +8,9 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.util.*
 import kcrud.base.env.SessionContext
 import kcrud.base.persistence.utils.toUuid
-import kcrud.domain.employee.errors.EmployeeError
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.routing.annotation.EmployeeRouteAPI
@@ -23,17 +23,16 @@ import kotlin.uuid.Uuid
 internal fun Route.updateEmployeeById() {
     // Update an employee by ID.
     put<EmployeeRequest> { request ->
-        val employeeId: Uuid = call.parameters["employee_id"].toUuid()
+        val employeeId: Uuid = call.parameters.getOrFail(name = "employee_id").toUuid()
 
         val sessionContext: SessionContext? = SessionContext.from(call = call)
         val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }
-        val updatedEmployee: Employee? = service.update(
+
+        val updatedEmployee: Employee = service.update(
             employeeId = employeeId,
             employeeRequest = request
         )
 
-        updatedEmployee?.let {
-            call.respond(status = HttpStatusCode.OK, message = updatedEmployee)
-        } ?: throw EmployeeError.EmployeeNotFound(employeeId = employeeId)
+        call.respond(status = HttpStatusCode.OK, message = updatedEmployee)
     }
 }

@@ -54,7 +54,8 @@ class TimestampTest : KoinComponent {
         )
 
         val employeeId: Uuid = employeeRepository.create(employeeRequest = employeeRequest)
-        val employee: Employee = employeeRepository.findById(employeeId = employeeId)!!
+        val employee: Employee = employeeRepository.findById(employeeId = employeeId)
+            ?: fail("Employee not found.")
 
         // Assert that the record has timestamps.
         assertNotNull(actual = employee)
@@ -70,7 +71,8 @@ class TimestampTest : KoinComponent {
         val createdAt: OffsetTimestamp = employee.meta.createdAt
         val updatedAt: OffsetTimestamp = employee.meta.updatedAt
         employeeRepository.update(employeeId = employeeId, employeeRequest = employeeRequest)
-        val updatedEmployee: Employee = employeeRepository.findById(employeeId = employeeId)!!
+        val updatedEmployee: Employee = employeeRepository.findById(employeeId = employeeId)
+            ?: fail("Employee not found.")
 
         // The createdAt timestamp should not change.
         assertEquals(

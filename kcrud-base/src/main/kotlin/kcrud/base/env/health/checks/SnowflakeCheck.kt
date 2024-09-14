@@ -30,8 +30,9 @@ public data class SnowflakeCheck(
     init {
         // Attempt to generate testId and handle any exceptions.
         try {
-            testId = SnowflakeFactory.nextId()
-            testResult = SnowflakeFactory.parse(id = testId!!)
+            val generatedId: String = SnowflakeFactory.nextId()
+            testId = generatedId
+            testResult = SnowflakeFactory.parse(id = generatedId)
         } catch (ex: Exception) {
             errors.add(
                 "${SnowflakeCheck::class.simpleName}: ${ex.message} - " +

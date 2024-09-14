@@ -8,9 +8,9 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.util.*
 import kcrud.base.env.SessionContext
 import kcrud.base.persistence.utils.toUuid
-import kcrud.domain.employee.errors.EmployeeError
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.routing.annotation.EmployeeRouteAPI
 import kcrud.domain.employee.service.EmployeeService
@@ -22,14 +22,12 @@ import kotlin.uuid.Uuid
 internal fun Route.findEmployeeById() {
     // Find an employee by ID.
     get {
-        val employeeId: Uuid = call.parameters["employee_id"].toUuid()
+        val employeeId: Uuid = call.parameters.getOrFail(name = "employee_id").toUuid()
 
         val sessionContext: SessionContext? = SessionContext.from(call = call)
         val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }
-        val employee: Employee? = service.findById(employeeId = employeeId)
 
-        employee?.let {
-            call.respond(status = HttpStatusCode.OK, message = employee)
-        } ?: throw EmployeeError.EmployeeNotFound(employeeId = employeeId)
+        val employee: Employee = service.findByIdOrThrow(employeeId = employeeId)
+        call.respond(status = HttpStatusCode.OK, message = employee)
     }
 }

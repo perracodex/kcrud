@@ -8,6 +8,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.util.*
 import kcrud.base.scheduler.service.core.SchedulerService
 
 /**
@@ -16,8 +17,8 @@ import kcrud.base.scheduler.service.core.SchedulerService
 internal fun Route.deleteSchedulerTaskRoute() {
     // Deletes a concrete scheduler task.
     delete("scheduler/task/{name}/{group}") {
-        val name: String = call.parameters["name"]!!
-        val group: String = call.parameters["group"]!!
+        val name: String = call.parameters.getOrFail(name = "name")
+        val group: String = call.parameters.getOrFail(name = "group")
         val deletedCount: Int = SchedulerService.tasks.delete(name = name, group = group)
         call.respond(status = HttpStatusCode.OK, message = deletedCount)
     }

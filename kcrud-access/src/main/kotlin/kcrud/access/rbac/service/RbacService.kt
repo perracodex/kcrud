@@ -229,12 +229,12 @@ internal class RbacService(
     ): RbacRole = withContext(Dispatchers.IO) {
         tracer.info("Creating new role: ${roleRequest.roleName}")
 
-        val roleId: Uuid = roleRepository.create(roleRequest = roleRequest)
+        val role: RbacRole = roleRepository.createAndGet(roleRequest = roleRequest)
 
         // After creating the role must refresh the cache to reflect the new role.
         refreshActors()
 
-        return@withContext roleRepository.findById(roleId = roleId)!!
+        return@withContext role
     }
 
     /**

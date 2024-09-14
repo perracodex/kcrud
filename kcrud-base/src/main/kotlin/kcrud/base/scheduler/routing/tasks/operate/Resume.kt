@@ -8,6 +8,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.util.*
 import kcrud.base.scheduler.model.task.TaskStateChange
 import kcrud.base.scheduler.service.core.SchedulerService
 
@@ -17,8 +18,8 @@ import kcrud.base.scheduler.service.core.SchedulerService
 internal fun Route.resumeSchedulerTaskRoute() {
     // Resume a concrete scheduled task.
     post("scheduler/task/{name}/{group}/resume") {
-        val name: String = call.parameters["name"]!!
-        val group: String = call.parameters["group"]!!
+        val name: String = call.parameters.getOrFail(name = "name")
+        val group: String = call.parameters.getOrFail(name = "group")
         val state: TaskStateChange = SchedulerService.tasks.resume(name = name, group = group)
         call.respond(status = HttpStatusCode.OK, message = state)
     }

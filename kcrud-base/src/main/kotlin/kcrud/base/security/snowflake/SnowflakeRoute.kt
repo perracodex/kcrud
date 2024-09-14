@@ -9,6 +9,7 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.util.*
 import kcrud.base.settings.AppSettings
 
 /**
@@ -19,7 +20,8 @@ public fun Route.snowflakeRoute() {
     authenticate(AppSettings.security.basicAuth.providerName, optional = !AppSettings.security.isEnabled) {
         // Snowflake parser to read back the components of a snowflake ID.
         get("/snowflake/{id}") {
-            val data: SnowflakeData = SnowflakeFactory.parse(id = call.parameters["id"]!!)
+            val snowflakeId: String = call.parameters.getOrFail(name = "id")
+            val data: SnowflakeData = SnowflakeFactory.parse(id = snowflakeId)
             call.respond(status = HttpStatusCode.OK, message = data)
         }
     }

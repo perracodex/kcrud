@@ -12,6 +12,7 @@ import kcrud.base.env.SessionContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.pagination.paginate
+import kcrud.domain.employment.errors.EmploymentError
 import kcrud.domain.employment.model.Employment
 import kcrud.domain.employment.model.EmploymentRequest
 import org.jetbrains.exposed.sql.*
@@ -65,6 +66,11 @@ internal class EmploymentRepository(
         }
     }
 
+    override fun findByIdOrThrow(employeeId: Uuid, employmentId: Uuid): Employment {
+        return findById(employeeId = employeeId, employmentId = employmentId)
+            ?: throw EmploymentError.EmploymentNotFound(employeeId = employeeId, employmentId = employmentId)
+    }
+
     override fun findByEmployeeId(employeeId: Uuid): List<Employment> {
         return transactionWithSchema(schema = sessionContext.schema) {
             EmploymentTable
@@ -89,6 +95,13 @@ internal class EmploymentRepository(
         }
     }
 
+    override fun createAndGet(employeeId: Uuid, employmentRequest: EmploymentRequest): Employment {
+        return transactionWithSchema(schema = sessionContext.schema) {
+            val employmentId: Uuid = create(employeeId = employeeId, employmentRequest = employmentRequest)
+            findByIdOrThrow(employeeId = employeeId, employmentId = employmentId)
+        }
+    }
+
     override fun update(employeeId: Uuid, employmentId: Uuid, employmentRequest: EmploymentRequest): Int {
         return transactionWithSchema(schema = sessionContext.schema) {
             EmploymentTable.update(where = {
@@ -100,6 +113,13 @@ internal class EmploymentRepository(
                     employmentRequest = employmentRequest
                 )
             }
+        }
+    }
+
+    override fun updateAndGet(employeeId: Uuid, employmentId: Uuid, employmentRequest: EmploymentRequest): Employment {
+        return transactionWithSchema(schema = sessionContext.schema) {
+            update(employeeId = employeeId, employmentId = employmentId, employmentRequest = employmentRequest)
+            findByIdOrThrow(employeeId = employeeId, employmentId = employmentId)
         }
     }
 

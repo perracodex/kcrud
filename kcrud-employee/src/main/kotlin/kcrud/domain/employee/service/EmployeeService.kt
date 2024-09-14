@@ -40,6 +40,17 @@ public class EmployeeService internal constructor(
     }
 
     /**
+     * Retrieves an employee by its ID or throws an exception if not found.
+     *
+     * @param employeeId The ID of the employee to be retrieved.
+     * @return The resolved [Employee].
+     * @throws EmployeeError.EmployeeNotFound if the employee doesn't exist.
+     */
+    public suspend fun findByIdOrThrow(employeeId: Uuid): Employee = withContext(Dispatchers.IO) {
+        return@withContext employeeRepository.findByIdOrThrow(employeeId = employeeId)
+    }
+
+    /**
      * Retrieves all employees.
      *
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
@@ -74,8 +85,7 @@ public class EmployeeService internal constructor(
         verifyIntegrity(employeeId = null, employeeRequest = employeeRequest, reason = "Create Employee.")
 
         return withContext(Dispatchers.IO) {
-            val employeeId: Uuid = employeeRepository.create(employeeRequest = employeeRequest)
-            return@withContext findById(employeeId = employeeId)!!
+            return@withContext employeeRepository.createAndGet(employeeRequest = employeeRequest)
         }
     }
 
@@ -84,19 +94,21 @@ public class EmployeeService internal constructor(
      *
      * @param employeeId The ID of the employee to be updated.
      * @param employeeRequest The new details for the employee.
-     * @return The number of updated records.
+     * @return The updated [Employee].
      */
     public suspend fun update(
         employeeId: Uuid,
         employeeRequest: EmployeeRequest
-    ): Employee? {
+    ): Employee {
         tracer.debug("Updating employee with ID: $employeeId.")
 
         verifyIntegrity(employeeId = employeeId, employeeRequest = employeeRequest, reason = "Update Employee.")
 
         return withContext(Dispatchers.IO) {
-            val updatedCount: Int = employeeRepository.update(employeeId = employeeId, employeeRequest = employeeRequest)
-            return@withContext if (updatedCount > 0) findById(employeeId = employeeId) else null
+            return@withContext employeeRepository.updateAndGet(
+                employeeId = employeeId,
+                employeeRequest = employeeRequest
+            )
         }
     }
 

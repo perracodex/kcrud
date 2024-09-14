@@ -29,7 +29,7 @@ internal class ActorRepository(private val roleRepository: IRbacRoleRepository) 
                 ActorTable.username.eq(username)
             }.singleOrNull()?.let { resultRow ->
                 val actorId: Uuid = resultRow[ActorTable.id]
-                val role: RbacRole = roleRepository.findByActorId(actorId = actorId)!!
+                val role: RbacRole = roleRepository.findByActorIdOrThrow(actorId = actorId)
                 Actor.from(row = resultRow, role = role)
             }
         }
@@ -39,7 +39,7 @@ internal class ActorRepository(private val roleRepository: IRbacRoleRepository) 
         return transaction {
             ActorTable.selectAll().map { resultRow ->
                 val actorId: Uuid = resultRow[ActorTable.id]
-                val role: RbacRole = roleRepository.findByActorId(actorId = actorId)!!
+                val role: RbacRole = roleRepository.findByActorIdOrThrow(actorId = actorId)
                 Actor.from(row = resultRow, role = role)
             }
         }
@@ -50,7 +50,7 @@ internal class ActorRepository(private val roleRepository: IRbacRoleRepository) 
             ActorTable.selectAll().where {
                 ActorTable.id eq actorId
             }.singleOrNull()?.let { resultRow ->
-                val role: RbacRole = roleRepository.findByActorId(actorId = actorId)!!
+                val role: RbacRole = roleRepository.findByActorIdOrThrow(actorId = actorId)
                 Actor.from(row = resultRow, role = role)
             }
         }

@@ -8,6 +8,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.util.*
 import kcrud.base.env.SessionContext
 import kcrud.base.persistence.utils.toUuid
 import kcrud.domain.employment.model.Employment
@@ -22,10 +23,11 @@ import kotlin.uuid.Uuid
 internal fun Route.createEmployment() {
     // Create a new employment.
     post<EmploymentRequest> { request ->
-        val employeeId: Uuid = call.parameters["employee_id"].toUuid()
+        val employeeId: Uuid = call.parameters.getOrFail(name = "employee_id").toUuid()
 
         val sessionContext: SessionContext? = SessionContext.from(call = call)
         val service: EmploymentService = call.scope.get<EmploymentService> { parametersOf(sessionContext) }
+
         val newEmployment: Employment = service.create(
             employeeId = employeeId,
             employmentRequest = request

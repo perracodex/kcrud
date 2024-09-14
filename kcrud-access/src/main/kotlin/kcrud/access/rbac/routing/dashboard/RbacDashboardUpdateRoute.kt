@@ -11,12 +11,13 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
+import io.ktor.server.util.*
 import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.service.RbacDashboardManager
 import kcrud.access.rbac.view.RbacDashboardView
 import kcrud.access.rbac.view.RbacLoginView
 import kcrud.base.env.SessionContext
-import kcrud.base.persistence.utils.toUuidOrNull
+import kcrud.base.persistence.utils.toUuid
 import kotlin.uuid.Uuid
 
 /**
@@ -35,8 +36,7 @@ internal fun Route.rbacDashboardUpdateRoute() {
 
         // Receive and process form parameters.
         val parameters: Parameters = call.receiveParameters()
-        val currentRoleId: Uuid = parameters[RbacDashboardView.ROLE_KEY].toUuidOrNull()
-            ?: return@post call.respond(HttpStatusCode.BadRequest, "Invalid or missing role ID.")
+        val currentRoleId: Uuid = parameters.getOrFail(name = RbacDashboardView.ROLE_KEY).toUuid()
 
         // Fetch the role-specific scope rules for the current role,
         // and update the rules based on the submitted parameters.

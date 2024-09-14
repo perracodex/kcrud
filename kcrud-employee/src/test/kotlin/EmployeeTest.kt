@@ -92,7 +92,7 @@ class EmployeeServiceTest : KoinComponent {
                 )
                 coEvery { mockEmployeeRepository.findById(employeeId = employeeId) } returns mockEmployee
 
-                val result = employeeService.findById(employeeId = employeeId)
+                val result: Employee? = employeeService.findById(employeeId = employeeId)
                 assertEquals(
                     expected = mockEmployee,
                     actual = result,

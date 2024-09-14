@@ -16,7 +16,7 @@ import kotlin.uuid.Uuid
 internal interface IRbacRoleRepository {
 
     /**
-     * Finds the [RbacRole] for the given [roleId]
+     * Finds the [RbacRole] for the given [roleId].
      *
      * @param roleId The unique id of the [RbacRole] to find.
      * @return The [RbacRole] for the given [roleId], or null if not found.
@@ -24,12 +24,32 @@ internal interface IRbacRoleRepository {
     fun findById(roleId: Uuid): RbacRole?
 
     /**
-     * Finds the [RbacRole] for the given [actorId]
+     * Finds the [RbacRole] for the given [roleId],
+     * or throws an exception if it doesn't exist.
+     *
+     * @param roleId The unique id of the [RbacRole] to find.
+     * @return The [RbacRole] for the given [roleId].
+     * @throws IllegalStateException if the [RbacRole] doesn't exist.
+     */
+    fun findByIdOrThrow(roleId: Uuid): RbacRole
+
+    /**
+     * Finds the [RbacRole] for the given [actorId].
      *
      * @param actorId The id of the actor to which the role is associated.
      * @return The [RbacRole] for the given [actorId], or null if it doesn't exist.
      */
     fun findByActorId(actorId: Uuid): RbacRole?
+
+    /**
+     * Finds the [RbacRole] for the given [actorId],
+     * or throws an exception if it doesn't exist.
+     *
+     * @param actorId The id of the actor to which the role is associated.
+     * @return The [RbacRole] for the given [actorId], or null if it doesn't exist.
+     * @throws IllegalStateException if the [RbacRole] doesn't exist.
+     */
+    fun findByActorIdOrThrow(actorId: Uuid): RbacRole
 
     /**
      * Finds all existing [RbacRole] entries.
@@ -45,6 +65,14 @@ internal interface IRbacRoleRepository {
      * @return The id of the newly created [RbacRole].
      */
     fun create(roleRequest: RbacRoleRequest): Uuid
+
+    /**
+     * Creates and retrieves a new [RbacRole].
+     *
+     * @param roleRequest The [RbacRoleRequest] to create the [RbacRole] from.
+     * @return The newly created [RbacRole].
+     */
+    fun createAndGet(roleRequest: RbacRoleRequest): RbacRole
 
     /**
      * Updates an existing [RbacRole] for the given [roleId].

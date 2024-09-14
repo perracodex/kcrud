@@ -8,6 +8,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.util.*
 import kcrud.base.env.SessionContext
 import kcrud.base.persistence.utils.toUuid
 import kcrud.domain.employment.model.Employment
@@ -21,12 +22,12 @@ import kotlin.uuid.Uuid
 internal fun Route.findEmploymentByEmployeeId() {
     // Find all employments for an employee ID.
     get {
-        val employeeId: Uuid = call.parameters["employee_id"].toUuid()
+        val employeeId: Uuid = call.parameters.getOrFail(name = "employee_id").toUuid()
 
         val sessionContext: SessionContext? = SessionContext.from(call = call)
         val service: EmploymentService = call.scope.get<EmploymentService> { parametersOf(sessionContext) }
-        val employments: List<Employment> = service.findByEmployeeId(employeeId = employeeId)
 
+        val employments: List<Employment> = service.findByEmployeeId(employeeId = employeeId)
         call.respond(status = HttpStatusCode.OK, message = employments)
     }
 }

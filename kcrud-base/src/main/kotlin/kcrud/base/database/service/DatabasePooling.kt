@@ -54,8 +54,9 @@ internal object DatabasePooling {
 
             // Database credentials for authentication.
             if (!settings.username.isNullOrBlank()) {
+                check(!settings.password.isNullOrBlank()) { "Database password must be provided when username is set." }
                 this.username = settings.username
-                this.password = settings.password!!
+                this.password = settings.password
             }
 
             // Integrates a micrometer registry for monitoring and metrics.

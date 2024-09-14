@@ -47,6 +47,18 @@ public class EmploymentService internal constructor(
     }
 
     /**
+     * Retrieves an employment by its ID or throws an exception if not found.
+     *
+     * @param employeeId The ID of the employee associated with the employment.
+     * @param employmentId The ID of the employment to be retrieved.
+     * @return The resolved [Employment].
+     * @throws EmploymentError.EmploymentNotFound if the employment doesn't exist.
+     */
+    public suspend fun findByIdOrThrow(employeeId: Uuid, employmentId: Uuid): Employment = withContext(Dispatchers.IO) {
+        return@withContext employmentRepository.findByIdOrThrow(employeeId = employeeId, employmentId = employmentId)
+    }
+
+    /**
      * Retrieves all employment entries for a given employee.
      *
      * @param employeeId The ID of the employee associated with the employment.
@@ -76,13 +88,11 @@ public class EmploymentService internal constructor(
             reason = "Create Employment."
         )
 
-        val employmentId: Uuid = employmentRepository.create(
-            employeeId = employeeId,
-            employmentRequest = employmentRequest
-        )
-
         return withContext(Dispatchers.IO) {
-            return@withContext findById(employeeId = employeeId, employmentId = employmentId)!!
+            return@withContext employmentRepository.createAndGet(
+                employeeId = employeeId,
+                employmentRequest = employmentRequest
+            )
         }
     }
 
@@ -92,13 +102,13 @@ public class EmploymentService internal constructor(
      * @param employeeId The employee ID associated with the employment.
      * @param employmentId The ID of the employment to be updated.
      * @param employmentRequest The new details for the employment.
-     * @return The number of updated records.
+     * @return The updated [Employment].
      */
     public suspend fun update(
         employeeId: Uuid,
         employmentId: Uuid,
         employmentRequest: EmploymentRequest
-    ): Employment? {
+    ): Employment {
         tracer.debug("Updating employment with ID: $employmentId")
 
         verify(
@@ -109,17 +119,11 @@ public class EmploymentService internal constructor(
         )
 
         return withContext(Dispatchers.IO) {
-            val updateCount: Int = employmentRepository.update(
+            return@withContext employmentRepository.updateAndGet(
                 employeeId = employeeId,
                 employmentId = employmentId,
                 employmentRequest = employmentRequest
             )
-
-            return@withContext if (updateCount > 0) {
-                findById(employeeId = employeeId, employmentId = employmentId)
-            } else {
-                null
-            }
         }
     }
 

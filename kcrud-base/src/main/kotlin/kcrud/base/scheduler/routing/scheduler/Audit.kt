@@ -8,6 +8,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.util.*
 import kcrud.base.scheduler.audit.AuditService
 import kcrud.base.scheduler.model.audit.AuditLog
 
@@ -23,8 +24,8 @@ internal fun Route.schedulerAuditRoute() {
 
     // Returns the audit log for a specific task.
     get("scheduler/audit/{name}/{group}") {
-        val taskName: String = call.parameters["name"] ?: return@get call.respond(HttpStatusCode.BadRequest)
-        val taskGroup: String = call.parameters["group"] ?: return@get call.respond(HttpStatusCode.BadRequest)
+        val taskName: String = call.parameters.getOrFail(name = "name")
+        val taskGroup: String = call.parameters.getOrFail(name = "group")
         val audit: List<AuditLog> = AuditService.find(taskName = taskName, taskGroup = taskGroup)
 
         if (audit.isEmpty()) {

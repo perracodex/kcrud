@@ -137,9 +137,9 @@ class SchedulerServiceTest {
             private const val REGULAR_EXECUTION_MESSAGE: String = "Regular_Execution"
         }
 
-        override fun execute(context: JobExecutionContext?) {
+        override fun execute(context: JobExecutionContext) {
             // Check if this execution is a misfire.
-            context?.trigger?.nextFireTime?.let {
+            context.trigger?.nextFireTime?.let {
                 // Regular execution.
                 println("TEST FAILED: Expected misfire handling but got regular execution for task: ${context.jobDetail.key}")
                 testResults.add(REGULAR_EXECUTION_MESSAGE)
@@ -147,7 +147,7 @@ class SchedulerServiceTest {
             }
 
             // This means the task has been fired due to misfire handling.
-            println("TEST PASSED: Misfire handled for task: ${context!!.jobDetail.key}")
+            println("TEST PASSED: Misfire handled for task: ${context.jobDetail.key}")
             testResults.add(MISFIRE_MESSAGE)
         }
     }

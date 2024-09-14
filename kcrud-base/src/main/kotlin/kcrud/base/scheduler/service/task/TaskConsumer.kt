@@ -24,8 +24,8 @@ public abstract class TaskConsumer : Job {
      *
      * @param context The job execution context.
      */
-    override fun execute(context: JobExecutionContext?) {
-        val jobDataMap: JobDataMap? = context?.mergedJobDataMap
+    override fun execute(context: JobExecutionContext) {
+        val jobDataMap: JobDataMap? = context.mergedJobDataMap
 
         // Deserialize and reload AppSettings from the context to ensure this task
         // uses the current configuration, since it runs in a separate classloader.

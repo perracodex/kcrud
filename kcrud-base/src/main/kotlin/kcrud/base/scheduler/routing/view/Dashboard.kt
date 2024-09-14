@@ -20,7 +20,6 @@ import kotlin.uuid.Uuid
  * The scheduler dashboard route.
  */
 internal fun Route.schedulerDashboardRoute() {
-
     // The scheduler dashboard route.
     get("scheduler/dashboard") {
         val groupId: Uuid? = call.parameters["group"]?.toUuidOrNull()

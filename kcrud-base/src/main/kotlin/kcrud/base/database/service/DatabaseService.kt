@@ -121,11 +121,12 @@ internal object DatabaseService {
                     databaseConfig = databaseConfig
                 )
             } else {
+                check(!settings.password.isNullOrBlank()) { "Database password must be provided when username is set." }
                 Database.connect(
                     url = settings.jdbcUrl,
                     driver = settings.jdbcDriver,
                     user = settings.username,
-                    password = settings.password!!,
+                    password = settings.password,
                     databaseConfig = databaseConfig
                 )
             }

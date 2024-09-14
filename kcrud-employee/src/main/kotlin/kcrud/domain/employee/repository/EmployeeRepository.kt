@@ -12,6 +12,7 @@ import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.pagination.paginate
 import kcrud.domain.contact.repository.IContactRepository
+import kcrud.domain.employee.errors.EmployeeError
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeFilterSet
 import kcrud.domain.employee.model.EmployeeRequest
@@ -42,6 +43,11 @@ internal class EmployeeRepository(
                 Employee.from(row = resultRow)
             }
         }
+    }
+
+    override fun findByIdOrThrow(employeeId: Uuid): Employee {
+        return findById(employeeId = employeeId)
+            ?: throw EmployeeError.EmployeeNotFound(employeeId = employeeId)
     }
 
     override fun findAll(pageable: Pageable?): Page<Employee> {
@@ -137,6 +143,13 @@ internal class EmployeeRepository(
         }
     }
 
+    override fun createAndGet(employeeRequest: EmployeeRequest): Employee {
+        return transactionWithSchema(schema = sessionContext.schema) {
+            val newEmployeeId: Uuid = create(employeeRequest = employeeRequest)
+            findByIdOrThrow(employeeId = newEmployeeId)
+        }
+    }
+
     override fun update(employeeId: Uuid, employeeRequest: EmployeeRequest): Int {
         return transactionWithSchema(schema = sessionContext.schema) {
             val updateCount: Int = EmployeeTable.update(
@@ -155,6 +168,13 @@ internal class EmployeeRepository(
             }
 
             updateCount
+        }
+    }
+
+    override fun updateAndGet(employeeId: Uuid, employeeRequest: EmployeeRequest): Employee {
+        return transactionWithSchema(schema = sessionContext.schema) {
+            update(employeeId = employeeId, employeeRequest = employeeRequest)
+            findByIdOrThrow(employeeId = employeeId)
         }
     }
 

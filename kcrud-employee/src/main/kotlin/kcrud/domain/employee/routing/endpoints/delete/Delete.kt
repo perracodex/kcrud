@@ -8,6 +8,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.util.*
 import kcrud.base.env.SessionContext
 import kcrud.base.persistence.utils.toUuid
 import kcrud.domain.employee.routing.annotation.EmployeeRouteAPI
@@ -20,12 +21,12 @@ import kotlin.uuid.Uuid
 internal fun Route.deleteEmployeeById() {
     // Delete an employee by ID.
     delete {
-        val employeeId: Uuid = call.parameters["employee_id"].toUuid()
+        val employeeId: Uuid = call.parameters.getOrFail(name = "employee_id").toUuid()
 
         val sessionContext: SessionContext? = SessionContext.from(call = call)
         val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }
-        val deletedCount: Int = service.delete(employeeId = employeeId)
 
+        val deletedCount: Int = service.delete(employeeId = employeeId)
         call.respond(status = HttpStatusCode.OK, message = deletedCount)
     }
 }

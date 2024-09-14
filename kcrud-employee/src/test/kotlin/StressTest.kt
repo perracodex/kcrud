@@ -80,9 +80,9 @@ class StressTest : KoinComponent {
                 dob = employeeRequest.dob.minus(randomYears, DateTimeUnit.YEAR)
                     .minus(randomMonths, DateTimeUnit.MONTH)
                     .minus(randomDays, DateTimeUnit.DAY),
-                contact = employeeRequest.contact?.copy(
-                    email = "${randomChars}_${employeeRequest.contact!!.email}",
-                )
+                contact = employeeRequest.contact?.let { contactRequest ->
+                    contactRequest.copy(email = "${randomChars}_${contactRequest.email}")
+                }
             )
 
             async {
@@ -137,9 +137,9 @@ class StressTest : KoinComponent {
                 dob = employeeRequest.dob.minus(randomYears, DateTimeUnit.YEAR)
                     .minus(randomMonths, DateTimeUnit.MONTH)
                     .minus(randomDays, DateTimeUnit.DAY),
-                contact = employeeRequest.contact?.copy(
-                    email = "${randomChars}_${employeeRequest.contact!!.email}",
-                )
+                contact = employeeRequest.contact?.let { contactRequest ->
+                    contactRequest.copy(email = "${randomChars}_${contactRequest.email}")
+                }
             )
 
             employeeService.create(employeeRequest = request)

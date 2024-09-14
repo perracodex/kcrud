@@ -8,6 +8,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.util.*
 import kcrud.base.env.SessionContext
 import kcrud.domain.employee.service.EmployeeService
 import kcrud.domain.employment.service.EmploymentService
@@ -22,9 +23,9 @@ internal fun Route.createRecordsRoute() {
 
     // Create a batch of demo records.
     post {
-        val count: Int? = call.request.queryParameters["count"]?.toIntOrNull()
+        val count: Int = call.request.queryParameters.getOrFail(name = "count").toInt()
 
-        if (count != null && count in 1..maxAllowedBatch) {
+        if (count in 1..maxAllowedBatch) {
             val sessionContext: SessionContext? = SessionContext.from(call = call)
             val employeeService: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }
             val employmentService: EmploymentService = call.scope.get<EmploymentService> { parametersOf(sessionContext) }

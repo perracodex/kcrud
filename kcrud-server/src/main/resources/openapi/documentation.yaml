@@ -255,9 +255,6 @@ paths:
             '*/*':
               schema:
                 type: "string"
-              examples:
-                Example#1:
-                  value: "Invalid or missing role ID."
         "200":
           description: "OK"
           content:
@@ -347,12 +344,6 @@ paths:
           schema:
             type: "string"
       responses:
-        "400":
-          description: "Bad Request"
-          content:
-            '*/*':
-              schema:
-                type: "object"
         "404":
           description: "Not Found"
           content:
@@ -642,9 +633,6 @@ paths:
         "400":
           description: "Bad Request"
           content:
-            application/json:
-              schema:
-                type: "string"
             '*/*':
               schema:
                 type: "string"
@@ -654,12 +642,6 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/Employee"
-        "404":
-          description: "Not Found"
-          content:
-            application/json:
-              schema:
-                type: "string"
     put:
       description: "Update an employee by ID."
       parameters:
@@ -797,12 +779,12 @@ paths:
     get:
       description: "Find an employment by ID."
       parameters:
-        - name: "employee_id"
+        - name: "employment_id"
           in: "path"
           required: true
           schema:
             type: "string"
-        - name: "employment_id"
+        - name: "employee_id"
           in: "path"
           required: true
           schema:
@@ -811,9 +793,6 @@ paths:
         "400":
           description: "Bad Request"
           content:
-            application/json:
-              schema:
-                type: "string"
             '*/*':
               schema:
                 type: "string"
@@ -823,12 +802,6 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/Employment"
-        "404":
-          description: "Not Found"
-          content:
-            application/json:
-              schema:
-                type: "string"
     put:
       description: "Update an employment by ID."
       parameters:

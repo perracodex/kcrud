@@ -16,10 +16,7 @@ import kcrud.domain.contact.model.ContactRequest
 import kcrud.domain.employee.model.EmployeeRequest
 import kotlinx.coroutines.*
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonElement
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.*
 import org.koin.core.component.KoinComponent
 import kotlin.system.measureTimeMillis
 import kotlin.test.*
@@ -80,7 +77,7 @@ class BackPressureTest : KoinComponent {
 
                                 val writeResponseBody: String = writeResponse.bodyAsText()
                                 val writeJsonElement: JsonElement = Json.parseToJsonElement(writeResponseBody)
-                                val writeEmployeeId: String = writeJsonElement.jsonObject["id"]?.jsonPrimitive!!.content
+                                val writeEmployeeId: String = getJsonContent(element = writeJsonElement, key = "id")
                                 writtenEmployeeIds.add(writeEmployeeId)
 
                                 assertEquals(HttpStatusCode.Created, writeResponse.status)
@@ -155,7 +152,7 @@ class BackPressureTest : KoinComponent {
 
             val writeResponseBody: String = writeResponse.bodyAsText()
             val writeJsonElement: JsonElement = Json.parseToJsonElement(string = writeResponseBody)
-            val writeEmployeeId: String = writeJsonElement.jsonObject["id"]?.jsonPrimitive!!.content
+            val writeEmployeeId: String = getJsonContent(element = writeJsonElement, key = "id")
 
             val jobs: List<Deferred<Unit>> = List(size = totalCalls) {
                 async {
@@ -164,9 +161,9 @@ class BackPressureTest : KoinComponent {
                     }
                     assertEquals(expected = HttpStatusCode.OK, actual = readResponse.status)
 
-                    val readResponseBody = readResponse.bodyAsText()
-                    val readJsonElement = Json.parseToJsonElement(string = readResponseBody)
-                    val readEmployeeId = readJsonElement.jsonObject["id"]?.jsonPrimitive!!.content
+                    val readResponseBody: String = readResponse.bodyAsText()
+                    val readJsonElement: JsonElement = Json.parseToJsonElement(string = readResponseBody)
+                    val readEmployeeId: String = getJsonContent(element = readJsonElement, key = "id")
                     assertEquals(expected = writeEmployeeId, actual = readEmployeeId)
                 }
             }
@@ -243,7 +240,7 @@ class BackPressureTest : KoinComponent {
 
                         val writeResponseBody: String = writeResponse.bodyAsText()
                         val writeJsonElement: JsonElement = Json.parseToJsonElement(string = writeResponseBody)
-                        val writeEmployeeId: String = writeJsonElement.jsonObject["id"]?.jsonPrimitive!!.content
+                        val writeEmployeeId: String = getJsonContent(element = writeJsonElement, key = "id")
                         writtenEmployeeIds.add(writeEmployeeId)
 
                         assertEquals(expected = HttpStatusCode.Created, actual = writeResponse.status)
@@ -292,5 +289,12 @@ class BackPressureTest : KoinComponent {
                 phone = TestUtils.randomPhoneNumber()
             )
         )
+    }
+
+    @Suppress("SameParameterValue")
+    private fun getJsonContent(element: JsonElement, key: String): String {
+        val primitive: JsonPrimitive? = element.jsonObject[key]?.jsonPrimitive
+        assertNotNull(primitive)
+        return primitive.content
     }
 }
