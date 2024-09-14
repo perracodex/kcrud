@@ -11,22 +11,22 @@ import kotlin.uuid.Uuid
 /**
  * Concrete errors for the Employee domain.
  *
- * @property status The [HttpStatusCode] associated with this error.
- * @property code A unique code identifying the type of error.
+ * @property statusCode The [HttpStatusCode] associated with this error.
+ * @property errorCode A unique code identifying the type of error.
  * @property description A human-readable description of the error.
  * @property reason An optional human-readable reason for the exception, providing more context.
  * @property cause The underlying cause of the exception, if any.
  */
 internal sealed class EmployeeError(
-    status: HttpStatusCode,
-    code: String,
+    statusCode: HttpStatusCode,
+    errorCode: String,
     description: String,
     reason: String? = null,
     cause: Throwable? = null
 ) : AppException(
-    status = status,
+    statusCode = statusCode,
+    errorCode = errorCode,
     context = "EMPLOYEE",
-    code = code,
     description = description,
     reason = reason,
     cause = cause
@@ -41,12 +41,17 @@ internal sealed class EmployeeError(
         reason: String? = null,
         cause: Throwable? = null
     ) : EmployeeError(
-        status = HttpStatusCode.NotFound,
-        code = "EMPLOYEE_NOT_FOUND",
+        statusCode = STATUS_CODE,
+        errorCode = ERROR_CODE,
         description = "Employee not found. Employee Id: $employeeId",
         reason = reason,
         cause = cause
-    )
+    ) {
+        companion object {
+            val STATUS_CODE: HttpStatusCode = HttpStatusCode.NotFound
+            const val ERROR_CODE: String = "EMPLOYEE_NOT_FOUND"
+        }
+    }
 
     /**
      * Error for when an email has an invalid format.
@@ -60,12 +65,17 @@ internal sealed class EmployeeError(
         reason: String? = null,
         cause: Throwable? = null
     ) : EmployeeError(
-        status = HttpStatusCode.BadRequest,
-        code = "INVALID_EMAIL_FORMAT",
+        statusCode = STATUS_CODE,
+        errorCode = ERROR_CODE,
         description = "Invalid email format: '$email'. Employee Id: $employeeId",
         reason = reason,
         cause = cause
-    )
+    ) {
+        companion object {
+            val STATUS_CODE: HttpStatusCode = HttpStatusCode.BadRequest
+            const val ERROR_CODE: String = "INVALID_EMAIL_FORMAT"
+        }
+    }
 
     /**
      * Error for when a phone has an invalid format.
@@ -79,10 +89,15 @@ internal sealed class EmployeeError(
         reason: String? = null,
         cause: Throwable? = null
     ) : EmployeeError(
-        status = HttpStatusCode.BadRequest,
-        code = "INVALID_PHONE_FORMAT",
+        statusCode = STATUS_CODE,
+        errorCode = ERROR_CODE,
         description = "Invalid phone format: '$phone'. Employee Id: $employeeId",
         reason = reason,
         cause = cause
-    )
+    ) {
+        companion object {
+            val STATUS_CODE: HttpStatusCode = HttpStatusCode.BadRequest
+            const val ERROR_CODE: String = "INVALID_PHONE_FORMAT"
+        }
+    }
 }

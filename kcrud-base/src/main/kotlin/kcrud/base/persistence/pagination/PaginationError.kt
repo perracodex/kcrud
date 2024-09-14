@@ -10,22 +10,22 @@ import kcrud.base.errors.AppException
 /**
  * Pagination concrete errors.
  *
- * @property status The [HttpStatusCode] associated with this error.
- * @property code A unique code identifying the type of error.
+ * @property statusCode The [HttpStatusCode] associated with this error.
+ * @property errorCode A unique code identifying the type of error.
  * @property description A human-readable description of the error.
  * @property reason An optional human-readable reason for the exception, providing more context.
  * @property cause The underlying cause of the exception, if any.
  */
 internal sealed class PaginationError(
-    status: HttpStatusCode,
-    code: String,
+    statusCode: HttpStatusCode,
+    errorCode: String,
     description: String,
     reason: String? = null,
     cause: Throwable? = null
 ) : AppException(
-    status = status,
+    statusCode = statusCode,
+    errorCode = errorCode,
     context = "PAGINATION",
-    code = code,
     description = description,
     reason = reason,
     cause = cause
@@ -36,11 +36,16 @@ internal sealed class PaginationError(
      * @param sort The sort directive that was provided.
      */
     class AmbiguousSortField(sort: Pageable.Sort, reason: String) : PaginationError(
-        status = HttpStatusCode.BadRequest,
-        code = "AMBIGUOUS_SORT_FIELD",
+        statusCode = STATUS_CODE,
+        errorCode = ERROR_CODE,
         description = "Detected ambiguous field: ${sort.field}",
         reason = reason
-    )
+    ) {
+        companion object {
+            val STATUS_CODE: HttpStatusCode = HttpStatusCode.BadRequest
+            const val ERROR_CODE: String = "AMBIGUOUS_SORT_FIELD"
+        }
+    }
 
     /**
      * Error when the page attributes are invalid.
@@ -48,12 +53,17 @@ internal sealed class PaginationError(
      * Both must be present or none of them.
      */
     class InvalidPageablePair(reason: String? = null, cause: Throwable? = null) : PaginationError(
-        status = HttpStatusCode.BadRequest,
-        code = "INVALID_PAGEABLE_PAIR",
+        statusCode = STATUS_CODE,
+        errorCode = ERROR_CODE,
         description = "Page attributes mismatch. Expected both 'page' and 'size', or none of them.",
         reason = reason,
         cause = cause
-    )
+    ) {
+        companion object {
+            val STATUS_CODE: HttpStatusCode = HttpStatusCode.BadRequest
+            const val ERROR_CODE: String = "INVALID_PAGEABLE_PAIR"
+        }
+    }
 
     /**
      * Error when the provided sort direction is invalid.
@@ -61,12 +71,17 @@ internal sealed class PaginationError(
      * @param direction The sort direction that was provided is not valid.
      */
     class InvalidOrderDirection(direction: String, reason: String? = null, cause: Throwable? = null) : PaginationError(
-        status = HttpStatusCode.BadRequest,
-        code = "INVALID_ORDER_DIRECTION",
+        statusCode = STATUS_CODE,
+        errorCode = ERROR_CODE,
         description = "Ordering sort direction is invalid. Received: '$direction'",
         reason = reason,
         cause = cause
-    )
+    ) {
+        companion object {
+            val STATUS_CODE: HttpStatusCode = HttpStatusCode.BadRequest
+            const val ERROR_CODE: String = "INVALID_ORDER_DIRECTION"
+        }
+    }
 
     /**
      * Error when provided sorting field is invalid.
@@ -74,19 +89,29 @@ internal sealed class PaginationError(
      * @param sort The sort directive that was provided.
      */
     class InvalidSortDirective(sort: Pageable.Sort, reason: String) : PaginationError(
-        status = HttpStatusCode.BadRequest,
-        code = "INVALID_SORT_DIRECTIVE",
+        statusCode = STATUS_CODE,
+        errorCode = ERROR_CODE,
         description = "Unexpected sort directive: $sort",
         reason = reason
-    )
+    ) {
+        companion object {
+            val STATUS_CODE: HttpStatusCode = HttpStatusCode.BadRequest
+            const val ERROR_CODE: String = "INVALID_SORT_DIRECTIVE"
+        }
+    }
 
     /**
      * Error when the provided sort directive is missing.
      * So, that no field name was specified.
      */
     class MissingSortDirective : PaginationError(
-        status = HttpStatusCode.BadRequest,
-        code = "MISSING_SORT_DIRECTIVE",
+        statusCode = STATUS_CODE,
+        errorCode = ERROR_CODE,
         description = "Must specify a sort field name.",
-    )
+    ) {
+        companion object {
+            val STATUS_CODE: HttpStatusCode = HttpStatusCode.BadRequest
+            const val ERROR_CODE: String = "MISSING_SORT_DIRECTIVE"
+        }
+    }
 }

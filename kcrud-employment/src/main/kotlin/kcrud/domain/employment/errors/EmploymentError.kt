@@ -12,22 +12,22 @@ import kotlin.uuid.Uuid
 /**
  * Concrete errors for the Employment domain.
  *
- * @property status The [HttpStatusCode] associated with this error.
- * @property code A unique code identifying the type of error.
+ * @property statusCode The [HttpStatusCode] associated with this error.
+ * @property errorCode A unique code identifying the type of error.
  * @property description A human-readable description of the error.
  * @property reason An optional human-readable reason for the exception, providing more context.
  * @property cause The underlying cause of the exception, if any.
  */
 internal sealed class EmploymentError(
-    status: HttpStatusCode,
-    code: String,
+    statusCode: HttpStatusCode,
+    errorCode: String,
     description: String,
     reason: String? = null,
     cause: Throwable? = null
 ) : AppException(
-    status = status,
+    statusCode = statusCode,
+    errorCode = errorCode,
     context = "EMPLOYMENT",
-    code = code,
     description = description,
     reason = reason,
     cause = cause
@@ -44,12 +44,17 @@ internal sealed class EmploymentError(
         reason: String? = null,
         cause: Throwable? = null
     ) : EmploymentError(
-        status = HttpStatusCode.NotFound,
-        code = "EMPLOYMENT_NOT_FOUND",
+        statusCode = STATUS_CODE,
+        errorCode = ERROR_CODE,
         description = "Employment not found. Employee Id: $employeeId. Employment Id: $employmentId.",
         reason = reason,
         cause = cause
-    )
+    ) {
+        companion object {
+            val STATUS_CODE: HttpStatusCode = HttpStatusCode.NotFound
+            const val ERROR_CODE: String = "EMPLOYMENT_NOT_FOUND"
+        }
+    }
 
     /**
      * Error when there is an inconsistency in the period dates,
@@ -68,14 +73,19 @@ internal sealed class EmploymentError(
         reason: String? = null,
         cause: Throwable? = null
     ) : EmploymentError(
-        status = HttpStatusCode.BadRequest,
-        code = "PERIOD_DATES_MISMATCH",
+        statusCode = STATUS_CODE,
+        errorCode = ERROR_CODE,
         description = "Employment end date cannot be prior to the start date. " +
                 "Employee Id: $employeeId. Employment Id: $employmentId. " +
                 "Start Date: $startDate. End Date: $endDate.",
         reason = reason,
         cause = cause
-    )
+    ) {
+        companion object {
+            val STATUS_CODE: HttpStatusCode = HttpStatusCode.BadRequest
+            const val ERROR_CODE: String = "PERIOD_DATES_MISMATCH"
+        }
+    }
 
     /**
      * Error when the probation end date is prior to the employment start date.
@@ -93,12 +103,17 @@ internal sealed class EmploymentError(
         reason: String? = null,
         cause: Throwable? = null
     ) : EmploymentError(
-        status = HttpStatusCode.BadRequest,
-        code = "INVALID_PROBATION_END_DATE",
+        statusCode = STATUS_CODE,
+        errorCode = ERROR_CODE,
         description = "Employment probation end date cannot be prior to the start date. " +
                 "Employee Id: $employeeId. Employment Id: $employmentId. " +
                 "Start Date: $startDate. Probation End Date: $probationEndDate.",
         reason = reason,
         cause = cause
-    )
+    ) {
+        companion object {
+            val STATUS_CODE: HttpStatusCode = HttpStatusCode.BadRequest
+            const val ERROR_CODE: String = "INVALID_PROBATION_END_DATE"
+        }
+    }
 }

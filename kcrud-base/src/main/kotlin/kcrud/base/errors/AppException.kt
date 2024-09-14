@@ -10,17 +10,17 @@ import kotlinx.serialization.Serializable
 /**
  * The application exception class, directly incorporating HTTP status, error code, and description.
  *
- * @param status The HTTP status code associated with this error.
+ * @param statusCode The [HttpStatusCode] associated with this error.
+ * @param errorCode A unique code identifying the type of error.
  * @param context A context identifier for the error, typically the module or feature where it occurred.
- * @param code A unique code identifying the type of error.
  * @param description A human-readable description of the error.
  * @param reason An optional human-readable reason for the exception, providing more context.
  * @param cause The underlying cause of the exception, if any.
  */
 public abstract class AppException(
-    public val status: HttpStatusCode,
+    public val statusCode: HttpStatusCode,
+    public val errorCode: String,
     public val context: String,
-    public val code: String,
     public val description: String,
     private val reason: String? = null,
     cause: Throwable? = null
@@ -34,7 +34,7 @@ public abstract class AppException(
      */
     public fun messageDetail(): String {
         val formattedReason: String = reason?.let { "| $it" } ?: ""
-        return "Status: ${status.value} | $context | $code | $description $formattedReason"
+        return "Status: ${statusCode.value} | $errorCode | $context | $description $formattedReason"
     }
 
     /**
@@ -44,9 +44,9 @@ public abstract class AppException(
      */
     public fun toErrorResponse(): ErrorResponse {
         return ErrorResponse(
-            status = status.value,
+            status = statusCode.value,
             context = context,
-            code = code,
+            code = errorCode,
             description = description,
             reason = reason
         )
