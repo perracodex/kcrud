@@ -135,15 +135,6 @@ paths:
               examples:
                 Example#1:
                   value: "Invalid count. Must be between 1 and 100000."
-            application/json:
-              schema:
-                type: "string"
-        "404":
-          description: "Not Found"
-          content:
-            application/json:
-              schema:
-                type: "string"
         "200":
           description: "OK"
           content:
@@ -165,12 +156,6 @@ paths:
             items:
               type: "string"
       responses:
-        "400":
-          description: "Bad Request"
-          content:
-            application/json:
-              schema:
-                type: "string"
         "200":
           description: "OK"
           content:
@@ -319,7 +304,7 @@ paths:
                   value: "/rbac/login"
   /scheduler/audit:
     get:
-      description: "Returns the audit logs for the scheduler."
+      description: "Returns all existing audit logs for the scheduler."
       responses:
         "200":
           description: "OK"
@@ -586,12 +571,6 @@ paths:
             items:
               type: "string"
       responses:
-        "400":
-          description: "Bad Request"
-          content:
-            application/json:
-              schema:
-                type: "string"
         "200":
           description: "OK"
           content:
@@ -654,16 +633,7 @@ paths:
         "400":
           description: "Bad Request"
           content:
-            application/json:
-              schema:
-                type: "string"
             '*/*':
-              schema:
-                type: "string"
-        "404":
-          description: "Not Found"
-          content:
-            application/json:
               schema:
                 type: "string"
         "200":
@@ -730,16 +700,7 @@ paths:
         "400":
           description: "Bad Request"
           content:
-            application/json:
-              schema:
-                type: "string"
             '*/*':
-              schema:
-                type: "string"
-        "404":
-          description: "Not Found"
-          content:
-            application/json:
               schema:
                 type: "string"
         "201":
@@ -819,16 +780,7 @@ paths:
         "400":
           description: "Bad Request"
           content:
-            application/json:
-              schema:
-                type: "string"
             '*/*':
-              schema:
-                type: "string"
-        "404":
-          description: "Not Found"
-          content:
-            application/json:
               schema:
                 type: "string"
         "200":
