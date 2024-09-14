@@ -32,12 +32,13 @@ public object NetworkUtils {
      * @param endpoints A list of endpoint paths (without base URL) to be logged.
      */
     public fun logEndpoints(reason: String, endpoints: List<String>) {
-        val url: Url = getServerUrl()
         tracer.info("$reason:")
-        endpoints.map { endpoint ->
-            endpoint.trimAndPrependSlash()
-        }.forEach { endpoint ->
-            tracer.info("$url$endpoint")
+        val baseUrl: Url = getServerUrl()
+        endpoints.forEach { endpoint ->
+            val finalUrl: String = URLBuilder(url = baseUrl).apply {
+                appendPathSegments(endpoint.trim())
+            }.buildString()
+            tracer.info(finalUrl)
         }
     }
 
@@ -174,14 +175,5 @@ public object NetworkUtils {
         }
 
         return connectors
-    }
-
-    /**
-     * Extension function to trim the string and prepend a '/' if it does not already start with one.
-     */
-    private fun String.trimAndPrependSlash(): String {
-        return this.trim().let { trimmed ->
-            if (trimmed.startsWith('/')) trimmed else "/$trimmed"
-        }
     }
 }
