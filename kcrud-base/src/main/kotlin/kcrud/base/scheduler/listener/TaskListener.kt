@@ -10,7 +10,7 @@ import kcrud.base.env.MetricsRegistry
 import kcrud.base.env.Tracer
 import kcrud.base.scheduler.annotation.SchedulerAPI
 import kcrud.base.scheduler.audit.AuditService
-import kcrud.base.scheduler.model.AuditLogRequest
+import kcrud.base.scheduler.model.audit.AuditLogRequest
 import kcrud.base.scheduler.service.task.TaskOutcome
 import kcrud.base.utils.DateTimeUtils
 import kotlinx.coroutines.runBlocking
