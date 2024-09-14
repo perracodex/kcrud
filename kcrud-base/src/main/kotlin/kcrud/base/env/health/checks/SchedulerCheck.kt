@@ -18,11 +18,11 @@ import kotlinx.serialization.Serializable
  */
 @HealthCheckAPI
 @Serializable
-public data class SchedulerCheck internal constructor(
-    val errors: MutableList<String>,
-    val isStarted: Boolean,
-    val isPaused: Boolean,
-    val totalTasks: Int
+public class SchedulerCheck private constructor(
+    public val errors: MutableList<String>,
+    public val isStarted: Boolean,
+    public val isPaused: Boolean,
+    public val totalTasks: Int
 ) {
     init {
         if (!isStarted) {
