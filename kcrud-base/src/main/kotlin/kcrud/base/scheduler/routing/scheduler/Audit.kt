@@ -9,7 +9,7 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.base.scheduler.audit.AuditService
-import kcrud.base.scheduler.audit.model.AuditLog
+import kcrud.base.scheduler.model.AuditLog
 
 /**
  * Returns the scheduler audit routes.

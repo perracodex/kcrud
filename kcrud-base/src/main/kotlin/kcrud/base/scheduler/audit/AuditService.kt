@@ -6,8 +6,8 @@ package kcrud.base.scheduler.audit
 
 import kcrud.base.env.Tracer
 import kcrud.base.scheduler.annotation.SchedulerAPI
-import kcrud.base.scheduler.audit.model.AuditLog
-import kcrud.base.scheduler.audit.model.AuditLogRequest
+import kcrud.base.scheduler.model.AuditLog
+import kcrud.base.scheduler.model.AuditLogRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlin.uuid.Uuid
