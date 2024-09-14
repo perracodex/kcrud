@@ -6,7 +6,12 @@ package kcrud.base.scheduler.routing
 
 import io.ktor.server.http.content.*
 import io.ktor.server.routing.*
-import kcrud.base.scheduler.routing.scheduler.*
+import kcrud.base.scheduler.routing.scheduler.audit.schedulerAllAuditRoute
+import kcrud.base.scheduler.routing.scheduler.audit.schedulerAuditByTaskRoute
+import kcrud.base.scheduler.routing.scheduler.pauseSchedulerRoute
+import kcrud.base.scheduler.routing.scheduler.restartSchedulerRoute
+import kcrud.base.scheduler.routing.scheduler.resumeSchedulerRoute
+import kcrud.base.scheduler.routing.scheduler.schedulerStateRoute
 import kcrud.base.scheduler.routing.tasks.delete.deleteAllSchedulerTasksRoute
 import kcrud.base.scheduler.routing.tasks.delete.deleteSchedulerTaskRoute
 import kcrud.base.scheduler.routing.tasks.get.getSchedulerTaskGroupsRoute
@@ -30,7 +35,8 @@ public fun Route.schedulerRoutes() {
     pauseSchedulerRoute()
     resumeSchedulerRoute()
     restartSchedulerRoute()
-    schedulerAuditRoute()
+    schedulerAllAuditRoute()
+    schedulerAuditByTaskRoute()
 
     // Task related routes.
     getSchedulerTasksRoute()
