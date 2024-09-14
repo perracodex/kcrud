@@ -17,7 +17,7 @@ import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 
 @EmployeeRouteAPI
-internal fun Route.createEmployee() {
+internal fun Route.createEmployeeRoute() {
     // Create a new employee.
     post<EmployeeRequest> { request ->
         val sessionContext: SessionContext? = SessionContext.from(call = call)

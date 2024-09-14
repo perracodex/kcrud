@@ -20,7 +20,7 @@ import org.koin.ktor.plugin.scope
 import kotlin.uuid.Uuid
 
 @EmploymentRouteAPI
-internal fun Route.updateEmploymentById() {
+internal fun Route.updateEmploymentByIdRoute() {
     // Update an employment by ID.
     put<EmploymentRequest> { request ->
         val employeeId: Uuid = call.parameters.getOrFail(name = "employee_id").toUuid()

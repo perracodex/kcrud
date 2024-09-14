@@ -20,7 +20,7 @@ import org.koin.ktor.plugin.scope
 import kotlin.uuid.Uuid
 
 @EmploymentRouteAPI
-internal fun Route.createEmployment() {
+internal fun Route.createEmploymentRoute() {
     // Create a new employment.
     post<EmploymentRequest> { request ->
         val employeeId: Uuid = call.parameters.getOrFail(name = "employee_id").toUuid()

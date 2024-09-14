@@ -9,12 +9,12 @@ import kcrud.access.rbac.plugin.withRbac
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kcrud.domain.employment.routing.annotation.EmploymentRouteAPI
-import kcrud.domain.employment.routing.endpoints.delete.deleteEmploymentByEmployeeId
-import kcrud.domain.employment.routing.endpoints.delete.deleteEmploymentById
-import kcrud.domain.employment.routing.endpoints.get.findEmploymentByEmployeeId
-import kcrud.domain.employment.routing.endpoints.get.findEmploymentById
-import kcrud.domain.employment.routing.endpoints.operate.createEmployment
-import kcrud.domain.employment.routing.endpoints.operate.updateEmploymentById
+import kcrud.domain.employment.routing.endpoints.delete.deleteEmploymentByEmployeeIdRoute
+import kcrud.domain.employment.routing.endpoints.delete.deleteEmploymentByIdRoute
+import kcrud.domain.employment.routing.endpoints.get.findEmploymentByEmployeeIdRoute
+import kcrud.domain.employment.routing.endpoints.get.findEmploymentByIdRoute
+import kcrud.domain.employment.routing.endpoints.operate.createEmploymentRoute
+import kcrud.domain.employment.routing.endpoints.operate.updateEmploymentByIdRoute
 
 /**
  * Employment endpoints.
@@ -30,22 +30,22 @@ public fun Route.employmentRoute() {
 
     route("v1/employees/{employee_id}/employments") {
         withRbac(scope = RbacScope.EMPLOYMENT_RECORDS, accessLevel = RbacAccessLevel.VIEW) {
-            findEmploymentByEmployeeId()
+            findEmploymentByEmployeeIdRoute()
         }
 
         withRbac(scope = RbacScope.EMPLOYMENT_RECORDS, accessLevel = RbacAccessLevel.FULL) {
-            createEmployment()
-            deleteEmploymentByEmployeeId()
+            createEmploymentRoute()
+            deleteEmploymentByEmployeeIdRoute()
         }
 
         route("{employment_id}") {
             withRbac(scope = RbacScope.EMPLOYMENT_RECORDS, accessLevel = RbacAccessLevel.VIEW) {
-                findEmploymentById()
+                findEmploymentByIdRoute()
             }
 
             withRbac(scope = RbacScope.EMPLOYMENT_RECORDS, accessLevel = RbacAccessLevel.FULL) {
-                updateEmploymentById()
-                deleteEmploymentById()
+                updateEmploymentByIdRoute()
+                deleteEmploymentByIdRoute()
             }
         }
     }

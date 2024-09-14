@@ -18,7 +18,7 @@ import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 
 @EmployeeRouteAPI
-internal fun Route.findAllEmployees() {
+internal fun Route.findAllEmployeesRoute() {
     // Find all employees.
     get {
         val sessionContext: SessionContext? = SessionContext.from(call = call)

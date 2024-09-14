@@ -19,7 +19,7 @@ import org.koin.ktor.plugin.scope
 import kotlin.uuid.Uuid
 
 @EmployeeRouteAPI
-internal fun Route.findEmployeeById() {
+internal fun Route.findEmployeeByIdRoute() {
     // Find an employee by ID.
     get {
         val employeeId: Uuid = call.parameters.getOrFail(name = "employee_id").toUuid()

@@ -18,7 +18,7 @@ import org.koin.ktor.plugin.scope
 import kotlin.uuid.Uuid
 
 @EmployeeRouteAPI
-internal fun Route.deleteEmployeeById() {
+internal fun Route.deleteEmployeeByIdRoute() {
     // Delete an employee by ID.
     delete {
         val employeeId: Uuid = call.parameters.getOrFail(name = "employee_id").toUuid()
