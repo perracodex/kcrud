@@ -13,10 +13,7 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
-import kotlin.reflect.KClass
-import kotlin.reflect.KFunction
-import kotlin.reflect.KParameter
-import kotlin.reflect.KProperty1
+import kotlin.reflect.*
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.jvm.jvmErasure
@@ -124,7 +121,8 @@ internal object ConfigurationParser {
         tracer.debug("Parsing '${kClass.simpleName}' from '$keyPath'")
 
         // Fetch the primary constructor of the class.
-        val constructor: KFunction<T> = kClass.primaryConstructor!!
+        val constructor: KFunction<T> = kClass.primaryConstructor
+            ?: throw IllegalArgumentException("No primary constructor found for ${kClass.simpleName}")
 
         // Map each constructor parameter to its corresponding value from the configuration.
         // This includes direct value assignment for simple types and recursive instantiation
@@ -144,7 +142,7 @@ internal object ConfigurationParser {
                 // Find the target property attribute corresponding to the parameter in the class.
                 val property: KProperty1<T, *> = kClass.memberProperties.find { property ->
                     property.name == parameter.name
-                }!!
+                } ?: throw IllegalArgumentException("Property '${parameter.name}' not found in '${kClass.simpleName}'.")
 
                 // Convert and return the configuration value for the parameter.
                 return@associateWith convertToType(
@@ -193,7 +191,21 @@ internal object ConfigurationParser {
 
         // Handle lists.
         if (type == List::class) {
-            val listType: KClass<*> = (property.returnType.arguments.first().type!!.classifier as? KClass<*>)!!
+            // Extract the KType of the list's elements by accessing its single type argument.
+            // Example: For a property of type List<String>, extract the KType of the elements (String).
+            val elementType: KType = property.returnType.arguments.singleOrNull()?.type
+                ?: throw IllegalArgumentException(
+                    "Cannot determine the list elements type for property '${property.name}' in '${property.returnType}'."
+                )
+
+            // Retrieve the KClass of the list element type.
+            // Example: If elementType is String::class, listElementClass will be String::class.
+            val listType: KClass<*> = (elementType.classifier as? KClass<*>)
+                ?: throw IllegalArgumentException(
+                    "Cannot determine list elements type class for property '${property.name}' in '${property.returnType}'."
+                )
+
+            // Parse the list values using the extracted list element class
             return parseListValues(config = config, keyPath = keyPath, listType = listType)
         }
 
