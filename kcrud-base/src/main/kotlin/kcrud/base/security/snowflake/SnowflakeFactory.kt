@@ -24,15 +24,6 @@ import kotlin.time.Duration.Companion.nanoseconds
 public object SnowflakeFactory {
     private val tracer = Tracer<SnowflakeFactory>()
 
-    private const val NO_MACHINE_ID: Int = Int.MIN_VALUE
-
-    /**
-     * The machine ID used to generate the Snowflake ID.
-     * Must be set before generating IDs.
-     * This value must be unique for each machine in a distributed system.
-     */
-    private var machineId: Int? = null
-
     /**
      * The base used for converting the generated ID to a compact alphanumeric string.
      * For example, 12345 in Base 36 might be represented as '9ix' in alphanumeric.
@@ -40,6 +31,42 @@ public object SnowflakeFactory {
      * of Kotlin's toString(radix) function used for this conversion.
      */
     private const val ALPHA_NUMERIC_BASE: Int = 36
+
+    /**
+     * The default ID used when the machine ID is not set.
+     */
+    private const val NO_MACHINE_ID: Int = Int.MIN_VALUE
+
+    /**
+     * Number of bits allocated for the machine ID within the 64-bit Snowflake ID.
+     * Minimum 1 bit for at least 2 unique IDs. 10 bits allows 2^10 = 1,024 IDs.
+     */
+    private const val MACHINE_ID_BITS: Int = 10
+
+    /**
+     * Maximum possible value for machine ID, derived from the number of bits allocated.
+     * This value is 2^MACHINE_ID_BITS - 1.
+     */
+    private const val MAX_MACHINE_ID: Long = (1 shl MACHINE_ID_BITS) - 1L
+
+    /**
+     * Number of bits for the sequence number, part of the 64-bit limit.
+     * Minimum 1 bit for 2 IDs per millisecond. 12 bits allows 2^12 = 4,096 IDs per millisecond.
+     */
+    private const val SEQUENCE_BITS: Int = 12
+
+    /**
+     * Maximum possible value for the sequence number, based on the allocated bits.
+     * Equals 2^SEQUENCE_BITS - 1, ensuring a unique ID sequence within a millisecond.
+     */
+    private const val MAX_SEQUENCE: Long = (1 shl SEQUENCE_BITS) - 1L
+
+    /**
+     * The machine ID used to generate the Snowflake ID.
+     * Must be set before generating IDs.
+     * This value must be unique for each machine in a distributed system.
+     */
+    private var machineId: Int? = null
 
     /**
      * Tracks the last timestamp when an ID was generated, (ms).
@@ -53,30 +80,6 @@ public object SnowflakeFactory {
      * will typically be 0 if IDs are not generated at a frequency higher than one per millisecond.
      */
     private var sequence: Long = 0L
-
-    /**
-     * Number of bits allocated for the machine ID within the 64-bit Snowflake ID.
-     * Minimum 1 bit for at least 2 unique IDs. 10 bits allows 2^10 = 1,024 IDs.
-     */
-    private const val MACHINE_ID_BITS: Int = 10
-
-    /**
-     * Number of bits for the sequence number, part of the 64-bit limit.
-     * Minimum 1 bit for 2 IDs per millisecond. 12 bits allows 2^12 = 4,096 IDs per millisecond.
-     */
-    private const val SEQUENCE_BITS: Int = 12
-
-    /**
-     * Maximum possible value for machine ID, derived from the number of bits allocated.
-     * This value is 2^MACHINE_ID_BITS - 1.
-     */
-    private const val MAX_MACHINE_ID: Long = (1 shl MACHINE_ID_BITS) - 1L
-
-    /**
-     * Maximum possible value for the sequence number, based on the allocated bits.
-     * Equals 2^SEQUENCE_BITS - 1, ensuring a unique ID sequence within a millisecond.
-     */
-    private const val MAX_SEQUENCE: Long = (1 shl SEQUENCE_BITS) - 1L
 
     /**
      * Wall-clock reference time set at SnowflakeFactory initialization.
