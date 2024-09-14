@@ -34,8 +34,8 @@ public object NetworkUtils {
     public fun logEndpoints(reason: String, endpoints: List<String>) {
         val url: Url = getServerUrl()
         tracer.info("$reason:")
-        endpoints.map {
-            it.trimAndPrependSlash()
+        endpoints.map { endpoint ->
+            endpoint.trimAndPrependSlash()
         }.forEach { endpoint ->
             tracer.info("$url$endpoint")
         }
