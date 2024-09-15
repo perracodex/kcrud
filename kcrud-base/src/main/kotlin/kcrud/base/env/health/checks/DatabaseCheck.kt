@@ -173,15 +173,15 @@ public data class DatabaseCheck(
             fun build(datasource: HikariDataSource?): Datasource? {
                 return datasource?.let {
                     Datasource(
-                        isPoolRunning = it.isRunning,
-                        totalConnections = it.hikariPoolMXBean?.totalConnections ?: 0,
-                        activeConnections = it.hikariPoolMXBean?.activeConnections ?: 0,
-                        idleConnections = it.hikariPoolMXBean?.idleConnections ?: 0,
-                        threadsAwaitingConnection = it.hikariPoolMXBean?.threadsAwaitingConnection ?: 0,
-                        connectionTimeout = it.connectionTimeout,
-                        maxLifetime = it.maxLifetime,
-                        keepaliveTime = it.keepaliveTime,
-                        maxPoolSize = it.maximumPoolSize
+                        isPoolRunning = datasource.isRunning,
+                        totalConnections = datasource.hikariPoolMXBean?.totalConnections ?: 0,
+                        activeConnections = datasource.hikariPoolMXBean?.activeConnections ?: 0,
+                        idleConnections = datasource.hikariPoolMXBean?.idleConnections ?: 0,
+                        threadsAwaitingConnection = datasource.hikariPoolMXBean?.threadsAwaitingConnection ?: 0,
+                        connectionTimeout = datasource.connectionTimeout,
+                        maxLifetime = datasource.maxLifetime,
+                        keepaliveTime = datasource.keepaliveTime,
+                        maxPoolSize = datasource.maximumPoolSize
                     )
                 }
             }

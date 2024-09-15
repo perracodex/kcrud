@@ -80,16 +80,14 @@ public class TaskDispatch(
             .withMisfireHandlingInstructionFireNow()
 
         // Apply repeat interval at which the task should repeat.
-        interval.let {
-            val intervalInSeconds: UInt = it.toTotalSeconds()
-            if (intervalInSeconds > 0u) {
-                scheduleBuilder.withIntervalInSeconds(intervalInSeconds.toInt())
-                scheduleBuilder.repeatForever()
-            }
-
-            // When misfired reschedule to the next possible time. Only if the interval is set.
-            scheduleBuilder.withMisfireHandlingInstructionNextWithExistingCount()
+        val intervalInSeconds: UInt = interval.toTotalSeconds()
+        if (intervalInSeconds > 0u) {
+            scheduleBuilder.withIntervalInSeconds(intervalInSeconds.toInt())
+            scheduleBuilder.repeatForever()
         }
+
+        // When misfired reschedule to the next possible time. Only if the interval is set.
+        scheduleBuilder.withMisfireHandlingInstructionNextWithExistingCount()
 
         // Send the task to the scheduler.
         val trigger: SimpleTrigger = job.triggerBuilder.withSchedule(scheduleBuilder).build()

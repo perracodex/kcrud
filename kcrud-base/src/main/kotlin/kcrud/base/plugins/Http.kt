@@ -21,8 +21,8 @@ public fun Application.configureHttp() {
     // specify the required conditions for compressing data, such as a content type
     // or response size, or even compress data based on specific request parameters.
     install(plugin = Compression) {
-        condition {
-            it !is OutgoingContent.WriteChannelContent
+        condition { content ->
+            content !is OutgoingContent.WriteChannelContent
         }
     }
 

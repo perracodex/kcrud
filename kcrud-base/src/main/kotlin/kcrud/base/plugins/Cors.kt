@@ -66,8 +66,8 @@ public fun Application.configureCors() {
             anyHost()
             tracer.withSeverity("Allowing all hosts.")
         } else {
-            allowedHosts.forEach { entry ->
-                val config: CorsSettings.HostConfig = CorsSettings.parse(spec = entry)
+            allowedHosts.forEach { spec ->
+                val config: CorsSettings.HostConfig = CorsSettings.parse(spec = spec)
                 allowHost(
                     host = config.host,
                     schemes = config.schemes,
