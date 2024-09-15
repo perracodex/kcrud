@@ -29,18 +29,22 @@ public fun Application.configureDatabase() {
     install(plugin = DbPlugin) {
         micrometerRegistry = MetricsRegistry.registry
 
-        // Default admin tables.
-        tables.add(RbacFieldRuleTable)
-        tables.add(RbacScopeRuleTable)
-        tables.add(RbacRoleTable)
-        tables.add(ActorTable)
+        tables.addAll(
+            listOf(
+                // System tables.
+                RbacFieldRuleTable,
+                RbacScopeRuleTable,
+                RbacRoleTable,
+                ActorTable,
 
-        // Domain tables.
-        tables.add(ContactTable)
-        tables.add(EmployeeTable)
-        tables.add(EmploymentTable)
+                // Domain tables
+                ContactTable,
+                EmployeeTable,
+                EmploymentTable,
 
-        // Scheduler tables.
-        tables.add(SchedulerAuditTable)
+                // Scheduler tables.
+                SchedulerAuditTable
+            )
+        )
     }
 }
