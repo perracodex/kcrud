@@ -6,11 +6,12 @@ package kcrud.base.scheduler.model.audit
 
 import kcrud.base.database.schema.scheduler.SchedulerAuditTable
 import kcrud.base.persistence.model.Meta
-import kcrud.base.persistence.serializers.SUuid
 import kcrud.base.scheduler.service.task.TaskOutcome
 import kcrud.base.utils.KLocalDateTime
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
+import kotlin.uuid.Uuid
 
 /**
  * Represents a concrete scheduler audit log.
@@ -27,7 +28,7 @@ import org.jetbrains.exposed.sql.ResultRow
  */
 @Serializable
 public data class AuditLog(
-    val id: SUuid,
+    @Contextual val id: Uuid,
     val taskName: String,
     val taskGroup: String,
     val fireTime: KLocalDateTime,

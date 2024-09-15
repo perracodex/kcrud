@@ -17,6 +17,7 @@ dependencies {
 
     implementation(libs.kotlinx.atomicfu)
     implementation(libs.kotlinx.datetime)
+    implementation(libs.kotlinx.serialization)
 
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.server.auth)

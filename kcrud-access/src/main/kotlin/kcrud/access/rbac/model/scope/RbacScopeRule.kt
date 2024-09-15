@@ -10,9 +10,10 @@ import kcrud.base.database.schema.admin.rbac.RbacScopeRuleTable
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kcrud.base.persistence.model.Meta
-import kcrud.base.persistence.serializers.SUuid
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
+import kotlin.uuid.Uuid
 
 /**
  * Represents a concrete RBAC scope rule for a concrete [RbacRole].
@@ -30,8 +31,8 @@ import org.jetbrains.exposed.sql.ResultRow
  */
 @Serializable
 public data class RbacScopeRule(
-    val id: SUuid,
-    val roleId: SUuid,
+    @Contextual val id: Uuid,
+    @Contextual val roleId: Uuid,
     val scope: RbacScope,
     val accessLevel: RbacAccessLevel,
     val fieldRules: List<RbacFieldRule>?,

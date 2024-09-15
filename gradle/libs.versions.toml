@@ -14,6 +14,7 @@ koin = "3.5.6"                          # https://github.com/InsertKoinIO/koin/r
 kotlin = "2.0.20"                       # https://github.com/JetBrains/kotlin/releases
 kotlinx-atomicfu = "0.25.0"             # https://github.com/Kotlin/kotlinx-atomicfu/releases
 kotlinx-datetime = "0.6.1"              # https://github.com/Kotlin/kotlinx-datetime/releases
+kotlinx-serialization = "1.7.2"         # https://github.com/Kotlin/kotlinx.serialization/releases/tag/v1.7.2
 ktor = "2.3.12"                         # https://ktor.io/docs/releases.html#release-details
 logback = "1.5.8"                       # https://github.com/qos-ch/logback/tags
 micrometer-prometheus = "1.13.4"        # https://github.com/micrometer-metrics/micrometer/releases
@@ -99,6 +100,16 @@ kotlinx-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "k
 # https://github.com/Kotlin/kotlinx-datetime/releases
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 
+# Serialization (part of the pLugin).
+# https://github.com/Kotlin/kotlinx.serialization
+# https://github.com/Kotlin/kotlinx.serialization/releases/tag/v1.7.2
+kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+
+# Serialization (Ktor).
+# https://github.com/Kotlin/kotlinx.serialization
+# https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+
 # Ktor.
 # https://api.ktor.io
 # https://github.com/ktorio/ktor
@@ -128,10 +139,6 @@ ktor-server-sessions = { module = "io.ktor:ktor-server-sessions", version.ref = 
 ktor-server-tests = { module = "io.ktor:ktor-server-tests", version.ref = "ktor" }
 ktor-server-thymeleaf = { module = "io.ktor:ktor-server-thymeleaf", version.ref = "ktor" }
 
-# Serialization.
-# https://github.com/Kotlin/kotlinx.serialization
-# https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md
-ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 
 # Logging.
 # https://github.com/qos-ch/logback
