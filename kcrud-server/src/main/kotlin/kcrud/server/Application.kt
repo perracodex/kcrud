@@ -69,7 +69,7 @@ internal fun Application.kcrudModule() {
 
     configureSessions()
 
-    configuredApiSchema()
+    configureApiSchema()
 
     configureRoutes()
 

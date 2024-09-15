@@ -23,7 +23,7 @@ import kcrud.base.settings.AppSettings
  *
  * See [Redoc](https://swagger.io/blog/api-development/redoc-openapi-powered-documentation/)
  */
-public fun Application.configuredApiSchema() {
+public fun Application.configureApiSchema() {
 
     if (!AppSettings.apiSchema.environments.contains(AppSettings.runtime.environment)) {
         return
