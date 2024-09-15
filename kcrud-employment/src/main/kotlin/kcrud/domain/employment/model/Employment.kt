@@ -9,12 +9,11 @@ import kcrud.base.database.schema.employment.types.EmploymentStatus
 import kcrud.base.database.schema.employment.types.WorkModality
 import kcrud.base.persistence.model.Meta
 import kcrud.base.persistence.model.Period
+import kcrud.base.plugins.Uuid
 import kcrud.base.utils.KLocalDate
 import kcrud.domain.employee.model.Employee
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
-import kotlin.uuid.Uuid
 
 /**
  * Represents a concrete employment.
@@ -29,7 +28,7 @@ import kotlin.uuid.Uuid
  */
 @Serializable
 public data class Employment(
-    @Contextual val id: Uuid,
+    val id: Uuid,
     val period: Period,
     val status: EmploymentStatus,
     val probationEndDate: KLocalDate?,

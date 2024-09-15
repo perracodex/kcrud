@@ -10,10 +10,9 @@ import kcrud.base.database.schema.admin.rbac.RbacFieldRuleTable
 import kcrud.base.database.schema.admin.rbac.RbacRoleTable
 import kcrud.base.database.schema.admin.rbac.RbacScopeRuleTable
 import kcrud.base.persistence.model.Meta
-import kotlinx.serialization.Contextual
+import kcrud.base.plugins.Uuid
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
-import kotlin.uuid.Uuid
 
 /**
  * Represents a single RBAC Role.
@@ -27,7 +26,7 @@ import kotlin.uuid.Uuid
  */
 @Serializable
 public data class RbacRole(
-    @Contextual val id: Uuid,
+    val id: Uuid,
     val roleName: String,
     val description: String?,
     val isSuper: Boolean,

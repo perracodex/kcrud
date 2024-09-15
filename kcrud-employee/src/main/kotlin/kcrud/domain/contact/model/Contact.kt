@@ -6,10 +6,9 @@ package kcrud.domain.contact.model
 
 import kcrud.base.database.schema.contact.ContactTable
 import kcrud.base.persistence.model.Meta
-import kotlinx.serialization.Contextual
+import kcrud.base.plugins.Uuid
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
-import kotlin.uuid.Uuid
 
 /**
  * Represents a concrete contact detail for an employee.
@@ -21,7 +20,7 @@ import kotlin.uuid.Uuid
  */
 @Serializable
 public data class Contact(
-    @Contextual val id: Uuid,
+    val id: Uuid,
     val email: String,
     val phone: String,
     val meta: Meta

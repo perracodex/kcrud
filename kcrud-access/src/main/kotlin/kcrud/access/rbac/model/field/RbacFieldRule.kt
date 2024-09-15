@@ -8,10 +8,9 @@ import kcrud.base.database.schema.admin.rbac.RbacFieldRuleTable
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import kcrud.base.persistence.model.Meta
-import kotlinx.serialization.Contextual
+import kcrud.base.plugins.Uuid
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
-import kotlin.uuid.Uuid
 
 /**
  * Represents a single RBAC field level rule.
@@ -24,8 +23,8 @@ import kotlin.uuid.Uuid
  */
 @Serializable
 public data class RbacFieldRule(
-    @Contextual val id: Uuid,
-    @Contextual val scopeRuleId: Uuid,
+    val id: Uuid,
+    val scopeRuleId: Uuid,
     val fieldName: String,
     val accessLevel: RbacAccessLevel,
     val meta: Meta

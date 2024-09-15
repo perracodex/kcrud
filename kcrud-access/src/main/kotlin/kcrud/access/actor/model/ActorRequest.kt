@@ -4,9 +4,8 @@
 
 package kcrud.access.actor.model
 
-import kotlinx.serialization.Contextual
+import kcrud.base.plugins.Uuid
 import kotlinx.serialization.Serializable
-import kotlin.uuid.Uuid
 
 /**
  * Request to create/update an Actor. An Actor is a user with a specific role and designated access to scopes.
@@ -31,7 +30,7 @@ import kotlin.uuid.Uuid
  */
 @Serializable
 public data class ActorRequest(
-    @Contextual val roleId: Uuid,
+    val roleId: Uuid,
     val username: String,
     val password: String,
     val isLocked: Boolean

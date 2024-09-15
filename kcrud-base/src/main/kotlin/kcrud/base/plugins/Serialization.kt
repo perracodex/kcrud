@@ -7,6 +7,7 @@ package kcrud.base.plugins
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.*
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
@@ -44,3 +45,8 @@ public fun Application.configureSerialization() {
         )
     }
 }
+
+/**
+ * Type alias for [Uuid] to be used in serialization.
+ */
+public typealias Uuid = @Contextual Uuid
