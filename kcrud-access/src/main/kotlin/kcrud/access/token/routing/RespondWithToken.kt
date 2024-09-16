@@ -26,13 +26,13 @@ import kcrud.base.env.Tracer
  */
 @TokenAPI
 internal suspend fun ApplicationCall.respondWithToken() {
-    runCatching {
+    val result: Result<String> = runCatching {
         this.principal<SessionContext>()?.let { sessionContext ->
             return@runCatching AuthenticationTokenService.generate(sessionContext = sessionContext)
         } ?: throw IllegalArgumentException("Invalid actor. ${CredentialService.HINT}")
-    }.onSuccess { newJwtToken ->
-        this.respond(status = HttpStatusCode.OK, message = newJwtToken)
-    }.onFailure { e ->
+    }
+
+    result.onFailure { e ->
         Tracer(ref = ApplicationCall::respondWithToken)
             .error(message = "Failed to generate token.", cause = e)
 
@@ -51,5 +51,9 @@ internal suspend fun ApplicationCall.respondWithToken() {
                 )
             }
         }
+    }.getOrThrow()
+
+    if (result.isSuccess) {
+        this.respond(status = HttpStatusCode.OK, message = result.getOrNull()!!)
     }
 }
