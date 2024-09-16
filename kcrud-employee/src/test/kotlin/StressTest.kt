@@ -96,7 +96,7 @@ class StressTest : KoinComponent {
         // Verify all employees after all insertions are complete.
         val employees: Page<Employee> = employeeService.findAll()
         assertEquals(expected = totalElements, actual = employees.content.size)
-        assertEquals(expected = totalElements, actual = employees.totalElements)
+        assertEquals(expected = totalElements, actual = employees.details.totalElements)
 
         employeeService.deleteAll()
     }
@@ -148,7 +148,7 @@ class StressTest : KoinComponent {
         // Verify all employees.
         val employees: Page<Employee> = employeeService.findAll()
         assertEquals(expected = totalElements, actual = employees.content.size)
-        assertEquals(expected = totalElements, actual = employees.totalElements)
+        assertEquals(expected = totalElements, actual = employees.details.totalElements)
     }
 }
 
