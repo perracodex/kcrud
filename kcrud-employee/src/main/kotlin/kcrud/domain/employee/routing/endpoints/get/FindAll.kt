@@ -20,7 +20,7 @@ import org.koin.ktor.plugin.scope
 @EmployeeRouteAPI
 internal fun Route.findAllEmployeesRoute() {
     // Find all employees.
-    get {
+    get("v1/employees") {
         val sessionContext: SessionContext? = SessionContext.from(call = call)
         val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }
         val employees: Page<Employee> = service.findAll(pageable = call.getPageable())

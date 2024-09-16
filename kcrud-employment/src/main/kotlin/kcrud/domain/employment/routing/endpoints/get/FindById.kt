@@ -21,7 +21,7 @@ import kotlin.uuid.Uuid
 @EmploymentRouteAPI
 internal fun Route.findEmploymentByIdRoute() {
     // Find an employment by ID.
-    get {
+    get("v1/employees/{employee_id}/employments/{employment_id}") {
         val employmentId: Uuid = call.parameters.getOrFail(name = "employment_id").toUuid()
         val employeeId: Uuid = call.parameters.getOrFail(name = "employee_id").toUuid()
 

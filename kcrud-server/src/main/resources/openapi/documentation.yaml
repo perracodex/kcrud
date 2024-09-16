@@ -35,12 +35,6 @@ paths:
               examples:
                 Example#1:
                   value: "Invalid session context. Use either admin/admin or guest/guest."
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/Function1_? super String"
         "500":
           description: "Internal Server Error"
           content:
@@ -50,6 +44,12 @@ paths:
               examples:
                 Example#1:
                   value: "Failed to generate token."
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
   /auth/token/refresh:
     post:
       description: "Endpoint for token refresh. <br> No Basic Authentication is required\
@@ -62,7 +62,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/Function1_? super String"
+                type: "string"
         "400":
           description: "Bad Request"
           content:
@@ -560,8 +560,18 @@ paths:
               schema:
                 $ref: "#/components/schemas/SnowflakeData"
   /v1/employees:
-    post:
-      description: "Search (Filter) employees."
+    delete:
+      description: "Delete all employees."
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "integer"
+                format: "int32"
+    get:
+      description: "Find all employees."
       parameters:
         - name: "sort"
           in: "query"
@@ -577,6 +587,27 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/Page_? extends Employee"
+    post:
+      description: "Create a new employee."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmployeeRequest"
+        required: true
+      responses:
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Employee"
   /v1/employees/{employee_id}:
     delete:
       description: "Delete an employee by ID."
@@ -629,6 +660,12 @@ paths:
           required: true
           schema:
             type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmployeeRequest"
+        required: true
       responses:
         "400":
           description: "Bad Request"
@@ -696,6 +733,12 @@ paths:
           required: true
           schema:
             type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmploymentRequest"
+        required: true
       responses:
         "400":
           description: "Bad Request"
@@ -776,6 +819,12 @@ paths:
           required: true
           schema:
             type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmploymentRequest"
+        required: true
       responses:
         "400":
           description: "Bad Request"
@@ -789,13 +838,35 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/Employment"
+  /v1/employees/search:
+    post:
+      description: "Search (Filter) employees."
+      parameters:
+        - name: "sort"
+          in: "query"
+          required: false
+          schema:
+            type: "array"
+            items:
+              type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmployeeFilterSet"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Page_? extends Employee"
 components:
   schemas:
     Function1:
       type: "object"
       properties: { }
-    Function1_? super String:
-      type: "object"
     Function1_? super HTML:
       type: "object"
     Sort:
@@ -813,7 +884,7 @@ components:
       required:
         - "field"
         - "direction"
-    Page:
+    Details:
       type: "object"
       properties:
         totalPages:
@@ -841,38 +912,21 @@ components:
           type: "array"
           items:
             $ref: "#/components/schemas/Sort"
+    Page:
+      type: "object"
+      properties:
+        details:
+          $ref: "#/components/schemas/Details"
         content:
           type: "array"
       required:
+        - "details"
         - "content"
     Page_? extends Employment:
       type: "object"
       properties:
-        totalPages:
-          type: "integer"
-          format: "int32"
-        pageIndex:
-          type: "integer"
-          format: "int32"
-        totalElements:
-          type: "integer"
-          format: "int32"
-        elementsPerPage:
-          type: "integer"
-          format: "int32"
-        elementsInPage:
-          type: "integer"
-          format: "int32"
-        hasNext:
-          type: "boolean"
-        hasPrevious:
-          type: "boolean"
-        overflow:
-          type: "boolean"
-        sort:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/Sort"
+        details:
+          $ref: "#/components/schemas/Details"
         content:
           type: "array"
           items:
@@ -1353,31 +1407,8 @@ components:
     Page_? extends Employee:
       type: "object"
       properties:
-        totalPages:
-          type: "integer"
-          format: "int32"
-        pageIndex:
-          type: "integer"
-          format: "int32"
-        totalElements:
-          type: "integer"
-          format: "int32"
-        elementsPerPage:
-          type: "integer"
-          format: "int32"
-        elementsInPage:
-          type: "integer"
-          format: "int32"
-        hasNext:
-          type: "boolean"
-        hasPrevious:
-          type: "boolean"
-        overflow:
-          type: "boolean"
-        sort:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/Sort"
+        details:
+          $ref: "#/components/schemas/Details"
         content:
           type: "array"
           items:
@@ -1385,6 +1416,49 @@ components:
     LocalDate:
       type: "object"
       properties: { }
+    ContactRequest:
+      type: "object"
+      properties:
+        email:
+          type: "string"
+        phone:
+          type: "string"
+      required:
+        - "email"
+        - "phone"
+    EmployeeRequest:
+      type: "object"
+      properties:
+        firstName:
+          type: "string"
+        lastName:
+          type: "string"
+        dob:
+          $ref: "#/components/schemas/LocalDate"
+        maritalStatus:
+          type: "string"
+          enum:
+            - "UNKNOWN"
+            - "MARRIED"
+            - "SINGLE"
+            - "DIVORCED"
+        honorific:
+          type: "string"
+          enum:
+            - "UNKNOWN"
+            - "MR"
+            - "MRS"
+            - "MS"
+            - "DR"
+            - "MISS"
+        contact:
+          $ref: "#/components/schemas/ContactRequest"
+      required:
+        - "firstName"
+        - "lastName"
+        - "dob"
+        - "maritalStatus"
+        - "honorific"
     Contact:
       type: "object"
       properties:
@@ -1490,3 +1564,54 @@ components:
         - "workModality"
         - "employee"
         - "meta"
+    EmploymentRequest:
+      type: "object"
+      properties:
+        period:
+          $ref: "#/components/schemas/Period"
+        status:
+          type: "string"
+          enum:
+            - "ONBOARDING"
+            - "ACTIVE"
+            - "IDLE"
+            - "TERMINATED"
+        probationEndDate:
+          $ref: "#/components/schemas/LocalDate"
+        workModality:
+          type: "string"
+          enum:
+            - "ON_SITE"
+            - "REMOTE"
+            - "HYBRID"
+      required:
+        - "period"
+        - "status"
+        - "workModality"
+    EmployeeFilterSet:
+      type: "object"
+      properties:
+        firstName:
+          type: "string"
+        lastName:
+          type: "string"
+        honorific:
+          type: "array"
+          items:
+            type: "string"
+            enum:
+              - "UNKNOWN"
+              - "MR"
+              - "MRS"
+              - "MS"
+              - "DR"
+              - "MISS"
+        maritalStatus:
+          type: "array"
+          items:
+            type: "string"
+            enum:
+              - "UNKNOWN"
+              - "MARRIED"
+              - "SINGLE"
+              - "DIVORCED"

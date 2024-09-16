@@ -28,25 +28,16 @@ import kcrud.domain.employment.routing.endpoints.operate.updateEmploymentByIdRou
 @OptIn(EmploymentRouteAPI::class)
 public fun Route.employmentRoute() {
 
-    route("v1/employees/{employee_id}/employments") {
-        withRbac(scope = RbacScope.EMPLOYMENT_RECORDS, accessLevel = RbacAccessLevel.VIEW) {
-            findEmploymentByEmployeeIdRoute()
-        }
+    withRbac(scope = RbacScope.EMPLOYMENT_RECORDS, accessLevel = RbacAccessLevel.VIEW) {
+        findEmploymentByEmployeeIdRoute()
+        findEmploymentByIdRoute()
+    }
 
-        withRbac(scope = RbacScope.EMPLOYMENT_RECORDS, accessLevel = RbacAccessLevel.FULL) {
-            createEmploymentRoute()
-            deleteEmploymentByEmployeeIdRoute()
-        }
+    withRbac(scope = RbacScope.EMPLOYMENT_RECORDS, accessLevel = RbacAccessLevel.FULL) {
+        createEmploymentRoute()
+        updateEmploymentByIdRoute()
 
-        route("{employment_id}") {
-            withRbac(scope = RbacScope.EMPLOYMENT_RECORDS, accessLevel = RbacAccessLevel.VIEW) {
-                findEmploymentByIdRoute()
-            }
-
-            withRbac(scope = RbacScope.EMPLOYMENT_RECORDS, accessLevel = RbacAccessLevel.FULL) {
-                updateEmploymentByIdRoute()
-                deleteEmploymentByIdRoute()
-            }
-        }
+        deleteEmploymentByEmployeeIdRoute()
+        deleteEmploymentByIdRoute()
     }
 }

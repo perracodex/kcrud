@@ -6,6 +6,7 @@ package kcrud.domain.employee.routing.endpoints.get
 
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.base.env.SessionContext
@@ -21,8 +22,10 @@ import org.koin.ktor.plugin.scope
 @EmployeeRouteAPI
 internal fun Route.searchEmployeeRoute() {
     // Search (Filter) employees.
-    post<EmployeeFilterSet>("/search") { request ->
+    post("v1/employees/search") {
         val sessionContext: SessionContext? = SessionContext.from(call = call)
+        val request: EmployeeFilterSet = call.receive<EmployeeFilterSet>()
+
         val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }
         val employees: Page<Employee> = service.search(filterSet = request, pageable = call.getPageable())
         call.respond(status = HttpStatusCode.OK, message = employees)

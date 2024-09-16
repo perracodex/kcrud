@@ -6,6 +6,7 @@ package kcrud.domain.employment.routing.endpoints.operate
 
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
@@ -22,8 +23,9 @@ import kotlin.uuid.Uuid
 @EmploymentRouteAPI
 internal fun Route.createEmploymentRoute() {
     // Create a new employment.
-    post<EmploymentRequest> { request ->
+    post("v1/employees/{employee_id}/employments") {
         val employeeId: Uuid = call.parameters.getOrFail(name = "employee_id").toUuid()
+        val request: EmploymentRequest = call.receive<EmploymentRequest>()
 
         val sessionContext: SessionContext? = SessionContext.from(call = call)
         val service: EmploymentService = call.scope.get<EmploymentService> { parametersOf(sessionContext) }

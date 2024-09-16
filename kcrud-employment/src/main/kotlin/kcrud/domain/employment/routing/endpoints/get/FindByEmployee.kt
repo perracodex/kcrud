@@ -21,7 +21,7 @@ import kotlin.uuid.Uuid
 @EmploymentRouteAPI
 internal fun Route.findEmploymentByEmployeeIdRoute() {
     // Find all employments for an employee ID.
-    get {
+    get("v1/employees/{employee_id}/employments") {
         val employeeId: Uuid = call.parameters.getOrFail(name = "employee_id").toUuid()
 
         val sessionContext: SessionContext? = SessionContext.from(call = call)

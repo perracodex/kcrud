@@ -21,7 +21,7 @@ import kotlin.uuid.Uuid
 @EmployeeRouteAPI
 internal fun Route.findEmployeeByIdRoute() {
     // Find an employee by ID.
-    get {
+    get("v1/employees/{employee_id}") {
         val employeeId: Uuid = call.parameters.getOrFail(name = "employee_id").toUuid()
 
         val sessionContext: SessionContext? = SessionContext.from(call = call)

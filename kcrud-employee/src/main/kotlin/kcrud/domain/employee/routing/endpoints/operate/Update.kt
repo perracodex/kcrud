@@ -6,6 +6,7 @@ package kcrud.domain.employee.routing.endpoints.operate
 
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
@@ -22,8 +23,9 @@ import kotlin.uuid.Uuid
 @EmployeeRouteAPI
 internal fun Route.updateEmployeeByIdRoute() {
     // Update an employee by ID.
-    put<EmployeeRequest> { request ->
+    put("v1/employees/{employee_id}") {
         val employeeId: Uuid = call.parameters.getOrFail(name = "employee_id").toUuid()
+        val request: EmployeeRequest = call.receive<EmployeeRequest>()
 
         val sessionContext: SessionContext? = SessionContext.from(call = call)
         val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }

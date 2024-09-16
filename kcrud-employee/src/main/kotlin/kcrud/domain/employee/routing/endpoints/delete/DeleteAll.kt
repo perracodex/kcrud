@@ -17,7 +17,7 @@ import org.koin.ktor.plugin.scope
 @EmployeeRouteAPI
 internal fun Route.deleteAllEmployeesRoute() {
     // Delete all employees.
-    delete {
+    delete("v1/employees") {
         val sessionContext: SessionContext? = SessionContext.from(call = call)
         val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }
         val deletedCount: Int = service.deleteAll()

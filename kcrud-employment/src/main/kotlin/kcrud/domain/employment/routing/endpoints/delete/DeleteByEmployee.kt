@@ -20,7 +20,7 @@ import kotlin.uuid.Uuid
 @EmploymentRouteAPI
 internal fun Route.deleteEmploymentByEmployeeIdRoute() {
     // Delete all employments for an employee ID.
-    delete {
+    delete("v1/employees/{employee_id}/employments") {
         val employeeId: Uuid = call.parameters.getOrFail(name = "employee_id").toUuid()
 
         val sessionContext: SessionContext? = SessionContext.from(call = call)
