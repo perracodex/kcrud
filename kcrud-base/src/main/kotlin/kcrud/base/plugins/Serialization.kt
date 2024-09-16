@@ -7,10 +7,9 @@ package kcrud.base.plugins
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.*
-import kotlinx.serialization.Contextual
-import kotlinx.serialization.builtins.serializer
+import kcrud.base.persistence.serializers.UuidSerializer
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.modules.SerializersModule
 import kotlin.uuid.Uuid
 
 /**
@@ -36,11 +35,6 @@ public fun Application.configureSerialization() {
                 prettyPrint = true         // Format JSON output for easier reading.
                 encodeDefaults = true      // Serialize properties with default values.
                 ignoreUnknownKeys = false  // Fail on unknown keys in the incoming JSON.
-
-                // Register contextual serializers.
-                serializersModule = SerializersModule {
-                    contextual(Uuid::class, Uuid.serializer())
-                }
             }
         )
     }
@@ -49,4 +43,4 @@ public fun Application.configureSerialization() {
 /**
  * Type alias for [Uuid] to be used in serialization.
  */
-public typealias Uuid = @Contextual Uuid
+public typealias Uuid = @Serializable(with = UuidSerializer::class) Uuid
