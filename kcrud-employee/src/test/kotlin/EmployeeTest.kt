@@ -134,7 +134,7 @@ class EmployeeServiceTest : KoinComponent {
                     maritalStatus = maritalStatus
                 )
 
-                val updatedEmployee: Employee? = employeeService.update(
+                val updatedEmployee: Employee = employeeService.update(
                     employeeId = employee.id,
                     employeeRequest = updateEmployeeRequest
                 )
@@ -170,7 +170,7 @@ class EmployeeServiceTest : KoinComponent {
             val page: Page<Employee> = employeeService.findAll()
             assertEquals(
                 expected = 0,
-                actual = page.totalElements,
+                actual = page.details.totalElements,
                 message = "After rollback total elements should be 0."
             )
         }

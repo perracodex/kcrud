@@ -60,47 +60,47 @@ class PaginationTest : KoinComponent {
             employeeService.findAll(pageable = Pageable(page = 0, size = totalRecords)).also { page ->
                 assertEquals(
                     expected = 0,
-                    actual = page.totalPages,
+                    actual = page.details.totalPages,
                     message = "Total pages should be 0."
                 )
                 assertEquals(
                     expected = 0,
-                    actual = page.totalElements,
+                    actual = page.details.totalElements,
                     message = "Total elements should be 0."
                 )
                 assertEquals(
                     expected = totalRecords,
-                    actual = page.elementsPerPage,
+                    actual = page.details.elementsPerPage,
                     message = "Elements per page should be $totalRecords."
                 )
                 assertEquals(
                     expected = 0,
-                    actual = page.elementsInPage,
+                    actual = page.details.elementsInPage,
                     message = "Elements in page should be 0."
                 )
                 assertEquals(
                     expected = 0,
-                    actual = page.pageIndex,
+                    actual = page.details.pageIndex,
                     message = "Page index should be 0."
                 )
                 assertEquals(
                     expected = false,
-                    actual = page.hasNext,
+                    actual = page.details.hasNext,
                     message = "Has next should be false."
                 )
                 assertEquals(
                     expected = false,
-                    actual = page.hasPrevious,
+                    actual = page.details.hasPrevious,
                     message = "Has previous should be false."
                 )
                 assertEquals(
                     expected = true,
-                    actual = page.isFirst,
+                    actual = page.details.isFirst,
                     message = "Is first should be true."
                 )
                 assertEquals(
                     expected = true,
-                    actual = page.isLast,
+                    actual = page.details.isLast,
                     message = "Is last should be true."
                 )
             }
@@ -129,47 +129,47 @@ class PaginationTest : KoinComponent {
             employeeService.findAll(pageable = Pageable(page = 0, size = 0)).also { page ->
                 assertEquals(
                     expected = 1,
-                    actual = page.totalPages,
+                    actual = page.details.totalPages,
                     message = "Total pages should be 1."
                 )
                 assertEquals(
                     expected = totalRecords,
-                    actual = page.totalElements,
+                    actual = page.details.totalElements,
                     message = "Total elements should be $totalRecords."
                 )
                 assertEquals(
                     expected = totalRecords,
-                    actual = page.elementsPerPage,
+                    actual = page.details.elementsPerPage,
                     message = "Elements per page should be $totalRecords."
                 )
                 assertEquals(
                     expected = totalRecords,
-                    actual = page.elementsInPage,
+                    actual = page.details.elementsInPage,
                     message = "Elements in page should be $totalRecords."
                 )
                 assertEquals(
                     expected = 0,
-                    actual = page.pageIndex,
+                    actual = page.details.pageIndex,
                     message = "Page index should be 0."
                 )
                 assertEquals(
                     expected = false,
-                    actual = page.hasNext,
+                    actual = page.details.hasNext,
                     message = "Has next should be false."
                 )
                 assertEquals(
                     expected = false,
-                    actual = page.hasPrevious,
+                    actual = page.details.hasPrevious,
                     message = "Has previous should be false."
                 )
                 assertEquals(
                     expected = true,
-                    actual = page.isFirst,
+                    actual = page.details.isFirst,
                     message = "Is first should be true."
                 )
                 assertEquals(
                     expected = true,
-                    actual = page.isLast,
+                    actual = page.details.isLast,
                     message = "Is last should be true."
                 )
             }
@@ -179,55 +179,55 @@ class PaginationTest : KoinComponent {
             employeeService.findAll(pageable = Pageable(page = 1, size = halfPageCount)).also { page ->
                 assertEquals(
                     expected = 2,
-                    actual = page.totalPages,
+                    actual = page.details.totalPages,
                     message = "Total pages should be 2."
                 )
 
                 assertEquals(
                     expected = totalRecords,
-                    actual = page.totalElements,
+                    actual = page.details.totalElements,
                     message = "Total elements should be $totalRecords."
                 )
 
                 assertEquals(
                     expected = halfPageCount,
-                    actual = page.elementsPerPage,
+                    actual = page.details.elementsPerPage,
                     message = "Elements per page should be $halfPageCount."
                 )
 
                 assertEquals(
                     expected = halfPageCount,
-                    actual = page.elementsInPage,
+                    actual = page.details.elementsInPage,
                     message = "Elements in page should be $halfPageCount."
                 )
 
                 assertEquals(
                     expected = 1,
-                    actual = page.pageIndex,
+                    actual = page.details.pageIndex,
                     message = "Page index should be 1."
                 )
 
                 assertEquals(
                     expected = false,
-                    actual = page.hasNext,
+                    actual = page.details.hasNext,
                     message = "Has next should be true."
                 )
 
                 assertEquals(
                     expected = true,
-                    actual = page.hasPrevious,
+                    actual = page.details.hasPrevious,
                     message = "Has previous should be false."
                 )
 
                 assertEquals(
                     expected = false,
-                    actual = page.isFirst,
+                    actual = page.details.isFirst,
                     message = "Is first should be true."
                 )
 
                 assertEquals(
                     expected = true,
-                    actual = page.isLast,
+                    actual = page.details.isLast,
                     message = "Is last should be false."
                 )
             }
@@ -236,7 +236,7 @@ class PaginationTest : KoinComponent {
 
             val page: Page<Employee> = employeeService.findAll()
             assertEquals(
-                expected = 0, actual = page.totalElements,
+                expected = 0, actual = page.details.totalElements,
                 message = "After rollback total elements should be 0."
             )
         }
@@ -266,17 +266,17 @@ class PaginationTest : KoinComponent {
                 employeeService.findAll(pageable = Pageable(page = pageIndex, size = elementsPerPage)).also { page ->
                     assertEquals(
                         expected = 3,
-                        actual = page.totalPages,
+                        actual = page.details.totalPages,
                         message = "Total pages should be 3."
                     )
                     assertEquals(
                         expected = totalRecords,
-                        actual = page.totalElements,
+                        actual = page.details.totalElements,
                         message = "Total elements should be $totalRecords."
                     )
                     assertEquals(
                         expected = elementsPerPage,
-                        actual = page.elementsPerPage,
+                        actual = page.details.elementsPerPage,
                         message = "Elements per page should be $elementsPerPage."
                     )
 
@@ -284,27 +284,27 @@ class PaginationTest : KoinComponent {
                         0 -> {
                             assertEquals(
                                 expected = elementsPerPage,
-                                actual = page.elementsInPage,
+                                actual = page.details.elementsInPage,
                                 message = "Elements in page should be $elementsPerPage."
                             )
                             assertEquals(
                                 expected = true,
-                                actual = page.hasNext,
+                                actual = page.details.hasNext,
                                 message = "Has next should be true."
                             )
                             assertEquals(
                                 expected = false,
-                                actual = page.hasPrevious,
+                                actual = page.details.hasPrevious,
                                 message = "Has previous should be false."
                             )
                             assertEquals(
                                 expected = true,
-                                actual = page.isFirst,
+                                actual = page.details.isFirst,
                                 message = "Is first should be true."
                             )
                             assertEquals(
                                 expected = false,
-                                actual = page.isLast,
+                                actual = page.details.isLast,
                                 message = "Is last should be false."
                             )
                         }
@@ -312,27 +312,27 @@ class PaginationTest : KoinComponent {
                         1 -> {
                             assertEquals(
                                 expected = elementsPerPage,
-                                actual = page.elementsInPage,
+                                actual = page.details.elementsInPage,
                                 message = "Elements in page should be $elementsPerPage."
                             )
                             assertEquals(
                                 expected = true,
-                                actual = page.hasNext,
+                                actual = page.details.hasNext,
                                 message = "Has next should be true."
                             )
                             assertEquals(
                                 expected = true,
-                                actual = page.hasPrevious,
+                                actual = page.details.hasPrevious,
                                 message = "Has previous should be true."
                             )
                             assertEquals(
                                 expected = false,
-                                actual = page.isFirst,
+                                actual = page.details.isFirst,
                                 message = "Is first should be false."
                             )
                             assertEquals(
                                 expected = false,
-                                actual = page.isLast,
+                                actual = page.details.isLast,
                                 message = "Is last should be false."
                             )
                         }
@@ -340,27 +340,27 @@ class PaginationTest : KoinComponent {
                         2 -> {
                             assertEquals(
                                 expected = 2,
-                                actual = page.elementsInPage,
+                                actual = page.details.elementsInPage,
                                 message = "Elements in page should be 2."
                             )
                             assertEquals(
                                 expected = false,
-                                actual = page.hasNext,
+                                actual = page.details.hasNext,
                                 message = "Has next should be false."
                             )
                             assertEquals(
                                 expected = true,
-                                actual = page.hasPrevious,
+                                actual = page.details.hasPrevious,
                                 message = "Has previous should be true."
                             )
                             assertEquals(
                                 expected = false,
-                                actual = page.isFirst,
+                                actual = page.details.isFirst,
                                 message = "Is first should be false."
                             )
                             assertEquals(
                                 expected = true,
-                                actual = page.isLast,
+                                actual = page.details.isLast,
                                 message = "Is last should be true."
                             )
                         }
@@ -373,7 +373,7 @@ class PaginationTest : KoinComponent {
             val page: Page<Employee> = employeeService.findAll()
             assertEquals(
                 expected = 0,
-                actual = page.totalElements,
+                actual = page.details.totalElements,
                 message = "After rollback total elements should be 0."
             )
         }
@@ -399,7 +399,7 @@ class PaginationTest : KoinComponent {
             employeeRepository.findAll().also { page ->
                 assertEquals(
                     expected = totalRecords,
-                    actual = page.totalElements,
+                    actual = page.details.totalElements,
                     message = "There must be 10 employees in the database."
                 )
                 assertEquals(
@@ -414,7 +414,7 @@ class PaginationTest : KoinComponent {
             employeeRepository.findAll().also { page ->
                 assertEquals(
                     expected = 0,
-                    actual = page.totalElements,
+                    actual = page.details.totalElements,
                     message = "There must be 10 employees in the database."
                 )
             }
@@ -458,27 +458,27 @@ class PaginationTest : KoinComponent {
 
                     assertEquals(
                         expected = expectedTotalPages,
-                        actual = page.totalPages,
+                        actual = page.details.totalPages,
                         message = "Total pages should be $expectedTotalPages."
                     )
                     assertEquals(
                         expected = totalRecords,
-                        actual = page.totalElements,
+                        actual = page.details.totalElements,
                         message = "Total elements should be $totalRecords."
                     )
                     assertEquals(
                         expected = pageSize,
-                        actual = page.elementsPerPage,
+                        actual = page.details.elementsPerPage,
                         message = "Elements per page should be $pageSize."
                     )
                     assertEquals(
                         expected = minOf(pageSize, totalRecords - startIndex),
-                        actual = page.elementsInPage,
+                        actual = page.details.elementsInPage,
                         message = "Elements in page should be ${minOf(pageSize, totalRecords - startIndex)}."
                     )
                     assertEquals(
                         expected = pageIndex,
-                        actual = page.pageIndex,
+                        actual = page.details.pageIndex,
                         message = "Page index should be $pageIndex."
                     )
 
@@ -578,27 +578,27 @@ class PaginationTest : KoinComponent {
 
                     assertEquals(
                         expected = expectedTotalPages,
-                        actual = page.totalPages,
+                        actual = page.details.totalPages,
                         message = "Total pages should be $expectedTotalPages."
                     )
                     assertEquals(
                         expected = totalRecords,
-                        actual = page.totalElements,
+                        actual = page.details.totalElements,
                         message = "Total elements should be $totalRecords."
                     )
                     assertEquals(
                         expected = pageSize,
-                        actual = page.elementsPerPage,
+                        actual = page.details.elementsPerPage,
                         message = "Elements per page should be $pageSize."
                     )
                     assertEquals(
                         expected = minOf(pageSize, totalRecords - ((pageIndex - 1) * pageSize)),
-                        actual = page.elementsInPage,
+                        actual = page.details.elementsInPage,
                         message = "Elements in page should be ${minOf(pageSize, totalRecords - ((pageIndex - 1) * pageSize))}."
                     )
                     assertEquals(
                         expected = pageIndex,
-                        actual = page.pageIndex,
+                        actual = page.details.pageIndex,
                         message = "Page index should be $pageIndex."
                     )
 
