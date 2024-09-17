@@ -12,7 +12,6 @@ import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.pagination.paginate
 import kcrud.domain.contact.repository.IContactRepository
-import kcrud.domain.employee.errors.EmployeeError
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeFilterSet
 import kcrud.domain.employee.model.EmployeeRequest
@@ -43,11 +42,6 @@ internal class EmployeeRepository(
                 Employee.from(row = resultRow)
             }
         }
-    }
-
-    override fun findByIdOrThrow(employeeId: Uuid): Employee {
-        return findById(employeeId = employeeId)
-            ?: throw EmployeeError.EmployeeNotFound(employeeId = employeeId)
     }
 
     override fun findAll(pageable: Pageable?): Page<Employee> {
@@ -126,55 +120,44 @@ internal class EmployeeRepository(
         }
     }
 
-    override fun create(employeeRequest: EmployeeRequest): Uuid {
+    override fun create(request: EmployeeRequest): Employee {
         return transactionWithSchema(schema = sessionContext.schema) {
-            val newEmployeeId: Uuid = EmployeeTable.insert { employeeRow ->
-                employeeRow.mapEmployeeRequest(employeeRequest = employeeRequest)
+            val employeeId: Uuid = EmployeeTable.insert { employeeRow ->
+                employeeRow.mapEmployeeRequest(request = request)
             } get EmployeeTable.id
 
-            employeeRequest.contact?.let {
+            request.contact?.let {
                 contactRepository.create(
-                    employeeId = newEmployeeId,
-                    contactRequest = employeeRequest.contact
+                    employeeId = employeeId,
+                    request = request.contact
                 )
             }
 
-            newEmployeeId
+            findById(employeeId = employeeId)
+                ?: throw IllegalStateException("Failed to create Employee.")
         }
     }
 
-    override fun createAndGet(employeeRequest: EmployeeRequest): Employee {
-        return transactionWithSchema(schema = sessionContext.schema) {
-            val newEmployeeId: Uuid = create(employeeRequest = employeeRequest)
-            findByIdOrThrow(employeeId = newEmployeeId)
-        }
-    }
-
-    override fun update(employeeId: Uuid, employeeRequest: EmployeeRequest): Int {
+    override fun update(employeeId: Uuid, request: EmployeeRequest): Employee? {
         return transactionWithSchema(schema = sessionContext.schema) {
             val updateCount: Int = EmployeeTable.update(
                 where = {
                     EmployeeTable.id eq employeeId
                 }
             ) { employeeRow ->
-                employeeRow.mapEmployeeRequest(employeeRequest = employeeRequest)
+                employeeRow.mapEmployeeRequest(request = request)
             }
 
             if (updateCount > 0) {
                 contactRepository.syncWithEmployee(
                     employeeId = employeeId,
-                    employeeRequest = employeeRequest
+                    employeeRequest = request
                 )
+
+                findById(employeeId = employeeId)
+            } else {
+                null
             }
-
-            updateCount
-        }
-    }
-
-    override fun updateAndGet(employeeId: Uuid, employeeRequest: EmployeeRequest): Employee {
-        return transactionWithSchema(schema = sessionContext.schema) {
-            update(employeeId = employeeId, employeeRequest = employeeRequest)
-            findByIdOrThrow(employeeId = employeeId)
         }
     }
 
@@ -202,11 +185,11 @@ internal class EmployeeRepository(
      * Populates an SQL [UpdateBuilder] with data from an [EmployeeRequest] instance,
      * so that it can be used to update or create a database record.
      */
-    private fun UpdateBuilder<Int>.mapEmployeeRequest(employeeRequest: EmployeeRequest) {
-        this[EmployeeTable.firstName] = employeeRequest.firstName.trim()
-        this[EmployeeTable.lastName] = employeeRequest.lastName.trim()
-        this[EmployeeTable.dob] = employeeRequest.dob
-        this[EmployeeTable.maritalStatus] = employeeRequest.maritalStatus
-        this[EmployeeTable.honorific] = employeeRequest.honorific
+    private fun UpdateBuilder<Int>.mapEmployeeRequest(request: EmployeeRequest) {
+        this[EmployeeTable.firstName] = request.firstName.trim()
+        this[EmployeeTable.lastName] = request.lastName.trim()
+        this[EmployeeTable.dob] = request.dob
+        this[EmployeeTable.maritalStatus] = request.maritalStatus
+        this[EmployeeTable.honorific] = request.honorific
     }
 }

@@ -6,7 +6,6 @@ package kcrud.domain.employment.repository
 
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
-import kcrud.domain.employment.errors.EmploymentError
 import kcrud.domain.employment.model.Employment
 import kcrud.domain.employment.model.EmploymentRequest
 import kotlin.uuid.Uuid
@@ -34,17 +33,6 @@ internal interface IEmploymentRepository {
     fun findById(employeeId: Uuid, employmentId: Uuid): Employment?
 
     /**
-     * Retrieves an employment by its ID,
-     * or throws an exception if the employment is not found.
-     *
-     * @param employeeId The ID of the employee associated with the employment.
-     * @param employmentId The ID of the employment to be retrieved.
-     * @return The resolved [Employment] if found, null otherwise.
-     * @throws EmploymentError.EmploymentNotFound If the employment is not found.
-     */
-    fun findByIdOrThrow(employeeId: Uuid, employmentId: Uuid): Employment
-
-    /**
      * Retrieves all employment entries for a given employee.
      *
      * @param employeeId The ID of the employee associated with the employment.
@@ -56,39 +44,20 @@ internal interface IEmploymentRepository {
      * Creates a new employment.
      *
      * @param employeeId The employee ID associated with the employment.
-     * @param employmentRequest The employment to be created.
-     * @return The ID of the created employment.
+     * @param request The [EmploymentRequest] to be created.
+     * @return The created [Employment].
      */
-    fun create(employeeId: Uuid, employmentRequest: EmploymentRequest): Uuid
-
-    /**
-     * Creates a new employment and retrieves it.
-     *
-     * @param employeeId The employee ID associated with the employment.
-     * @param employmentRequest The employment to be created.
-     * @return The newly created [Employment].
-     */
-    fun createAndGet(employeeId: Uuid, employmentRequest: EmploymentRequest): Employment
+    fun create(employeeId: Uuid, request: EmploymentRequest): Employment
 
     /**
      * Updates an employment's details.
      *
      * @param employeeId The employee ID associated with the employment.
      * @param employmentId The ID of the employment to be updated.
-     * @param employmentRequest The new details for the employment.
-     * @return The number of updated records.
+     * @param request The new [EmploymentRequest] to update.
+     * @return The updated [Employment], or null if the employment was not found.
      */
-    fun update(employeeId: Uuid, employmentId: Uuid, employmentRequest: EmploymentRequest): Int
-
-    /**
-     * Updates an employment's details and retrieves it.
-     *
-     * @param employeeId The employee ID associated with the employment.
-     * @param employmentId The ID of the employment to be updated.
-     * @param employmentRequest The new details for the employment.
-     * @return The updated [Employment].
-     */
-    fun updateAndGet(employeeId: Uuid, employmentId: Uuid, employmentRequest: EmploymentRequest): Employment
+    fun update(employeeId: Uuid, employmentId: Uuid, request: EmploymentRequest): Employment?
 
     /**
      * Deletes an employment using the provided ID.

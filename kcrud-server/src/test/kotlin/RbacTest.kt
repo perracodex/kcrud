@@ -209,6 +209,6 @@ class RbacTest : KoinComponent {
             parameters = { org.koin.core.parameter.parametersOf(sessionContext) }
         )
 
-        return employeeService.create(employeeRequest = employeeRequest)
+        return employeeService.create(request = employeeRequest).getOrThrow()
     }
 }

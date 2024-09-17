@@ -6,6 +6,7 @@ package kcrud.access.actor.repository
 
 import kcrud.access.actor.model.Actor
 import kcrud.access.actor.model.ActorRequest
+import kcrud.access.errors.RbacError
 import kcrud.access.rbac.model.role.RbacRole
 import kcrud.access.rbac.repository.role.IRbacRoleRepository
 import kcrud.base.database.schema.admin.actor.ActorTable
@@ -29,7 +30,8 @@ internal class ActorRepository(private val roleRepository: IRbacRoleRepository) 
                 ActorTable.username.eq(username)
             }.singleOrNull()?.let { resultRow ->
                 val actorId: Uuid = resultRow[ActorTable.id]
-                val role: RbacRole = roleRepository.findByActorIdOrThrow(actorId = actorId)
+                val role: RbacRole = roleRepository.findByActorId(actorId = actorId)
+                    ?: throw RbacError.ActorWithNoRoles(actorId = actorId)
                 Actor.from(row = resultRow, role = role)
             }
         }
@@ -39,7 +41,8 @@ internal class ActorRepository(private val roleRepository: IRbacRoleRepository) 
         return transaction {
             ActorTable.selectAll().map { resultRow ->
                 val actorId: Uuid = resultRow[ActorTable.id]
-                val role: RbacRole = roleRepository.findByActorIdOrThrow(actorId = actorId)
+                val role: RbacRole = roleRepository.findByActorId(actorId = actorId)
+                    ?: throw RbacError.ActorWithNoRoles(actorId = actorId)
                 Actor.from(row = resultRow, role = role)
             }
         }
@@ -50,7 +53,8 @@ internal class ActorRepository(private val roleRepository: IRbacRoleRepository) 
             ActorTable.selectAll().where {
                 ActorTable.id eq actorId
             }.singleOrNull()?.let { resultRow ->
-                val role: RbacRole = roleRepository.findByActorIdOrThrow(actorId = actorId)
+                val role: RbacRole = roleRepository.findByActorId(actorId = actorId)
+                    ?: throw RbacError.ActorWithNoRoles(actorId = actorId)
                 Actor.from(row = resultRow, role = role)
             }
         }

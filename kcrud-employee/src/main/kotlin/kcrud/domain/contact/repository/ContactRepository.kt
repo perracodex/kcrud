@@ -77,11 +77,11 @@ internal class ContactRepository(
                 val updateCount = update(
                     employeeId = employeeId,
                     contactId = contactId,
-                    contactRequest = employeeRequest.contact
+                    request = employeeRequest.contact
                 )
 
                 newContactId.takeIf { updateCount > 0 }
-            } ?: create(employeeId = employeeId, contactRequest = employeeRequest.contact)
+            } ?: create(employeeId = employeeId, request = employeeRequest.contact)
         } ?: run {
             // If the request does not contain a contact, delete any existing one.
             deleteByEmployeeId(employeeId = employeeId)
@@ -89,18 +89,18 @@ internal class ContactRepository(
         }
     }
 
-    override fun create(employeeId: Uuid, contactRequest: ContactRequest): Uuid {
+    override fun create(employeeId: Uuid, request: ContactRequest): Uuid {
         return transactionWithSchema(schema = sessionContext.schema) {
             ContactTable.insert { contactRow ->
                 contactRow.mapContactRequest(
                     employeeId = employeeId,
-                    request = contactRequest
+                    request = request
                 )
             } get ContactTable.id
         }
     }
 
-    override fun update(employeeId: Uuid, contactId: Uuid, contactRequest: ContactRequest): Int {
+    override fun update(employeeId: Uuid, contactId: Uuid, request: ContactRequest): Int {
         return transactionWithSchema(schema = sessionContext.schema) {
             ContactTable.update(
                 where = {
@@ -109,7 +109,7 @@ internal class ContactRepository(
             ) { contactRow ->
                 contactRow.mapContactRequest(
                     employeeId = employeeId,
-                    request = contactRequest
+                    request = request
                 )
             }
         }

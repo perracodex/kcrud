@@ -89,7 +89,7 @@ class TransactionTest : KoinComponent {
                 message = "There must be 0 contacts in the database."
             )
 
-            employeeRepository.create(employeeRequest = employeeRequest)
+            employeeRepository.create(request = employeeRequest)
 
             assertEquals(
                 expected = 1,
@@ -150,7 +150,7 @@ class TransactionTest : KoinComponent {
 
         assertFailsWith<IllegalArgumentException> {
             transaction {
-                employeeRepository.create(employeeRequest = employeeRequest)
+                employeeRepository.create(request = employeeRequest)
 
                 assertEquals(
                     expected = 1,
@@ -175,7 +175,7 @@ class TransactionTest : KoinComponent {
                             )
                         )
 
-                        employeeRepository.create(employeeRequest = invalidEmployeeRequest)
+                        employeeRepository.create(request = invalidEmployeeRequest)
                     }
                 }
 

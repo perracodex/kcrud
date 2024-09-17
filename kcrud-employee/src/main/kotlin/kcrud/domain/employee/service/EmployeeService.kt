@@ -40,17 +40,6 @@ public class EmployeeService internal constructor(
     }
 
     /**
-     * Retrieves an employee by its ID or throws an exception if not found.
-     *
-     * @param employeeId The ID of the employee to be retrieved.
-     * @return The resolved [Employee].
-     * @throws EmployeeError.EmployeeNotFound if the employee doesn't exist.
-     */
-    public suspend fun findByIdOrThrow(employeeId: Uuid): Employee = withContext(Dispatchers.IO) {
-        return@withContext employeeRepository.findByIdOrThrow(employeeId = employeeId)
-    }
-
-    /**
      * Retrieves all employees.
      *
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
@@ -76,40 +65,61 @@ public class EmployeeService internal constructor(
     /**
      * Creates a new employee.
      *
-     * @param employeeRequest The employee to be created.
-     * @return The ID of the created employee.
+     * @param request The [EmployeeRequest] to be created.
+     * @return A [Result] with the created [Employee], or an error on failure.
      */
-    public suspend fun create(employeeRequest: EmployeeRequest): Employee {
+    public suspend fun create(request: EmployeeRequest): Result<Employee> {
         tracer.debug("Creating a new employee.")
 
-        verifyIntegrity(employeeId = null, employeeRequest = employeeRequest, reason = "Create Employee.")
-
-        return withContext(Dispatchers.IO) {
-            return@withContext employeeRepository.createAndGet(employeeRequest = employeeRequest)
-        }
+        return verifyIntegrity(
+            employeeId = null,
+            request = request,
+            reason = "Create Employee."
+        ).fold(
+            onSuccess = {
+                runCatching {
+                    withContext(Dispatchers.IO) {
+                        employeeRepository.create(request = request)
+                    }
+                }
+            },
+            onFailure = { error ->
+                tracer.error(message = "Failed to create a new employee.", cause = error)
+                Result.failure(error)
+            }
+        )
     }
 
     /**
      * Updates an employee's details.
      *
      * @param employeeId The ID of the employee to be updated.
-     * @param employeeRequest The new details for the employee.
-     * @return The updated [Employee].
+     * @param request The new [EmployeeRequest] to be updated.
+     * @return A [Result] with the updated [Employee] or null if such does not exist; or an error on failure.
      */
     public suspend fun update(
         employeeId: Uuid,
-        employeeRequest: EmployeeRequest
-    ): Employee {
+        request: EmployeeRequest
+    ): Result<Employee?> {
         tracer.debug("Updating employee with ID: $employeeId.")
 
-        verifyIntegrity(employeeId = employeeId, employeeRequest = employeeRequest, reason = "Update Employee.")
-
-        return withContext(Dispatchers.IO) {
-            return@withContext employeeRepository.updateAndGet(
-                employeeId = employeeId,
-                employeeRequest = employeeRequest
-            )
-        }
+        return verifyIntegrity(
+            employeeId = employeeId,
+            request = request,
+            reason = "Update Employee."
+        ).fold(
+            onSuccess = {
+                runCatching {
+                    withContext(Dispatchers.IO) {
+                        employeeRepository.update(employeeId = employeeId, request = request)
+                    }
+                }
+            },
+            onFailure = { error ->
+                tracer.error(message = "Failed to update employee.", cause = error)
+                Result.failure(error)
+            }
+        )
     }
 
     /**
@@ -146,19 +156,22 @@ public class EmployeeService internal constructor(
      * Verifies if the employee's fields.
      *
      * @param employeeId The ID of the employee being verified.
-     * @param employeeRequest The employee request details.
-     * @param reason The reason for the email verification.
-     * @throws EmployeeError If any of the fields is invalid.
+     * @param request The [EmployeeRequest] details to be verified.
+     * @param reason The reason for the email verification. To be included in the error message.
+     * @return A [Result] indicating if the employee's fields are valid.
+     * @return A [Result] with verification state.
      */
-    private fun verifyIntegrity(employeeId: Uuid?, employeeRequest: EmployeeRequest, reason: String) {
-        employeeRequest.contact?.let { contact ->
+    private fun verifyIntegrity(employeeId: Uuid?, request: EmployeeRequest, reason: String): Result<Unit> {
+        request.contact?.let { contact ->
             val phone: String = contact.phone
             val phoneValidation: IValidator.Result = PhoneValidator.validate(value = phone)
             if (phoneValidation is IValidator.Result.Failure) {
-                throw EmployeeError.InvalidPhoneFormat(
-                    employeeId = employeeId,
-                    phone = phone,
-                    reason = "$reason ${phoneValidation.reason}"
+                return Result.failure(
+                    EmployeeError.InvalidPhoneFormat(
+                        employeeId = employeeId,
+                        phone = phone,
+                        reason = "$reason ${phoneValidation.reason}"
+                    )
                 )
             }
 
@@ -172,12 +185,16 @@ public class EmployeeService internal constructor(
             val email: String = contact.email
             val emailValidation: IValidator.Result = EmailValidator.validate(value = email)
             if (emailValidation is IValidator.Result.Failure) {
-                throw EmployeeError.InvalidEmailFormat(
-                    employeeId = employeeId,
-                    email = email,
-                    reason = "$reason ${emailValidation.reason}"
+                return Result.failure(
+                    EmployeeError.InvalidEmailFormat(
+                        employeeId = employeeId,
+                        email = email,
+                        reason = "$reason ${emailValidation.reason}"
+                    )
                 )
             }
         }
+
+        return Result.success(Unit)
     }
 }

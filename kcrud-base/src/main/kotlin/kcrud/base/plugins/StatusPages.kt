@@ -78,7 +78,7 @@ public fun Application.configureStatusPages() {
 /**
  * Used to notify custom exceptions to the client.
  */
-private suspend fun ApplicationCall.respondError(cause: AppException) {
+public suspend fun ApplicationCall.respondError(cause: AppException) {
     // Set the ETag header with the error code.
     this.response.header(name = HttpHeaders.ETag, value = cause.errorCode)
 

@@ -48,11 +48,12 @@ internal object DemoUtils {
             repeat(times = count) {
                 // Launch each employee creation as a separate coroutine job.
                 val job: Deferred<Unit> = async {
-                    val employee: Employee = employeeService.create(employeeRequest = newEmployeeRequest())
+                    val result: Result<Employee> = employeeService.create(request = newEmployeeRequest())
+                    val employee: Employee = result.getOrThrow()
                     employmentService.create(
                         employeeId = employee.id,
-                        employmentRequest = newEmploymentRequest(employee = employee)
-                    )
+                        request = newEmploymentRequest(employee = employee)
+                    ).getOrThrow()
                 }
                 jobs.add(job)
             }

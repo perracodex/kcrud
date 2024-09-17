@@ -121,7 +121,7 @@ class EmployeeServiceTest : KoinComponent {
             )
 
             // Create
-            val employee: Employee = employeeService.create(employeeRequest = employeeRequest)
+            val employee: Employee = employeeService.create(request = employeeRequest).getOrThrow()
             assertEquals(expected = employeeRequest.firstName, actual = employee.firstName)
 
             // Update
@@ -134,10 +134,10 @@ class EmployeeServiceTest : KoinComponent {
                     maritalStatus = maritalStatus
                 )
 
-                val updatedEmployee: Employee = employeeService.update(
+                val updatedEmployee: Employee? = employeeService.update(
                     employeeId = employee.id,
-                    employeeRequest = updateEmployeeRequest
-                )
+                    request = updateEmployeeRequest
+                ).getOrNull()
 
                 assertNotNull(
                     actual = updatedEmployee,

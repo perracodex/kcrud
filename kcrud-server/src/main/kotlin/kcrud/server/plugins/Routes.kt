@@ -9,18 +9,18 @@ import io.ktor.server.auth.*
 import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.access.rbac.routing.rbacRoutes
-import kcrud.access.token.routing.accessTokenRoutes
+import kcrud.access.rbac.api.rbacRoutes
+import kcrud.access.token.api.accessTokenRoutes
 import kcrud.base.env.SessionContext
-import kcrud.base.env.health.routing.healthCheckRoute
+import kcrud.base.env.health.healthCheckRoute
 import kcrud.base.events.sseRoute
 import kcrud.base.plugins.RateLimitScope
-import kcrud.base.scheduler.routing.schedulerRoutes
+import kcrud.base.scheduler.api.schedulerRoutes
 import kcrud.base.security.snowflake.snowflakeRoute
 import kcrud.base.settings.AppSettings
-import kcrud.domain.employee.routing.employeeRoute
-import kcrud.domain.employment.routing.employmentRoute
-import kcrud.server.demo.routing.demoRoutes
+import kcrud.domain.employee.api.employeeRoute
+import kcrud.domain.employment.api.employmentRoute
+import kcrud.server.demo.api.demoRoutes
 
 /**
  * Initializes and sets up routing for the application.

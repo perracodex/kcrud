@@ -47,18 +47,6 @@ public class EmploymentService internal constructor(
     }
 
     /**
-     * Retrieves an employment by its ID or throws an exception if not found.
-     *
-     * @param employeeId The ID of the employee associated with the employment.
-     * @param employmentId The ID of the employment to be retrieved.
-     * @return The resolved [Employment].
-     * @throws EmploymentError.EmploymentNotFound if the employment doesn't exist.
-     */
-    public suspend fun findByIdOrThrow(employeeId: Uuid, employmentId: Uuid): Employment = withContext(Dispatchers.IO) {
-        return@withContext employmentRepository.findByIdOrThrow(employeeId = employeeId, employmentId = employmentId)
-    }
-
-    /**
      * Retrieves all employment entries for a given employee.
      *
      * @param employeeId The ID of the employee associated with the employment.
@@ -72,28 +60,36 @@ public class EmploymentService internal constructor(
      * Creates a new employment.
      *
      * @param employeeId The employee ID associated with the employment.
-     * @param employmentRequest The employment to be created.
-     * @return The ID of the created employment.
+     * @param request The [EmploymentRequest] to be created.
+     * @return A [Result] with the updated [Employment] or null if such does not exist; or an error on failure.
      */
     public suspend fun create(
         employeeId: Uuid,
-        employmentRequest: EmploymentRequest
-    ): Employment {
+        request: EmploymentRequest
+    ): Result<Employment> {
         tracer.debug("Creating employment for employee with ID: $employeeId")
 
-        verify(
+        return verify(
             employeeId = employeeId,
             employmentId = null,
-            employmentRequest = employmentRequest,
+            employmentRequest = request,
             reason = "Create Employment."
+        ).fold(
+            onSuccess = {
+                runCatching {
+                    withContext(Dispatchers.IO) {
+                        employmentRepository.create(
+                            employeeId = employeeId,
+                            request = request
+                        )
+                    }
+                }
+            },
+            onFailure = { error ->
+                tracer.error(message = "Failed to create a new employment.", cause = error)
+                return Result.failure(error)
+            }
         )
-
-        return withContext(Dispatchers.IO) {
-            return@withContext employmentRepository.createAndGet(
-                employeeId = employeeId,
-                employmentRequest = employmentRequest
-            )
-        }
     }
 
     /**
@@ -101,30 +97,38 @@ public class EmploymentService internal constructor(
      *
      * @param employeeId The employee ID associated with the employment.
      * @param employmentId The ID of the employment to be updated.
-     * @param employmentRequest The new details for the employment.
-     * @return The updated [Employment].
+     * @param request The new [EmploymentRequest] details.
+     * @return A [Result] with the updated [Employment] or null if such does not exist; or an error on failure.
      */
     public suspend fun update(
         employeeId: Uuid,
         employmentId: Uuid,
-        employmentRequest: EmploymentRequest
-    ): Employment {
+        request: EmploymentRequest
+    ): Result<Employment?> {
         tracer.debug("Updating employment with ID: $employmentId")
 
-        verify(
+        return verify(
             employeeId = employeeId,
             employmentId = employmentId,
-            employmentRequest = employmentRequest,
+            employmentRequest = request,
             reason = "Update Employment."
+        ).fold(
+            onSuccess = {
+                runCatching {
+                    withContext(Dispatchers.IO) {
+                        employmentRepository.update(
+                            employeeId = employeeId,
+                            employmentId = employmentId,
+                            request = request
+                        )
+                    }
+                }
+            },
+            onFailure = { error ->
+                tracer.error(message = "Failed to update employment.", cause = error)
+                return Result.failure(error)
+            }
         )
-
-        return withContext(Dispatchers.IO) {
-            return@withContext employmentRepository.updateAndGet(
-                employeeId = employeeId,
-                employmentId = employmentId,
-                employmentRequest = employmentRequest
-            )
-        }
     }
 
     /**
@@ -149,16 +153,33 @@ public class EmploymentService internal constructor(
         return@withContext employmentRepository.deleteAll(employeeId = employeeId)
     }
 
-    private fun verify(employeeId: Uuid, employmentId: Uuid?, employmentRequest: EmploymentRequest, reason: String) {
+    /**
+     * Verifies the integrity of the employment request.
+     *
+     * @param employeeId The ID of the employee associated with the employment.
+     * @param employmentId The ID of the employment to be verified.
+     * @param employmentRequest The [EmploymentRequest] details to be verified.
+     * @param reason The reason for the verification. To be included in the error message.
+     * @return A [Result] with verification state.
+     */
+    private fun verify(
+        employeeId: Uuid,
+        employmentId: Uuid?,
+        employmentRequest: EmploymentRequest,
+        reason: String
+    ): Result<Unit> {
+
         // Verify that the employment period dates are valid.
         employmentRequest.period.endDate?.let { endDate ->
             if (endDate < employmentRequest.period.startDate) {
-                throw EmploymentError.PeriodDatesMismatch(
-                    employeeId = employeeId,
-                    employmentId = employmentId,
-                    startDate = employmentRequest.period.startDate,
-                    endDate = endDate,
-                    reason = reason
+                return Result.failure(
+                    EmploymentError.PeriodDatesMismatch(
+                        employeeId = employeeId,
+                        employmentId = employmentId,
+                        startDate = employmentRequest.period.startDate,
+                        endDate = endDate,
+                        reason = reason
+                    )
                 )
             }
         }
@@ -166,14 +187,18 @@ public class EmploymentService internal constructor(
         // Verify that the employment probation end date is valid.
         employmentRequest.probationEndDate?.let { probationEndDate ->
             if (probationEndDate < employmentRequest.period.startDate) {
-                throw EmploymentError.InvalidProbationEndDate(
-                    employeeId = employeeId,
-                    employmentId = employmentId,
-                    startDate = employmentRequest.period.startDate,
-                    probationEndDate = probationEndDate,
-                    reason = reason
+                return Result.failure(
+                    EmploymentError.InvalidProbationEndDate(
+                        employeeId = employeeId,
+                        employmentId = employmentId,
+                        startDate = employmentRequest.period.startDate,
+                        probationEndDate = probationEndDate,
+                        reason = reason
+                    )
                 )
             }
         }
+
+        return Result.success(Unit)
     }
 }

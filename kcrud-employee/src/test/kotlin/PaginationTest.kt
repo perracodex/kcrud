@@ -122,7 +122,7 @@ class PaginationTest : KoinComponent {
             // Create test records.
             repeat(times = totalRecords) {
                 val employeeRequest = createEmployeeRequest()
-                employeeService.create(employeeRequest = employeeRequest)
+                employeeService.create(request = employeeRequest)
             }
 
             // 1 Page
@@ -257,7 +257,7 @@ class PaginationTest : KoinComponent {
             // Create test records.
             repeat(times = totalRecords) {
                 val employeeRequest = createEmployeeRequest()
-                employeeService.create(employeeRequest = employeeRequest)
+                employeeService.create(request = employeeRequest)
             }
 
             val elementsPerPage = 5
@@ -444,7 +444,7 @@ class PaginationTest : KoinComponent {
                     maritalStatus = MaritalStatus.entries.random()
                 )
 
-                employeeService.create(employeeRequest = employeeRequest)
+                employeeService.create(request = employeeRequest)
             }
 
             // Test random pagination.
@@ -523,7 +523,7 @@ class PaginationTest : KoinComponent {
                     honorific = Honorific.MS,
                     maritalStatus = MaritalStatus.SINGLE
                 )
-                val createdEmployee = employeeService.create(employeeRequest = employeeRequest)
+                val createdEmployee: Employee = employeeService.create(request = employeeRequest).getOrThrow()
                 createdEmployees.add(createdEmployee)
             }
 

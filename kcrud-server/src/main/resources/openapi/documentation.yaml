@@ -6,6 +6,23 @@ info:
 servers:
   - url: "http://127.0.0.1:8080"
   - url: "https://127.0.0.1:8443"
+tags:
+  - name: "Token"
+    description: " <br> "
+  - name: "Demo"
+    description: " <br> "
+  - name: "System"
+    description: " <br> "
+  - name: "RBAC"
+    description: " <br> "
+  - name: "Scheduler - Maintenance"
+    description: " <br> "
+  - name: "Scheduler"
+    description: " <br> "
+  - name: "Employee"
+    description: " <br> "
+  - name: "Employment"
+    description: " <br> "
 paths:
   /:
     get:
@@ -24,7 +41,9 @@ paths:
                   value: ""
   /auth/token/create:
     post:
-      description: "Creates a new token and responds with it."
+      tags:
+        - "Token"
+      description: "Creates a new token; requires Basic Authentication credentials."
       responses:
         "400":
           description: "Bad Request"
@@ -52,10 +71,13 @@ paths:
                 type: "string"
   /auth/token/refresh:
     post:
-      description: "Endpoint for token refresh. <br> No Basic Authentication is required\
-        \ here, but an existing token's validity will be checked. <br> For example,\
-        \ in Postman set the endpoint and in the Headers add an Authorization key\
-        \ <br> with a 'Bearer' holding a previous valid token."
+      tags:
+        - "Token"
+      description: "Refreshes an existing token; requires Basic Authentication credentials.\
+        \ <br> No Basic Authentication is required here, but an existing token's validity\
+        \ will be checked. <br> For example, in Postman set the endpoint and in the\
+        \ Headers add an Authorization key <br> with a 'Bearer' holding a previous\
+        \ valid token."
       responses:
         "200":
           description: "OK"
@@ -93,6 +115,8 @@ paths:
                   value: "Invalid token."
   /demo:
     delete:
+      tags:
+        - "Demo"
       description: "Delete all demo records."
       responses:
         "200":
@@ -105,7 +129,9 @@ paths:
                 Example#1:
                   value: ""
     get:
-      description: "Return demo records interactive HTML."
+      tags:
+        - "Demo"
+      description: "Display the demo view."
       responses:
         "200":
           description: "OK"
@@ -118,6 +144,8 @@ paths:
                   description: "HTML document"
                   value: ""
     post:
+      tags:
+        - "Demo"
       description: "Create a batch of demo records."
       parameters:
         - name: "count"
@@ -146,6 +174,8 @@ paths:
                   value: ""
   /demo/json:
     get:
+      tags:
+        - "Demo"
       description: "Return all demo records as JSON."
       parameters:
         - name: "sort"
@@ -164,6 +194,8 @@ paths:
                 $ref: "#/components/schemas/Page_? extends Employment"
   /events:
     get:
+      tags:
+        - "System"
       description: "Server-Sent Events (SSE) endpoint."
       responses:
         "500":
@@ -174,6 +206,8 @@ paths:
                 type: "string"
   /health:
     get:
+      tags:
+        - "System"
       description: "Healthcheck providing the current operational status."
       responses:
         "200":
@@ -184,7 +218,10 @@ paths:
                 $ref: "#/components/schemas/HealthCheck"
   /rbac/dashboard:
     get:
-      description: ""
+      tags:
+        - "RBAC"
+      description: "Opens the RBAC dashboard. Redirects to the login screen if the\
+        \ session context is invalid."
       parameters:
         - name: "role"
           in: "query"
@@ -213,7 +250,10 @@ paths:
                   description: "HTML document"
                   value: ""
     post:
-      description: ""
+      tags:
+        - "RBAC"
+      description: "Processes updates to RBAC settings based on actor submissions\
+        \ from the dashboard form."
       parameters:
         - name: "role"
           in: "query"
@@ -252,7 +292,9 @@ paths:
                   value: ""
   /rbac/login:
     get:
-      description: "Redirects actors to the dashboard if they have an existing session\
+      tags:
+        - "RBAC"
+      description: "Redirects actors to the dashboard if they have an existing session,\
         \ <br> or to the login page if no valid session is found."
       responses:
         "302":
@@ -276,7 +318,9 @@ paths:
                   description: "HTML document"
                   value: ""
     post:
-      description: ""
+      tags:
+        - "RBAC"
+      description: "Redirects actors to the dashboard after successful authentication."
       responses:
         "302":
           description: "Found <br> Redirect"
@@ -290,6 +334,8 @@ paths:
                   value: "/rbac/dashboard"
   /rbac/logout:
     post:
+      tags:
+        - "RBAC"
       description: "Clears the session and redirects to the login page."
       responses:
         "302":
@@ -304,6 +350,8 @@ paths:
                   value: "/rbac/login"
   /scheduler/audit:
     get:
+      tags:
+        - "Scheduler - Maintenance"
       description: "Returns all existing audit logs for the scheduler."
       responses:
         "200":
@@ -316,6 +364,8 @@ paths:
                   $ref: "#/components/schemas/AuditLog"
   /scheduler/audit/{name}/{group}:
     get:
+      tags:
+        - "Scheduler - Maintenance"
       description: "Returns the audit log for a specific task."
       parameters:
         - name: "name"
@@ -348,6 +398,8 @@ paths:
                   $ref: "#/components/schemas/AuditLog"
   /scheduler/dashboard:
     get:
+      tags:
+        - "Scheduler - Maintenance"
       description: "The scheduler dashboard route."
       parameters:
         - name: "group"
@@ -374,6 +426,8 @@ paths:
                     fragments: "null"
   /scheduler/pause:
     post:
+      tags:
+        - "Scheduler - Maintenance"
       description: "Pauses all the scheduler tasks."
       responses:
         "200":
@@ -384,6 +438,8 @@ paths:
                 $ref: "#/components/schemas/TaskStateChange"
   /scheduler/restart:
     post:
+      tags:
+        - "Scheduler - Maintenance"
       description: "Restart the task scheduler."
       parameters:
         - name: "interrupt"
@@ -400,6 +456,8 @@ paths:
                 type: "string"
   /scheduler/resume:
     post:
+      tags:
+        - "Scheduler - Maintenance"
       description: "Resume all the scheduler tasks."
       responses:
         "200":
@@ -410,6 +468,8 @@ paths:
                 $ref: "#/components/schemas/TaskStateChange"
   /scheduler/state:
     get:
+      tags:
+        - "Scheduler - Maintenance"
       description: "Returns the state of the task scheduler."
       responses:
         "200":
@@ -420,6 +480,8 @@ paths:
                 type: "string"
   /scheduler/task:
     delete:
+      tags:
+        - "Scheduler"
       description: "Deletes all scheduler tasks."
       responses:
         "200":
@@ -430,6 +492,8 @@ paths:
                 type: "integer"
                 format: "int32"
     get:
+      tags:
+        - "Scheduler"
       description: "Gets all scheduler tasks."
       parameters:
         - name: "group"
@@ -448,6 +512,8 @@ paths:
                   $ref: "#/components/schemas/TaskSchedule"
   /scheduler/task/{name}/{group}:
     delete:
+      tags:
+        - "Scheduler"
       description: "Deletes a concrete scheduler task."
       parameters:
         - name: "name"
@@ -470,6 +536,8 @@ paths:
                 format: "int32"
   /scheduler/task/{name}/{group}/pause:
     post:
+      tags:
+        - "Scheduler"
       description: "Pause a concrete scheduler task."
       parameters:
         - name: "name"
@@ -491,6 +559,8 @@ paths:
                 $ref: "#/components/schemas/TaskStateChange"
   /scheduler/task/{name}/{group}/resend:
     post:
+      tags:
+        - "Scheduler"
       description: "Resends a concrete scheduler task."
       parameters:
         - name: "name"
@@ -512,6 +582,8 @@ paths:
                 type: "object"
   /scheduler/task/{name}/{group}/resume:
     post:
+      tags:
+        - "Scheduler"
       description: "Resume a concrete scheduled task."
       parameters:
         - name: "name"
@@ -533,6 +605,8 @@ paths:
                 $ref: "#/components/schemas/TaskStateChange"
   /scheduler/task/group:
     get:
+      tags:
+        - "Scheduler"
       description: "Gets all scheduler task groups."
       responses:
         "200":
@@ -545,6 +619,8 @@ paths:
                   type: "string"
   /snowflake/{id}:
     get:
+      tags:
+        - "System"
       description: "Snowflake parser to read back the components of a snowflake ID."
       parameters:
         - name: "id"
@@ -561,6 +637,8 @@ paths:
                 $ref: "#/components/schemas/SnowflakeData"
   /v1/employees:
     delete:
+      tags:
+        - "Employee"
       description: "Delete all employees."
       responses:
         "200":
@@ -571,6 +649,8 @@ paths:
                 type: "integer"
                 format: "int32"
     get:
+      tags:
+        - "Employee"
       description: "Find all employees."
       parameters:
         - name: "sort"
@@ -588,6 +668,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/Page_? extends Employee"
     post:
+      tags:
+        - "Employee"
       description: "Create a new employee."
       requestBody:
         content:
@@ -610,7 +692,9 @@ paths:
                 $ref: "#/components/schemas/Employee"
   /v1/employees/{employee_id}:
     delete:
-      description: "Delete an employee by ID."
+      tags:
+        - "Employee"
+      description: "Deletes an employee by ID."
       parameters:
         - name: "employee_id"
           in: "path"
@@ -632,6 +716,8 @@ paths:
                 type: "integer"
                 format: "int32"
     get:
+      tags:
+        - "Employee"
       description: "Find an employee by ID."
       parameters:
         - name: "employee_id"
@@ -653,6 +739,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/Employee"
     put:
+      tags:
+        - "Employee"
       description: "Update an employee by ID."
       parameters:
         - name: "employee_id"
@@ -681,6 +769,8 @@ paths:
                 $ref: "#/components/schemas/Employee"
   /v1/employees/{employee_id}/employments:
     delete:
+      tags:
+        - "Employment"
       description: "Delete all employments for an employee ID."
       parameters:
         - name: "employee_id"
@@ -703,6 +793,8 @@ paths:
                 type: "integer"
                 format: "int32"
     get:
+      tags:
+        - "Employment"
       description: "Find all employments for an employee ID."
       parameters:
         - name: "employee_id"
@@ -726,6 +818,8 @@ paths:
                 items:
                   $ref: "#/components/schemas/Employment"
     post:
+      tags:
+        - "Employment"
       description: "Create a new employment."
       parameters:
         - name: "employee_id"
@@ -754,6 +848,8 @@ paths:
                 $ref: "#/components/schemas/Employment"
   /v1/employees/{employee_id}/employments/{employment_id}:
     delete:
+      tags:
+        - "Employment"
       description: "Delete an employment by ID."
       parameters:
         - name: "employment_id"
@@ -781,6 +877,8 @@ paths:
                 type: "integer"
                 format: "int32"
     get:
+      tags:
+        - "Employment"
       description: "Find an employment by ID."
       parameters:
         - name: "employment_id"
@@ -807,6 +905,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/Employment"
     put:
+      tags:
+        - "Employment"
       description: "Update an employment by ID."
       parameters:
         - name: "employee_id"
@@ -840,6 +940,8 @@ paths:
                 $ref: "#/components/schemas/Employment"
   /v1/employees/search:
     post:
+      tags:
+        - "Employee"
       description: "Search (Filter) employees."
       parameters:
         - name: "sort"
@@ -1246,14 +1348,8 @@ components:
         - "database"
         - "endpoints"
     Uuid:
-      type: "object"
-      properties:
-        mostSignificantBits:
-          type: "integer"
-          format: "int64"
-        leastSignificantBits:
-          type: "integer"
-          format: "int64"
+      type: "string"
+      format: "uuid"
     Meta:
       type: "object"
       properties:

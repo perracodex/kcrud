@@ -54,19 +54,19 @@ internal interface IContactRepository {
      * Creates a new contact for an employee.
      *
      * @param employeeId The id of the employee to create the contact for.
-     * @param contactRequest The details of the contact to be created.
+     * @param request The details of the contact to be created.
      * @return The id of the created contact.
      */
-    fun create(employeeId: Uuid, contactRequest: ContactRequest): Uuid
+    fun create(employeeId: Uuid, request: ContactRequest): Uuid
 
     /**
      * Updates the contact of an employee.
      *
      * @param contactId The id of the contact to be updated.
-     * @param contactRequest The new details for the contact.
+     * @param request The new details for the contact.
      * @return The number of updated records.
      */
-    fun update(employeeId: Uuid, contactId: Uuid, contactRequest: ContactRequest): Int
+    fun update(employeeId: Uuid, contactId: Uuid, request: ContactRequest): Int
 
     /**
      * Deletes the contact of an employee.

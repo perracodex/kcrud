@@ -229,12 +229,12 @@ internal class RbacService(
     ): RbacRole = withContext(Dispatchers.IO) {
         tracer.info("Creating new role: ${roleRequest.roleName}")
 
-        val role: RbacRole = roleRepository.createAndGet(roleRequest = roleRequest)
+        val newRole: RbacRole = roleRepository.create(roleRequest = roleRequest)
 
         // After creating the role must refresh the cache to reflect the new role.
         refreshActors()
 
-        return@withContext role
+        return@withContext newRole
     }
 
     /**
@@ -251,7 +251,7 @@ internal class RbacService(
     ): RbacRole? = withContext(Dispatchers.IO) {
         tracer.info("Updating role with ID: $roleId")
 
-        val updateCount: Int = roleRepository.update(
+        val updatedRole: RbacRole? = roleRepository.update(
             roleId = roleId,
             roleRequest = roleRequest
         )
@@ -259,11 +259,7 @@ internal class RbacService(
         // After updating the role must refresh the cache to reflect the changes.
         refreshActors()
 
-        return@withContext if (updateCount > 0) {
-            roleRepository.findById(roleId = roleId)
-        } else {
-            null
-        }
+        return@withContext updatedRole
     }
 
     /**

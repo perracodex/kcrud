@@ -6,7 +6,6 @@ package kcrud.domain.employee.repository
 
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
-import kcrud.domain.employee.errors.EmployeeError
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeFilterSet
 import kcrud.domain.employee.model.EmployeeRequest
@@ -24,16 +23,6 @@ internal interface IEmployeeRepository {
      * @return The resolved [Employee] if found, null otherwise.
      */
     fun findById(employeeId: Uuid): Employee?
-
-    /**
-     * Retrieves an employee by its ID,
-     * or throws an exception if the employee is not found.
-     *
-     * @param employeeId The ID of the employee to be retrieved.
-     * @return The resolved [Employee] if found, null otherwise.
-     * @throws EmployeeError.EmployeeNotFound If the employee is not found.
-     */
-    fun findByIdOrThrow(employeeId: Uuid): Employee
 
     /**
      * Retrieves all employees.
@@ -55,36 +44,19 @@ internal interface IEmployeeRepository {
     /**
      * Creates a new employee.
      *
-     * @param employeeRequest The employee to be created.
-     * @return The ID of the created employee.
+     * @param request The employee to be created.
+     * @return The newly created Employee.
      */
-    fun create(employeeRequest: EmployeeRequest): Uuid
-
-    /**
-     * Creates a new employee and returns it.
-     *
-     * @param employeeRequest The employee to be created.
-     * @return The newly created [Employee].
-     */
-    fun createAndGet(employeeRequest: EmployeeRequest): Employee
+    fun create(request: EmployeeRequest): Employee
 
     /**
      * Updates an employee's details.
      *
      * @param employeeId The ID of the employee to be updated.
-     * @param employeeRequest The new details for the employee.
-     * @return The number of updated records.
+     * @param request The new details for the employee.
+     * @return The updated [Employee], or null if the employee was not found.
      */
-    fun update(employeeId: Uuid, employeeRequest: EmployeeRequest): Int
-
-    /**
-     * Updates an employee's details and returns it.
-     *
-     * @param employeeId The ID of the employee to be updated.
-     * @param employeeRequest The new details for the employee.
-     * @return The updated [Employee].
-     */
-    fun updateAndGet(employeeId: Uuid, employeeRequest: EmployeeRequest): Employee
+    fun update(employeeId: Uuid, request: EmployeeRequest): Employee?
 
     /**
      * Deletes an employee using the provided ID.

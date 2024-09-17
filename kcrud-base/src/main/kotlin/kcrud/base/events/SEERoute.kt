@@ -17,8 +17,10 @@ import io.ktor.server.routing.*
  * sent to the client.
  */
 public fun Route.sseRoute() {
-
-    // Server-Sent Events (SSE) endpoint.
+    /**
+     * Server-Sent Events (SSE) endpoint.
+     * @OpenAPITag System
+     */
     get("/events") {
         call.response.header(HttpHeaders.ContentType, ContentType.Text.EventStream.toString())
         call.response.cacheControl(CacheControl.NoCache(visibility = null))

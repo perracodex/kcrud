@@ -136,13 +136,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         fetch(`/demo/json?${params}`)
             .then(response => response.json())
-            .then(data => {
-                totalPages = data.totalPages;
-                totalLoadedRecords += data.content.length;
+            .then(page => {
+                totalPages = page.details.totalPages;
+                totalLoadedRecords += page.content.length;
                 closeInfoCard();
-                appendRecords(data);
-                updatePageDetails(data);
-                updateTotalElements(data.totalElements);
+                appendRecords(page);
+                updatePageDetails(page.details);
+                updateTotalElements(page.details.totalElements);
                 setupTableInteractivity();
 
                 if (container.scrollHeight <= container.clientHeight && currentPage < totalPages) {
@@ -155,12 +155,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * Appends records to the container.
-     * @param {Object} page - The page data containing record information.
+     * @param {Object} page - The page content data containing record information.
      */
     function appendRecords(page) {
         // Create a document fragment to minimize re-flows and repaints.
         const fragment = document.createDocumentFragment();
-        let startIndex = page.pageIndex * page.elementsPerPage;
+        let startIndex = page.details.pageIndex * page.details.elementsPerPage;
 
         page.content.forEach((employment) => {
             const employee = employment.employee;
@@ -205,18 +205,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * Updates the page detail information.
-     * @param {Object} page - The page data containing details.
+     * @param {Object} pageDetails - The page data containing details.
      */
-    function updatePageDetails(page) {
+    function updatePageDetails(pageDetails) {
         const detailsDiv = document.querySelector('.page-details');
-        const loadedPages = page.totalElements === 0 ? 0 : (page.pageIndex + 1); // Adjust because of zero-based indexing.
+        const loadedPages = pageDetails.totalElements === 0 ? 0 : (pageDetails.pageIndex + 1); // Adjust because of zero-based indexing.
 
         detailsDiv.innerHTML =
             `Loaded Pages: ${loadedPages}, ` +
             `Loaded Records: ${totalLoadedRecords.toLocaleString()}, ` +
-            `Records per Page: ${page.elementsPerPage.toLocaleString()}, ` +
-            `Total Pages: ${page.totalPages.toLocaleString()}, ` +
-            `Total Records: ${page.totalElements.toLocaleString()}`;
+            `Records per Page: ${pageDetails.elementsPerPage.toLocaleString()}, ` +
+            `Total Pages: ${pageDetails.totalPages.toLocaleString()}, ` +
+            `Total Records: ${pageDetails.totalElements.toLocaleString()}`;
     }
 
     /**

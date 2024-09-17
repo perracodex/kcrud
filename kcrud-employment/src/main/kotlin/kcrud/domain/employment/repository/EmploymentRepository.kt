@@ -12,7 +12,6 @@ import kcrud.base.env.SessionContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.pagination.paginate
-import kcrud.domain.employment.errors.EmploymentError
 import kcrud.domain.employment.model.Employment
 import kcrud.domain.employment.model.EmploymentRequest
 import org.jetbrains.exposed.sql.*
@@ -66,11 +65,6 @@ internal class EmploymentRepository(
         }
     }
 
-    override fun findByIdOrThrow(employeeId: Uuid, employmentId: Uuid): Employment {
-        return findById(employeeId = employeeId, employmentId = employmentId)
-            ?: throw EmploymentError.EmploymentNotFound(employeeId = employeeId, employmentId = employmentId)
-    }
-
     override fun findByEmployeeId(employeeId: Uuid): List<Employment> {
         return transactionWithSchema(schema = sessionContext.schema) {
             EmploymentTable
@@ -84,42 +78,36 @@ internal class EmploymentRepository(
         }
     }
 
-    override fun create(employeeId: Uuid, employmentRequest: EmploymentRequest): Uuid {
+    override fun create(employeeId: Uuid, request: EmploymentRequest): Employment {
         return transactionWithSchema(schema = sessionContext.schema) {
-            EmploymentTable.insert { employmentRow ->
+            val employmentId: Uuid = EmploymentTable.insert { employmentRow ->
                 employmentRow.mapEmploymentRequest(
                     employeeId = employeeId,
-                    employmentRequest = employmentRequest
+                    request = request
                 )
             } get EmploymentTable.id
-        }
+
+            findById(employeeId = employeeId, employmentId = employmentId)
+        } ?: throw IllegalStateException("Failed to create Employment.")
     }
 
-    override fun createAndGet(employeeId: Uuid, employmentRequest: EmploymentRequest): Employment {
+    override fun update(employeeId: Uuid, employmentId: Uuid, request: EmploymentRequest): Employment? {
         return transactionWithSchema(schema = sessionContext.schema) {
-            val employmentId: Uuid = create(employeeId = employeeId, employmentRequest = employmentRequest)
-            findByIdOrThrow(employeeId = employeeId, employmentId = employmentId)
-        }
-    }
-
-    override fun update(employeeId: Uuid, employmentId: Uuid, employmentRequest: EmploymentRequest): Int {
-        return transactionWithSchema(schema = sessionContext.schema) {
-            EmploymentTable.update(where = {
+            val updateCount: Int = EmploymentTable.update(where = {
                 (EmploymentTable.employeeId eq employeeId) and
                         (EmploymentTable.id eq employmentId)
             }) { employmentRow ->
                 employmentRow.mapEmploymentRequest(
                     employeeId = employeeId,
-                    employmentRequest = employmentRequest
+                    request = request
                 )
             }
-        }
-    }
 
-    override fun updateAndGet(employeeId: Uuid, employmentId: Uuid, employmentRequest: EmploymentRequest): Employment {
-        return transactionWithSchema(schema = sessionContext.schema) {
-            update(employeeId = employeeId, employmentId = employmentId, employmentRequest = employmentRequest)
-            findByIdOrThrow(employeeId = employeeId, employmentId = employmentId)
+            if (updateCount > 0) {
+                findById(employeeId = employeeId, employmentId = employmentId)
+            } else {
+                null
+            }
         }
     }
 
@@ -151,17 +139,14 @@ internal class EmploymentRepository(
      * Populates an SQL [UpdateBuilder] with data from an [EmploymentRequest] instance,
      * so that it can be used to update or create a database record.
      */
-    private fun UpdateBuilder<Int>.mapEmploymentRequest(
-        employeeId: Uuid,
-        employmentRequest: EmploymentRequest
-    ) {
+    private fun UpdateBuilder<Int>.mapEmploymentRequest(employeeId: Uuid, request: EmploymentRequest) {
         this[EmploymentTable.employeeId] = employeeId
-        this[EmploymentTable.status] = employmentRequest.status
-        this[EmploymentTable.probationEndDate] = employmentRequest.probationEndDate
-        this[EmploymentTable.workModality] = employmentRequest.workModality
-        this[EmploymentTable.isActive] = employmentRequest.period.isActive
-        this[EmploymentTable.startDate] = employmentRequest.period.startDate
-        this[EmploymentTable.endDate] = employmentRequest.period.endDate
-        this[EmploymentTable.comments] = employmentRequest.period.comments?.trim()
+        this[EmploymentTable.status] = request.status
+        this[EmploymentTable.probationEndDate] = request.probationEndDate
+        this[EmploymentTable.workModality] = request.workModality
+        this[EmploymentTable.isActive] = request.period.isActive
+        this[EmploymentTable.startDate] = request.period.startDate
+        this[EmploymentTable.endDate] = request.period.endDate
+        this[EmploymentTable.comments] = request.period.comments?.trim()
     }
 }

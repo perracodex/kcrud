@@ -86,7 +86,7 @@ class StressTest : KoinComponent {
             )
 
             async {
-                employeeService.create(employeeRequest = request)
+                employeeService.create(request = request).getOrThrow()
             }
         }
 
@@ -142,7 +142,7 @@ class StressTest : KoinComponent {
                 }
             )
 
-            employeeService.create(employeeRequest = request)
+            employeeService.create(request = request).getOrThrow()
         }
 
         // Verify all employees.

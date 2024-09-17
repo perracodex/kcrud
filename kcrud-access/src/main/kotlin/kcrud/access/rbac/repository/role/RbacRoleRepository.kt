@@ -43,11 +43,6 @@ internal class RbacRoleRepository(
         }
     }
 
-    override fun findByIdOrThrow(roleId: Uuid): RbacRole {
-        return findById(roleId = roleId)
-            ?: throw IllegalStateException("Role not found with ID: $roleId")
-    }
-
     override fun findByActorId(actorId: Uuid): RbacRole? {
         return transaction {
             // Filter out the Actor table columns. Only include the RBAC columns.
@@ -70,11 +65,6 @@ internal class RbacRoleRepository(
         }
     }
 
-    override fun findByActorIdOrThrow(actorId: Uuid): RbacRole {
-        return findByActorId(actorId = actorId)
-            ?: throw IllegalStateException("Role not found for actor with ID: $actorId")
-    }
-
     override fun findAll(): List<RbacRole> {
         return transaction {
             RbacRoleTable
@@ -88,7 +78,7 @@ internal class RbacRoleRepository(
         }
     }
 
-    override fun create(roleRequest: RbacRoleRequest): Uuid {
+    override fun create(roleRequest: RbacRoleRequest): RbacRole {
         return transaction {
             val roleId: Uuid = RbacRoleTable.insert { roleRow ->
                 roleRow.mapRoleRequest(roleRequest = roleRequest)
@@ -102,18 +92,12 @@ internal class RbacRoleRepository(
                 )
             }
 
-            roleId
+            findById(roleId = roleId)
+                ?: throw IllegalStateException("New record not found.")
         }
     }
 
-    override fun createAndGet(roleRequest: RbacRoleRequest): RbacRole {
-        return transaction {
-            val roleId: Uuid = create(roleRequest = roleRequest)
-            findByIdOrThrow(roleId = roleId)
-        }
-    }
-
-    override fun update(roleId: Uuid, roleRequest: RbacRoleRequest): Int {
+    override fun update(roleId: Uuid, roleRequest: RbacRoleRequest): RbacRole? {
         return transaction {
             val updateCount: Int = RbacRoleTable.update(
                 where = {
@@ -129,9 +113,11 @@ internal class RbacRoleRepository(
                     roleId = roleId,
                     scopeRuleRequests = roleRequest.scopeRules
                 )
-            }
 
-            updateCount
+                findById(roleId = roleId)
+            } else {
+                null
+            }
         }
     }
 
