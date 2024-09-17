@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.base.scheduler.api.scheduler
+package kcrud.base.scheduler.api.scheduler.operate
 
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -12,15 +12,15 @@ import kcrud.base.scheduler.model.task.TaskStateChange
 import kcrud.base.scheduler.service.core.SchedulerService
 
 /**
- * Resume all the scheduler tasks.
+ * Pauses all the scheduler tasks.
  */
-internal fun Route.resumeSchedulerRoute() {
+internal fun Route.pauseSchedulerRoute() {
     /**
-     * Resume all the scheduler tasks.
+     * Pauses all the scheduler tasks.
      * @OpenAPITag Scheduler - Maintenance
      */
-    post("scheduler/resume") {
-        val state: TaskStateChange = SchedulerService.resume()
+    post("scheduler/pause") {
+        val state: TaskStateChange = SchedulerService.pause()
         call.respond(status = HttpStatusCode.OK, message = state)
     }
 }

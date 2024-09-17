@@ -8,10 +8,10 @@ import io.ktor.server.http.content.*
 import io.ktor.server.routing.*
 import kcrud.base.scheduler.api.scheduler.audit.schedulerAllAuditRoute
 import kcrud.base.scheduler.api.scheduler.audit.schedulerAuditByTaskRoute
-import kcrud.base.scheduler.api.scheduler.pauseSchedulerRoute
-import kcrud.base.scheduler.api.scheduler.restartSchedulerRoute
-import kcrud.base.scheduler.api.scheduler.resumeSchedulerRoute
-import kcrud.base.scheduler.api.scheduler.schedulerStateRoute
+import kcrud.base.scheduler.api.scheduler.operate.pauseSchedulerRoute
+import kcrud.base.scheduler.api.scheduler.operate.restartSchedulerRoute
+import kcrud.base.scheduler.api.scheduler.operate.resumeSchedulerRoute
+import kcrud.base.scheduler.api.scheduler.operate.schedulerStateRoute
 import kcrud.base.scheduler.api.tasks.delete.deleteAllSchedulerTasksRoute
 import kcrud.base.scheduler.api.tasks.delete.deleteSchedulerTaskRoute
 import kcrud.base.scheduler.api.tasks.get.getSchedulerTaskGroupsRoute

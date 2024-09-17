@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.base.scheduler.api.scheduler
+package kcrud.base.scheduler.api.scheduler.operate
 
 import io.ktor.http.*
 import io.ktor.server.application.*
