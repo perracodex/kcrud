@@ -51,7 +51,7 @@ public data class SessionContext(
          * The default empty session context instance. when security is disabled
          * or the actor is not authenticated.
          */
-        private val defaultEmptyInstance: SessionContext by lazy {
+        private val emptySessionContext: SessionContext by lazy {
             SessionContext(
                 actorId = "00000000-0000-0000-0000-000000000000".toUuid(),
                 username = "no-actor",
@@ -75,7 +75,7 @@ public data class SessionContext(
          */
         public fun from(call: ApplicationCall): SessionContext? {
             return call.principal<SessionContext>()
-                ?: if (AppSettings.security.isEnabled) null else defaultEmptyInstance
+                ?: if (AppSettings.security.isEnabled) null else emptySessionContext
         }
     }
 }
