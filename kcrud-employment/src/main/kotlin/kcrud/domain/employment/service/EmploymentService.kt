@@ -61,12 +61,12 @@ public class EmploymentService internal constructor(
      *
      * @param employeeId The employee ID associated with the employment.
      * @param request The [EmploymentRequest] to be created.
-     * @return A [Result] with the updated [Employment] or null if such does not exist; or an error on failure.
+     * @return A [Result] with the created [Employment] or null if employee does not exist; or an error on failure.
      */
     public suspend fun create(
         employeeId: Uuid,
         request: EmploymentRequest
-    ): Result<Employment> {
+    ): Result<Employment?> {
         tracer.debug("Creating employment for employee with ID: $employeeId")
 
         return verify(

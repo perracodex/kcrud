@@ -57,6 +57,28 @@ internal sealed class EmploymentError(
     }
 
     /**
+     * Error for when an employee is not found for a concrete employment.
+     *
+     * @param employeeId The employee id that was not found.
+     */
+    class EmployeeNotFound(
+        employeeId: Uuid,
+        reason: String? = null,
+        cause: Throwable? = null
+    ) : EmploymentError(
+        statusCode = STATUS_CODE,
+        errorCode = ERROR_CODE,
+        description = "Employee not found. Employee Id: $employeeId.",
+        reason = reason,
+        cause = cause
+    ) {
+        companion object {
+            val STATUS_CODE: HttpStatusCode = HttpStatusCode.NotFound
+            const val ERROR_CODE: String = "EMPLOYEE_NOT_FOUND"
+        }
+    }
+
+    /**
      * Error when there is an inconsistency in the period dates,
      * where the end date is prior to the start date.
      *

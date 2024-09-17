@@ -45,9 +45,9 @@ internal interface IEmploymentRepository {
      *
      * @param employeeId The employee ID associated with the employment.
      * @param request The [EmploymentRequest] to be created.
-     * @return The created [Employment].
+     * @return The created [Employment], or null if the employee was not found.
      */
-    fun create(employeeId: Uuid, request: EmploymentRequest): Employment
+    fun create(employeeId: Uuid, request: EmploymentRequest): Employment?
 
     /**
      * Updates an employment's details.
@@ -82,4 +82,12 @@ internal interface IEmploymentRepository {
      * @return The total count of existing records.
      */
     fun count(employeeId: Uuid? = null): Int
+
+    /**
+     * Checks if an employee exists.
+     *
+     * @param employeeId The employee ID to check.
+     * @return True if the employee exists, false otherwise.
+     */
+    fun employeeExists(employeeId: Uuid): Boolean
 }

@@ -4,6 +4,7 @@
 
 package kcrud.domain.employment.repository
 
+import kcrud.base.database.extensions.exists
 import kcrud.base.database.schema.contact.ContactTable
 import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.database.schema.employment.EmploymentTable
@@ -78,25 +79,31 @@ internal class EmploymentRepository(
         }
     }
 
-    override fun create(employeeId: Uuid, request: EmploymentRequest): Employment {
+    override fun create(employeeId: Uuid, request: EmploymentRequest): Employment? {
         return transactionWithSchema(schema = sessionContext.schema) {
-            val employmentId: Uuid = EmploymentTable.insert { employmentRow ->
-                employmentRow.mapEmploymentRequest(
-                    employeeId = employeeId,
-                    request = request
-                )
-            } get EmploymentTable.id
+            if (employeeExists(employeeId = employeeId)) {
+                val employmentId: Uuid = EmploymentTable.insert { employmentRow ->
+                    employmentRow.mapEmploymentRequest(
+                        employeeId = employeeId,
+                        request = request
+                    )
+                } get EmploymentTable.id
 
-            findById(employeeId = employeeId, employmentId = employmentId)
-        } ?: throw IllegalStateException("Failed to create Employment.")
+                findById(employeeId = employeeId, employmentId = employmentId)
+                    ?: throw IllegalStateException("Failed to create Employment.")
+            } else {
+                null
+            }
+        }
     }
 
     override fun update(employeeId: Uuid, employmentId: Uuid, request: EmploymentRequest): Employment? {
         return transactionWithSchema(schema = sessionContext.schema) {
-            val updateCount: Int = EmploymentTable.update(where = {
-                (EmploymentTable.employeeId eq employeeId) and
-                        (EmploymentTable.id eq employmentId)
-            }) { employmentRow ->
+            val updateCount: Int = EmploymentTable.update(
+                where = {
+                    (EmploymentTable.employeeId eq employeeId) and (EmploymentTable.id eq employmentId)
+                }
+            ) { employmentRow ->
                 employmentRow.mapEmploymentRequest(
                     employeeId = employeeId,
                     request = request
@@ -130,8 +137,14 @@ internal class EmploymentRepository(
     override fun count(employeeId: Uuid?): Int {
         return transactionWithSchema(schema = sessionContext.schema) {
             employeeId?.let { id ->
-                EmploymentTable.select(column = EmploymentTable.employeeId eq id).count().toInt()
+                EmploymentTable.selectAll().where { EmploymentTable.employeeId eq id }.count().toInt()
             } ?: EmploymentTable.selectAll().count().toInt()
+        }
+    }
+
+    override fun employeeExists(employeeId: Uuid): Boolean {
+        return transactionWithSchema(schema = sessionContext.schema) {
+            EmployeeTable.selectAll().where { EmployeeTable.id eq employeeId }.exists()
         }
     }
 
