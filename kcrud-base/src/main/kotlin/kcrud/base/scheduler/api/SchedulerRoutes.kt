@@ -14,16 +14,24 @@ import kcrud.base.scheduler.api.scheduler.operate.resumeSchedulerRoute
 import kcrud.base.scheduler.api.scheduler.operate.schedulerStateRoute
 import kcrud.base.scheduler.api.tasks.delete.deleteAllSchedulerTasksRoute
 import kcrud.base.scheduler.api.tasks.delete.deleteSchedulerTaskRoute
-import kcrud.base.scheduler.api.tasks.get.getSchedulerTaskGroupsRoute
-import kcrud.base.scheduler.api.tasks.get.getSchedulerTasksRoute
+import kcrud.base.scheduler.api.tasks.fetch.getSchedulerTaskGroupsRoute
+import kcrud.base.scheduler.api.tasks.fetch.getSchedulerTasksRoute
 import kcrud.base.scheduler.api.tasks.operate.pauseSchedulerTaskRoute
 import kcrud.base.scheduler.api.tasks.operate.resendSchedulerTaskRoute
 import kcrud.base.scheduler.api.tasks.operate.resumeSchedulerTaskRoute
 import kcrud.base.scheduler.api.view.schedulerDashboardRoute
 
 /**
+ * Annotation for controlled access to the Scheduler Routes API.
+ */
+@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Scheduler Routes API.")
+@Retention(AnnotationRetention.BINARY)
+internal annotation class SchedulerRouteAPI
+
+/**
  * Route administers all scheduled tasks, allowing to list and delete them.
  */
+@OptIn(SchedulerRouteAPI::class)
 public fun Route.schedulerRoutes() {
 
     // Sets up the routing to serve resources as static content for the scheduler.

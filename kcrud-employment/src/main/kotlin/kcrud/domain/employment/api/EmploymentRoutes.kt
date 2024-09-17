@@ -8,13 +8,19 @@ import io.ktor.server.routing.*
 import kcrud.access.rbac.plugin.withRbac
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacScope
-import kcrud.domain.employment.api.annotation.EmploymentRouteAPI
-import kcrud.domain.employment.api.endpoints.delete.deleteEmploymentByEmployeeIdRoute
-import kcrud.domain.employment.api.endpoints.delete.deleteEmploymentByIdRoute
-import kcrud.domain.employment.api.endpoints.get.findEmploymentByEmployeeIdRoute
-import kcrud.domain.employment.api.endpoints.get.findEmploymentByIdRoute
-import kcrud.domain.employment.api.endpoints.operate.createEmploymentRoute
-import kcrud.domain.employment.api.endpoints.operate.updateEmploymentByIdRoute
+import kcrud.domain.employment.api.delete.deleteEmploymentByEmployeeIdRoute
+import kcrud.domain.employment.api.delete.deleteEmploymentByIdRoute
+import kcrud.domain.employment.api.fetch.findEmploymentByEmployeeIdRoute
+import kcrud.domain.employment.api.fetch.findEmploymentByIdRoute
+import kcrud.domain.employment.api.operate.createEmploymentRoute
+import kcrud.domain.employment.api.operate.updateEmploymentByIdRoute
+
+/**
+ * Annotation for controlled access to the Employment Routes API.
+ */
+@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Employment Routes API.")
+@Retention(AnnotationRetention.BINARY)
+internal annotation class EmploymentRouteAPI
 
 /**
  * Employment endpoints.

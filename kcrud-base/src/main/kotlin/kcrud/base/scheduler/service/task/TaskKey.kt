@@ -4,7 +4,7 @@
 
 package kcrud.base.scheduler.service.task
 
-import kcrud.base.scheduler.annotation.SchedulerAPI
+import kcrud.base.scheduler.service.annotation.SchedulerAPI
 import kotlinx.serialization.Serializable
 import org.quartz.JobKey
 

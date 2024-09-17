@@ -4,7 +4,7 @@
 
 package kcrud.base.scheduler.model.audit
 
-import kcrud.base.scheduler.annotation.SchedulerAPI
+import kcrud.base.scheduler.service.annotation.SchedulerAPI
 import kcrud.base.scheduler.service.task.TaskOutcome
 import kcrud.base.utils.KLocalDateTime
 

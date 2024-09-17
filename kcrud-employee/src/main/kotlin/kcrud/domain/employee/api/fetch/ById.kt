@@ -2,34 +2,35 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.domain.employee.api.endpoints.get
+package kcrud.domain.employee.api.fetch
 
 import io.ktor.http.*
 import io.ktor.server.application.*
-import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.server.util.*
 import kcrud.base.env.SessionContext
-import kcrud.base.persistence.pagination.Page
-import kcrud.base.persistence.pagination.getPageable
-import kcrud.domain.employee.api.annotation.EmployeeRouteAPI
+import kcrud.base.persistence.utils.toUuid
+import kcrud.domain.employee.api.EmployeeRouteAPI
+import kcrud.domain.employee.errors.EmployeeError
 import kcrud.domain.employee.model.Employee
-import kcrud.domain.employee.model.EmployeeFilterSet
 import kcrud.domain.employee.service.EmployeeService
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
+import kotlin.uuid.Uuid
 
 @EmployeeRouteAPI
-internal fun Route.searchEmployeeRoute() {
+internal fun Route.findEmployeeByIdRoute() {
     /**
-     * Search (Filter) employees.
+     * Find an employee by ID.
      * @OpenAPITag Employee
      */
-    post("v1/employees/search") {
+    get("v1/employees/{employee_id}") {
+        val employeeId: Uuid = call.parameters.getOrFail(name = "employee_id").toUuid()
         val sessionContext: SessionContext? = SessionContext.from(call = call)
-        val request: EmployeeFilterSet = call.receive<EmployeeFilterSet>()
         val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }
-        val employees: Page<Employee> = service.search(filterSet = request, pageable = call.getPageable())
-        call.respond(status = HttpStatusCode.OK, message = employees)
+        val employee: Employee = service.findById(employeeId = employeeId)
+            ?: throw EmployeeError.EmployeeNotFound(employeeId = employeeId)
+        call.respond(status = HttpStatusCode.OK, message = employee)
     }
 }

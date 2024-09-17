@@ -9,6 +9,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.thymeleaf.*
 import kcrud.base.persistence.utils.toUuidOrNull
+import kcrud.base.scheduler.api.SchedulerRouteAPI
 import kcrud.base.scheduler.model.task.TaskSchedule
 import kcrud.base.scheduler.service.core.SchedulerService
 import kotlin.uuid.Uuid
@@ -16,6 +17,7 @@ import kotlin.uuid.Uuid
 /**
  * The scheduler dashboard route.
  */
+@SchedulerRouteAPI
 internal fun Route.schedulerDashboardRoute() {
     /**
      * The scheduler dashboard route.

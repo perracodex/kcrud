@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.domain.employment.api.endpoints.operate
+package kcrud.domain.employment.api.operate
 
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -12,7 +12,7 @@ import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import kcrud.base.env.SessionContext
 import kcrud.base.persistence.utils.toUuid
-import kcrud.domain.employment.api.annotation.EmploymentRouteAPI
+import kcrud.domain.employment.api.EmploymentRouteAPI
 import kcrud.domain.employment.errors.EmploymentError
 import kcrud.domain.employment.model.Employment
 import kcrud.domain.employment.model.EmploymentRequest

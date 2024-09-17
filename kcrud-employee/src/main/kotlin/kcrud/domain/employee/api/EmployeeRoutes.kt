@@ -8,14 +8,20 @@ import io.ktor.server.routing.*
 import kcrud.access.rbac.plugin.withRbac
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacScope
-import kcrud.domain.employee.api.annotation.EmployeeRouteAPI
-import kcrud.domain.employee.api.endpoints.delete.deleteAllEmployeesRoute
-import kcrud.domain.employee.api.endpoints.delete.deleteEmployeeByIdRoute
-import kcrud.domain.employee.api.endpoints.get.findAllEmployeesRoute
-import kcrud.domain.employee.api.endpoints.get.findEmployeeByIdRoute
-import kcrud.domain.employee.api.endpoints.get.searchEmployeeRoute
-import kcrud.domain.employee.api.endpoints.operate.createEmployeeRoute
-import kcrud.domain.employee.api.endpoints.operate.updateEmployeeByIdRoute
+import kcrud.domain.employee.api.delete.deleteAllEmployeesRoute
+import kcrud.domain.employee.api.delete.deleteEmployeeByIdRoute
+import kcrud.domain.employee.api.fetch.findAllEmployeesRoute
+import kcrud.domain.employee.api.fetch.findEmployeeByIdRoute
+import kcrud.domain.employee.api.fetch.searchEmployeeRoute
+import kcrud.domain.employee.api.operate.createEmployeeRoute
+import kcrud.domain.employee.api.operate.updateEmployeeByIdRoute
+
+/**
+ * Annotation for controlled access to the Employee Routes API.
+ */
+@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Employee Routes API.")
+@Retention(AnnotationRetention.BINARY)
+internal annotation class EmployeeRouteAPI
 
 /**
  * Employee related endpoints.

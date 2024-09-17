@@ -4,7 +4,7 @@
 
 package kcrud.base.scheduler.service.core
 
-import kcrud.base.scheduler.annotation.SchedulerAPI
+import kcrud.base.scheduler.service.annotation.SchedulerAPI
 import kcrud.base.settings.AppSettings
 import java.io.InputStream
 import java.util.*

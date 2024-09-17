@@ -4,8 +4,8 @@
 
 package kcrud.base.scheduler.service.task
 
-import kcrud.base.scheduler.annotation.SchedulerAPI
 import kcrud.base.scheduler.model.task.TaskStateChange
+import kcrud.base.scheduler.service.annotation.SchedulerAPI
 import org.quartz.JobDetail
 import org.quartz.JobKey
 import org.quartz.Scheduler
