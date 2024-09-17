@@ -4,13 +4,15 @@
 
 package kcrud.domain.employee.di
 
-import kcrud.base.env.SessionContext
 import kcrud.domain.contact.repository.ContactRepository
 import kcrud.domain.contact.repository.IContactRepository
 import kcrud.domain.employee.repository.EmployeeRepository
 import kcrud.domain.employee.repository.IEmployeeRepository
 import kcrud.domain.employee.service.EmployeeService
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.scopedOf
 import org.koin.dsl.module
 import org.koin.ktor.plugin.RequestScope
 
@@ -29,44 +31,28 @@ public object EmployeeDomainInjection {
             // which should only be accessed by services, do not receive it directly.
 
             scope<RequestScope> {
-                scoped<IContactRepository> {
-                    ContactRepository(sessionContext = get<SessionContext>())
+                scopedOf(::ContactRepository) {
+                    bind<IContactRepository>()
                 }
 
-                scoped<IEmployeeRepository> {
-                    EmployeeRepository(
-                        sessionContext = get<SessionContext>(),
-                        contactRepository = get<IContactRepository>()
-                    )
+                scopedOf(::EmployeeRepository) {
+                    bind<IEmployeeRepository>()
                 }
 
-                scoped<EmployeeService> { parameters ->
-                    EmployeeService(
-                        sessionContext = parameters.get<SessionContext>(),
-                        employeeRepository = get<IEmployeeRepository>()
-                    )
-                }
+                scopedOf(::EmployeeService)
             }
 
             // Definitions for non-scoped (global) access.
 
-            factory<IContactRepository> {
-                ContactRepository(sessionContext = get<SessionContext>())
+            factoryOf(::ContactRepository) {
+                bind<IContactRepository>()
             }
 
-            factory<IEmployeeRepository> {
-                EmployeeRepository(
-                    sessionContext = get<SessionContext>(),
-                    contactRepository = get<IContactRepository>()
-                )
+            factoryOf(::EmployeeRepository) {
+                bind<IEmployeeRepository>()
             }
 
-            factory<EmployeeService> { parameters ->
-                EmployeeService(
-                    sessionContext = parameters.get<SessionContext>(),
-                    employeeRepository = get<IEmployeeRepository>()
-                )
-            }
+            factoryOf(::EmployeeService)
         }
     }
 }

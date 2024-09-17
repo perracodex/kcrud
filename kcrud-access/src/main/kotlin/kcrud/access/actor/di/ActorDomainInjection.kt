@@ -8,8 +8,10 @@ import kcrud.access.actor.repository.ActorRepository
 import kcrud.access.actor.repository.IActorRepository
 import kcrud.access.actor.service.ActorService
 import kcrud.access.credential.CredentialService
-import kcrud.access.rbac.repository.role.IRbacRoleRepository
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.createdAtStart
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 /**
@@ -22,19 +24,17 @@ public object ActorDomainInjection {
      */
     public fun get(): Module {
         return module {
-            single<IActorRepository>(createdAtStart = true) {
-                ActorRepository(roleRepository = get<IRbacRoleRepository>())
+            singleOf(::ActorRepository) {
+                bind<IActorRepository>()
+                createdAtStart()
             }
 
-            single<CredentialService>(createdAtStart = true) {
-                CredentialService()
+            singleOf(::CredentialService) {
+                createdAtStart()
             }
 
-            single<ActorService>(createdAtStart = true) {
-                ActorService(
-                    roleRepository = get<IRbacRoleRepository>(),
-                    actorRepository = get<IActorRepository>()
-                )
+            singleOf(::ActorService) {
+                createdAtStart()
             }
         }
     }

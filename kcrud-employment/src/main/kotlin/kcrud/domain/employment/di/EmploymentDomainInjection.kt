@@ -4,11 +4,13 @@
 
 package kcrud.domain.employment.di
 
-import kcrud.base.env.SessionContext
 import kcrud.domain.employment.repository.EmploymentRepository
 import kcrud.domain.employment.repository.IEmploymentRepository
 import kcrud.domain.employment.service.EmploymentService
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.scopedOf
 import org.koin.dsl.module
 import org.koin.ktor.plugin.RequestScope
 
@@ -27,30 +29,20 @@ public object EmploymentDomainInjection {
             // which should only be accessed by services, do not receive it directly.
 
             scope<RequestScope> {
-                scoped<IEmploymentRepository> {
-                    EmploymentRepository(sessionContext = get<SessionContext>())
+                scopedOf(::EmploymentRepository) {
+                    bind<IEmploymentRepository>()
                 }
 
-                scoped<EmploymentService> { parameters ->
-                    EmploymentService(
-                        sessionContext = parameters.get<SessionContext>(),
-                        employmentRepository = get<IEmploymentRepository>()
-                    )
-                }
+                scopedOf(::EmploymentService)
             }
 
             // Definitions for non-scoped (global) access.
 
-            factory<IEmploymentRepository> {
-                EmploymentRepository(sessionContext = get<SessionContext>())
+            factoryOf(::EmploymentRepository) {
+                bind<IEmploymentRepository>()
             }
 
-            factory<EmploymentService> { parameters ->
-                EmploymentService(
-                    sessionContext = parameters.get<SessionContext>(),
-                    employmentRepository = get<IEmploymentRepository>()
-                )
-            }
+            factoryOf(::EmploymentService)
         }
     }
 }

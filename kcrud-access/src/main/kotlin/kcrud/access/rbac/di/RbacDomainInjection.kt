@@ -4,7 +4,6 @@
 
 package kcrud.access.rbac.di
 
-import kcrud.access.actor.repository.IActorRepository
 import kcrud.access.rbac.repository.field.IRbacFieldRuleRepository
 import kcrud.access.rbac.repository.field.RbacFieldRuleRepository
 import kcrud.access.rbac.repository.role.IRbacRoleRepository
@@ -13,6 +12,8 @@ import kcrud.access.rbac.repository.scope.IRbacScopeRuleRepository
 import kcrud.access.rbac.repository.scope.RbacScopeRuleRepository
 import kcrud.access.rbac.service.RbacService
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 /**
@@ -25,25 +26,19 @@ public object RbacDomainInjection {
      */
     public fun get(): Module {
         return module {
-            single<IRbacFieldRuleRepository> {
-                RbacFieldRuleRepository()
+            singleOf(::RbacFieldRuleRepository) {
+                bind<IRbacFieldRuleRepository>()
             }
 
-            single<IRbacScopeRuleRepository> {
-                RbacScopeRuleRepository(fieldRuleRepository = get<IRbacFieldRuleRepository>())
+            singleOf(::RbacScopeRuleRepository) {
+                bind<IRbacScopeRuleRepository>()
             }
 
-            single<IRbacRoleRepository> {
-                RbacRoleRepository(scopeRuleRepository = get<IRbacScopeRuleRepository>())
+            singleOf(::RbacRoleRepository) {
+                bind<IRbacRoleRepository>()
             }
 
-            single<RbacService> {
-                RbacService(
-                    actorRepository = get<IActorRepository>(),
-                    roleRepository = get<IRbacRoleRepository>(),
-                    scopeRuleRepository = get<IRbacScopeRuleRepository>()
-                )
-            }
+            singleOf(::RbacService)
         }
     }
 }
