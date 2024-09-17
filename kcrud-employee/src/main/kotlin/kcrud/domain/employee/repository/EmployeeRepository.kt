@@ -73,32 +73,34 @@ internal class EmployeeRepository(
     override fun search(filterSet: EmployeeFilterSet, pageable: Pageable?): Page<Employee> {
         return transactionWithSchema(schema = sessionContext.schema) {
             // Start with a base query selecting all the records.
-            val query: Query = EmployeeTable.selectAll()
+            val query: Query = EmployeeTable.selectAll().apply {
 
-            // Apply filters dynamically based on the presence of criteria in filterSet.
-            // Using lowerCase() to make the search case-insensitive.
-            // This could be removed if the database is configured to use a case-insensitive collation.
-            filterSet.firstName?.let { firstName ->
-                query.andWhere {
-                    EmployeeTable.firstName.lowerCase() like "%${firstName.lowercase()}%"
-                }
-            }
-            filterSet.lastName?.let { lastName ->
-                query.andWhere {
-                    EmployeeTable.lastName.lowerCase() like "%${lastName.lowercase()}%"
-                }
-            }
-            filterSet.honorific?.let { honorificList ->
-                if (honorificList.isNotEmpty()) {
-                    query.andWhere {
-                        EmployeeTable.honorific inList honorificList
+                // Apply filters dynamically based on the presence of criteria in filterSet.
+                // Using lowerCase() to make the search case-insensitive.
+                // This could be removed if the database is configured to use a case-insensitive collation.
+
+                filterSet.firstName?.let { firstName ->
+                    andWhere {
+                        EmployeeTable.firstName.lowerCase() like "%${firstName.lowercase()}%"
                     }
                 }
-            }
-            filterSet.maritalStatus?.let { maritalStatusList ->
-                if (maritalStatusList.isNotEmpty()) {
-                    query.andWhere {
-                        EmployeeTable.maritalStatus inList maritalStatusList
+                filterSet.lastName?.let { lastName ->
+                    andWhere {
+                        EmployeeTable.lastName.lowerCase() like "%${lastName.lowercase()}%"
+                    }
+                }
+                filterSet.honorific?.let { honorificList ->
+                    if (honorificList.isNotEmpty()) {
+                        andWhere {
+                            EmployeeTable.honorific inList honorificList
+                        }
+                    }
+                }
+                filterSet.maritalStatus?.let { maritalStatusList ->
+                    if (maritalStatusList.isNotEmpty()) {
+                        andWhere {
+                            EmployeeTable.maritalStatus inList maritalStatusList
+                        }
                     }
                 }
             }

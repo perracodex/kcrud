@@ -136,9 +136,11 @@ internal class EmploymentRepository(
 
     override fun count(employeeId: Uuid?): Int {
         return transactionWithSchema(schema = sessionContext.schema) {
-            employeeId?.let { id ->
-                EmploymentTable.selectAll().where { EmploymentTable.employeeId eq id }.count().toInt()
-            } ?: EmploymentTable.selectAll().count().toInt()
+            EmploymentTable.selectAll().apply {
+                employeeId?.let {
+                    where { EmploymentTable.employeeId eq employeeId }
+                }
+            }.count().toInt()
         }
     }
 

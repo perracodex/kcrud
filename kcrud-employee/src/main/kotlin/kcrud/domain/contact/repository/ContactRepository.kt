@@ -133,9 +133,11 @@ internal class ContactRepository(
 
     override fun count(employeeId: Uuid?): Int {
         return transactionWithSchema(schema = sessionContext.schema) {
-            employeeId?.let { id ->
-                ContactTable.selectAll().where { ContactTable.employeeId eq id }.count().toInt()
-            } ?: ContactTable.selectAll().count().toInt()
+            ContactTable.selectAll().apply {
+                employeeId?.let { id ->
+                    where { ContactTable.employeeId eq id }
+                }
+            }.count().toInt()
         }
     }
 
