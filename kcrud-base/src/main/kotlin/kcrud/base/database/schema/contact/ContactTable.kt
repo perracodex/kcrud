@@ -4,14 +4,11 @@
 
 package kcrud.base.database.schema.contact
 
-import kcrud.base.database.columns.autoGenerate
-import kcrud.base.database.columns.kotlinUuid
-import kcrud.base.database.columns.references
+import kcrud.base.database.columns.*
 import kcrud.base.database.schema.base.TimestampedTable
 import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.security.utils.EncryptionUtils
 import org.jetbrains.exposed.crypt.Encryptor
-import org.jetbrains.exposed.crypt.encryptedVarchar
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
@@ -51,7 +48,7 @@ public object ContactTable : TimestampedTable(name = "contact") {
      * The contact's email.
      * Must be a valid email.
      */
-    public val email: Column<String> = encryptedVarchar(
+    public val email: Column<String> = encryptedEmail(
         name = "email",
         cipherTextLength = encryptor.maxColLength(inputByteSize = 254),
         encryptor = encryptor,
@@ -61,7 +58,7 @@ public object ContactTable : TimestampedTable(name = "contact") {
      * The contact's phone.
      * Must be a valid phone number.
      */
-    public val phone: Column<String> = encryptedVarchar(
+    public val phone: Column<String> = encryptedPhone(
         name = "phone",
         cipherTextLength = encryptor.maxColLength(inputByteSize = 128),
         encryptor = encryptor

@@ -29,23 +29,23 @@ public object PhoneValidator {
             val numberProto: Phonenumber.PhoneNumber = phoneUtil.parse(value, null)
 
             if (!phoneUtil.isValidNumber(numberProto)) {
-                throw IllegalArgumentException("Invalid phone number. $value")
+                throw IllegalArgumentException("Invalid phone number: $value")
             }
 
             return@runCatching Result.success(Unit)
-        }.getOrElse { e ->
-            when (e) {
+        }.getOrElse { error ->
+            when (error) {
                 is NumberParseException -> {
-                    tracer.error(message = "Error parsing phone number: $value", cause = e)
-                    return@getOrElse Result.failure(RuntimeException(e.message ?: "Error parsing phone number. $value"))
+                    tracer.error(message = "Error parsing phone number: $value", cause = error)
+                    return@getOrElse Result.failure(IllegalArgumentException("Error parsing phone number: $value. ${error.message}"))
                 }
 
                 is IllegalArgumentException -> {
-                    return@getOrElse Result.failure(RuntimeException(e.message ?: "Invalid phone number."))
+                    return@getOrElse Result.failure(error)
                 }
 
                 else -> {
-                    return@getOrElse Result.failure(RuntimeException("Unexpected error: ${e.message}"))
+                    return@getOrElse Result.failure(IllegalArgumentException("Unexpected error: ${error.message}"))
                 }
             }
         }

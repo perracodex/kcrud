@@ -24,16 +24,16 @@ internal object EmailSerializer : KSerializer<String> {
     )
 
     override fun serialize(encoder: Encoder, value: String) {
-        EmailValidator.validate(value = value).onFailure {
-            throw SerializationException("Invalid email: $value")
+        EmailValidator.validate(value = value).onFailure { error ->
+            throw SerializationException(error)
         }
         encoder.encodeString(value = value)
     }
 
     override fun deserialize(decoder: Decoder): String {
         val string: String = decoder.decodeString()
-        EmailValidator.validate(value = string).onFailure {
-            throw SerializationException("Invalid email: $string")
+        EmailValidator.validate(value = string).onFailure { error ->
+            throw SerializationException(error)
         }
         return string
     }

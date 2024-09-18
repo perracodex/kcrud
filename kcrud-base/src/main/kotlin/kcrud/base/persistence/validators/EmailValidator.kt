@@ -58,12 +58,12 @@ public object EmailValidator {
      */
     public fun validate(value: String): Result<Unit> {
         if (!value.matches(regex = EMAIL_REGEX)) {
-            return Result.failure(RuntimeException("Email does not match the required format."))
+            return Result.failure(IllegalArgumentException("Email does not match the required format: $value"))
         }
 
         // Check for the maximum length of the entire email address (254 characters).
         if (value.length > MAX_EMAIL_LENGTH) {
-            return Result.failure(RuntimeException("Email exceeds the maximum length of 254 characters."))
+            return Result.failure(IllegalArgumentException("Email exceeds the maximum length of 254 characters: $value"))
         }
 
         // Splitting local and domain parts to apply specific checks.
@@ -73,17 +73,17 @@ public object EmailValidator {
 
         // Check for the maximum length of the local part (64 characters).
         if (localPart.length > MAX_LOCAL_PART_LENGTH) {
-            return Result.failure(RuntimeException("Email local part exceeds the maximum length of 64 characters."))
+            return Result.failure(IllegalArgumentException("Email local part exceeds the maximum length of 64 characters: $value"))
         }
 
         // Ensure domain part does not have consecutive dots.
         if (domainPart.contains(other = "..")) {
-            return Result.failure(RuntimeException("Email domain part contains consecutive dots."))
+            return Result.failure(IllegalArgumentException("Email domain part contains consecutive dots: $value"))
         }
 
         // Check if the local part starts or ends with a dot, or contains consecutive dots.
         if (localPart.startsWith(prefix = ".") || localPart.endsWith(suffix = ".") || localPart.contains(other = "..")) {
-            return Result.failure(RuntimeException("Email local part contains consecutive dots."))
+            return Result.failure(IllegalArgumentException("Email local part contains consecutive dots: $value"))
         }
 
         return Result.success(Unit)
