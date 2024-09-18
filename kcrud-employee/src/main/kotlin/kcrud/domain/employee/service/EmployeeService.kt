@@ -162,12 +162,11 @@ public class EmployeeService internal constructor(
      */
     private fun verifyIntegrity(employeeId: Uuid?, request: EmployeeRequest, reason: String): Result<Unit> {
         request.contact?.let { contact ->
-            val phone: String = contact.phone
-            PhoneValidator.validate(value = phone).onFailure { error ->
+            PhoneValidator.validate(value = contact.phone).onFailure { error ->
                 return Result.failure(
                     EmployeeError.InvalidPhoneFormat(
                         employeeId = employeeId,
-                        phone = phone,
+                        phone = contact.phone,
                         reason = reason,
                         cause = error
                     )
@@ -181,12 +180,11 @@ public class EmployeeService internal constructor(
             // The difference between this approach or using the EmailString serializer,
             // is that the serializer would show a generic error, and it is not aware of the context
             // in which it is being used, so it cannot provide a more contextual error detail.
-            val email: String = contact.email
-            EmailValidator.validate(value = email).onFailure { error ->
+            EmailValidator.validate(value = contact.email).onFailure { error ->
                 return Result.failure(
                     EmployeeError.InvalidEmailFormat(
                         employeeId = employeeId,
-                        email = email,
+                        email = contact.email,
                         reason = reason,
                         cause = error
                     )
