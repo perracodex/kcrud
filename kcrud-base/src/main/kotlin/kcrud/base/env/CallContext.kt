@@ -82,13 +82,13 @@ public data class CallContext(
         /**
          * Extension function to retrieve the [CallContext] from the [ApplicationCall] attributes.
          *
-         * This function is equivalent to getting [CallContext] as next:
+         * This function is equivalent to getting a [CallContext] as following:
          * ```
          *  call.principal<CallContext>()
          * ```
-         * The authentication plugins will set [CallContext] as the principal when authorizations
-         * are successful. But using directly the principal is not recommended, as it bypasses the
-         * bellow retrieval flow.
+         * Authentication plugins set a [CallContext] as the principal when authorizations
+         * are successful. But retrieving it directly from a call principal is not recommended,
+         * as it bypasses the bellow retrieval flow.
          *
          * Retrieval Flow:
          * - Attempt to retrieve a [CallContext] from the current attributes.
