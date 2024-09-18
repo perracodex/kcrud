@@ -44,26 +44,20 @@ package kcrud.base.persistence.validators
  *      • email@example...com (top-level domain has consecutive dots)
  * ```
  */
-public object EmailValidator {
+public object EmailValidator : IValidator {
     private const val MAX_EMAIL_LENGTH: Int = 254
     private const val MAX_LOCAL_PART_LENGTH: Int = 64
     private const val DOMAIN_SEPARATOR: String = "@"
     private val EMAIL_REGEX: Regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}$".toRegex()
 
-    /**
-     * Validates the given [value] as an email address.
-     *
-     * @param value The email address to be validated.
-     * @return A [Result] object containing the validation result.
-     */
-    public fun validate(value: String): Result<Unit> {
+    public override fun validate(value: String): Result<Unit> {
         if (!value.matches(regex = EMAIL_REGEX)) {
-            return Result.failure(IllegalArgumentException("Email does not match the required format: $value"))
+            return Result.failure(ValidationException("Email does not match the required format: $value"))
         }
 
         // Check for the maximum length of the entire email address (254 characters).
         if (value.length > MAX_EMAIL_LENGTH) {
-            return Result.failure(IllegalArgumentException("Email exceeds the maximum length of 254 characters: $value"))
+            return Result.failure(ValidationException("Email exceeds the maximum length of 254 characters: $value"))
         }
 
         // Splitting local and domain parts to apply specific checks.
@@ -73,17 +67,17 @@ public object EmailValidator {
 
         // Check for the maximum length of the local part (64 characters).
         if (localPart.length > MAX_LOCAL_PART_LENGTH) {
-            return Result.failure(IllegalArgumentException("Email local part exceeds the maximum length of 64 characters: $value"))
+            return Result.failure(ValidationException("Email local part exceeds the maximum length of 64 characters: $value"))
         }
 
         // Ensure domain part does not have consecutive dots.
         if (domainPart.contains(other = "..")) {
-            return Result.failure(IllegalArgumentException("Email domain part contains consecutive dots: $value"))
+            return Result.failure(ValidationException("Email domain part contains consecutive dots: $value"))
         }
 
         // Check if the local part starts or ends with a dot, or contains consecutive dots.
         if (localPart.startsWith(prefix = ".") || localPart.endsWith(suffix = ".") || localPart.contains(other = "..")) {
-            return Result.failure(IllegalArgumentException("Email local part contains consecutive dots: $value"))
+            return Result.failure(ValidationException("Email local part contains consecutive dots: $value"))
         }
 
         return Result.success(Unit)

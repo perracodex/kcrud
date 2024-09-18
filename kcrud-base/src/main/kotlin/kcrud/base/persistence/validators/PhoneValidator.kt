@@ -12,16 +12,10 @@ import kcrud.base.env.Tracer
 /**
  * Verifies if a phone number is in the correct format.
  */
-public object PhoneValidator {
+public object PhoneValidator : IValidator {
     private val tracer = Tracer<PhoneValidator>()
 
-    /**
-     * Validates the given [value] as a phone number.
-     *
-     * @param value The phone number to be validated.
-     * @return A [Result] object containing the validation result.
-     */
-    public fun validate(value: String): Result<Unit> {
+    public override fun validate(value: String): Result<Unit> {
         return runCatching {
             val phoneUtil: PhoneNumberUtil = PhoneNumberUtil.getInstance()
 
@@ -29,7 +23,7 @@ public object PhoneValidator {
             val numberProto: Phonenumber.PhoneNumber = phoneUtil.parse(value, null)
 
             if (!phoneUtil.isValidNumber(numberProto)) {
-                throw IllegalArgumentException("Invalid phone number: $value")
+                throw ValidationException("Invalid phone number: $value")
             }
 
             return@runCatching Result.success(Unit)
@@ -37,7 +31,7 @@ public object PhoneValidator {
             when (error) {
                 is NumberParseException -> {
                     tracer.error(message = "Error parsing phone number: $value", cause = error)
-                    return@getOrElse Result.failure(IllegalArgumentException("Error parsing phone number: $value. ${error.message}"))
+                    return@getOrElse Result.failure(ValidationException("Error parsing phone number: $value. ${error.message}"))
                 }
 
                 is IllegalArgumentException -> {
@@ -45,7 +39,7 @@ public object PhoneValidator {
                 }
 
                 else -> {
-                    return@getOrElse Result.failure(IllegalArgumentException("Unexpected error: ${error.message}"))
+                    return@getOrElse Result.failure(ValidationException("Unexpected error. ${error.message}"))
                 }
             }
         }
