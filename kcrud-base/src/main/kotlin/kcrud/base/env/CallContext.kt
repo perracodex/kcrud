@@ -82,17 +82,17 @@ public data class CallContext(
         /**
          * Extension function to retrieve the [CallContext] from the [ApplicationCall] attributes.
          *
-         * This function is equivalent to getting a [CallContext] as following:
+         * This function simplifies accessing a [CallContext] which is akin to the type-safe retrieval as follows:
          * ```
-         *  call.principal<CallContext>()
+         * call.principal<CallContext>()
          * ```
-         * Authentication plugins set a [CallContext] as the principal when authorizations
-         * are successful. But retrieving it directly from a call principal is not recommended,
-         * as it bypasses the bellow retrieval flow.
+         * Authentication plugins set a [CallContext] as the principal when authorizations are successful.
+         * However, directly fetching it from the call's principal without considering the below retrieval
+         * flow is not recommended.
          *
          * Retrieval Flow:
-         * - Attempt to retrieve a [CallContext] from the current attributes.
-         *      - If [CallContext] is present, return it as is.
+         * - Attempt to retrieve a [CallContext] from the current call attributes.
+         *      - If [CallContext] is present in the call, return it as is.
          *      - If [CallContext] is not present:
          *          - If security is enabled, return null, indicating an unauthorized request.
          *          - If security is disabled, return a default [CallContext] with predefined 'empty' values.
