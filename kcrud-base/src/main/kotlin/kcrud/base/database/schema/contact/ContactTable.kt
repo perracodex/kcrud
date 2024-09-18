@@ -53,7 +53,7 @@ public object ContactTable : TimestampedTable(name = "contact") {
      */
     public val email: Column<String> = encryptedVarchar(
         name = "email",
-        cipherTextLength = 256,
+        cipherTextLength = encryptor.maxColLength(inputByteSize = 254),
         encryptor = encryptor,
     )
 
