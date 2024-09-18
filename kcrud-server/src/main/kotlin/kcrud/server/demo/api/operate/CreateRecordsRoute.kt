@@ -27,7 +27,7 @@ internal fun Route.createRecordsRoute() {
      * @OpenAPITag Demo
      */
     post("demo") {
-        val count: Int = call.request.queryParameters.getOrFail(name = "count").toInt()
+        val count: Int = call.request.queryParameters.getOrFail<Int>(name = "count")
 
         if (count in 1..maxAllowedBatch) {
             val callContext: CallContext? = call.getContext()
