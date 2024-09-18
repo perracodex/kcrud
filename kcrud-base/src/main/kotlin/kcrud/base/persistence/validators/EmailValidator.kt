@@ -2,9 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.base.persistence.validators.impl
-
-import kcrud.base.persistence.validators.IValidator
+package kcrud.base.persistence.validators
 
 /**
  * Verifies if an email address is in the correct format.
@@ -46,24 +44,26 @@ import kcrud.base.persistence.validators.IValidator
  *      • email@example...com (top-level domain has consecutive dots)
  * ```
  */
-public object EmailValidator : IValidator {
+public object EmailValidator {
     private const val MAX_EMAIL_LENGTH: Int = 254
     private const val MAX_LOCAL_PART_LENGTH: Int = 64
     private const val DOMAIN_SEPARATOR: String = "@"
+    private val EMAIL_REGEX: Regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}$".toRegex()
 
-    override fun <T> validate(value: T): IValidator.Result {
-        if (value !is String) {
-            return IValidator.Result.Failure(reason = "Email must be a string.")
-        }
-
-        val emailRegex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}$"
-        if (!value.matches(regex = emailRegex.toRegex())) {
-            return IValidator.Result.Failure(reason = "Email does not match the required format.")
+    /**
+     * Validates the given [value] as an email address.
+     *
+     * @param value The email address to be validated.
+     * @return A [Result] object containing the validation result.
+     */
+    public fun validate(value: String): Result<Unit> {
+        if (!value.matches(regex = EMAIL_REGEX)) {
+            return Result.failure(RuntimeException("Email does not match the required format."))
         }
 
         // Check for the maximum length of the entire email address (254 characters).
         if (value.length > MAX_EMAIL_LENGTH) {
-            return IValidator.Result.Failure(reason = "Email exceeds the maximum length of 254 characters.")
+            return Result.failure(RuntimeException("Email exceeds the maximum length of 254 characters."))
         }
 
         // Splitting local and domain parts to apply specific checks.
@@ -73,23 +73,19 @@ public object EmailValidator : IValidator {
 
         // Check for the maximum length of the local part (64 characters).
         if (localPart.length > MAX_LOCAL_PART_LENGTH) {
-            return IValidator.Result.Failure(reason = "Email local part exceeds the maximum length of 64 characters.")
+            return Result.failure(RuntimeException("Email local part exceeds the maximum length of 64 characters."))
         }
 
         // Ensure domain part does not have consecutive dots.
         if (domainPart.contains(other = "..")) {
-            return IValidator.Result.Failure(reason = "Email domain part contains consecutive dots.")
+            return Result.failure(RuntimeException("Email domain part contains consecutive dots."))
         }
 
         // Check if the local part starts or ends with a dot, or contains consecutive dots.
         if (localPart.startsWith(prefix = ".") || localPart.endsWith(suffix = ".") || localPart.contains(other = "..")) {
-            return IValidator.Result.Failure(reason = "Email local part contains consecutive dots.")
+            return Result.failure(RuntimeException("Email local part contains consecutive dots."))
         }
 
-        return IValidator.Result.Success
-    }
-
-    override fun message(text: String): String {
-        return "Invalid email: $text"
+        return Result.success(Unit)
     }
 }

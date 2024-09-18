@@ -5,12 +5,10 @@
 package kcrud.base.database.schema.contact
 
 import kcrud.base.database.columns.autoGenerate
-import kcrud.base.database.columns.encryptedValidVarChar
 import kcrud.base.database.columns.kotlinUuid
 import kcrud.base.database.columns.references
 import kcrud.base.database.schema.base.TimestampedTable
 import kcrud.base.database.schema.employee.EmployeeTable
-import kcrud.base.persistence.validators.impl.EmailValidator
 import kcrud.base.security.utils.EncryptionUtils
 import org.jetbrains.exposed.crypt.Encryptor
 import org.jetbrains.exposed.crypt.encryptedVarchar
@@ -23,14 +21,6 @@ import kotlin.uuid.Uuid
  * Database table definition for employee contact details.
  * Demonstrates how to encrypt data in the database,
  * in addition of how to validate column data.
- *
- * Even though the project already has email validation at the serializer level,
- * and also at the service level, this table also demonstrates how to also validate
- * the email at column level with a custom [encryptedValidVarChar] extension function.
- *
- * For the phone we could do the same as for the email, but for the sake of simplicity
- * we just encrypt it with the [encryptedVarchar] extension function, and leave
- * the validation up to the service layer.
  *
  * For encrypted fields, the lengths are larger than the actual length of the data,
  * since the encrypted data will be larger than the original value.
@@ -61,11 +51,10 @@ public object ContactTable : TimestampedTable(name = "contact") {
      * The contact's email.
      * Must be a valid email.
      */
-    public val email: Column<String> = encryptedValidVarChar(
+    public val email: Column<String> = encryptedVarchar(
         name = "email",
         cipherTextLength = 256,
         encryptor = encryptor,
-        validator = EmailValidator
     )
 
     /**

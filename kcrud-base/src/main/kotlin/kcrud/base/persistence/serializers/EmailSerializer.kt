@@ -4,8 +4,7 @@
 
 package kcrud.base.persistence.serializers
 
-import kcrud.base.persistence.validators.IValidator
-import kcrud.base.persistence.validators.impl.EmailValidator
+import kcrud.base.persistence.validators.EmailValidator
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
@@ -25,16 +24,16 @@ internal object EmailSerializer : KSerializer<String> {
     )
 
     override fun serialize(encoder: Encoder, value: String) {
-        if (EmailValidator.validate(value = value) is IValidator.Result.Failure) {
-            throw SerializationException(EmailValidator.message(text = value))
+        EmailValidator.validate(value = value).onFailure {
+            throw SerializationException("Invalid email: $value")
         }
         encoder.encodeString(value = value)
     }
 
     override fun deserialize(decoder: Decoder): String {
         val string: String = decoder.decodeString()
-        if (EmailValidator.validate(value = string) is IValidator.Result.Failure) {
-            throw SerializationException(EmailValidator.message(text = string))
+        EmailValidator.validate(value = string).onFailure {
+            throw SerializationException("Invalid email: $string")
         }
         return string
     }

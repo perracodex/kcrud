@@ -91,7 +91,7 @@ internal sealed class EmployeeError(
     ) : EmployeeError(
         statusCode = STATUS_CODE,
         errorCode = ERROR_CODE,
-        description = "Invalid phone format: '$phone'. Employee Id: $employeeId",
+        description = "Invalid phone number: '$phone'. Employee Id: $employeeId",
         reason = reason,
         cause = cause
     ) {

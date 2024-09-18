@@ -8,9 +8,8 @@ import kcrud.base.env.CallContext
 import kcrud.base.env.Tracer
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
-import kcrud.base.persistence.validators.IValidator
-import kcrud.base.persistence.validators.impl.EmailValidator
-import kcrud.base.persistence.validators.impl.PhoneValidator
+import kcrud.base.persistence.validators.EmailValidator
+import kcrud.base.persistence.validators.PhoneValidator
 import kcrud.domain.employee.errors.EmployeeError
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeFilterSet
@@ -164,13 +163,13 @@ public class EmployeeService internal constructor(
     private fun verifyIntegrity(employeeId: Uuid?, request: EmployeeRequest, reason: String): Result<Unit> {
         request.contact?.let { contact ->
             val phone: String = contact.phone
-            val phoneValidation: IValidator.Result = PhoneValidator.validate(value = phone)
-            if (phoneValidation is IValidator.Result.Failure) {
+            PhoneValidator.validate(value = phone).onFailure { error ->
                 return Result.failure(
                     EmployeeError.InvalidPhoneFormat(
                         employeeId = employeeId,
                         phone = phone,
-                        reason = "$reason ${phoneValidation.reason}"
+                        reason = reason,
+                        cause = error
                     )
                 )
             }
@@ -180,16 +179,16 @@ public class EmployeeService internal constructor(
             // However, this verification shows how to raise a custom error for the email field
             // with a concrete error code and description.
             // The difference between this approach or using the EmailString serializer,
-            // is that the serializer is a generic one, and it is not aware of the context in which
-            // it is being used, so it cannot provide a more concrete error code and description.
+            // is that the serializer would show a generic error, and it is not aware of the context
+            // in which it is being used, so it cannot provide a more contextual error detail.
             val email: String = contact.email
-            val emailValidation: IValidator.Result = EmailValidator.validate(value = email)
-            if (emailValidation is IValidator.Result.Failure) {
+            EmailValidator.validate(value = email).onFailure { error ->
                 return Result.failure(
                     EmployeeError.InvalidEmailFormat(
                         employeeId = employeeId,
                         email = email,
-                        reason = "$reason ${emailValidation.reason}"
+                        reason = reason,
+                        cause = error
                     )
                 )
             }
