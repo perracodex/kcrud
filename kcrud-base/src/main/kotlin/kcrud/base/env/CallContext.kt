@@ -97,8 +97,8 @@ public data class CallContext(
          *          - If security is enabled, return null, indicating an unauthorized request.
          *          - If security is disabled, return a default [CallContext] with predefined 'empty' values.
          *
-         * @return A [CallContext] representing either the authenticated actor,
-         * null if unauthorized, or a default empty [CallContext] when security is disabled.
+         * @return A [CallContext] representing the authenticated actor;
+         * `null` if unauthorized; or a default empty [CallContext] when security is disabled.
          */
         public fun ApplicationCall.getContext(): CallContext? =
             this.attributes.getOrNull(CALL_CONTEXT_KEY)
