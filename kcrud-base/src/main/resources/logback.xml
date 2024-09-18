@@ -12,7 +12,10 @@
     <logger name="Application" level="INFO"/>
     <logger name="kcrud" level="DEBUG"/>
 
+    <logger name="io.ktor.server.plugins.compression.Compression" level="INFO"/>
     <logger name="io.ktor.routing.Routing" level="DEBUG"/>
+    <logger name="io.ktor.server.plugins.statuspages.StatusPages" level="INFO"/>
+    <logger name="io.ktor.server.sessions.Sessions" level="INFO"/>
     <logger name="io.netty" level="WARN"/>
     <logger name="io.swagger" level="ERROR"/>
     <logger name="com.github.jknack" level="OFF"/>
