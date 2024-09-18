@@ -18,8 +18,8 @@ import kcrud.base.plugins.RateLimitScope
 import kcrud.base.scheduler.api.schedulerRoutes
 import kcrud.base.security.snowflake.snowflakeRoute
 import kcrud.base.settings.AppSettings
-import kcrud.domain.employee.api.employeeRoute
-import kcrud.domain.employment.api.employmentRoute
+import kcrud.domain.employee.api.employeeRoutes
+import kcrud.domain.employment.api.employmentRoutes
 import kcrud.server.demo.api.demoRoutes
 
 /**
@@ -43,8 +43,8 @@ internal fun Application.configureRoutes() {
         // Domain routes.
         rateLimit(configuration = RateLimitName(name = RateLimitScope.PUBLIC_API.key)) {
             authenticate(AppSettings.security.jwtAuth.providerName, optional = !AppSettings.security.isEnabled) {
-                employeeRoute()
-                employmentRoute()
+                employeeRoutes()
+                employmentRoutes()
             }
         }
 

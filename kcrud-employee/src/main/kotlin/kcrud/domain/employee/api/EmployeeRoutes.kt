@@ -30,7 +30,7 @@ internal annotation class EmployeeRouteAPI
  * of how to organize routes in diverse ways.
  */
 @OptIn(EmployeeRouteAPI::class)
-public fun Route.employeeRoute() {
+public fun Route.employeeRoutes() {
     withRbac(scope = RbacScope.EMPLOYEE_RECORDS, accessLevel = RbacAccessLevel.FULL) {
         createEmployeeRoute()
         updateEmployeeByIdRoute()

@@ -32,7 +32,7 @@ internal annotation class EmploymentRouteAPI
  * of how to organize routes in diverse ways.
  */
 @OptIn(EmploymentRouteAPI::class)
-public fun Route.employmentRoute() {
+public fun Route.employmentRoutes() {
 
     withRbac(scope = RbacScope.EMPLOYMENT_RECORDS, accessLevel = RbacAccessLevel.VIEW) {
         findEmploymentByEmployeeIdRoute()
