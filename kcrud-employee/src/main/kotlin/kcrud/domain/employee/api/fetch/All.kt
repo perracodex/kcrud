@@ -8,7 +8,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.base.env.SessionContext
+import kcrud.base.env.CallContext.Companion.getContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.getPageable
 import kcrud.domain.employee.api.EmployeeRouteAPI
@@ -24,8 +24,7 @@ internal fun Route.findAllEmployeesRoute() {
      * @OpenAPITag Employee
      */
     get("v1/employees") {
-        val sessionContext: SessionContext? = SessionContext.from(call = call)
-        val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }
+        val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(call.getContext()) }
         val employees: Page<Employee> = service.findAll(pageable = call.getPageable())
         call.respond(status = HttpStatusCode.OK, message = employees)
     }

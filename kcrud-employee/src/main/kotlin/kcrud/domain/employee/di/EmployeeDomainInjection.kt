@@ -27,7 +27,7 @@ public object EmployeeDomainInjection {
     public fun get(): Module {
         return module {
             // Scoped definitions within RequestScope for single request lifecycle.
-            // Services receive the session context as a parameter. Repositories,
+            // Services receive the CallContext as a parameter. Repositories,
             // which should only be accessed by services, do not receive it directly.
 
             scope<RequestScope> {

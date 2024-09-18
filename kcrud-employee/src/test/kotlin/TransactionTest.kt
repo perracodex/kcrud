@@ -9,7 +9,7 @@ import kcrud.access.actor.di.ActorDomainInjection
 import kcrud.access.rbac.di.RbacDomainInjection
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
-import kcrud.base.env.SessionContext
+import kcrud.base.env.CallContext
 import kcrud.base.utils.KLocalDate
 import kcrud.base.utils.TestUtils
 import kcrud.domain.contact.model.ContactRequest
@@ -55,14 +55,14 @@ class TransactionTest : KoinComponent {
      */
     @Test
     fun testNestedTransaction(): Unit = testSuspend {
-        val sessionContext: SessionContext = mockk<SessionContext>()
-        every { sessionContext.schema } returns null
+        val callContext: CallContext = mockk<CallContext>()
+        every { callContext.schema } returns null
 
         val contactRepository: IContactRepository by inject(
-            parameters = { parametersOf(sessionContext) }
+            parameters = { parametersOf(callContext) }
         )
         val employeeRepository: IEmployeeRepository by inject(
-            parameters = { parametersOf(sessionContext) }
+            parameters = { parametersOf(callContext) }
         )
 
         val employeeRequest = EmployeeRequest(
@@ -125,14 +125,14 @@ class TransactionTest : KoinComponent {
      */
     @Test
     fun testNestedTransactionRollbackByError(): Unit = testSuspend {
-        val sessionContext: SessionContext = mockk<SessionContext>()
-        every { sessionContext.schema } returns null
+        val callContext: CallContext = mockk<CallContext>()
+        every { callContext.schema } returns null
 
         val contactRepository: IContactRepository by inject(
-            parameters = { parametersOf(sessionContext) }
+            parameters = { parametersOf(callContext) }
         )
         val employeeRepository: IEmployeeRepository by inject(
-            parameters = { parametersOf(sessionContext) }
+            parameters = { parametersOf(callContext) }
         )
 
         // Create an employee with a valid contact detail.

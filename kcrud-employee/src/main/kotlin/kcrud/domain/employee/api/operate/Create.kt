@@ -9,7 +9,7 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.base.env.SessionContext
+import kcrud.base.env.CallContext.Companion.getContext
 import kcrud.domain.employee.api.EmployeeRouteAPI
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest
@@ -24,9 +24,8 @@ internal fun Route.createEmployeeRoute() {
      * @OpenAPITag Employee
      */
     post("v1/employees") {
-        val sessionContext: SessionContext? = SessionContext.from(call = call)
         val request: EmployeeRequest = call.receive<EmployeeRequest>()
-        val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }
+        val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(call.getContext()) }
         val employee: Employee = service.create(request = request).getOrThrow()
         call.respond(status = HttpStatusCode.Created, message = employee)
     }

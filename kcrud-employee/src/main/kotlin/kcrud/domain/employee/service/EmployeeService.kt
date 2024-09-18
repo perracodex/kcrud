@@ -4,7 +4,7 @@
 
 package kcrud.domain.employee.service
 
-import kcrud.base.env.SessionContext
+import kcrud.base.env.CallContext
 import kcrud.base.env.Tracer
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
@@ -24,7 +24,7 @@ import kotlin.uuid.Uuid
  * Employee service, where all the employee business logic should be defined.
  */
 public class EmployeeService internal constructor(
-    @Suppress("unused") private val sessionContext: SessionContext,
+    @Suppress("unused") private val context: CallContext,
     private val employeeRepository: IEmployeeRepository
 ) {
     private val tracer = Tracer<EmployeeService>()

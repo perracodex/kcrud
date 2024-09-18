@@ -10,7 +10,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import kcrud.base.env.SessionContext
+import kcrud.base.env.CallContext.Companion.getContext
 import kcrud.base.persistence.utils.toUuid
 import kcrud.domain.employment.api.EmploymentRouteAPI
 import kcrud.domain.employment.errors.EmploymentError
@@ -31,9 +31,7 @@ internal fun Route.createEmploymentRoute() {
         val employeeId: Uuid = call.parameters.getOrFail(name = "employee_id").toUuid()
         val request: EmploymentRequest = call.receive<EmploymentRequest>()
 
-        val sessionContext: SessionContext? = SessionContext.from(call = call)
-        val service: EmploymentService = call.scope.get<EmploymentService> { parametersOf(sessionContext) }
-
+        val service: EmploymentService = call.scope.get<EmploymentService> { parametersOf(call.getContext()) }
         val employment: Employment? = service.create(
             employeeId = employeeId,
             request = request

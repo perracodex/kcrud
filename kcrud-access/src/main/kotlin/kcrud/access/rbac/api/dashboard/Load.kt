@@ -14,31 +14,31 @@ import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.service.RbacDashboardManager
 import kcrud.access.rbac.view.RbacDashboardView
 import kcrud.access.rbac.view.RbacLoginView
-import kcrud.base.env.SessionContext
+import kcrud.base.env.CallContext
 import kcrud.base.persistence.utils.toUuidOrNull
 
 /**
- * Retrieves the current session context and renders the RBAC dashboard based
+ * Retrieves the current [CallContext] and renders the RBAC dashboard based
  * on the actor's permissions and role selections.
- * Redirects to the login screen if the session context is invalid.
+ * Redirects to the login screen if the [CallContext] is invalid.
  */
 @RbacAPI
 internal fun Route.rbacDashboardLoadRoute() {
     /**
-     * Opens the RBAC dashboard. Redirects to the login screen if the session context is invalid.
+     * Opens the RBAC dashboard. Redirects to the login screen if the [CallContext] is invalid.
      * @OpenAPITag RBAC
      */
     get("rbac/dashboard") {
-        // Attempt to retrieve the session context for RBAC dashboard access. Redirect to the login screen if null.
-        val sessionContext: SessionContext = RbacDashboardManager.getSessionContext(call = call)
+        // Attempt to retrieve the CalLContext for RBAC dashboard access. Redirect to the login screen if null.
+        val callContext: CallContext = RbacDashboardManager.getCallContext(call = call)
             ?: return@get call.run {
-                call.sessions.clear(name = SessionContext.SESSION_NAME)
+                call.sessions.clear(name = CallContext.SESSION_NAME)
                 call.respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
             }
 
-        // Resolve the RBAC access details for the current session context.
+        // Resolve the RBAC access details for the current CallContext.
         RbacDashboardManager.determineAccessDetails(
-            sessionContext = sessionContext,
+            callContext = callContext,
             roleId = call.parameters[RbacDashboardView.ROLE_KEY].toUuidOrNull()
         ).let { context ->
             // Respond with HTML view of the RBAC dashboard.

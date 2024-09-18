@@ -59,13 +59,13 @@ internal fun Application.kcrudModule() {
 
     configureRateLimit()
 
-    configureRbac()
-
     configureBasicAuthentication()
 
     configureJwtAuthentication()
 
     configureOAuthAuthentication()
+
+    configureRbac()
 
     configureSessions()
 

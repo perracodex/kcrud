@@ -8,7 +8,7 @@ import kcrud.access.actor.di.ActorDomainInjection
 import kcrud.access.rbac.di.RbacDomainInjection
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
-import kcrud.base.env.SessionContext
+import kcrud.base.env.CallContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.utils.KLocalDate
 import kcrud.base.utils.TestUtils
@@ -58,11 +58,11 @@ class StressTest : KoinComponent {
             )
         )
 
-        val sessionContext: SessionContext = mockk<SessionContext>()
-        every { sessionContext.schema } returns null
+        val callContext: CallContext = mockk<CallContext>()
+        every { callContext.schema } returns null
 
         val employeeService: EmployeeService by inject(
-            parameters = { parametersOf(sessionContext) }
+            parameters = { parametersOf(callContext) }
         )
 
         val totalElements = 10000
@@ -115,11 +115,11 @@ class StressTest : KoinComponent {
             )
         )
 
-        val sessionContext: SessionContext = mockk<SessionContext>()
-        every { sessionContext.schema } returns null
+        val callContext: CallContext = mockk<CallContext>()
+        every { callContext.schema } returns null
 
         val employeeService: EmployeeService by inject(
-            parameters = { parametersOf(sessionContext) }
+            parameters = { parametersOf(callContext) }
         )
 
         val totalElements = 10000

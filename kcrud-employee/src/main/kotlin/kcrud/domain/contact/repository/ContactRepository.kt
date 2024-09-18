@@ -6,7 +6,7 @@ package kcrud.domain.contact.repository
 
 import kcrud.base.database.schema.contact.ContactTable
 import kcrud.base.database.service.transactionWithSchema
-import kcrud.base.env.SessionContext
+import kcrud.base.env.CallContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.pagination.paginate
@@ -26,11 +26,11 @@ import kotlin.uuid.Uuid
  * Responsible for managing [Contact] data.
  */
 internal class ContactRepository(
-    private val sessionContext: SessionContext
+    private val context: CallContext
 ) : IContactRepository {
 
     override fun findById(contactId: Uuid): Contact? {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             ContactTable.selectAll().where {
                 ContactTable.id eq contactId
             }.singleOrNull()?.let { resultRow ->
@@ -40,7 +40,7 @@ internal class ContactRepository(
     }
 
     override fun findByEmployeeId(employeeId: Uuid): Contact? {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             ContactTable.selectAll().where {
                 ContactTable.employeeId eq employeeId
             }.singleOrNull()?.let { resultRow ->
@@ -50,7 +50,7 @@ internal class ContactRepository(
     }
 
     override fun findAll(pageable: Pageable?): Page<Contact> {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             val totalElements: Int = ContactTable.selectAll().count().toInt()
 
             val content: List<Contact> = ContactTable
@@ -90,7 +90,7 @@ internal class ContactRepository(
     }
 
     override fun create(employeeId: Uuid, request: ContactRequest): Uuid {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             ContactTable.insert { contactRow ->
                 contactRow.mapContactRequest(
                     employeeId = employeeId,
@@ -101,7 +101,7 @@ internal class ContactRepository(
     }
 
     override fun update(employeeId: Uuid, contactId: Uuid, request: ContactRequest): Int {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             ContactTable.update(
                 where = {
                     ContactTable.id eq contactId
@@ -116,7 +116,7 @@ internal class ContactRepository(
     }
 
     override fun delete(contactId: Uuid): Int {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             ContactTable.deleteWhere {
                 id eq contactId
             }
@@ -124,7 +124,7 @@ internal class ContactRepository(
     }
 
     override fun deleteByEmployeeId(employeeId: Uuid): Int {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             ContactTable.deleteWhere {
                 ContactTable.employeeId eq employeeId
             }
@@ -132,7 +132,7 @@ internal class ContactRepository(
     }
 
     override fun count(employeeId: Uuid?): Int {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             ContactTable.selectAll().apply {
                 employeeId?.let { id ->
                     where { ContactTable.employeeId eq id }

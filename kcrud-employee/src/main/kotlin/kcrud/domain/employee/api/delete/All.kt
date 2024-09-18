@@ -8,7 +8,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.base.env.SessionContext
+import kcrud.base.env.CallContext.Companion.getContext
 import kcrud.domain.employee.api.EmployeeRouteAPI
 import kcrud.domain.employee.service.EmployeeService
 import org.koin.core.parameter.parametersOf
@@ -21,8 +21,7 @@ internal fun Route.deleteAllEmployeesRoute() {
      * @OpenAPITag Employee
      */
     delete("v1/employees") {
-        val sessionContext: SessionContext? = SessionContext.from(call = call)
-        val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }
+        val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(call.getContext()) }
         val deletedCount: Int = service.deleteAll()
         call.respond(status = HttpStatusCode.OK, message = deletedCount)
     }

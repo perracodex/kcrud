@@ -7,7 +7,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
-import kcrud.base.env.SessionContext
+import kcrud.base.env.CallContext
 import kcrud.base.persistence.serializers.OffsetTimestamp
 import kcrud.base.utils.KLocalDate
 import kcrud.base.utils.TestUtils
@@ -37,11 +37,11 @@ class TimestampTest : KoinComponent {
 
     @Test
     fun testTimestamp(): Unit = testSuspend {
-        val sessionContext: SessionContext = mockk<SessionContext>()
-        every { sessionContext.schema } returns null
+        val callContext: CallContext = mockk<CallContext>()
+        every { callContext.schema } returns null
 
         val employeeRepository: IEmployeeRepository by inject(
-            parameters = { parametersOf(sessionContext) }
+            parameters = { parametersOf(callContext) }
         )
 
         val employeeRequest = EmployeeRequest(

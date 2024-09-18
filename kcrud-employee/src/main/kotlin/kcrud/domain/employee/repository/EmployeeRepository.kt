@@ -7,7 +7,7 @@ package kcrud.domain.employee.repository
 import kcrud.base.database.schema.contact.ContactTable
 import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.database.service.transactionWithSchema
-import kcrud.base.env.SessionContext
+import kcrud.base.env.CallContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.pagination.paginate
@@ -25,12 +25,12 @@ import kotlin.uuid.Uuid
  * Responsible for managing employee data.
  */
 internal class EmployeeRepository(
-    private val sessionContext: SessionContext,
+    private val context: CallContext,
     private val contactRepository: IContactRepository
 ) : IEmployeeRepository {
 
     override fun findById(employeeId: Uuid): Employee? {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             EmployeeTable.join(
                 otherTable = ContactTable,
                 joinType = JoinType.LEFT,
@@ -45,7 +45,7 @@ internal class EmployeeRepository(
     }
 
     override fun findAll(pageable: Pageable?): Page<Employee> {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             val query: Query = EmployeeTable.join(
                 otherTable = ContactTable,
                 joinType = JoinType.LEFT,
@@ -71,7 +71,7 @@ internal class EmployeeRepository(
     }
 
     override fun search(filterSet: EmployeeFilterSet, pageable: Pageable?): Page<Employee> {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             // Start with a base query selecting all the records.
             val query: Query = EmployeeTable.selectAll().apply {
 
@@ -123,7 +123,7 @@ internal class EmployeeRepository(
     }
 
     override fun create(request: EmployeeRequest): Employee {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             val employeeId: Uuid = EmployeeTable.insert { employeeRow ->
                 employeeRow.mapEmployeeRequest(request = request)
             } get EmployeeTable.id
@@ -141,7 +141,7 @@ internal class EmployeeRepository(
     }
 
     override fun update(employeeId: Uuid, request: EmployeeRequest): Employee? {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             val updateCount: Int = EmployeeTable.update(
                 where = {
                     EmployeeTable.id eq employeeId
@@ -164,7 +164,7 @@ internal class EmployeeRepository(
     }
 
     override fun delete(employeeId: Uuid): Int {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             EmployeeTable.deleteWhere {
                 id eq employeeId
             }
@@ -172,13 +172,13 @@ internal class EmployeeRepository(
     }
 
     override fun deleteAll(): Int {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             EmployeeTable.deleteAll()
         }
     }
 
     override fun count(): Int {
-        return transactionWithSchema(schema = sessionContext.schema) {
+        return transactionWithSchema(schema = context.schema) {
             EmployeeTable.selectAll().count().toInt()
         }
     }

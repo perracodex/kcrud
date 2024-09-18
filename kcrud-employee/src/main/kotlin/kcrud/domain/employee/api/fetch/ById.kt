@@ -9,7 +9,7 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import kcrud.base.env.SessionContext
+import kcrud.base.env.CallContext.Companion.getContext
 import kcrud.base.persistence.utils.toUuid
 import kcrud.domain.employee.api.EmployeeRouteAPI
 import kcrud.domain.employee.errors.EmployeeError
@@ -27,8 +27,7 @@ internal fun Route.findEmployeeByIdRoute() {
      */
     get("v1/employees/{employee_id}") {
         val employeeId: Uuid = call.parameters.getOrFail(name = "employee_id").toUuid()
-        val sessionContext: SessionContext? = SessionContext.from(call = call)
-        val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }
+        val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(call.getContext()) }
         val employee: Employee = service.findById(employeeId = employeeId)
             ?: throw EmployeeError.EmployeeNotFound(employeeId = employeeId)
         call.respond(status = HttpStatusCode.OK, message = employee)

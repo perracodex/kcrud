@@ -10,7 +10,7 @@ import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.view.RbacLoginView
-import kcrud.base.env.SessionContext
+import kcrud.base.env.CallContext
 
 /**
  * Manages the session termination and redirection to the login page.
@@ -23,7 +23,7 @@ internal fun Route.rbacLogoutRoute() {
      * @OpenAPITag RBAC
      */
     post("rbac/logout") {
-        call.sessions.clear(name = SessionContext.SESSION_NAME)
+        call.sessions.clear(name = CallContext.SESSION_NAME)
         call.respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
     }
 }

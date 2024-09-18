@@ -9,7 +9,7 @@ import kcrud.access.actor.di.ActorDomainInjection
 import kcrud.access.rbac.di.RbacDomainInjection
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
-import kcrud.base.env.SessionContext
+import kcrud.base.env.CallContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.utils.KLocalDate
@@ -47,11 +47,11 @@ class PaginationTest : KoinComponent {
     @Test
     fun testEmptyPagination(): Unit = testSuspend {
         newSuspendedTransaction {
-            val sessionContext: SessionContext = mockk<SessionContext>()
-            every { sessionContext.schema } returns null
+            val callContext: CallContext = mockk<CallContext>()
+            every { callContext.schema } returns null
 
             val employeeService: EmployeeService by inject(
-                parameters = { parametersOf(sessionContext) }
+                parameters = { parametersOf(callContext) }
             )
 
             val totalRecords = 10
@@ -110,11 +110,11 @@ class PaginationTest : KoinComponent {
     @Test
     fun testEvenPagination(): Unit = testSuspend {
         newSuspendedTransaction {
-            val sessionContext: SessionContext = mockk<SessionContext>()
-            every { sessionContext.schema } returns null
+            val callContext: CallContext = mockk<CallContext>()
+            every { callContext.schema } returns null
 
             val employeeService: EmployeeService by inject(
-                parameters = { parametersOf(sessionContext) }
+                parameters = { parametersOf(callContext) }
             )
 
             val totalRecords = 10
@@ -245,11 +245,11 @@ class PaginationTest : KoinComponent {
     @Test
     fun testOddPagination(): Unit = testSuspend {
         newSuspendedTransaction {
-            val sessionContext: SessionContext = mockk<SessionContext>()
-            every { sessionContext.schema } returns null
+            val callContext: CallContext = mockk<CallContext>()
+            every { callContext.schema } returns null
 
             val employeeService: EmployeeService by inject(
-                parameters = { parametersOf(sessionContext) }
+                parameters = { parametersOf(callContext) }
             )
 
             val totalRecords = 12
@@ -382,11 +382,11 @@ class PaginationTest : KoinComponent {
     @Test
     fun testPaginationCount(): Unit = testSuspend {
         newSuspendedTransaction {
-            val sessionContext: SessionContext = mockk<SessionContext>()
-            every { sessionContext.schema } returns null
+            val callContext: CallContext = mockk<CallContext>()
+            every { callContext.schema } returns null
 
             val employeeRepository: IEmployeeRepository by inject(
-                parameters = { parametersOf(sessionContext) }
+                parameters = { parametersOf(callContext) }
             )
 
             val totalRecords = 10
@@ -424,11 +424,11 @@ class PaginationTest : KoinComponent {
     @Test
     fun testRandomPagination(): Unit = testSuspend {
         newSuspendedTransaction {
-            val sessionContext: SessionContext = mockk<SessionContext>()
-            every { sessionContext.schema } returns null
+            val callContext: CallContext = mockk<CallContext>()
+            every { callContext.schema } returns null
 
             val employeeService: EmployeeService by inject(
-                parameters = { parametersOf(sessionContext) }
+                parameters = { parametersOf(callContext) }
             )
 
             val totalRecords = 1000
@@ -503,11 +503,11 @@ class PaginationTest : KoinComponent {
     @Test
     fun testRandomPaginationWithSorting(): Unit = testSuspend {
         newSuspendedTransaction {
-            val sessionContext: SessionContext = mockk<SessionContext>()
-            every { sessionContext.schema } returns null
+            val callContext: CallContext = mockk<CallContext>()
+            every { callContext.schema } returns null
 
             val employeeService: EmployeeService by inject(
-                parameters = { parametersOf(sessionContext) }
+                parameters = { parametersOf(callContext) }
             )
 
             val totalRecords = 1000

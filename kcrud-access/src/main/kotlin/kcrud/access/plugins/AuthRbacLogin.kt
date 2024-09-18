@@ -11,15 +11,16 @@ import io.ktor.server.sessions.*
 import kcrud.access.actor.service.DefaultActorFactory
 import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.view.RbacLoginView
-import kcrud.access.system.SessionContextFactory
-import kcrud.base.env.SessionContext
+import kcrud.access.system.CallContextFactory
+import kcrud.base.env.CallContext
+import kcrud.base.env.CallContext.Companion.setContext
 
 /**
  * Refreshes the default actors, and configures the RBAC form login authentication.
  *
  * Demonstrates how to use form-base authentication, in which case
  * principal are not propagated across different requests, so we
- * must use sessions to store the actor information.
+ * must use [Sessions] to store the actor information.
  *
  * See: [Basic Authentication Documentation](https://ktor.io/docs/server-basic-auth.html)
  */
@@ -36,17 +37,17 @@ public fun Application.configureRbac() {
             passwordParamName = RbacLoginView.KEY_PASSWORD
 
             challenge {
-                call.sessions.clear(name = SessionContext.SESSION_NAME)
+                call.sessions.clear(name = CallContext.SESSION_NAME)
                 call.respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
             }
 
             validate { credential ->
-                SessionContextFactory.from(credential = credential)?.let { sessionContext ->
-                    this.sessions.set(name = SessionContext.SESSION_NAME, value = sessionContext)
-                    return@validate sessionContext
+                CallContextFactory.from(credential = credential)?.let { callContext ->
+                    this.setContext(callContext = callContext)
+                    return@validate callContext
                 }
 
-                this.sessions.clear(name = SessionContext.SESSION_NAME)
+                this.sessions.clear(name = CallContext.SESSION_NAME)
                 return@validate null
             }
         }
