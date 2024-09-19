@@ -52,7 +52,7 @@ public object PhoneValidator : IValidator<String> {
                 }
 
                 else -> {
-                    return@getOrElse Result.failure(ValidationException("Unexpected error. ${error.message}"))
+                    return@getOrElse Result.failure(ValidationException("${error.message}"))
                 }
             }
         }
