@@ -5,9 +5,9 @@
 package kcrud.base.database.schema.contact
 
 import kcrud.base.database.columns.autoGenerate
-import kcrud.base.database.columns.encryptedValidVarchar
 import kcrud.base.database.columns.kotlinUuid
 import kcrud.base.database.columns.references
+import kcrud.base.database.columns.validEncryptedVarchar
 import kcrud.base.database.schema.base.TimestampedTable
 import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.persistence.validators.EmailValidator
@@ -53,7 +53,7 @@ public object ContactTable : TimestampedTable(name = "contact") {
      * The contact's email.
      * Must be a valid email.
      */
-    public val email: Column<String> = encryptedValidVarchar(
+    public val email: Column<String> = validEncryptedVarchar(
         name = "email",
         length = 254,
         encryptor = encryptor,
@@ -64,7 +64,7 @@ public object ContactTable : TimestampedTable(name = "contact") {
      * The contact's phone.
      * Must be a valid phone number.
      */
-    public val phone: Column<String> = encryptedValidVarchar(
+    public val phone: Column<String> = validEncryptedVarchar(
         name = "phone",
         length = 128,
         encryptor = encryptor,

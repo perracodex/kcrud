@@ -12,28 +12,6 @@ import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
 
 /**
- * Custom column with validation.
- * For an encrypted column, use instead [encryptedValidVarchar].
- *
- * @param name The name of the column in the database.
- * @param length The maximum length of the value column.
- * @param validator The [IValidator] responsible for validating the value before insertion.
- * @return A Column<String> representing the value in the database table.
- * @throws IllegalArgumentException if the value is invalid during data insertion.
- *
- * @see IValidator
- * @see encryptedValidVarchar
- */
-internal fun Table.validVarchar(name: String, length: Int, validator: IValidator<String>): Column<String> {
-    return varchar(name = name, length = length).transform(
-        wrap = { it },
-        unwrap = { value ->
-            validator.check(value = value).getOrThrow()
-        }
-    )
-}
-
-/**
  * Custom encrypted column with validation.
  * For a non-encrypted column, use instead [validVarchar].
  *
@@ -47,7 +25,7 @@ internal fun Table.validVarchar(name: String, length: Int, validator: IValidator
  * @see IValidator
  * @see validVarchar
  */
-internal fun Table.encryptedValidVarchar(
+internal fun Table.validEncryptedVarchar(
     name: String,
     length: Int,
     encryptor: Encryptor,
