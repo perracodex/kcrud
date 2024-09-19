@@ -24,8 +24,7 @@ internal fun Table.validVarchar(name: String, length: Int, validator: IValidator
     return varchar(name = name, length = length).transform(
         wrap = { it },
         unwrap = { value ->
-            validator.validate(value = value).getOrThrow()
-            value
+            validator.check(value = value).getOrThrow()
         }
     )
 }
@@ -51,9 +50,7 @@ internal fun Table.encryptedValidVarchar(
     ).transform(
         wrap = { it },
         unwrap = { value ->
-            // Validate the plaintext value before it is encrypted and stored.
-            validator.validate(value = value).getOrThrow()
-            value
+            validator.check(value = value).getOrThrow()
         }
     )
 }

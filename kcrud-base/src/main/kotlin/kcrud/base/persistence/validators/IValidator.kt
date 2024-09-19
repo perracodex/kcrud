@@ -21,10 +21,10 @@ public interface IValidator {
      * Validates the provided [value].
      *
      * @param value The target value to be validated.
-     * @return A [Result] object containing [Unit] if the validation is successful,
-     * or a failure with a relevant exception if the validation fails.
+     * @return A [Result] object containing original [value] if the validation is successful,
+     * or a failure with a relevant [ValidationException] if the validation fails.
      */
-    public fun validate(value: String): Result<Unit>
+    public fun check(value: String): Result<String>
 }
 
 /**

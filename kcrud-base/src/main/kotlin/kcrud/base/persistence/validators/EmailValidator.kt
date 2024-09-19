@@ -50,7 +50,7 @@ public object EmailValidator : IValidator {
     private const val DOMAIN_SEPARATOR: String = "@"
     private val EMAIL_REGEX: Regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}$".toRegex()
 
-    public override fun validate(value: String): Result<Unit> {
+    public override fun check(value: String): Result<String> {
         if (!value.matches(regex = EMAIL_REGEX)) {
             return Result.failure(ValidationException("Email does not match the required format: $value"))
         }
@@ -80,6 +80,6 @@ public object EmailValidator : IValidator {
             return Result.failure(ValidationException("Email local part contains consecutive dots: $value"))
         }
 
-        return Result.success(Unit)
+        return Result.success(value)
     }
 }

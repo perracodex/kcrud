@@ -15,7 +15,7 @@ import kcrud.base.env.Tracer
 public object PhoneValidator : IValidator {
     private val tracer = Tracer<PhoneValidator>()
 
-    public override fun validate(value: String): Result<Unit> {
+    public override fun check(value: String): Result<String> {
         return runCatching {
             val phoneUtil: PhoneNumberUtil = PhoneNumberUtil.getInstance()
 
@@ -26,7 +26,7 @@ public object PhoneValidator : IValidator {
                 throw ValidationException("Invalid phone number: $value")
             }
 
-            return@runCatching Result.success(Unit)
+            return@runCatching Result.success(value)
         }.getOrElse { error ->
             when (error) {
                 is NumberParseException -> {
