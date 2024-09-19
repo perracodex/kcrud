@@ -34,7 +34,7 @@ public data class Page<out T : Any>(
      * @property isLast True if serving the last page.
      * @property hasNext True if there is a next page.
      * @property hasPrevious True if there is a previous page.
-     * @property overflow Whether the requested page index is above the total available pages.
+     * @property isOverflow Whether the requested page index is above the total available pages.
      * @property sort The optional sorting that has been applied to the content.
      */
     @Serializable
@@ -48,7 +48,7 @@ public data class Page<out T : Any>(
         val isLast: Boolean,
         val hasNext: Boolean,
         val hasPrevious: Boolean,
-        val overflow: Boolean,
+        val isOverflow: Boolean,
         val sort: List<Pageable.Sort>?,
     )
 
@@ -80,7 +80,7 @@ public data class Page<out T : Any>(
             val isLast: Boolean = (pageIndex >= totalPages - 1) || (totalPages == 0)
             val hasNext: Boolean = (pageIndex < totalPages - 1) && (totalPages > 0)
             val hasPrevious: Boolean = (pageIndex > 0) && (totalPages > 0)
-            val overflow: Boolean = (pageIndex >= totalPages) && (totalPages > 0)
+            val isOverflow: Boolean = (pageIndex >= totalPages) && (totalPages > 0)
             val elementsInPage: Int = content.size
 
             // Construct the Page object with the determined states.
@@ -95,7 +95,7 @@ public data class Page<out T : Any>(
                     isLast = isLast,
                     hasNext = hasNext,
                     hasPrevious = hasPrevious,
-                    overflow = overflow,
+                    isOverflow = isOverflow,
                     sort = pageable?.sort
                 ),
                 content = content
