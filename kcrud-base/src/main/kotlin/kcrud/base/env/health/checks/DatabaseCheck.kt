@@ -19,7 +19,7 @@ import org.jetbrains.exposed.sql.vendors.currentDialect
  * Represents the database health check.
  *
  * @property errors The list of errors found during the check.
- * @property alive True if the database is alive, false otherwise.
+ * @property isAlive True if the database is alive, false otherwise.
  * @property datasource The [Datasource] information.
  * @property connectionTest The [ConnectionTest] information.
  * @property configuration The database [Configuration].
@@ -29,15 +29,15 @@ import org.jetbrains.exposed.sql.vendors.currentDialect
 @Serializable
 public data class DatabaseCheck(
     val errors: MutableList<String>,
-    val alive: Boolean,
+    val isAlive: Boolean,
     val datasource: Datasource?,
     val connectionTest: ConnectionTest?,
     val configuration: Configuration,
     val tables: List<String>
 ) {
-    internal constructor(alive: Boolean, connectionTest: ConnectionTest?, datasource: Datasource?, tables: List<String>) : this(
+    internal constructor(isAlive: Boolean, connectionTest: ConnectionTest?, datasource: Datasource?, tables: List<String>) : this(
         errors = mutableListOf(),
-        alive = alive,
+        isAlive = isAlive,
         connectionTest = connectionTest,
         datasource = datasource,
         configuration = Configuration(),
@@ -47,7 +47,7 @@ public data class DatabaseCheck(
     init {
         val className: String? = this::class.simpleName
 
-        if (!alive) {
+        if (!isAlive) {
             errors.add("$className. Database is not responding. $configuration")
         }
 
@@ -95,45 +95,36 @@ public data class DatabaseCheck(
         val autoCommit: Boolean,
         val catalog: String,
     ) {
-        /**
-         * Represents the result of a connection test.
-         *
-         * @property output The [ConnectionTest] object if the test was successful.
-         * @property error The error message if the test failed.
-         */
-        internal data class Result(val output: ConnectionTest?, val error: String?)
-
         internal companion object {
             /**
              * Builds a [ConnectionTest] object from a [Database] object.
              *
              * @param database The source [Database] object to test.
-             * @return A pair of the [ConnectionTest] object if successful, and an error message if not.
+             * @return A [Result] containing the [ConnectionTest] instance, or an exception if the test failed.
              */
-            fun build(database: Database?): Result = runCatching {
-                requireNotNull(database) { "Database must not be null" }
+            fun build(database: Database?): Result<ConnectionTest> {
+                return runCatching<ConnectionTest> {
+                    requireNotNull(database) { "Database must not be null." }
+                    val connector: ExposedConnection<*> = database.connector()
 
-                val connector: ExposedConnection<*> = database.connector()
-
-                try {
-                    val test = ConnectionTest(
-                        established = !connector.isClosed,
-                        isReadOnly = connector.readOnly,
-                        name = database.name,
-                        version = database.version.toString(),
-                        dialect = transaction(db = database) { currentDialect.name },
-                        url = database.url,
-                        vendor = database.vendor,
-                        autoCommit = connector.autoCommit,
-                        catalog = connector.catalog
-                    )
-
-                    Result(output = test, error = null)
-                } finally {
-                    connector.close()
+                    try {
+                        ConnectionTest(
+                            established = !connector.isClosed,
+                            isReadOnly = connector.readOnly,
+                            name = database.name,
+                            version = database.version.toString(),
+                            dialect = transaction(db = database) { currentDialect.name },
+                            url = database.url,
+                            vendor = database.vendor,
+                            autoCommit = connector.autoCommit,
+                            catalog = connector.catalog
+                        )
+                    } finally {
+                        connector.close()
+                    }
+                }.recoverCatching { error ->
+                    throw Exception("${ConnectionTest::class.simpleName}: ${error.message}", error)
                 }
-            }.getOrElse { e ->
-                Result(output = null, error = "${ConnectionTest::class.simpleName}. ${e.message}")
             }
         }
     }

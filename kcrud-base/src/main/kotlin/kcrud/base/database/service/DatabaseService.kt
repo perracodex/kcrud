@@ -241,16 +241,23 @@ internal object DatabaseService {
      */
     @OptIn(HealthCheckAPI::class)
     fun getHealthCheck(): DatabaseCheck {
-        val databaseTest: DatabaseCheck.ConnectionTest.Result = DatabaseCheck.ConnectionTest.build(database = database)
+        val databaseTest: Result<DatabaseCheck.ConnectionTest> = DatabaseCheck.ConnectionTest.build(database = database)
+
+        val isAlive: Boolean = ping()
+        val connectionTest: DatabaseCheck.ConnectionTest? = databaseTest.getOrNull()
+        val datasource: DatabaseCheck.Datasource? = DatabaseCheck.Datasource.build(datasource = hikariDataSource)
+        val tables: List<String> = dumpTables()
 
         val databaseCheck = DatabaseCheck(
-            alive = ping(),
-            connectionTest = databaseTest.output,
-            datasource = DatabaseCheck.Datasource.build(datasource = hikariDataSource),
-            tables = dumpTables()
+            isAlive = isAlive,
+            connectionTest = connectionTest,
+            datasource = datasource,
+            tables = tables
         )
 
-        databaseTest.error?.let { databaseCheck.errors.add(it) }
+        if (databaseTest.isFailure) {
+            databaseCheck.errors.add(databaseTest.exceptionOrNull()?.message ?: "Database connection test failed.")
+        }
 
         return databaseCheck
     }
