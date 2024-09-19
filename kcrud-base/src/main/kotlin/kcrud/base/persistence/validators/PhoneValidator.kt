@@ -23,6 +23,13 @@ public object PhoneValidator : IValidator<String> {
 
     public override fun check(value: String): Result<String> {
         return runCatching {
+            // Check for the maximum length of the phone number.
+            if (value.length > MAX_PHONE_LENGTH) {
+                throw ValidationException(
+                    "Phone-number exceeds the maximum length of $MAX_PHONE_LENGTH characters: $value"
+                )
+            }
+
             val phoneUtil: PhoneNumberUtil = PhoneNumberUtil.getInstance()
 
             // Region code is null for international numbers.
