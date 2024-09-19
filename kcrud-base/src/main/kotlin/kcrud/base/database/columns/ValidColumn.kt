@@ -24,7 +24,6 @@ import org.jetbrains.exposed.sql.Table
  * @see IValidator
  * @see encryptedValidVarchar
  */
-@Suppress("unused")
 internal fun Table.validVarchar(name: String, length: Int, validator: IValidator<String>): Column<String> {
     return varchar(name = name, length = length).transform(
         wrap = { it },
