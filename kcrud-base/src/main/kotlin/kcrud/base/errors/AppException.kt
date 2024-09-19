@@ -24,7 +24,7 @@ public abstract class AppException(
     public val description: String,
     private val reason: String? = null,
     cause: Throwable? = null
-) : RuntimeException(
+) : Exception(
     buildMessage(description = description, reason = reason),
     cause
 ) {

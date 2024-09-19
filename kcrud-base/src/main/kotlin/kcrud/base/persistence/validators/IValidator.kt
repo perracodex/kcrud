@@ -9,14 +9,14 @@ package kcrud.base.persistence.validators
  *
  * Classes implementing this interface are responsible for validating
  * specific types of input values, such as email addresses, phone numbers,
- * or any other string-based data. The validation logic should ensure that
+ * or any type of data. The validation logic should ensure that
  * the input value adheres to the required format or business rules.
  *
  * @see EmailValidator
  * @see PhoneValidator
  * @see ValidationException
  */
-public interface IValidator {
+public interface IValidator<T> {
     /**
      * Validates the provided [value].
      *
@@ -24,20 +24,18 @@ public interface IValidator {
      * @return A [Result] object containing original [value] if the validation is successful,
      * or a failure with a relevant [ValidationException] if the validation fails.
      */
-    public fun check(value: String): Result<String>
+    public fun check(value: T): Result<T>
 }
 
 /**
  * Custom exception class to represent validation errors.
- *
  * This exception should be thrown when validation of a value fails.
- * It provides a clear distinction from other types of exceptions.
+ *
+ * @param message The detail message describing the validation failure.
+ * @param cause Optional underlying reason for this [ValidationException].
  *
  * @see IValidator
  * @see EmailValidator
  * @see PhoneValidator
- *
- * @param message The detail message describing the validation failure.
- * @param cause The optional cause of the exception.
  */
 public class ValidationException(message: String, cause: Throwable? = null) : Exception(message, cause)

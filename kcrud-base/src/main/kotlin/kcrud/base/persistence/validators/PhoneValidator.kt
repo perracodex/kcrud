@@ -11,8 +11,11 @@ import kcrud.base.env.Tracer
 
 /**
  * Verifies if a phone number is in the correct format.
+ *
+ * @see IValidator
+ * @see ValidationException
  */
-public object PhoneValidator : IValidator {
+public object PhoneValidator : IValidator<String> {
     private val tracer = Tracer<PhoneValidator>()
 
     public override fun check(value: String): Result<String> {
