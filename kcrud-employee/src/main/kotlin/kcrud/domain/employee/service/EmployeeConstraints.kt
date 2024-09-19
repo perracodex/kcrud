@@ -15,9 +15,9 @@ import kotlin.uuid.Uuid
 /**
  * Provides verification methods for employee-related operations.
  */
-internal object EmployeeVerifier {
+internal object EmployeeConstraints {
     /**
-     * Verifies if the employee's fields.
+     * Verifies if the integrity of the given [request] is valid.
      *
      * Note: For the email verification, it could be done alternatively with the EmailString,
      * but such would show only a generic error to the client, without any contextual information.

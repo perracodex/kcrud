@@ -8,7 +8,6 @@ import kcrud.base.env.CallContext
 import kcrud.base.env.Tracer
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
-import kcrud.domain.employment.errors.EmploymentError
 import kcrud.domain.employment.model.Employment
 import kcrud.domain.employment.model.EmploymentRequest
 import kcrud.domain.employment.repository.IEmploymentRepository
@@ -69,10 +68,10 @@ public class EmploymentService internal constructor(
     ): Result<Employment?> {
         tracer.debug("Creating employment for employee with ID: $employeeId")
 
-        return verify(
+        return EmploymentConstraints.check(
             employeeId = employeeId,
             employmentId = null,
-            employmentRequest = request,
+            request = request,
             reason = "Create Employment."
         ).fold(
             onSuccess = {
@@ -107,10 +106,10 @@ public class EmploymentService internal constructor(
     ): Result<Employment?> {
         tracer.debug("Updating employment with ID: $employmentId")
 
-        return verify(
+        return EmploymentConstraints.check(
             employeeId = employeeId,
             employmentId = employmentId,
-            employmentRequest = request,
+            request = request,
             reason = "Update Employment."
         ).fold(
             onSuccess = {
@@ -151,54 +150,5 @@ public class EmploymentService internal constructor(
     public suspend fun deleteAll(employeeId: Uuid): Int = withContext(Dispatchers.IO) {
         tracer.debug("Deleting all employments for employee with ID: $employeeId")
         return@withContext employmentRepository.deleteAll(employeeId = employeeId)
-    }
-
-    /**
-     * Verifies the integrity of the employment request.
-     *
-     * @param employeeId The ID of the employee associated with the employment.
-     * @param employmentId The ID of the employment to be verified.
-     * @param employmentRequest The [EmploymentRequest] details to be verified.
-     * @param reason The reason for the verification. To be included in the error message.
-     * @return A [Result] with verification state.
-     */
-    private fun verify(
-        employeeId: Uuid,
-        employmentId: Uuid?,
-        employmentRequest: EmploymentRequest,
-        reason: String
-    ): Result<Unit> {
-
-        // Verify that the employment period dates are valid.
-        employmentRequest.period.endDate?.let { endDate ->
-            if (endDate < employmentRequest.period.startDate) {
-                return Result.failure(
-                    EmploymentError.PeriodDatesMismatch(
-                        employeeId = employeeId,
-                        employmentId = employmentId,
-                        startDate = employmentRequest.period.startDate,
-                        endDate = endDate,
-                        reason = reason
-                    )
-                )
-            }
-        }
-
-        // Verify that the employment probation end date is valid.
-        employmentRequest.probationEndDate?.let { probationEndDate ->
-            if (probationEndDate < employmentRequest.period.startDate) {
-                return Result.failure(
-                    EmploymentError.InvalidProbationEndDate(
-                        employeeId = employeeId,
-                        employmentId = employmentId,
-                        startDate = employmentRequest.period.startDate,
-                        probationEndDate = probationEndDate,
-                        reason = reason
-                    )
-                )
-            }
-        }
-
-        return Result.success(Unit)
     }
 }

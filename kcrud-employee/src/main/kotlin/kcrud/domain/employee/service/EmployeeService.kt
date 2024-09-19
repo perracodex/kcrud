@@ -67,7 +67,7 @@ public class EmployeeService internal constructor(
     public suspend fun create(request: EmployeeRequest): Result<Employee> {
         tracer.debug("Creating a new employee.")
 
-        return EmployeeVerifier.check(
+        return EmployeeConstraints.check(
             employeeId = null,
             request = request,
             reason = "Create Employee."
@@ -99,7 +99,7 @@ public class EmployeeService internal constructor(
     ): Result<Employee?> {
         tracer.debug("Updating employee with ID: $employeeId.")
 
-        return EmployeeVerifier.check(
+        return EmployeeConstraints.check(
             employeeId = employeeId,
             request = request,
             reason = "Update Employee."
