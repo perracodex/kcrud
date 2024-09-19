@@ -58,10 +58,6 @@ public object EmailValidator : IValidator<String> {
     private val EMAIL_REGEX: Regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}$".toRegex()
 
     public override fun check(value: String): Result<String> {
-        if (!value.matches(regex = EMAIL_REGEX)) {
-            return Result.failure(ValidationException("Email does not match the required format: $value"))
-        }
-
         // Check for the maximum length of the entire email address (254 characters).
         if (value.length > MAX_EMAIL_LENGTH) {
             return Result.failure(
@@ -69,6 +65,11 @@ public object EmailValidator : IValidator<String> {
                     "Email exceeds the maximum length of $MAX_EMAIL_LENGTH characters: $value"
                 )
             )
+        }
+
+        // Validate the email address format using a regular expression.
+        if (!value.matches(regex = EMAIL_REGEX)) {
+            return Result.failure(ValidationException("Email does not match the required format: $value"))
         }
 
         // Splitting local and domain parts to apply specific checks.
