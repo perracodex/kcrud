@@ -152,17 +152,14 @@ paths:
           in: "query"
           required: false
           schema:
-            type: "integer"
+            type: "string"
       responses:
-        "400":
-          description: "Bad Request"
+        "500":
+          description: "Internal Server Error"
           content:
             '*/*':
               schema:
                 type: "string"
-              examples:
-                Example#1:
-                  value: "Invalid count. Must be between 1 and 100000."
         "200":
           description: "OK"
           content:
@@ -172,6 +169,15 @@ paths:
               examples:
                 Example#1:
                   value: ""
+        "400":
+          description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "Invalid count. Must be between 1 and 100000."
   /demo/json:
     get:
       tags:
@@ -294,8 +300,8 @@ paths:
     get:
       tags:
         - "RBAC"
-      description: "Redirects actors to the dashboard if they have an existing session,\
-        \ <br> or to the login page if no valid CallContext is found."
+      description: "Redirects actors to the dashboard if they have an existing CallContext\
+        \ , <br> or to the login page if no valid one is found."
       responses:
         "302":
           description: "Found <br> Redirect"
@@ -678,8 +684,8 @@ paths:
               $ref: "#/components/schemas/EmployeeRequest"
         required: true
       responses:
-        "400":
-          description: "Bad Request"
+        "500":
+          description: "Internal Server Error"
           content:
             '*/*':
               schema:
@@ -757,6 +763,12 @@ paths:
       responses:
         "400":
           description: "Bad Request"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+        "500":
+          description: "Internal Server Error"
           content:
             '*/*':
               schema:
@@ -1296,8 +1308,6 @@ components:
           type: "array"
           items:
             type: "string"
-        alive:
-          type: "boolean"
         datasource:
           $ref: "#/components/schemas/Datasource"
         connectionTest:

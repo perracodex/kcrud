@@ -39,7 +39,7 @@ internal fun Route.createRecordsRoute() {
                 employmentService = employmentService,
                 count = count
             )
-            call.respond(status = HttpStatusCode.OK, "Created $count employees.")
+            call.respond(status = HttpStatusCode.OK, message = "Created $count employees.")
         } else {
             call.respond(
                 status = HttpStatusCode.BadRequest,
