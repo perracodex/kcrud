@@ -55,7 +55,7 @@ public object ContactTable : TimestampedTable(name = "contact") {
      */
     public val email: Column<String> = validEncryptedVarchar(
         name = "email",
-        length = 254,
+        length = EmailValidator.MAX_EMAIL_LENGTH,
         encryptor = encryptor,
         validator = EmailValidator
     )
@@ -66,7 +66,7 @@ public object ContactTable : TimestampedTable(name = "contact") {
      */
     public val phone: Column<String> = validEncryptedVarchar(
         name = "phone",
-        length = 128,
+        length = PhoneValidator.MAX_PHONE_LENGTH,
         encryptor = encryptor,
         validator = PhoneValidator
     )

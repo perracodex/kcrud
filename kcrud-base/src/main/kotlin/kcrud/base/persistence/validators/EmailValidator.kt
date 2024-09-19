@@ -48,8 +48,12 @@ package kcrud.base.persistence.validators
  * @see ValidationException
  */
 public object EmailValidator : IValidator<String> {
-    private const val MAX_EMAIL_LENGTH: Int = 254
+    /** The maximum length of an email address (as per RFC 5321). */
+    public const val MAX_EMAIL_LENGTH: Int = 254
+
+    /** The maximum length of the local part of an email address (as per RFC 5321). */
     private const val MAX_LOCAL_PART_LENGTH: Int = 64
+
     private const val DOMAIN_SEPARATOR: String = "@"
     private val EMAIL_REGEX: Regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}$".toRegex()
 

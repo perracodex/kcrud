@@ -18,6 +18,9 @@ import kcrud.base.env.Tracer
 public object PhoneValidator : IValidator<String> {
     private val tracer = Tracer<PhoneValidator>()
 
+    /** The maximum length of a phone number. */
+    public const val MAX_PHONE_LENGTH: Int = 15
+
     public override fun check(value: String): Result<String> {
         return runCatching {
             val phoneUtil: PhoneNumberUtil = PhoneNumberUtil.getInstance()
