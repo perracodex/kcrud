@@ -6,13 +6,8 @@ package kcrud.domain.employee.service
 
 import kcrud.base.env.CallContext
 import kcrud.base.env.Tracer
-import kcrud.base.errors.AppException
-import kcrud.base.errors.CompositeAppException
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
-import kcrud.base.persistence.validators.EmailValidator
-import kcrud.base.persistence.validators.PhoneValidator
-import kcrud.domain.employee.errors.EmployeeError
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeFilterSet
 import kcrud.domain.employee.model.EmployeeRequest
@@ -72,7 +67,7 @@ public class EmployeeService internal constructor(
     public suspend fun create(request: EmployeeRequest): Result<Employee> {
         tracer.debug("Creating a new employee.")
 
-        return verifyIntegrity(
+        return EmployeeVerifier.check(
             employeeId = null,
             request = request,
             reason = "Create Employee."
@@ -104,7 +99,7 @@ public class EmployeeService internal constructor(
     ): Result<Employee?> {
         tracer.debug("Updating employee with ID: $employeeId.")
 
-        return verifyIntegrity(
+        return EmployeeVerifier.check(
             employeeId = employeeId,
             request = request,
             reason = "Update Employee."
@@ -151,52 +146,5 @@ public class EmployeeService internal constructor(
      */
     public suspend fun count(): Int = withContext(Dispatchers.IO) {
         return@withContext employeeRepository.count()
-    }
-
-    /**
-     * Verifies if the employee's fields.
-     *
-     * Note: The email could also be verified via the EmailString serializer before
-     * reaching this point, which would raise a generic error for the email field.
-     * The difference between the following approach or using the EmailString serializer,
-     * is that the serializer would show only a generic error, without any concrete context.
-     *
-     * @param employeeId The ID of the employee being verified.
-     * @param request The [EmployeeRequest] details to be verified.
-     * @param reason The reason for the email verification. To be included in the error message.
-     * @return A [Result] with verification state.
-     */
-    private fun verifyIntegrity(employeeId: Uuid?, request: EmployeeRequest, reason: String): Result<Unit> {
-        request.contact?.let { contact ->
-            val errors: MutableList<AppException> = mutableListOf()
-
-            PhoneValidator.check(value = contact.phone).onFailure { error ->
-                errors.add(
-                    EmployeeError.InvalidPhoneFormat(
-                        employeeId = employeeId,
-                        phone = contact.phone,
-                        reason = reason,
-                        cause = error
-                    )
-                )
-            }
-
-            EmailValidator.check(value = contact.email).onFailure { error ->
-                errors.add(
-                    EmployeeError.InvalidEmailFormat(
-                        employeeId = employeeId,
-                        email = contact.email,
-                        reason = reason,
-                        cause = error
-                    )
-                )
-            }
-
-            if (errors.isNotEmpty()) {
-                return Result.failure(CompositeAppException(errors))
-            }
-        }
-
-        return Result.success(Unit)
     }
 }
