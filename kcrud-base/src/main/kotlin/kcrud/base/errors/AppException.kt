@@ -15,7 +15,7 @@ import kotlinx.serialization.Serializable
  * @property context A context identifier for the error, typically the module or feature where it occurred.
  * @property description A human-readable description of the error.
  * @property reason An optional human-readable reason for the exception, providing more context.
- * @param cause The underlying cause of the exception, if any.
+ * @property error The underlying cause of the exception, if any.
  */
 public abstract class AppException(
     public val statusCode: HttpStatusCode,
@@ -23,10 +23,10 @@ public abstract class AppException(
     public val context: String,
     public val description: String,
     private val reason: String? = null,
-    cause: Throwable? = null
+    private val error: Throwable? = null
 ) : Exception(
     buildMessage(description = description, reason = reason),
-    cause
+    error
 ) {
     /**
      * Generates a detailed message string for this exception, combining the exception segments.
@@ -34,7 +34,8 @@ public abstract class AppException(
      */
     public fun messageDetail(): String {
         val formattedReason: String = reason?.let { "| $it" } ?: ""
-        return "Status: ${statusCode.value} | $errorCode | $context | $description $formattedReason"
+        val formattedError: String = error?.let { "| ${it.message}" } ?: ""
+        return "Status: ${statusCode.value} | $errorCode | $context | $description $formattedReason $formattedError"
     }
 
     /**
@@ -48,7 +49,8 @@ public abstract class AppException(
             context = context,
             code = errorCode,
             description = description,
-            reason = reason
+            reason = reason,
+            cause = error?.message
         )
     }
 
@@ -61,6 +63,7 @@ public abstract class AppException(
      * @property code The unique code identifying the error.
      * @property description A brief description of the error.
      * @property reason An optional human-readable reason for the error, providing more context.
+     * @property cause The underlying cause of the error, if any.
      */
     @Serializable
     public data class Response(
@@ -68,7 +71,8 @@ public abstract class AppException(
         val context: String,
         val code: String,
         val description: String,
-        val reason: String?
+        val reason: String?,
+        val cause: String?
     )
 
     private companion object {

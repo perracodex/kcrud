@@ -30,7 +30,7 @@ internal sealed class EmploymentError(
     context = "EMPLOYMENT",
     description = description,
     reason = reason,
-    cause = cause
+    error = cause
 ) {
     /**
      * Error for when an employment is not found for a concrete employee.

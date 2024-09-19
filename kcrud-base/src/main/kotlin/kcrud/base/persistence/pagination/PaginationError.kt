@@ -28,7 +28,7 @@ internal sealed class PaginationError(
     context = "PAGINATION",
     description = description,
     reason = reason,
-    cause = cause
+    error = cause
 ) {
     /**
      * Error when provided sorting fields are ambiguous as they may exist in multiple tables.

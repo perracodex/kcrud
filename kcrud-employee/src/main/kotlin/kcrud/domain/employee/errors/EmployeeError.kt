@@ -29,7 +29,7 @@ internal sealed class EmployeeError(
     context = "EMPLOYEE",
     description = description,
     reason = reason,
-    cause = cause
+    error = cause
 ) {
     /**
      * Error for when an employee is not found.

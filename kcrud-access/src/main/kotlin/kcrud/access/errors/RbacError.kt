@@ -29,7 +29,7 @@ internal sealed class RbacError(
     context = "RBAC",
     description = description,
     reason = reason,
-    cause = cause
+    error = cause
 ) {
     /**
      * Error for when an actor has no roles.
