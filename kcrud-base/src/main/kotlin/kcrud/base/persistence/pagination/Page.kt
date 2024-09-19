@@ -25,17 +25,17 @@ public data class Page<out T : Any>(
      * so each generated Page specification per its concrete type does not
      * have to include the entire Page details attributes.
      *
-     * @param totalPages The total number of pages available based on the pagination settings.
-     * @param pageIndex The current page number, 0-based.
-     * @param totalElements Total number of elements in the entire dataset, not just a page.
-     * @param elementsPerPage The number of elements per each page.
-     * @param elementsInPage The number of elements in the current page.
-     * @param isFirst True if serving the first page.
-     * @param isLast True if serving the last page.
-     * @param hasNext True if there is a next page.
-     * @param hasPrevious True if there is a previous page.
-     * @param overflow Whether the requested page index is above the total available pages.
-     * @param sort The optional sorting that has been applied to the content.
+     * @property totalPages The total number of pages available based on the pagination settings.
+     * @property pageIndex The current page number, 0-based.
+     * @property totalElements Total number of elements in the entire dataset, not just a page.
+     * @property elementsPerPage The number of elements per each page.
+     * @property elementsInPage The number of elements in the current page.
+     * @property isFirst True if serving the first page.
+     * @property isLast True if serving the last page.
+     * @property hasNext True if there is a next page.
+     * @property hasPrevious True if there is a previous page.
+     * @property overflow Whether the requested page index is above the total available pages.
+     * @property sort The optional sorting that has been applied to the content.
      */
     @Serializable
     public data class Details(

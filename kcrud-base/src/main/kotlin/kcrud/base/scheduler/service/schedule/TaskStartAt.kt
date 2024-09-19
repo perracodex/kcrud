@@ -20,14 +20,14 @@ public sealed class TaskStartAt {
     /**
      * Data class representing a specific date and time.
      *
-     * @param datetime The date and time at which the task should start.
+     * @property datetime The date and time at which the task should start.
      */
     public data class AtDateTime(val datetime: KLocalDateTime) : TaskStartAt()
 
     /**
      * Data class representing a duration from the current time.
      *
-     * @param duration The duration from the current time at which the task should start.
+     * @property duration The duration from the current time at which the task should start.
      */
     public data class AfterDuration(val duration: Duration) : TaskStartAt()
 }

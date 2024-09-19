@@ -168,7 +168,7 @@ internal object RbacDashboardManager : KoinComponent {
         /**
          * Represents a successful update operation.
          *
-         * @param dashboardContext The updated list of RBAC roles.
+         * @property dashboardContext The updated list of RBAC roles.
          */
         data class Success(val dashboardContext: Context) : UpdateResult()
 

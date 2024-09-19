@@ -12,11 +12,11 @@ import kotlin.uuid.Uuid
 /**
  * Concrete errors for the Employment domain.
  *
- * @property statusCode The [HttpStatusCode] associated with this error.
- * @property errorCode A unique code identifying the type of error.
- * @property description A human-readable description of the error.
- * @property reason An optional human-readable reason for the exception, providing more context.
- * @property cause The underlying cause of the exception, if any.
+ * @param statusCode The [HttpStatusCode] associated with this error.
+ * @param errorCode A unique code identifying the type of error.
+ * @param description A human-readable description of the error.
+ * @param reason An optional human-readable reason for the exception, providing more context.
+ * @param cause The underlying cause of the exception, if any.
  */
 internal sealed class EmploymentError(
     statusCode: HttpStatusCode,

@@ -38,7 +38,7 @@ internal object AuthenticationTokenService {
         /**
          * The token is valid and can be used.
          *
-         * @param token The valid token.
+         * @property token The valid token.
          */
         data class Valid(val token: String) : TokenState()
 
@@ -50,7 +50,7 @@ internal object AuthenticationTokenService {
         /**
          * The token is invalid, either due to a format issue or a verification problem.
          *
-         * @param reason The reason why the token is invalid.
+         * @property reason The reason why the token is invalid.
          */
         data class Invalid(val reason: String) : TokenState()
     }

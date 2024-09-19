@@ -6,6 +6,8 @@ package kcrud.domain.employee.service
 
 import kcrud.base.env.CallContext
 import kcrud.base.env.Tracer
+import kcrud.base.errors.AppException
+import kcrud.base.errors.CompositeAppException
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.persistence.validators.EmailValidator
@@ -154,16 +156,22 @@ public class EmployeeService internal constructor(
     /**
      * Verifies if the employee's fields.
      *
+     * Note: The email could also be verified via the EmailString serializer before
+     * reaching this point, which would raise a generic error for the email field.
+     * The difference between the following approach or using the EmailString serializer,
+     * is that the serializer would show only a generic error, without any concrete context.
+     *
      * @param employeeId The ID of the employee being verified.
      * @param request The [EmployeeRequest] details to be verified.
      * @param reason The reason for the email verification. To be included in the error message.
-     * @return A [Result] indicating if the employee's fields are valid.
      * @return A [Result] with verification state.
      */
     private fun verifyIntegrity(employeeId: Uuid?, request: EmployeeRequest, reason: String): Result<Unit> {
         request.contact?.let { contact ->
+            val errors: MutableList<AppException> = mutableListOf()
+
             PhoneValidator.check(value = contact.phone).onFailure { error ->
-                return Result.failure(
+                errors.add(
                     EmployeeError.InvalidPhoneFormat(
                         employeeId = employeeId,
                         phone = contact.phone,
@@ -173,15 +181,8 @@ public class EmployeeService internal constructor(
                 )
             }
 
-            // Note: The email could also be verified via the EmailString serializer before
-            // reaching this point, which would raise a generic error for the email field.
-            // However, this verification shows how to raise a custom error for the email field
-            // with a concrete error code and description.
-            // The difference between this approach or using the EmailString serializer,
-            // is that the serializer would show a generic error, and it is not aware of the context
-            // in which it is being used, so it cannot provide a more contextual error detail.
             EmailValidator.check(value = contact.email).onFailure { error ->
-                return Result.failure(
+                errors.add(
                     EmployeeError.InvalidEmailFormat(
                         employeeId = employeeId,
                         email = contact.email,
@@ -189,6 +190,10 @@ public class EmployeeService internal constructor(
                         cause = error
                     )
                 )
+            }
+
+            if (errors.isNotEmpty()) {
+                return Result.failure(CompositeAppException(errors))
             }
         }
 

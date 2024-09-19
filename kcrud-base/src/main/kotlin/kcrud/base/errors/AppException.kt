@@ -10,11 +10,11 @@ import kotlinx.serialization.Serializable
 /**
  * The application exception class, directly incorporating HTTP status, error code, and description.
  *
- * @param statusCode The [HttpStatusCode] associated with this error.
- * @param errorCode A unique code identifying the type of error.
- * @param context A context identifier for the error, typically the module or feature where it occurred.
- * @param description A human-readable description of the error.
- * @param reason An optional human-readable reason for the exception, providing more context.
+ * @property statusCode The [HttpStatusCode] associated with this error.
+ * @property errorCode A unique code identifying the type of error.
+ * @property context A context identifier for the error, typically the module or feature where it occurred.
+ * @property description A human-readable description of the error.
+ * @property reason An optional human-readable reason for the exception, providing more context.
  * @param cause The underlying cause of the exception, if any.
  */
 public abstract class AppException(
@@ -38,12 +38,12 @@ public abstract class AppException(
     }
 
     /**
-     * Converts this exception into a serializable [ErrorResponse] instance,
+     * Converts this exception into a serializable [Response] instance,
      * suitable for sending in an HTTP response.
-     * @return The [ErrorResponse] instance representing this exception.
+     * @return The [Response] instance representing this exception.
      */
-    public fun toErrorResponse(): ErrorResponse {
-        return ErrorResponse(
+    public fun toResponse(): Response {
+        return Response(
             status = statusCode.value,
             context = context,
             code = errorCode,
@@ -56,14 +56,14 @@ public abstract class AppException(
      * Data class representing a serializable error response,
      * encapsulating the structured error information that can be sent in an HTTP response.
      *
-     * @param status The HTTP status code associated with the error.
-     * @param context A context identifier for the error, typically the module or feature where it occurred.
-     * @param code The unique code identifying the error.
-     * @param description A brief description of the error.
-     * @param reason An optional human-readable reason for the error, providing more context.
+     * @property status The HTTP status code associated with the error.
+     * @property context A context identifier for the error, typically the module or feature where it occurred.
+     * @property code The unique code identifying the error.
+     * @property description A brief description of the error.
+     * @property reason An optional human-readable reason for the error, providing more context.
      */
     @Serializable
-    public data class ErrorResponse(
+    public data class Response(
         val status: Int,
         val context: String,
         val code: String,
