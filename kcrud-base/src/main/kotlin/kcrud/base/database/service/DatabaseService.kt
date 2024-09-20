@@ -7,6 +7,7 @@ package kcrud.base.database.service
 import com.zaxxer.hikari.HikariDataSource
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
 import kcrud.base.database.annotation.DatabaseAPI
+import kcrud.base.database.utils.IsolationLevel
 import kcrud.base.env.Tracer
 import kcrud.base.env.health.annotation.HealthCheckAPI
 import kcrud.base.env.health.checks.DatabaseCheck

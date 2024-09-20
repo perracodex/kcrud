@@ -142,7 +142,7 @@ internal object SchedulerService {
      *
      * @return true if the scheduler has any paused trigger groups, false otherwise
      *
-     * @see [pause]
+     * @see pause
      */
     fun isPaused(): Boolean {
         return SchedulerService::scheduler.isInitialized && scheduler.pausedTriggerGroups.isNotEmpty()

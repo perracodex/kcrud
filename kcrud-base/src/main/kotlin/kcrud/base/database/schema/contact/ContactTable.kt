@@ -10,8 +10,8 @@ import kcrud.base.database.columns.references
 import kcrud.base.database.columns.validEncryptedVarchar
 import kcrud.base.database.schema.base.TimestampedTable
 import kcrud.base.database.schema.employee.EmployeeTable
-import kcrud.base.persistence.validators.EmailValidator
-import kcrud.base.persistence.validators.PhoneValidator
+import kcrud.base.errors.validators.EmailValidator
+import kcrud.base.errors.validators.PhoneValidator
 import kcrud.base.security.utils.EncryptionUtils
 import org.jetbrains.exposed.crypt.Encryptor
 import org.jetbrains.exposed.sql.Column
