@@ -7,7 +7,6 @@ package kcrud.access.actor.repository
 import kcrud.access.actor.model.Actor
 import kcrud.access.actor.model.ActorRequest
 import kcrud.access.errors.RbacError
-import kcrud.access.rbac.model.role.RbacRole
 import kcrud.access.rbac.repository.role.IRbacRoleRepository
 import kcrud.base.database.schema.admin.actor.ActorTable
 import org.jetbrains.exposed.sql.insert
@@ -30,9 +29,9 @@ internal class ActorRepository(private val roleRepository: IRbacRoleRepository) 
                 ActorTable.username.eq(username)
             }.singleOrNull()?.let { resultRow ->
                 val actorId: Uuid = resultRow[ActorTable.id]
-                val role: RbacRole = roleRepository.findByActorId(actorId = actorId)
-                    ?: throw RbacError.ActorWithNoRoles(actorId = actorId)
-                Actor.from(row = resultRow, role = role)
+                roleRepository.findByActorId(actorId = actorId)?.let { role ->
+                    Actor.from(row = resultRow, role = role)
+                } ?: throw RbacError.ActorWithNoRoles(actorId = actorId)
             }
         }
     }
@@ -41,9 +40,9 @@ internal class ActorRepository(private val roleRepository: IRbacRoleRepository) 
         return transaction {
             ActorTable.selectAll().map { resultRow ->
                 val actorId: Uuid = resultRow[ActorTable.id]
-                val role: RbacRole = roleRepository.findByActorId(actorId = actorId)
-                    ?: throw RbacError.ActorWithNoRoles(actorId = actorId)
-                Actor.from(row = resultRow, role = role)
+                roleRepository.findByActorId(actorId = actorId)?.let { role ->
+                    Actor.from(row = resultRow, role = role)
+                } ?: throw RbacError.ActorWithNoRoles(actorId = actorId)
             }
         }
     }
@@ -53,17 +52,17 @@ internal class ActorRepository(private val roleRepository: IRbacRoleRepository) 
             ActorTable.selectAll().where {
                 ActorTable.id eq actorId
             }.singleOrNull()?.let { resultRow ->
-                val role: RbacRole = roleRepository.findByActorId(actorId = actorId)
-                    ?: throw RbacError.ActorWithNoRoles(actorId = actorId)
-                Actor.from(row = resultRow, role = role)
+                roleRepository.findByActorId(actorId = actorId)?.let { role ->
+                    Actor.from(row = resultRow, role = role)
+                }
             }
         }
     }
 
     override suspend fun create(actorRequest: ActorRequest): Uuid {
         return transaction {
-            ActorTable.insert { actorRow ->
-                actorRow.mapActorRequest(request = actorRequest)
+            ActorTable.insert { statement ->
+                statement.toStatement(request = actorRequest)
             } get ActorTable.id
         }
     }
@@ -74,8 +73,8 @@ internal class ActorRepository(private val roleRepository: IRbacRoleRepository) 
                 where = {
                     ActorTable.id eq actorId
                 }
-            ) { actorRow ->
-                actorRow.mapActorRequest(request = actorRequest)
+            ) { statement ->
+                statement.toStatement(request = actorRequest)
             }
         }
     }
@@ -86,8 +85,8 @@ internal class ActorRepository(private val roleRepository: IRbacRoleRepository) 
                 where = {
                     ActorTable.id eq actorId
                 }
-            ) {
-                it[ActorTable.isLocked] = isLocked
+            ) { statement ->
+                statement[ActorTable.isLocked] = isLocked
             }
         }
     }
@@ -99,13 +98,11 @@ internal class ActorRepository(private val roleRepository: IRbacRoleRepository) 
                     column = ActorTable.id
                 ).count() > 0L
             } else {
-                val targetUserNames: List<String> = usernames.map { it.lowercase() }
-
-                ActorTable.select(
-                    column = ActorTable.id
-                ).where {
-                    ActorTable.username.lowerCase() inList targetUserNames
-                }.count() > 0L
+                usernames.map { it.lowercase() }.let { targetUserNames ->
+                    ActorTable.select(column = ActorTable.id)
+                        .where { ActorTable.username.lowerCase() inList targetUserNames }
+                        .count() > 0L
+                }
             }
         }
     }
@@ -114,7 +111,7 @@ internal class ActorRepository(private val roleRepository: IRbacRoleRepository) 
      * Populates an SQL [UpdateBuilder] with data from an [ActorRequest] instance,
      * so that it can be used to update or create a database record.
      */
-    private fun UpdateBuilder<Int>.mapActorRequest(request: ActorRequest) {
+    private fun UpdateBuilder<Int>.toStatement(request: ActorRequest) {
         this[ActorTable.username] = request.username.lowercase()
         this[ActorTable.password] = request.password
         this[ActorTable.roleId] = request.roleId

@@ -4,10 +4,10 @@
 
 package kcrud.access.rbac.repository.scope
 
-import kcrud.access.rbac.model.field.RbacFieldRuleRequest
 import kcrud.access.rbac.model.scope.RbacScopeRuleRequest
 import kcrud.access.rbac.repository.field.IRbacFieldRuleRepository
 import kcrud.base.database.schema.admin.rbac.RbacScopeRuleTable
+import kcrud.base.database.schema.admin.rbac.types.RbacScope
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.batchInsert
@@ -32,37 +32,33 @@ internal class RbacScopeRuleRepository(
                 RbacScopeRuleTable.roleId eq roleId
             }
 
-            var newRowCount = 0
-
-            if (!scopeRuleRequests.isNullOrEmpty()) {
-                val scopeRules: List<ResultRow> = RbacScopeRuleTable.batchInsert(
+            scopeRuleRequests.takeUnless { it.isNullOrEmpty() }?.let { scopeRuleRequests ->
+                // Batch insert new scope rules.
+                val newScopeRules: List<ResultRow> = RbacScopeRuleTable.batchInsert(
                     data = scopeRuleRequests
-                ) { scopeRule ->
-                    this.mapRuleRequest(roleId = roleId, scopeRuleRequest = scopeRule)
+                ) { scopeRuleRequest ->
+                    this.toStatement(roleId = roleId, scopeRuleRequest = scopeRuleRequest)
                 }
 
-                newRowCount = scopeRules.size
-
                 // If the update was successful, recreate the field rules.
-                if (newRowCount > 0) {
-                    scopeRules.forEach { scopeRule ->
+                newScopeRules.forEach { scopeRule ->
+                    val newScopeRuleId: Uuid = scopeRule[RbacScopeRuleTable.id]
+                    val rbacScope: RbacScope = scopeRule[RbacScopeRuleTable.scope]
 
-                        // Find the field rules for the scope rule using the scope name.
-                        val fieldRuleRequest: List<RbacFieldRuleRequest>? = scopeRuleRequests.firstOrNull {
-                            it.scope == scopeRule[RbacScopeRuleTable.scope]
-                        }?.fieldRules
-
-                        // If the field rules are not empty, update the field rules.
-                        val newScopeRuleId: Uuid = scopeRule[RbacScopeRuleTable.id]
+                    // Find the field rules for the scope rule using the scope name.
+                    // If the field rules are not empty, update the field rules.
+                    scopeRuleRequests.firstOrNull { scopeRuleRequest ->
+                        scopeRuleRequest.scope == rbacScope
+                    }?.fieldRules?.also { fieldRuleRequests ->
                         fieldRuleRepository.replace(
                             scopeRuleId = newScopeRuleId,
-                            requestList = fieldRuleRequest
+                            requestList = fieldRuleRequests
                         )
                     }
                 }
-            }
 
-            newRowCount
+                newScopeRules.size
+            } ?: 0
         }
     }
 
@@ -70,7 +66,7 @@ internal class RbacScopeRuleRepository(
      * Populates an SQL [BatchInsertStatement] with data from an [RbacScopeRuleRequest] instance,
      * so that it can be used to update or create a database record.
      */
-    private fun BatchInsertStatement.mapRuleRequest(roleId: Uuid, scopeRuleRequest: RbacScopeRuleRequest) {
+    private fun BatchInsertStatement.toStatement(roleId: Uuid, scopeRuleRequest: RbacScopeRuleRequest) {
         this[RbacScopeRuleTable.roleId] = roleId
         this[RbacScopeRuleTable.scope] = scopeRuleRequest.scope
         this[RbacScopeRuleTable.accessLevel] = scopeRuleRequest.accessLevel

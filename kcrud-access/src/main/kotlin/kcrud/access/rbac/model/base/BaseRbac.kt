@@ -28,7 +28,7 @@ import kotlin.reflect.full.primaryConstructor
  * This class has scope for improvement, such as handling nested classes, and caching the reflection
  * results for performance optimization.
  *
- * @see [RbacFieldAnonymization]
+ * @see RbacFieldAnonymization
  */
 public abstract class BaseRbac {
 

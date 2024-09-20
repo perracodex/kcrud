@@ -80,8 +80,8 @@ internal class RbacRoleRepository(
 
     override fun create(roleRequest: RbacRoleRequest): RbacRole {
         return transaction {
-            val roleId: Uuid = RbacRoleTable.insert { roleRow ->
-                roleRow.mapRoleRequest(roleRequest = roleRequest)
+            val roleId: Uuid = RbacRoleTable.insert { statement ->
+                statement.toStatement(roleRequest = roleRequest)
             } get RbacRoleTable.id
 
             // If the role insert was successful, insert the scope rules.
@@ -99,24 +99,19 @@ internal class RbacRoleRepository(
 
     override fun update(roleId: Uuid, roleRequest: RbacRoleRequest): RbacRole? {
         return transaction {
-            val updateCount: Int = RbacRoleTable.update(
+            RbacRoleTable.update(
                 where = {
                     RbacRoleTable.id eq roleId
                 }
-            ) { roleRow ->
-                roleRow.mapRoleRequest(roleRequest = roleRequest)
-            }
-
-            // If the update was successful, recreate the scope rules.
-            if (updateCount > 0) {
+            ) { statement ->
+                statement.toStatement(roleRequest = roleRequest)
+            }.takeIf { it > 0 }?.let {
                 scopeRuleRepository.replace(
                     roleId = roleId,
                     scopeRuleRequests = roleRequest.scopeRules
                 )
 
                 findById(roleId = roleId)
-            } else {
-                null
             }
         }
     }
@@ -125,7 +120,7 @@ internal class RbacRoleRepository(
      * Populates an SQL [UpdateBuilder] with data from an [RbacRoleRequest] instance,
      * so that it can be used to update or create a database record.
      */
-    private fun UpdateBuilder<Int>.mapRoleRequest(roleRequest: RbacRoleRequest) {
+    private fun UpdateBuilder<Int>.toStatement(roleRequest: RbacRoleRequest) {
         this[RbacRoleTable.role_name] = roleRequest.roleName.trim()
         this[RbacRoleTable.description] = roleRequest.description?.trim()
         this[RbacRoleTable.isSuper] = roleRequest.isSuper

@@ -6,7 +6,6 @@ package kcrud.access.rbac.repository.field
 
 import kcrud.access.rbac.model.field.RbacFieldRuleRequest
 import kcrud.base.database.schema.admin.rbac.RbacFieldRuleTable
-import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.deleteWhere
@@ -28,19 +27,11 @@ internal class RbacFieldRuleRepository : IRbacFieldRuleRepository {
                 RbacFieldRuleTable.scopeRuleId eq scopeRuleId
             }
 
-            var newRowCount = 0
-
-            if (!requestList.isNullOrEmpty()) {
-                val newRows: List<ResultRow> = RbacFieldRuleTable.batchInsert(
-                    data = requestList
-                ) { scopeRule ->
-                    this.mapRuleRequest(scopeRuleId = scopeRuleId, request = scopeRule)
-                }
-
-                newRowCount = newRows.size
-            }
-
-            newRowCount
+            requestList?.takeIf { it.isNotEmpty() }?.let { requestList ->
+                RbacFieldRuleTable.batchInsert(requestList) { scopeRule ->
+                    this.toStatement(scopeRuleId = scopeRuleId, request = scopeRule)
+                }.size
+            } ?: 0
         }
     }
 
@@ -48,7 +39,7 @@ internal class RbacFieldRuleRepository : IRbacFieldRuleRepository {
      * Populates an SQL [BatchInsertStatement] with data from an [RbacFieldRuleRequest] instance,
      * so that it can be used to update or create a database record.
      */
-    private fun BatchInsertStatement.mapRuleRequest(scopeRuleId: Uuid, request: RbacFieldRuleRequest) {
+    private fun BatchInsertStatement.toStatement(scopeRuleId: Uuid, request: RbacFieldRuleRequest) {
         this[RbacFieldRuleTable.scopeRuleId] = scopeRuleId
         this[RbacFieldRuleTable.fieldName] = request.fieldName
         this[RbacFieldRuleTable.accessLevel] = request.accessLevel
