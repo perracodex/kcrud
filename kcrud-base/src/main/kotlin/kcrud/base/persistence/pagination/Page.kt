@@ -76,12 +76,16 @@ public data class Page<out T : Any>(
             val pageIndex: Int = pageable?.page ?: 0
 
             // Adjust pagination state based on total pages and content availability.
-            val isFirst: Boolean = (pageIndex == 0) || (totalPages == 0)
-            val isLast: Boolean = (pageIndex >= totalPages - 1) || (totalPages == 0)
+            val elementsInPage: Int = content.size
+            val isFirst: Boolean = (totalPages == 0) || (pageIndex == 0)
+            val isLast: Boolean = (totalPages == 0) || (pageIndex >= totalPages - 1)
             val hasNext: Boolean = (pageIndex < totalPages - 1) && (totalPages > 0)
             val hasPrevious: Boolean = (pageIndex > 0) && (totalPages > 0)
-            val isOverflow: Boolean = (pageIndex >= totalPages) && (totalPages > 0)
-            val elementsInPage: Int = content.size
+            val isOverflow: Boolean = if (totalPages > 0) {
+                pageIndex >= totalPages
+            } else {
+                pageIndex > 0
+            }
 
             // Construct the Page object with the determined states.
             return Page(
@@ -109,22 +113,7 @@ public data class Page<out T : Any>(
          * @return A new [Page] instance with an empty content list and computed page details.
          */
         public fun <T : Any> empty(pageable: Pageable?): Page<T> {
-            return Page(
-                details = Details(
-                    totalPages = 0,
-                    pageIndex = 0,
-                    totalElements = 0,
-                    elementsPerPage = 0,
-                    elementsInPage = 0,
-                    isFirst = true,
-                    isLast = true,
-                    hasNext = false,
-                    hasPrevious = false,
-                    isOverflow = false,
-                    sort = pageable?.sort
-                ),
-                content = emptyList()
-            )
+            return build(content = emptyList(), totalElements = 0, pageable = pageable)
         }
     }
 }
