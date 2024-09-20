@@ -2,7 +2,10 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.base.persistence.validators
+package kcrud.base.errors.validators
+
+import kcrud.base.errors.validators.base.IValidator
+import kcrud.base.errors.validators.base.ValidationException
 
 /**
  * Verifies if an email address is in the correct format.
@@ -62,14 +65,20 @@ public object EmailValidator : IValidator<String> {
         if (value.length > MAX_EMAIL_LENGTH) {
             return Result.failure(
                 ValidationException(
-                    "Email exceeds the maximum length of $MAX_EMAIL_LENGTH characters: $value"
+                    code = "EMAIL_LENGTH_EXCEEDED",
+                    message = "Email exceeds the maximum length of $MAX_EMAIL_LENGTH characters: $value"
                 )
             )
         }
 
         // Validate the email address format using a regular expression.
         if (!value.matches(regex = EMAIL_REGEX)) {
-            return Result.failure(ValidationException("Email does not match the required format: $value"))
+            return Result.failure(
+                ValidationException(
+                    code = "INVALID_EMAIL_FORMAT",
+                    message = "Email does not match the required format: $value"
+                )
+            )
         }
 
         // Splitting local and domain parts to apply specific checks.
@@ -81,19 +90,30 @@ public object EmailValidator : IValidator<String> {
         if (localPart.length > MAX_LOCAL_PART_LENGTH) {
             return Result.failure(
                 ValidationException(
-                    "Email local part exceeds the maximum length of $MAX_LOCAL_PART_LENGTH characters: $value"
+                    code = "EMAIL_LOCAL_PART_LENGTH_EXCEEDED",
+                    message = "Email local part exceeds the maximum length of $MAX_LOCAL_PART_LENGTH characters: $value"
                 )
             )
         }
 
         // Ensure domain part does not have consecutive dots.
         if (domainPart.contains(other = "..")) {
-            return Result.failure(ValidationException("Email domain part contains consecutive dots: $value"))
+            return Result.failure(
+                ValidationException(
+                    code = "EMAIL_DOMAIN_CONSECUTIVE_DOTS",
+                    message = "Email domain part contains consecutive dots: $value"
+                )
+            )
         }
 
         // Check if the local part starts or ends with a dot, or contains consecutive dots.
         if (localPart.startsWith(prefix = ".") || localPart.endsWith(suffix = ".") || localPart.contains(other = "..")) {
-            return Result.failure(ValidationException("Email local part contains consecutive dots: $value"))
+            return Result.failure(
+                ValidationException(
+                    code = "EMAIL_LOCAL_PART_CONSECUTIVE_DOTS",
+                    message = "Email local part contains consecutive dots: $value"
+                )
+            )
         }
 
         return Result.success(value)

@@ -11,8 +11,8 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 /**
- * Extension function to build a detailed error detail from
- * the given [AppException] instance, and respond it to the client.
+ * Extension function to build the error detail from
+ * the given [AppException] instance, and respond it to a client.
  *
  * @param cause The [AppException] instance to respond with.
  */
@@ -32,9 +32,9 @@ public suspend fun ApplicationCall.respondError(cause: AppException) {
 }
 
 /**
- * Extension function to build a srt of detailed error details from the multiple
+ * Extension function to build the error details from the multiple
  * [AppException] instances encapsulated by the given [CompositeAppException],
- * and respond it to the client.
+ * and respond it to a client.
  *
  * @param cause The [CompositeAppException] instance containing multiple errors to respond with.
  */

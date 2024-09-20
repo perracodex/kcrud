@@ -40,6 +40,7 @@ internal object EmploymentConstraints {
                         employmentId = employmentId,
                         startDate = request.period.startDate,
                         endDate = endDate,
+                        field = "period.endDate",
                         reason = reason
                     )
                 )
@@ -55,6 +56,7 @@ internal object EmploymentConstraints {
                         employmentId = employmentId,
                         startDate = request.period.startDate,
                         probationEndDate = probationEndDate,
+                        field = "probationEndDate",
                         reason = reason
                     )
                 )

@@ -14,13 +14,15 @@ import kotlin.uuid.Uuid
  * @param statusCode The [HttpStatusCode] associated with this error.
  * @param errorCode A unique code identifying the type of error.
  * @param description A human-readable description of the error.
- * @param reason An optional human-readable reason for the exception, providing more context.
- * @param cause The underlying cause of the exception, if any.
+ * @param field Optional field identifier, typically the input field that caused the error.
+ * @param reason Optional human-readable reason for the exception, providing more context.
+ * @param cause Optional underlying cause of the exception, if any.
  */
 internal sealed class EmployeeError(
     statusCode: HttpStatusCode,
     errorCode: String,
     description: String,
+    field: String? = null,
     reason: String? = null,
     cause: Throwable? = null
 ) : AppException(
@@ -28,13 +30,16 @@ internal sealed class EmployeeError(
     errorCode = errorCode,
     context = "EMPLOYEE",
     description = description,
+    field = field,
     reason = reason,
-    error = cause
+    cause = cause
 ) {
     /**
      * Error for when an employee is not found.
      *
      * @param employeeId The employee id that was not found.
+     * @param reason Optional human-readable reason for the exception, providing more context.
+     * @param cause Optional underlying cause of the exception, if any.
      */
     class EmployeeNotFound(
         employeeId: Uuid,
@@ -54,50 +59,60 @@ internal sealed class EmployeeError(
     }
 
     /**
-     * Error for when an email has an invalid format.
+     * Error for when an email invalid.
      *
      * @param employeeId The affected employee id.
-     * @param email The email that is already registered.
+     * @param email The invalid email.
+     * @param field Optional field identifier, typically the input field that caused the error.
+     * @param reason Optional human-readable reason for the exception, providing more context.
+     * @param cause Optional underlying cause of the exception, if any.
      */
-    class InvalidEmailFormat(
+    class InvalidEmail(
         employeeId: Uuid?,
         email: String,
+        field: String? = null,
         reason: String? = null,
         cause: Throwable? = null
     ) : EmployeeError(
         statusCode = STATUS_CODE,
         errorCode = ERROR_CODE,
-        description = "Invalid email format: '$email'. Employee Id: $employeeId",
+        description = "Invalid email: '$email'. Employee Id: $employeeId",
+        field = field,
         reason = reason,
         cause = cause
     ) {
         companion object {
             val STATUS_CODE: HttpStatusCode = HttpStatusCode.BadRequest
-            const val ERROR_CODE: String = "INVALID_EMAIL_FORMAT"
+            const val ERROR_CODE: String = "INVALID_EMAIL"
         }
     }
 
     /**
-     * Error for when a phone has an invalid format.
+     * Error for when a phone number is invalid, typically due to an incorrect format.
      *
      * @param employeeId The affected employee id.
-     * @param phone The phone value with the invalid format.
+     * @param phone The invalid phone number.
+     * @param field Optional field identifier, typically the input field that caused the error.
+     * @param reason Optional human-readable reason for the exception, providing more context.
+     * @param cause Optional underlying cause of the exception, if any.
      */
-    class InvalidPhoneFormat(
+    class InvalidPhoneNumber(
         employeeId: Uuid?,
         phone: String,
+        field: String? = null,
         reason: String? = null,
         cause: Throwable? = null
     ) : EmployeeError(
         statusCode = STATUS_CODE,
         errorCode = ERROR_CODE,
         description = "Invalid phone number: '$phone'. Employee Id: $employeeId",
+        field = field,
         reason = reason,
         cause = cause
     ) {
         companion object {
             val STATUS_CODE: HttpStatusCode = HttpStatusCode.BadRequest
-            const val ERROR_CODE: String = "INVALID_PHONE_FORMAT"
+            const val ERROR_CODE: String = "INVALID_PHONE_NUMBER"
         }
     }
 }

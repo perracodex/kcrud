@@ -15,13 +15,15 @@ import kotlin.uuid.Uuid
  * @param statusCode The [HttpStatusCode] associated with this error.
  * @param errorCode A unique code identifying the type of error.
  * @param description A human-readable description of the error.
- * @param reason An optional human-readable reason for the exception, providing more context.
- * @param cause The underlying cause of the exception, if any.
+ * @param field Optional field identifier, typically the input field that caused the error.
+ * @param reason Optional human-readable reason for the exception, providing more context.
+ * @param cause Optional underlying cause of the exception, if any.
  */
 internal sealed class EmploymentError(
     statusCode: HttpStatusCode,
     errorCode: String,
     description: String,
+    field: String? = null,
     reason: String? = null,
     cause: Throwable? = null
 ) : AppException(
@@ -29,14 +31,17 @@ internal sealed class EmploymentError(
     errorCode = errorCode,
     context = "EMPLOYMENT",
     description = description,
+    field = field,
     reason = reason,
-    error = cause
+    cause = cause
 ) {
     /**
      * Error for when an employment is not found for a concrete employee.
      *
      * @param employeeId The affected employee id.
      * @param employmentId The employment id that was not found.
+     * @param reason Optional human-readable reason for the exception, providing more context.
+     * @param cause Optional underlying cause of the exception, if any.
      */
     class EmploymentNotFound(
         employeeId: Uuid,
@@ -60,6 +65,8 @@ internal sealed class EmploymentError(
      * Error for when an employee is not found for a concrete employment.
      *
      * @param employeeId The employee id that was not found.
+     * @param reason Optional human-readable reason for the exception, providing more context.
+     * @param cause Optional underlying cause of the exception, if any.
      */
     class EmployeeNotFound(
         employeeId: Uuid,
@@ -86,12 +93,16 @@ internal sealed class EmploymentError(
      * @param employmentId The employment id associated with the error.
      * @param startDate The start date of the employment period.
      * @param endDate The end date of the employment period.
+     * @param field Optional field identifier, typically the input field that caused the error.
+     * @param reason Optional human-readable reason for the exception, providing more context.
+     * @param cause Optional underlying cause of the exception, if any.
      */
     class PeriodDatesMismatch(
         employeeId: Uuid,
         employmentId: Uuid?,
         startDate: KLocalDate,
         endDate: KLocalDate,
+        field: String? = null,
         reason: String? = null,
         cause: Throwable? = null
     ) : EmploymentError(
@@ -100,6 +111,7 @@ internal sealed class EmploymentError(
         description = "Employment end date cannot be prior to the start date. " +
                 "Employee Id: $employeeId. Employment Id: $employmentId. " +
                 "Start Date: $startDate. End Date: $endDate.",
+        field = field,
         reason = reason,
         cause = cause
     ) {
@@ -116,12 +128,16 @@ internal sealed class EmploymentError(
      * @param employmentId The employment id associated with the error.
      * @param startDate The start date of the employment period.
      * @param probationEndDate The probation end date of the employment period.
+     * @param field Optional field identifier, typically the input field that caused the error.
+     * @param reason Optional human-readable reason for the exception, providing more context.
+     * @param cause Optional underlying cause of the exception, if any.
      */
     class InvalidProbationEndDate(
         employeeId: Uuid,
         employmentId: Uuid?,
         startDate: KLocalDate,
         probationEndDate: KLocalDate,
+        field: String? = null,
         reason: String? = null,
         cause: Throwable? = null
     ) : EmploymentError(
@@ -130,6 +146,7 @@ internal sealed class EmploymentError(
         description = "Employment probation end date cannot be prior to the start date. " +
                 "Employee Id: $employeeId. Employment Id: $employmentId. " +
                 "Start Date: $startDate. Probation End Date: $probationEndDate.",
+        field = field,
         reason = reason,
         cause = cause
     ) {

@@ -4,7 +4,7 @@
 
 package kcrud.base.database.columns
 
-import kcrud.base.persistence.validators.IValidator
+import kcrud.base.errors.validators.base.IValidator
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
 

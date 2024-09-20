@@ -9,20 +9,23 @@ package kcrud.base.errors
  */
 internal object ErrorUtils {
     /**
-     * Builds a detailed error message by extracting the first two unique messages from the chain of causes
-     * of the provided exception, focusing on initial error points that are most relevant for diagnostics.
+     * Builds a detailed error message by extracting unique messages from the chain of causes
+     * of the provided [cause], up to predefined number of initial error points that are most
+     * relevant for diagnostics.
      *
-     * @param throwable The initial throwable from which to start extracting the messages.
-     * @return A detailed error message string, comprised of the first two unique messages, if available.
+     * @param cause The initial [Throwable] from which to start extracting the messages.
+     * @return A detailed error message string, comprised of unique messages, up to the predefined limit.
      */
-    fun buildMessage(throwable: Throwable): String {
-        // Use a set to keep track of unique messages.
-        val uniqueMessages = linkedSetOf<String>()
+    fun summarizeCause(cause: Throwable): String {
+        // Use a Set to keep track of unique messages.
+        val uniqueMessages: LinkedHashSet<String> = linkedSetOf()
+        // Maximum number of unique messages to collect.
+        val maxMessages = 2
 
-        // Iterate through the exception chain and collect unique messages until we have two.
-        generateSequence(throwable) { it.cause }.forEach { currentCause ->
-            // Add message if it is unique and we don't yet have two messages.
-            if (uniqueMessages.size < 2) {
+        // Iterate through the exception chain and collect unique messages until we reach the limit.
+        generateSequence(cause) { it.cause }.forEach { currentCause ->
+            // Add message if it is unique and we haven't reached the collecting limit.
+            if (uniqueMessages.size < maxMessages) {
                 currentCause.message?.let { message ->
                     if (!uniqueMessages.contains(message)) {
                         uniqueMessages.add(message)
@@ -31,8 +34,7 @@ internal object ErrorUtils {
             }
         }
 
-        // Join the collected messages with "Caused by:" if there are exactly two,
-        // or just return the single message.
+        // Join the collected messages with "Caused by:" if more than one, otherwise return the single message.
         return uniqueMessages.joinToString(separator = " Caused by: ")
     }
 }

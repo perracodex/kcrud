@@ -28,12 +28,13 @@ internal sealed class PaginationError(
     context = "PAGINATION",
     description = description,
     reason = reason,
-    error = cause
+    cause = cause
 ) {
     /**
      * Error when provided sorting fields are ambiguous as they may exist in multiple tables.
      *
      * @param sort The sort directive that was provided.
+     * @param reason Optional human-readable reason for the exception, providing more context.
      */
     class AmbiguousSortField(sort: Pageable.Sort, reason: String) : PaginationError(
         statusCode = STATUS_CODE,
@@ -51,6 +52,9 @@ internal sealed class PaginationError(
      * Error when the page attributes are invalid.
      * This is when only one either the page or size is present.
      * Both must be present or none of them.
+     *
+     * @param reason Optional human-readable reason for the exception, providing more context.
+     * @param cause Optional underlying cause of the exception, if any.
      */
     class InvalidPageablePair(reason: String? = null, cause: Throwable? = null) : PaginationError(
         statusCode = STATUS_CODE,
@@ -69,6 +73,8 @@ internal sealed class PaginationError(
      * Error when the provided sort direction is invalid.
      *
      * @param direction The sort direction that was provided is not valid.
+     * @param reason Optional human-readable reason for the exception, providing more context.
+     * @param cause Optional underlying cause of the exception, if any.
      */
     class InvalidOrderDirection(direction: String, reason: String? = null, cause: Throwable? = null) : PaginationError(
         statusCode = STATUS_CODE,
@@ -87,6 +93,7 @@ internal sealed class PaginationError(
      * Error when provided sorting field is invalid.
      *
      * @param sort The sort directive that was provided.
+     * @param reason Optional human-readable reason for the exception, providing more context.
      */
     class InvalidSortDirective(sort: Pageable.Sort, reason: String) : PaginationError(
         statusCode = STATUS_CODE,

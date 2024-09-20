@@ -5,28 +5,39 @@
 package kcrud.base.errors
 
 import io.ktor.http.*
+import io.ktor.server.application.*
+import kcrud.base.errors.validators.base.ValidationException
 import kotlinx.serialization.Serializable
 
 /**
- * The application exception class, directly incorporating HTTP status, error code, and description.
+ * Base class for all application-specific exceptions. It provides a structured error response
+ * that can be serialized and sent in an HTTP response.
+ *
+ * If a [cause] is provided, and such is of type [ValidationException], its associated code
+ * will be extracted and included in error responses.
  *
  * @property statusCode The [HttpStatusCode] associated with this error.
  * @property errorCode A unique code identifying the type of error.
  * @property context A context identifier for the error, typically the module or feature where it occurred.
  * @property description A human-readable description of the error.
- * @property reason An optional human-readable reason for the exception, providing more context.
- * @property error The underlying cause of the exception, if any.
+ * @property field Optional field identifier, typically the input field that caused the error.
+ * @property reason Optional human-readable reason for the exception, providing more context.
+ * @property cause Optional underlying cause of the exception, if any.
+ *
+ * @see ApplicationCall.respondError
+ * @see ValidationException
  */
 public abstract class AppException(
     public val statusCode: HttpStatusCode,
     public val errorCode: String,
     public val context: String,
     public val description: String,
+    public val field: String? = null,
     private val reason: String? = null,
-    private val error: Throwable? = null
+    cause: Throwable? = null
 ) : Exception(
     buildMessage(description = description, reason = reason),
-    error
+    cause
 ) {
     /**
      * Generates a detailed message string for this exception, combining the exception segments.
@@ -34,8 +45,8 @@ public abstract class AppException(
      */
     public fun messageDetail(): String {
         val formattedReason: String = reason?.let { "| $it" } ?: ""
-        val formattedError: String = error?.let { "| ${it.message}" } ?: ""
-        return "Status: ${statusCode.value} | $errorCode | $context | $description $formattedReason $formattedError"
+        val formattedCause: String = cause?.let { "| ${it.message}" } ?: ""
+        return "Status: ${statusCode.value} | $errorCode | $context | $description $formattedReason $formattedCause"
     }
 
     /**
@@ -48,9 +59,11 @@ public abstract class AppException(
             status = statusCode.value,
             context = context,
             code = errorCode,
+            validationCode = (cause as? ValidationException)?.code,
+            field = field,
             description = description,
             reason = reason,
-            cause = error?.message
+            cause = cause?.message
         )
     }
 
@@ -61,8 +74,10 @@ public abstract class AppException(
      * @property status The HTTP status code associated with the error.
      * @property context A context identifier for the error, typically the module or feature where it occurred.
      * @property code The unique code identifying the error.
+     * @property validationCode Optional validation code associated with the error.
+     * @property field Optional field identifier, typically the input field that caused the error.
      * @property description A brief description of the error.
-     * @property reason An optional human-readable reason for the error, providing more context.
+     * @property reason Optional human-readable reason for the error, providing more context.
      * @property cause The underlying cause of the error, if any.
      */
     @Serializable
@@ -70,6 +85,8 @@ public abstract class AppException(
         val status: Int,
         val context: String,
         val code: String,
+        val validationCode: String?,
+        val field: String?,
         val description: String,
         val reason: String?,
         val cause: String?

@@ -6,8 +6,8 @@ package kcrud.domain.employee.service
 
 import kcrud.base.errors.AppException
 import kcrud.base.errors.CompositeAppException
-import kcrud.base.persistence.validators.EmailValidator
-import kcrud.base.persistence.validators.PhoneValidator
+import kcrud.base.errors.validators.EmailValidator
+import kcrud.base.errors.validators.PhoneValidator
 import kcrud.domain.employee.errors.EmployeeError
 import kcrud.domain.employee.model.EmployeeRequest
 import kotlin.uuid.Uuid
@@ -33,9 +33,10 @@ internal object EmployeeConstraints {
 
             PhoneValidator.check(value = contact.phone).onFailure { error ->
                 errors.add(
-                    EmployeeError.InvalidPhoneFormat(
+                    EmployeeError.InvalidPhoneNumber(
                         employeeId = employeeId,
                         phone = contact.phone,
+                        field = "contact.phone",
                         reason = reason,
                         cause = error
                     )
@@ -44,9 +45,10 @@ internal object EmployeeConstraints {
 
             EmailValidator.check(value = contact.email).onFailure { error ->
                 errors.add(
-                    EmployeeError.InvalidEmailFormat(
+                    EmployeeError.InvalidEmail(
                         employeeId = employeeId,
                         email = contact.email,
+                        field = "contact.email",
                         reason = reason,
                         cause = error
                     )

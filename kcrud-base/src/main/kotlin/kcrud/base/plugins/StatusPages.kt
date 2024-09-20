@@ -58,19 +58,19 @@ public fun Application.configureStatusPages() {
         // Bad request exception handling.
         exception<BadRequestException> { call: ApplicationCall, cause: Throwable ->
             tracer.error(message = cause.message, cause = cause)
-            val message: String = ErrorUtils.buildMessage(cause)
+            val message: String = ErrorUtils.summarizeCause(cause)
             call.respond(status = HttpStatusCode.BadRequest, message = message)
         }
 
         // Additional exception handling.
         exception<IllegalArgumentException> { call: ApplicationCall, cause: Throwable ->
             tracer.error(message = cause.message, cause = cause)
-            val message: String = ErrorUtils.buildMessage(throwable = cause)
+            val message: String = ErrorUtils.summarizeCause(cause = cause)
             call.respond(status = HttpStatusCode.BadRequest, message = message)
         }
         exception<NotFoundException> { call: ApplicationCall, cause: Throwable ->
             tracer.error(message = cause.message, cause = cause)
-            val message: String = ErrorUtils.buildMessage(throwable = cause)
+            val message: String = ErrorUtils.summarizeCause(cause = cause)
             call.respond(status = HttpStatusCode.NotFound, message = message)
         }
         exception<Throwable> { call: ApplicationCall, cause: Throwable ->

@@ -2,7 +2,10 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.base.persistence.validators
+package kcrud.base.errors.validators.base
+
+import kcrud.base.errors.validators.EmailValidator
+import kcrud.base.errors.validators.PhoneValidator
 
 /**
  * Interface representing a generic value validator.
@@ -26,16 +29,3 @@ public interface IValidator<T> {
      */
     public fun check(value: T): Result<T>
 }
-
-/**
- * Custom exception class to represent validation errors.
- * This exception should be thrown when validation of a value fails.
- *
- * @param message The detail message describing the validation failure.
- * @param cause Optional underlying reason for this [ValidationException].
- *
- * @see IValidator
- * @see EmailValidator
- * @see PhoneValidator
- */
-public class ValidationException(message: String, cause: Throwable? = null) : Exception(message, cause)
