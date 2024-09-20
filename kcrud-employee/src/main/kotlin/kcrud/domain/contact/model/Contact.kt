@@ -6,6 +6,7 @@ package kcrud.domain.contact.model
 
 import kcrud.base.database.schema.contact.ContactTable
 import kcrud.base.persistence.model.Meta
+import kcrud.base.persistence.pagination.IEntityMapper
 import kcrud.base.plugins.Uuid
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
@@ -25,14 +26,8 @@ public data class Contact(
     val phone: String,
     val meta: Meta
 ) {
-    internal companion object {
-        /**
-         * Maps a [ResultRow] to a [Contact] instance.
-         *
-         * @param row The [ResultRow] to map.
-         * @return The mapped [Contact] instance.
-         */
-        fun from(row: ResultRow): Contact {
+    internal companion object : IEntityMapper<Contact> {
+        override fun from(row: ResultRow): Contact {
             return Contact(
                 id = row[ContactTable.id],
                 email = row[ContactTable.email],

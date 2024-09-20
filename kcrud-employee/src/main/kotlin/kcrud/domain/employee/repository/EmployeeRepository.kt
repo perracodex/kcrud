@@ -6,7 +6,7 @@ package kcrud.domain.employee.repository
 
 import kcrud.base.database.schema.contact.ContactTable
 import kcrud.base.database.schema.employee.EmployeeTable
-import kcrud.base.database.service.transactionWithSchema
+import kcrud.base.database.utils.transactionWithSchema
 import kcrud.base.env.CallContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
@@ -46,35 +46,18 @@ internal class EmployeeRepository(
 
     override fun findAll(pageable: Pageable?): Page<Employee> {
         return transactionWithSchema(schema = context.schema) {
-            val query: Query = EmployeeTable.join(
+            EmployeeTable.join(
                 otherTable = ContactTable,
                 joinType = JoinType.LEFT,
                 onColumn = EmployeeTable.id,
                 otherColumn = ContactTable.employeeId
-            ).selectAll()
-
-            // Determine the total records involved in the query before applying pagination.
-            val totalElements: Int = query.count().toInt()
-
-            val content: List<Employee> = query
-                .paginate(pageable = pageable)
-                .map { resultRow ->
-                    Employee.from(row = resultRow)
-                }
-
-            Page.build(
-                content = content,
-                totalElements = totalElements,
-                pageable = pageable
-            )
+            ).selectAll().paginate(pageable = pageable, mapper = Employee)
         }
     }
 
     override fun search(filterSet: EmployeeFilterSet, pageable: Pageable?): Page<Employee> {
         return transactionWithSchema(schema = context.schema) {
-            // Start with a base query selecting all the records.
-            val query: Query = EmployeeTable.selectAll().apply {
-
+            EmployeeTable.selectAll().apply {
                 // Apply filters dynamically based on the presence of criteria in filterSet.
                 // Using lowerCase() to make the search case-insensitive.
                 // This could be removed if the database is configured to use a case-insensitive collation.
@@ -103,62 +86,43 @@ internal class EmployeeRepository(
                         }
                     }
                 }
-            }
-
-            // Determine the total records involved in the query before applying pagination.
-            val totalElements: Int = query.count().toInt()
-
-            val content: List<Employee> = query
-                .paginate(pageable = pageable)
-                .map { resultRow ->
-                    Employee.from(row = resultRow)
-                }
-
-            Page.build(
-                content = content,
-                totalElements = totalElements,
-                pageable = pageable
-            )
+            }.paginate(pageable = pageable, mapper = Employee)
         }
     }
 
     override fun create(request: EmployeeRequest): Employee {
         return transactionWithSchema(schema = context.schema) {
-            val employeeId: Uuid = EmployeeTable.insert { employeeRow ->
-                employeeRow.mapEmployeeRequest(request = request)
-            } get EmployeeTable.id
+            EmployeeTable.insert { statement ->
+                statement.toStatement(request = request)
+            }[EmployeeTable.id].let { employeeId ->
+                request.contact?.let {
+                    contactRepository.create(
+                        employeeId = employeeId,
+                        request = request.contact
+                    )
+                }
 
-            request.contact?.let {
-                contactRepository.create(
-                    employeeId = employeeId,
-                    request = request.contact
-                )
+                findById(employeeId = employeeId)
+                    ?: throw IllegalStateException("Failed to create Employee.")
             }
-
-            findById(employeeId = employeeId)
-                ?: throw IllegalStateException("Failed to create Employee.")
         }
     }
 
     override fun update(employeeId: Uuid, request: EmployeeRequest): Employee? {
         return transactionWithSchema(schema = context.schema) {
-            val updateCount: Int = EmployeeTable.update(
+            EmployeeTable.update(
                 where = {
                     EmployeeTable.id eq employeeId
                 }
-            ) { employeeRow ->
-                employeeRow.mapEmployeeRequest(request = request)
-            }
-
-            if (updateCount > 0) {
+            ) { statement ->
+                statement.toStatement(request = request)
+            }.takeIf { it > 0 }?.let {
                 contactRepository.syncWithEmployee(
                     employeeId = employeeId,
                     employeeRequest = request
                 )
 
                 findById(employeeId = employeeId)
-            } else {
-                null
             }
         }
     }
@@ -187,7 +151,7 @@ internal class EmployeeRepository(
      * Populates an SQL [UpdateBuilder] with data from an [EmployeeRequest] instance,
      * so that it can be used to update or create a database record.
      */
-    private fun UpdateBuilder<Int>.mapEmployeeRequest(request: EmployeeRequest) {
+    private fun UpdateBuilder<Int>.toStatement(request: EmployeeRequest) {
         this[EmployeeTable.firstName] = request.firstName.trim()
         this[EmployeeTable.lastName] = request.lastName.trim()
         this[EmployeeTable.dob] = request.dob

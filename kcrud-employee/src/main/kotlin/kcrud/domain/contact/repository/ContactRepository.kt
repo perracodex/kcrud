@@ -5,7 +5,7 @@
 package kcrud.domain.contact.repository
 
 import kcrud.base.database.schema.contact.ContactTable
-import kcrud.base.database.service.transactionWithSchema
+import kcrud.base.database.utils.transactionWithSchema
 import kcrud.base.env.CallContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
@@ -51,20 +51,7 @@ internal class ContactRepository(
 
     override fun findAll(pageable: Pageable?): Page<Contact> {
         return transactionWithSchema(schema = context.schema) {
-            val totalElements: Int = ContactTable.selectAll().count().toInt()
-
-            val content: List<Contact> = ContactTable
-                .selectAll()
-                .paginate(pageable = pageable)
-                .map { resultRow ->
-                    Contact.from(row = resultRow)
-                }
-
-            Page.build(
-                content = content,
-                totalElements = totalElements,
-                pageable = pageable
-            )
+            ContactTable.selectAll().paginate(pageable = pageable, mapper = Contact)
         }
     }
 
@@ -91,8 +78,8 @@ internal class ContactRepository(
 
     override fun create(employeeId: Uuid, request: ContactRequest): Uuid {
         return transactionWithSchema(schema = context.schema) {
-            ContactTable.insert { contactRow ->
-                contactRow.mapContactRequest(
+            ContactTable.insert { statement ->
+                statement.toStatement(
                     employeeId = employeeId,
                     request = request
                 )
@@ -106,8 +93,8 @@ internal class ContactRepository(
                 where = {
                     ContactTable.id eq contactId
                 }
-            ) { contactRow ->
-                contactRow.mapContactRequest(
+            ) { statement ->
+                statement.toStatement(
                     employeeId = employeeId,
                     request = request
                 )
@@ -145,7 +132,7 @@ internal class ContactRepository(
      * Populates an SQL [UpdateBuilder] with data from a [ContactRequest] instance,
      * so that it can be used to update or create a database record.
      */
-    private fun UpdateBuilder<Int>.mapContactRequest(employeeId: Uuid, request: ContactRequest) {
+    private fun UpdateBuilder<Int>.toStatement(employeeId: Uuid, request: ContactRequest) {
         this[ContactTable.employeeId] = employeeId
         this[ContactTable.email] = request.email.trim()
         this[ContactTable.phone] = request.phone.trim()

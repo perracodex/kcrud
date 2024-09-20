@@ -8,7 +8,7 @@ import kcrud.base.database.extensions.exists
 import kcrud.base.database.schema.contact.ContactTable
 import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.database.schema.employment.EmploymentTable
-import kcrud.base.database.service.transactionWithSchema
+import kcrud.base.database.utils.transactionWithSchema
 import kcrud.base.env.CallContext
 import kcrud.base.persistence.pagination.Page
 import kcrud.base.persistence.pagination.Pageable
@@ -30,25 +30,11 @@ internal class EmploymentRepository(
 
     override fun findAll(pageable: Pageable?): Page<Employment> {
         return transactionWithSchema(schema = context.schema) {
-            val query: Query = EmploymentTable
+            EmploymentTable
                 .innerJoin(EmployeeTable)
                 .leftJoin(ContactTable)
                 .selectAll()
-
-            // Determine the total records involved in the query before applying pagination.
-            val totalElements: Int = query.count().toInt()
-
-            val content: List<Employment> = query
-                .paginate(pageable = pageable)
-                .map { resultRow ->
-                    Employment.from(row = resultRow)
-                }
-
-            Page.build(
-                content = content,
-                totalElements = totalElements,
-                pageable = pageable
-            )
+                .paginate(pageable = pageable, mapper = Employment)
         }
     }
 
@@ -81,39 +67,33 @@ internal class EmploymentRepository(
 
     override fun create(employeeId: Uuid, request: EmploymentRequest): Employment? {
         return transactionWithSchema(schema = context.schema) {
-            if (employeeExists(employeeId = employeeId)) {
-                val employmentId: Uuid = EmploymentTable.insert { employmentRow ->
-                    employmentRow.mapEmploymentRequest(
+            employeeExists(employeeId = employeeId).takeIf { it }?.let {
+                EmploymentTable.insert { statement ->
+                    statement.toStatement(
                         employeeId = employeeId,
                         request = request
                     )
-                } get EmploymentTable.id
-
-                findById(employeeId = employeeId, employmentId = employmentId)
-                    ?: throw IllegalStateException("Failed to create Employment.")
-            } else {
-                null
+                }[EmploymentTable.id].let { employmentId ->
+                    findById(employeeId = employeeId, employmentId = employmentId)
+                        ?: throw IllegalStateException("Failed to create Employment.")
+                }
             }
         }
     }
 
     override fun update(employeeId: Uuid, employmentId: Uuid, request: EmploymentRequest): Employment? {
         return transactionWithSchema(schema = context.schema) {
-            val updateCount: Int = EmploymentTable.update(
+            EmploymentTable.update(
                 where = {
                     (EmploymentTable.employeeId eq employeeId) and (EmploymentTable.id eq employmentId)
                 }
-            ) { employmentRow ->
-                employmentRow.mapEmploymentRequest(
+            ) { statement ->
+                statement.toStatement(
                     employeeId = employeeId,
                     request = request
                 )
-            }
-
-            if (updateCount > 0) {
+            }.takeIf { it > 0 }?.let {
                 findById(employeeId = employeeId, employmentId = employmentId)
-            } else {
-                null
             }
         }
     }
@@ -154,7 +134,7 @@ internal class EmploymentRepository(
      * Populates an SQL [UpdateBuilder] with data from an [EmploymentRequest] instance,
      * so that it can be used to update or create a database record.
      */
-    private fun UpdateBuilder<Int>.mapEmploymentRequest(employeeId: Uuid, request: EmploymentRequest) {
+    private fun UpdateBuilder<Int>.toStatement(employeeId: Uuid, request: EmploymentRequest) {
         this[EmploymentTable.employeeId] = employeeId
         this[EmploymentTable.status] = request.status
         this[EmploymentTable.probationEndDate] = request.probationEndDate

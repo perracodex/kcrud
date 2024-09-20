@@ -9,6 +9,7 @@ import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
 import kcrud.base.persistence.model.Meta
+import kcrud.base.persistence.pagination.IEntityMapper
 import kcrud.base.plugins.Uuid
 import kcrud.base.utils.DateTimeUtils
 import kcrud.base.utils.KLocalDate
@@ -43,14 +44,8 @@ public data class Employee(
     val contact: Contact?,
     val meta: Meta
 ) {
-    public companion object {
-        /**
-         * Maps a [ResultRow] to a [Employee] instance.
-         *
-         * @param row The [ResultRow] to map.
-         * @return The mapped [Employee] instance.
-         */
-        public fun from(row: ResultRow): Employee {
+    public companion object : IEntityMapper<Employee> {
+        public override fun from(row: ResultRow): Employee {
             val contact: Contact? = row.getOrNull(ContactTable.id)?.let {
                 Contact.from(row = row)
             }

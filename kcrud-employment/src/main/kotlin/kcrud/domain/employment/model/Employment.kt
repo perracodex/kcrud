@@ -9,6 +9,7 @@ import kcrud.base.database.schema.employment.types.EmploymentStatus
 import kcrud.base.database.schema.employment.types.WorkModality
 import kcrud.base.persistence.model.Meta
 import kcrud.base.persistence.model.Period
+import kcrud.base.persistence.pagination.IEntityMapper
 import kcrud.base.plugins.Uuid
 import kcrud.base.utils.KLocalDate
 import kcrud.domain.employee.model.Employee
@@ -36,14 +37,8 @@ public data class Employment(
     val employee: Employee,
     val meta: Meta
 ) {
-    internal companion object {
-        /**
-         * Maps a [ResultRow] to a [Employment] instance.
-         *
-         * @param row The [ResultRow] to map.
-         * @return The mapped [Employment] instance.
-         */
-        fun from(row: ResultRow): Employment {
+    internal companion object : IEntityMapper<Employment> {
+        override fun from(row: ResultRow): Employment {
             return Employment(
                 id = row[EmploymentTable.id],
                 period = Period.from(row = row, table = EmploymentTable),

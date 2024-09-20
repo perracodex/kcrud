@@ -101,5 +101,30 @@ public data class Page<out T : Any>(
                 content = content
             )
         }
+
+        /**
+         * Factory method to create a new [Page] instance with an empty content list.
+         *
+         * @param pageable The pagination information that was used to request the content, or null if none was used.
+         * @return A new [Page] instance with an empty content list and computed page details.
+         */
+        public fun <T : Any> empty(pageable: Pageable?): Page<T> {
+            return Page(
+                details = Details(
+                    totalPages = 0,
+                    pageIndex = 0,
+                    totalElements = 0,
+                    elementsPerPage = 0,
+                    elementsInPage = 0,
+                    isFirst = true,
+                    isLast = true,
+                    hasNext = false,
+                    hasPrevious = false,
+                    isOverflow = false,
+                    sort = pageable?.sort
+                ),
+                content = emptyList()
+            )
+        }
     }
 }
