@@ -6,7 +6,6 @@ package kcrud.base.errors.validators
 
 import com.google.i18n.phonenumbers.NumberParseException
 import com.google.i18n.phonenumbers.PhoneNumberUtil
-import com.google.i18n.phonenumbers.Phonenumber
 import kcrud.base.env.Tracer
 import kcrud.base.errors.validators.base.IValidator
 import kcrud.base.errors.validators.base.ValidationException
@@ -33,16 +32,16 @@ public object PhoneValidator : IValidator<String> {
                 )
             }
 
-            val phoneUtil: PhoneNumberUtil = PhoneNumberUtil.getInstance()
-
-            // The region code is null for international numbers.
-            val numberProto: Phonenumber.PhoneNumber = phoneUtil.parse(value, null)
-
-            if (!phoneUtil.isValidNumber(numberProto)) {
-                throw ValidationException(
-                    code = "INVALID_PHONE_NUMBER",
-                    message = "Invalid phone number: $value"
-                )
+            PhoneNumberUtil.getInstance().let { phoneUtil ->
+                // The region code is null for international numbers.
+                phoneUtil.parse(value, null).let { numberProto ->
+                    if (!phoneUtil.isValidNumber(numberProto)) {
+                        throw ValidationException(
+                            code = "INVALID_PHONE_NUMBER",
+                            message = "Invalid phone number: $value"
+                        )
+                    }
+                }
             }
 
             return@runCatching Result.success(value)
