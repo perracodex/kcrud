@@ -28,17 +28,15 @@ internal object AuditRepository {
      */
     fun create(request: AuditLogRequest): Uuid {
         return transaction {
-            val logId: Uuid = SchedulerAuditTable.insert {
-                it[taskName] = request.taskName
-                it[taskGroup] = request.taskGroup
-                it[fireTime] = request.fireTime
-                it[runTime] = request.runTime
-                it[outcome] = request.outcome
-                it[log] = request.log
-                it[detail] = request.detail
-            } get SchedulerAuditTable.id
-
-            logId
+            SchedulerAuditTable.insert { statement ->
+                statement[taskName] = request.taskName
+                statement[taskGroup] = request.taskGroup
+                statement[fireTime] = request.fireTime
+                statement[runTime] = request.runTime
+                statement[outcome] = request.outcome
+                statement[log] = request.log
+                statement[detail] = request.detail
+            }[SchedulerAuditTable.id]
         }
     }
 
@@ -51,9 +49,7 @@ internal object AuditRepository {
         return transaction {
             SchedulerAuditTable.selectAll()
                 .orderBy(SchedulerAuditTable.createdAt to SortOrder.DESC)
-                .map {
-                    AuditLog.from(row = it)
-                }
+                .map { AuditLog.from(row = it) }
         }
     }
 
@@ -70,9 +66,7 @@ internal object AuditRepository {
                 .where { SchedulerAuditTable.taskName eq taskName }
                 .andWhere { SchedulerAuditTable.taskGroup eq taskGroup }
                 .orderBy(SchedulerAuditTable.createdAt to SortOrder.DESC)
-                .map {
-                    AuditLog.from(row = it)
-                }
+                .map { AuditLog.from(row = it) }
         }
     }
 
@@ -90,9 +84,8 @@ internal object AuditRepository {
                 .andWhere { SchedulerAuditTable.taskGroup eq taskGroup }
                 .orderBy(SchedulerAuditTable.createdAt to SortOrder.DESC)
                 .limit(n = 1)
-                .map {
-                    AuditLog.from(row = it)
-                }.singleOrNull()
+                .map { AuditLog.from(row = it) }
+                .singleOrNull()
         }
     }
 
@@ -105,14 +98,16 @@ internal object AuditRepository {
      */
     fun count(taskName: String, taskGroup: String): Int {
         return transaction {
-//            addLogger(StdOutSqlLogger)
-//
-//            explain {
-//                SchedulerAuditTable
-//                    .selectAll()
-//                    .where { SchedulerAuditTable.taskName eq taskName }
-//                    .andWhere { SchedulerAuditTable.taskGroup eq taskGroup }
-//            }.forEach(::print)
+            // Enabled to print the SQL query for debugging purposes.
+            // addLogger(StdOutSqlLogger)
+
+            // Enable to get a detailed explanation of the query.
+            // explain {
+            //    SchedulerAuditTable
+            //        .selectAll()
+            //        .where { SchedulerAuditTable.taskName eq taskName }
+            //        .andWhere { SchedulerAuditTable.taskGroup eq taskGroup }
+            //}.forEach(::print)
 
             SchedulerAuditTable
                 .selectAll()
