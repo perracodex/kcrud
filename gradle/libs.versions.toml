@@ -7,6 +7,7 @@ cron-descriptor = "1.2.10"              # https://github.com/voidburn/cron-expre
 database-h2 = "2.3.232"                 # https://github.com/h2database/h2database/releases
 dokka = "1.9.20"                        # https://github.com/Kotlin/dokka/releases
 exposed = "0.54.0"                      # https://github.com/JetBrains/Exposed/releases
+exposed-pagination = "1.0.0"            # https://github.com/perracodex/exposed-pagination/releases
 flyway = "10.18.0"                      # https://github.com/flyway/flyway/releases
 google-phonenumber = "8.13.45"          # https://github.com/google/libphonenumber/releases
 hikariCP = "5.1.0"                      # https://github.com/brettwooldridge/HikariCP/tags
@@ -64,6 +65,11 @@ exposed-crypt = { module = "org.jetbrains.exposed:exposed-crypt", version.ref = 
 exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
 exposed-json = { module = "org.jetbrains.exposed:exposed-json", version.ref = "exposed" }
 exposed-kotlin-datetime = { module = "org.jetbrains.exposed:exposed-kotlin-datetime", version.ref = "exposed" }
+
+# Exposed Pagination.
+# https://github.com/perracodex/exposed-pagination
+# https://github.com/perracodex/exposed-pagination/releases
+exposed-pagination = { module = "io.github.perracodex:exposed-pagination", version.ref = "exposed-pagination" }
 
 # Flyway (Database migration).
 # https://github.com/flyway/flyway

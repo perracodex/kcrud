@@ -4,9 +4,9 @@
 
 package kcrud.domain.contact.model
 
+import io.perracodex.exposed.pagination.IEntityMapper
 import kcrud.base.database.schema.contact.ContactTable
 import kcrud.base.persistence.model.Meta
-import kcrud.base.persistence.pagination.IEntityMapper
 import kcrud.base.plugins.Uuid
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow

@@ -9,9 +9,9 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.perracodex.exposed.pagination.Page
+import io.perracodex.exposed.pagination.getPageable
 import kcrud.base.env.CallContext.Companion.getContext
-import kcrud.base.persistence.pagination.Page
-import kcrud.base.persistence.pagination.getPageable
 import kcrud.domain.employee.api.EmployeeRouteAPI
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeFilterSet

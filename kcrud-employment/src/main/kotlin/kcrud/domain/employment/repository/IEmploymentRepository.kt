@@ -4,8 +4,8 @@
 
 package kcrud.domain.employment.repository
 
-import kcrud.base.persistence.pagination.Page
-import kcrud.base.persistence.pagination.Pageable
+import io.perracodex.exposed.pagination.Page
+import io.perracodex.exposed.pagination.Pageable
 import kcrud.domain.employment.model.Employment
 import kcrud.domain.employment.model.EmploymentRequest
 import kotlin.uuid.Uuid

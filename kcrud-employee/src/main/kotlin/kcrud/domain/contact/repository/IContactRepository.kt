@@ -4,8 +4,8 @@
 
 package kcrud.domain.contact.repository
 
-import kcrud.base.persistence.pagination.Page
-import kcrud.base.persistence.pagination.Pageable
+import io.perracodex.exposed.pagination.Page
+import io.perracodex.exposed.pagination.Pageable
 import kcrud.domain.contact.model.Contact
 import kcrud.domain.contact.model.ContactRequest
 import kcrud.domain.employee.model.EmployeeRequest

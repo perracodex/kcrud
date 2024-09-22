@@ -20,6 +20,7 @@ dependencies {
 
     implementation(libs.exposed.core)
     implementation(libs.exposed.kotlin.datetime)
+    implementation(libs.exposed.pagination)
 
     implementation(libs.koin.ktor)
     implementation(libs.koin.logger.slf4j)

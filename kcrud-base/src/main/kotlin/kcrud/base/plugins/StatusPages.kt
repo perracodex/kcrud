@@ -9,6 +9,7 @@ import io.ktor.server.application.*
 import io.ktor.server.plugins.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
+import io.perracodex.exposed.pagination.PaginationError
 import kcrud.base.env.Tracer
 import kcrud.base.errors.AppException
 import kcrud.base.errors.CompositeAppException
@@ -29,13 +30,21 @@ public fun Application.configureStatusPages() {
 
     install(plugin = StatusPages) {
         // Custom application exceptions.
-        exception<AppException> { call: ApplicationCall, cause ->
+        exception<AppException> { call: ApplicationCall, cause: AppException ->
             tracer.error(message = cause.messageDetail(), cause = cause)
             call.respondError(cause = cause)
         }
-        exception<CompositeAppException> { call, cause ->
+        exception<CompositeAppException> { call, cause: CompositeAppException ->
             tracer.error(message = cause.messageDetail(), cause = cause)
             call.respondError(cause = cause)
+        }
+
+        // Pagination exceptions.
+        exception<PaginationError> { call: ApplicationCall, cause: PaginationError ->
+            call.respond(
+                status = HttpStatusCode.BadRequest,
+                message = "${cause.errorCode} | ${cause.message} | ${cause.reason ?: ""}"
+            )
         }
 
         // Handle 401 Unauthorized status.

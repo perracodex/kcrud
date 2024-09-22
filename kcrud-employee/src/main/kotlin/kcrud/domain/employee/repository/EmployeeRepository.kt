@@ -4,13 +4,13 @@
 
 package kcrud.domain.employee.repository
 
+import io.perracodex.exposed.pagination.Page
+import io.perracodex.exposed.pagination.Pageable
+import io.perracodex.exposed.pagination.paginate
 import kcrud.base.database.schema.contact.ContactTable
 import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.database.utils.transactionWithSchema
 import kcrud.base.env.CallContext
-import kcrud.base.persistence.pagination.Page
-import kcrud.base.persistence.pagination.Pageable
-import kcrud.base.persistence.pagination.paginate
 import kcrud.domain.contact.repository.IContactRepository
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeFilterSet

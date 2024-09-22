@@ -11,7 +11,7 @@ A [Ktor](https://ktor.io/) REST server.
 * [Koin](./kcrud-server/src/main/kotlin/kcrud/server/plugins/Koin.kt) dependency injection.
 * [Quartz Scheduler](./kcrud-base/src/main/kotlin/kcrud/base/scheduler) integration. A popular and [flexible](https://github.com/quartz-scheduler/quartz/blob/main/docs/introduction.adoc) job scheduling library.
 * [In-memory hashed passwords](./kcrud-access/src/main/kotlin/kcrud/access/credential/CredentialService.kt) storage lookup, with enhanced security.
-* [Sortable pagination](./kcrud-base/src/main/kotlin/kcrud/base/persistence/pagination) and filtering examples.
+* [Pagination](https://github.com/perracodex/exposed-pagination) and filtering examples.
 * [JSON serialization](https://ktor.io/docs/serialization.html) with [Kotlinx](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md).
 * [RBAC (Role Based Access Control)](./kcrud-access/src/main/kotlin/kcrud/access/rbac) example, including a basic role [dashboard](./kcrud-access/src/main/kotlin/kcrud/access/rbac/view).
 * [JWT-authentication](./kcrud-access/src/main/kotlin/kcrud/access/plugins/AuthJwt.kt) example.

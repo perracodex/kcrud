@@ -4,12 +4,12 @@
 
 package kcrud.domain.contact.repository
 
+import io.perracodex.exposed.pagination.Page
+import io.perracodex.exposed.pagination.Pageable
+import io.perracodex.exposed.pagination.paginate
 import kcrud.base.database.schema.contact.ContactTable
 import kcrud.base.database.utils.transactionWithSchema
 import kcrud.base.env.CallContext
-import kcrud.base.persistence.pagination.Page
-import kcrud.base.persistence.pagination.Pageable
-import kcrud.base.persistence.pagination.paginate
 import kcrud.domain.contact.model.Contact
 import kcrud.domain.contact.model.ContactRequest
 import kcrud.domain.employee.model.EmployeeRequest

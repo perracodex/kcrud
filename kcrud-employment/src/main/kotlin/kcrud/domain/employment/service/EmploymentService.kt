@@ -4,10 +4,10 @@
 
 package kcrud.domain.employment.service
 
+import io.perracodex.exposed.pagination.Page
+import io.perracodex.exposed.pagination.Pageable
 import kcrud.base.env.CallContext
 import kcrud.base.env.Tracer
-import kcrud.base.persistence.pagination.Page
-import kcrud.base.persistence.pagination.Pageable
 import kcrud.domain.employment.model.Employment
 import kcrud.domain.employment.model.EmploymentRequest
 import kcrud.domain.employment.repository.IEmploymentRepository

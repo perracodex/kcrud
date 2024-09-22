@@ -5,13 +5,13 @@
 import io.ktor.test.dispatcher.*
 import io.mockk.every
 import io.mockk.mockk
+import io.perracodex.exposed.pagination.Page
+import io.perracodex.exposed.pagination.Pageable
 import kcrud.access.actor.di.ActorDomainInjection
 import kcrud.access.rbac.di.RbacDomainInjection
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
 import kcrud.base.env.CallContext
-import kcrud.base.persistence.pagination.Page
-import kcrud.base.persistence.pagination.Pageable
 import kcrud.base.utils.KLocalDate
 import kcrud.base.utils.TestUtils
 import kcrud.domain.contact.model.ContactRequest

@@ -4,12 +4,12 @@
 
 package kcrud.domain.employee.model
 
+import io.perracodex.exposed.pagination.IEntityMapper
 import kcrud.base.database.schema.contact.ContactTable
 import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
 import kcrud.base.persistence.model.Meta
-import kcrud.base.persistence.pagination.IEntityMapper
 import kcrud.base.plugins.Uuid
 import kcrud.base.utils.DateTimeUtils
 import kcrud.base.utils.KLocalDate

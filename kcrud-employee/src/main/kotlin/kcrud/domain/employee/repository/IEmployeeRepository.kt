@@ -4,8 +4,8 @@
 
 package kcrud.domain.employee.repository
 
-import kcrud.base.persistence.pagination.Page
-import kcrud.base.persistence.pagination.Pageable
+import io.perracodex.exposed.pagination.Page
+import io.perracodex.exposed.pagination.Pageable
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeFilterSet
 import kcrud.domain.employee.model.EmployeeRequest
