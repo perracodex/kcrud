@@ -9,7 +9,8 @@ dependencies {
 
     implementation(project(":kcrud-base"))
 
-    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.kotlinx.serialization)
+
     implementation(libs.ktor.server.auth)
     implementation(libs.ktor.server.auth.jwt)
     implementation(libs.ktor.server.html.builder)

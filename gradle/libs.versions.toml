@@ -108,7 +108,7 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 
 # Serialization (part of the pLugin).
 # https://github.com/Kotlin/kotlinx.serialization
-# https://github.com/Kotlin/kotlinx.serialization/releases/tag/v1.7.2
+# https://github.com/Kotlin/kotlinx.serialization/releases
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 
 # Serialization (Ktor).

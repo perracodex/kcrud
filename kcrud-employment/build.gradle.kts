@@ -12,8 +12,8 @@ dependencies {
     implementation(project(":kcrud-employee"))
 
     implementation(libs.kotlinx.datetime)
+    implementation(libs.kotlinx.serialization)
 
-    implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.server.auth)
     implementation(libs.ktor.server.core)
 
