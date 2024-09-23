@@ -11,7 +11,7 @@ import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
 import kcrud.base.persistence.model.Meta
 import kcrud.base.plugins.Uuid
-import kcrud.base.utils.DateTimeUtils
+import kcrud.base.utils.DateTimeUtils.age
 import kcrud.base.utils.KLocalDate
 import kcrud.domain.contact.model.Contact
 import kotlinx.serialization.Serializable
@@ -60,7 +60,7 @@ public data class Employee(
                 lastName = lastName,
                 fullName = "$lastName, $firstName",
                 dob = dob,
-                age = DateTimeUtils.age(dob = dob),
+                age = dob.age(),
                 maritalStatus = row[EmployeeTable.maritalStatus],
                 honorific = row[EmployeeTable.honorific],
                 contact = contact,

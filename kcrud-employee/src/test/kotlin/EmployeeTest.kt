@@ -13,8 +13,7 @@ import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
 import kcrud.base.env.CallContext
 import kcrud.base.persistence.model.Meta
-import kcrud.base.persistence.serializers.OffsetTimestamp
-import kcrud.base.utils.DateTimeUtils
+import kcrud.base.utils.DateTimeUtils.age
 import kcrud.base.utils.KLocalDate
 import kcrud.base.utils.TestUtils
 import kcrud.domain.contact.model.Contact
@@ -23,6 +22,8 @@ import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.repository.IEmployeeRepository
 import kcrud.domain.employee.service.EmployeeService
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -49,7 +50,7 @@ class EmployeeServiceTest : KoinComponent {
         MaritalStatus.entries.forEachIndexed { index, maritalStatus ->
             Honorific.entries.forEach { honorific ->
 
-                val currentDateTime: OffsetTimestamp = DateTimeUtils.currentZonedTimestamp()
+                val timestamp: Instant = Clock.System.now()
                 val dob: KLocalDate = KLocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1 + index)
                 val firstName = "AnyName_$index"
                 val lastName = "AnySurname_$index"
@@ -61,7 +62,7 @@ class EmployeeServiceTest : KoinComponent {
                     lastName = lastName,
                     fullName = "$lastName, $firstName",
                     dob = dob,
-                    age = DateTimeUtils.age(dob = dob),
+                    age = dob.age(),
                     honorific = honorific,
                     maritalStatus = maritalStatus,
                     contact = Contact(
@@ -69,13 +70,13 @@ class EmployeeServiceTest : KoinComponent {
                         email = "$firstName.$lastName@kcrud.com",
                         phone = "+34-611-222-333",
                         meta = Meta(
-                            createdAt = currentDateTime,
-                            updatedAt = currentDateTime
+                            createdAt = timestamp,
+                            updatedAt = timestamp
                         )
                     ),
                     meta = Meta(
-                        createdAt = currentDateTime,
-                        updatedAt = currentDateTime
+                        createdAt = timestamp,
+                        updatedAt = timestamp
                     )
                 )
 

@@ -8,13 +8,13 @@ import io.mockk.mockk
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
 import kcrud.base.env.CallContext
-import kcrud.base.persistence.serializers.OffsetTimestamp
 import kcrud.base.utils.KLocalDate
 import kcrud.base.utils.TestUtils
 import kcrud.domain.employee.di.EmployeeDomainInjection
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.repository.IEmployeeRepository
+import kotlinx.datetime.Instant
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
@@ -60,8 +60,8 @@ class TimestampTest : KoinComponent {
             actual = employee.meta.updatedAt
         )
 
-        val createdAt: OffsetTimestamp = employee.meta.createdAt
-        val updatedAt: OffsetTimestamp = employee.meta.updatedAt
+        val createdAt: Instant = employee.meta.createdAt
+        val updatedAt: Instant = employee.meta.updatedAt
         employeeRepository.update(employeeId = employee.id, request = employeeRequest)
         val updatedEmployee: Employee = employeeRepository.findById(employeeId = employee.id)
             ?: fail("Employee not found.")

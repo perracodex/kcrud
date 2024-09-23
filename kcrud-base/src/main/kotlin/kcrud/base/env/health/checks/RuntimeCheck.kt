@@ -10,6 +10,7 @@ import kcrud.base.env.health.annotation.HealthCheckAPI
 import kcrud.base.settings.AppSettings
 import kcrud.base.utils.DateTimeUtils
 import kcrud.base.utils.KLocalDateTime
+import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
 /**
@@ -29,7 +30,7 @@ public data class RuntimeCheck(
     val machineId: Int,
     val environment: EnvironmentType,
     val developmentModeEnabled: Boolean,
-    val utc: KLocalDateTime,
+    val utc: Instant,
     val local: KLocalDateTime,
 ) {
     internal constructor(call: ApplicationCall) : this(
@@ -37,8 +38,8 @@ public data class RuntimeCheck(
         machineId = AppSettings.runtime.machineId,
         environment = AppSettings.runtime.environment,
         developmentModeEnabled = call.application.developmentMode,
-        utc = timestamp,
-        local = DateTimeUtils.utcToLocal(utc = timestamp),
+        utc = DateTimeUtils.utcDateTime(),
+        local = DateTimeUtils.currentDateTime()
     )
 
     init {
@@ -51,15 +52,5 @@ public data class RuntimeCheck(
         if (environment == EnvironmentType.PROD && developmentModeEnabled) {
             errors.add("$className. Development mode flag enabled in ${environment}.")
         }
-
-        val utcToLocal: KLocalDateTime = DateTimeUtils.utcToLocal(utc = utc)
-        if (utcToLocal != local) {
-            errors.add("$className. Runtime UTC and Local mismatch. UTC: $utc, Local: $local, UTC to Local: $utcToLocal.")
-        }
-    }
-
-    private companion object {
-        /** The current UTC timestamp. */
-        val timestamp: KLocalDateTime = DateTimeUtils.currentUTCDateTime()
     }
 }
