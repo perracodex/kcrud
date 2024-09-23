@@ -4,7 +4,7 @@
 
 package kcrud.domain.employee.model
 
-import io.perracodex.exposed.pagination.IEntityMapper
+import io.perracodex.exposed.pagination.IModelTransform
 import kcrud.base.database.schema.contact.ContactTable
 import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.database.schema.employee.types.Honorific
@@ -44,7 +44,7 @@ public data class Employee(
     val contact: Contact?,
     val meta: Meta
 ) {
-    public companion object : IEntityMapper<Employee> {
+    public companion object : IModelTransform<Employee> {
         public override fun from(row: ResultRow): Employee {
             val contact: Contact? = row.getOrNull(ContactTable.id)?.let {
                 Contact.from(row = row)

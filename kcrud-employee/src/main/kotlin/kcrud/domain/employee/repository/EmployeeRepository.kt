@@ -51,7 +51,7 @@ internal class EmployeeRepository(
                 joinType = JoinType.LEFT,
                 onColumn = EmployeeTable.id,
                 otherColumn = ContactTable.employeeId
-            ).selectAll().paginate(pageable = pageable, mapper = Employee)
+            ).selectAll().paginate(pageable = pageable, transform = Employee)
         }
     }
 
@@ -86,7 +86,7 @@ internal class EmployeeRepository(
                         }
                     }
                 }
-            }.paginate(pageable = pageable, mapper = Employee)
+            }.paginate(pageable = pageable, transform = Employee)
         }
     }
 

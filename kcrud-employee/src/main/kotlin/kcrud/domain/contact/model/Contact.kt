@@ -4,7 +4,7 @@
 
 package kcrud.domain.contact.model
 
-import io.perracodex.exposed.pagination.IEntityMapper
+import io.perracodex.exposed.pagination.IModelTransform
 import kcrud.base.database.schema.contact.ContactTable
 import kcrud.base.persistence.model.Meta
 import kcrud.base.plugins.Uuid
@@ -26,7 +26,7 @@ public data class Contact(
     val phone: String,
     val meta: Meta
 ) {
-    internal companion object : IEntityMapper<Contact> {
+    internal companion object : IModelTransform<Contact> {
         override fun from(row: ResultRow): Contact {
             return Contact(
                 id = row[ContactTable.id],

@@ -4,7 +4,7 @@
 
 package kcrud.domain.employment.model
 
-import io.perracodex.exposed.pagination.IEntityMapper
+import io.perracodex.exposed.pagination.IModelTransform
 import kcrud.base.database.schema.employment.EmploymentTable
 import kcrud.base.database.schema.employment.types.EmploymentStatus
 import kcrud.base.database.schema.employment.types.WorkModality
@@ -37,7 +37,7 @@ public data class Employment(
     val employee: Employee,
     val meta: Meta
 ) {
-    internal companion object : IEntityMapper<Employment> {
+    internal companion object : IModelTransform<Employment> {
         override fun from(row: ResultRow): Employment {
             return Employment(
                 id = row[EmploymentTable.id],

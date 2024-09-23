@@ -51,7 +51,7 @@ internal class ContactRepository(
 
     override fun findAll(pageable: Pageable?): Page<Contact> {
         return transactionWithSchema(schema = context.schema) {
-            ContactTable.selectAll().paginate(pageable = pageable, mapper = Contact)
+            ContactTable.selectAll().paginate(pageable = pageable, transform = Contact)
         }
     }
 
