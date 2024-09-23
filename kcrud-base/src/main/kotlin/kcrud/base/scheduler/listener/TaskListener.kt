@@ -12,7 +12,7 @@ import kcrud.base.scheduler.audit.AuditService
 import kcrud.base.scheduler.model.audit.AuditLogRequest
 import kcrud.base.scheduler.service.annotation.SchedulerAPI
 import kcrud.base.scheduler.service.task.TaskOutcome
-import kcrud.base.utils.DateTimeUtils
+import kcrud.base.utils.DateTimeUtils.toKotlinLocalDateTime
 import kotlinx.coroutines.runBlocking
 import org.quartz.JobExecutionContext
 import org.quartz.JobExecutionException
@@ -94,7 +94,7 @@ internal class TaskListener : JobListener {
         AuditLogRequest(
             taskName = context.jobDetail.key.name,
             taskGroup = context.jobDetail.key.group,
-            fireTime = DateTimeUtils.javaDateToLocalDateTime(datetime = context.fireTime),
+            fireTime = context.fireTime.toKotlinLocalDateTime(),
             runTime = context.jobRunTime,
             outcome = outcome,
             log = jobException?.message,
