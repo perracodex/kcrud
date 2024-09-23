@@ -74,7 +74,7 @@ public object DateTimeUtils {
     public fun KLocalDate.age(): Int {
 
         // Get today's date based on the system clock and timezone.
-        val currentDate: KLocalDate = utcDate()
+        val currentDate: KLocalDate = currentDate()
 
         // Calculate the difference in years.
         val age: Int = currentDate.year - this.year
@@ -96,12 +96,7 @@ public object DateTimeUtils {
     /**
      * Returns the current date in the system's default time zone.
      */
-    public fun currentDate(): KLocalDate = Clock.System.todayIn(timeZone = timezone())
-
-    /**
-     * Returns the current date in UTC.
-     */
-    private fun utcDate(): KLocalDate = Clock.System.todayIn(timeZone = TimeZone.UTC)
+    private fun currentDate(): KLocalDate = Clock.System.todayIn(timeZone = timezone())
 
     /**
      * Returns the current date-time in UTC.
