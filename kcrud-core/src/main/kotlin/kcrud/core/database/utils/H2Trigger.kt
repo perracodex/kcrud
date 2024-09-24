@@ -14,7 +14,7 @@ import java.sql.Timestamp
  * Utility class for updating the `updated_at` column in an H2 database.
  * This class is specifically required for H2 databases, which do not support
  * automatic timestamp updates natively through SQL or configuration.
- * <p>
+ *
  * In more advanced databases such as PostgreSQL, this utility class is not
  * necessary as PostgreSQL supports automatic updates of timestamp columns
  * using triggers or the `DEFAULT` keyword with expressions.
