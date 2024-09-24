@@ -8,6 +8,7 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.sessions.*
 import io.ktor.util.*
+import kcrud.core.errors.UnauthorizedException
 import kcrud.core.persistence.utils.toUuid
 import kcrud.core.plugins.Uuid
 import kcrud.core.settings.AppSettings
@@ -94,13 +95,31 @@ public data class SessionContext(
          * - Attempt to retrieve a [SessionContext] from the current call attributes.
          *      - If [SessionContext] is present in the call, return it as is.
          *      - If [SessionContext] is not present:
-         *          - If security is enabled, return null, indicating an unauthorized request.
+         *          - If security is enabled, throws an unauthorized exception.
          *          - If security is disabled, return a default [SessionContext] with predefined 'empty' values.
          *
          * @return A [SessionContext] representing the authenticated actor;
-         * `null` if unauthorized; or a default empty [SessionContext] when security is disabled.
+         * or a default empty [SessionContext] when security is disabled.
+         * @throws UnauthorizedException if the [SessionContext] is not found and security is enabled.
          */
-        public fun ApplicationCall.getContext(): SessionContext? =
+        public fun ApplicationCall.getContext(): SessionContext {
+            return this.attributes.getOrNull(SESSION_CONTEXT_KEY)
+                ?: if (AppSettings.security.isEnabled) {
+                    throw UnauthorizedException("Session context not found.")
+                } else {
+                    emptySessionContext
+                }
+        }
+
+        /**
+         * Extension function to retrieve the [SessionContext] from the [ApplicationCall] attributes.
+         *
+         * @return A [SessionContext] representing the authenticated actor;
+         * `null` if unauthorized; or a default empty [SessionContext] when security is disabled.
+         *
+         *  @see [getContext]
+         */
+        public fun ApplicationCall.getContextOrNull(): SessionContext? =
             this.attributes.getOrNull(SESSION_CONTEXT_KEY)
                 ?: if (AppSettings.security.isEnabled) null else emptySessionContext
     }

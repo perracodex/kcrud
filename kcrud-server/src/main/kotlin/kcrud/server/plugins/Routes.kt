@@ -11,7 +11,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.access.rbac.api.rbacRoutes
 import kcrud.access.token.api.accessTokenRoutes
-import kcrud.core.env.SessionContext.Companion.getContext
+import kcrud.core.env.SessionContext.Companion.getContextOrNull
 import kcrud.core.env.health.healthCheckRoute
 import kcrud.core.events.sseRoute
 import kcrud.core.plugins.RateLimitScope
@@ -61,7 +61,7 @@ internal fun Application.configureRoutes() {
 
         // Server root endpoint.
         get("/") {
-            call.getContext()?.let {
+            call.getContextOrNull()?.let {
                 call.respondText(text = "Hello World. Welcome ${it.username}!")
             } ?: call.respondText(text = "Hello World.")
         }

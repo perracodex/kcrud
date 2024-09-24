@@ -13,6 +13,7 @@ import kcrud.access.token.service.AuthenticationTokenService
 import kcrud.core.env.SessionContext
 import kcrud.core.env.SessionContext.Companion.getContext
 import kcrud.core.env.Tracer
+import kcrud.core.errors.UnauthorizedException
 
 /**
  * Application call extension function for responding with a JWT token.
@@ -21,15 +22,15 @@ import kcrud.core.env.Tracer
  *
  * Responds with:
  * - OK (200) and the JWT token if generation is successful.
- * - Bad Request (400) with an error message if the [SessionContext] is invalid.
+ * - Unauthorized (401) with an error message if the [SessionContext] is invalid.
  * - Internal Server Error (500) with a general error message if an unexpected error occurs during token generation.
  */
 @TokenAPI
 internal suspend fun ApplicationCall.respondWithToken() {
     val result: Result<String> = runCatching {
-        this.getContext()?.let { sessionContext ->
+        this.getContext().let { sessionContext ->
             return@runCatching AuthenticationTokenService.generate(sessionContext = sessionContext)
-        } ?: throw IllegalArgumentException("Invalid actor. ${CredentialService.HINT}")
+        }
     }
 
     result.onFailure { e ->
@@ -37,9 +38,9 @@ internal suspend fun ApplicationCall.respondWithToken() {
             .error(message = "Failed to generate token.", cause = e)
 
         when (e) {
-            is IllegalArgumentException -> {
+            is UnauthorizedException -> {
                 this.respond(
-                    status = HttpStatusCode.BadRequest,
+                    status = HttpStatusCode.Unauthorized,
                     message = "Invalid SessionContext. ${CredentialService.HINT}"
                 )
             }

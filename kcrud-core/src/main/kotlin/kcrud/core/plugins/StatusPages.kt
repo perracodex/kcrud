@@ -11,10 +11,7 @@ import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
 import io.perracodex.exposed.pagination.PaginationError
 import kcrud.core.env.Tracer
-import kcrud.core.errors.AppException
-import kcrud.core.errors.CompositeAppException
-import kcrud.core.errors.ErrorUtils
-import kcrud.core.errors.respondError
+import kcrud.core.errors.*
 import kcrud.core.settings.AppSettings
 
 /**
@@ -38,6 +35,9 @@ public fun Application.configureStatusPages() {
         exception<CompositeAppException> { call, cause: CompositeAppException ->
             tracer.error(message = cause.messageDetail(), cause = cause)
             call.respondError(cause = cause)
+        }
+        exception<UnauthorizedException> { call: ApplicationCall, cause: UnauthorizedException ->
+            call.respond(status = HttpStatusCode.Unauthorized, message = cause.message ?: "Unauthorized")
         }
 
         // Pagination exceptions.

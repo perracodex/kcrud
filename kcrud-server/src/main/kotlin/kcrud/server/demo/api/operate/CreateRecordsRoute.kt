@@ -30,7 +30,7 @@ internal fun Route.createRecordsRoute() {
         val count: Int = call.request.queryParameters.getOrFail<Int>(name = "count")
 
         if (count in 1..maxAllowedBatch) {
-            val sessionContext: SessionContext? = call.getContext()
+            val sessionContext: SessionContext = call.getContext()
             val employeeService: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }
             val employmentService: EmploymentService = call.scope.get<EmploymentService> { parametersOf(sessionContext) }
 
