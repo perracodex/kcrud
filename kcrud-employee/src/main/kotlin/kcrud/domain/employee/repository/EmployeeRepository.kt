@@ -9,7 +9,7 @@ import io.perracodex.exposed.pagination.Pageable
 import io.perracodex.exposed.pagination.paginate
 import kcrud.base.database.schema.contact.ContactTable
 import kcrud.base.database.schema.employee.EmployeeTable
-import kcrud.base.database.utils.transactionWithContext
+import kcrud.base.database.utils.transaction
 import kcrud.base.env.SessionContext
 import kcrud.domain.contact.repository.IContactRepository
 import kcrud.domain.employee.model.Employee
@@ -30,7 +30,7 @@ internal class EmployeeRepository(
 ) : IEmployeeRepository {
 
     override fun findById(employeeId: Uuid): Employee? {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             EmployeeTable.join(
                 otherTable = ContactTable,
                 joinType = JoinType.LEFT,
@@ -45,7 +45,7 @@ internal class EmployeeRepository(
     }
 
     override fun findAll(pageable: Pageable?): Page<Employee> {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             EmployeeTable.join(
                 otherTable = ContactTable,
                 joinType = JoinType.LEFT,
@@ -56,7 +56,7 @@ internal class EmployeeRepository(
     }
 
     override fun search(filterSet: EmployeeFilterSet, pageable: Pageable?): Page<Employee> {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             EmployeeTable.selectAll().apply {
                 // Apply filters dynamically based on the presence of criteria in filterSet.
                 // Using lowerCase() to make the search case-insensitive.
@@ -91,7 +91,7 @@ internal class EmployeeRepository(
     }
 
     override fun create(request: EmployeeRequest): Employee {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             EmployeeTable.insert { statement ->
                 statement.toStatement(request = request)
             }[EmployeeTable.id].let { employeeId ->
@@ -109,7 +109,7 @@ internal class EmployeeRepository(
     }
 
     override fun update(employeeId: Uuid, request: EmployeeRequest): Employee? {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             EmployeeTable.update(
                 where = {
                     EmployeeTable.id eq employeeId
@@ -128,7 +128,7 @@ internal class EmployeeRepository(
     }
 
     override fun delete(employeeId: Uuid): Int {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             EmployeeTable.deleteWhere {
                 id eq employeeId
             }
@@ -136,13 +136,13 @@ internal class EmployeeRepository(
     }
 
     override fun deleteAll(): Int {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             EmployeeTable.deleteAll()
         }
     }
 
     override fun count(): Int {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             EmployeeTable.selectAll().count().toInt()
         }
     }

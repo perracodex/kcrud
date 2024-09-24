@@ -8,7 +8,7 @@ import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.Pageable
 import io.perracodex.exposed.pagination.paginate
 import kcrud.base.database.schema.contact.ContactTable
-import kcrud.base.database.utils.transactionWithContext
+import kcrud.base.database.utils.transaction
 import kcrud.base.env.SessionContext
 import kcrud.domain.contact.model.Contact
 import kcrud.domain.contact.model.ContactRequest
@@ -30,7 +30,7 @@ internal class ContactRepository(
 ) : IContactRepository {
 
     override fun findById(contactId: Uuid): Contact? {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             ContactTable.selectAll().where {
                 ContactTable.id eq contactId
             }.singleOrNull()?.let { resultRow ->
@@ -40,7 +40,7 @@ internal class ContactRepository(
     }
 
     override fun findByEmployeeId(employeeId: Uuid): Contact? {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             ContactTable.selectAll().where {
                 ContactTable.employeeId eq employeeId
             }.singleOrNull()?.let { resultRow ->
@@ -50,7 +50,7 @@ internal class ContactRepository(
     }
 
     override fun findAll(pageable: Pageable?): Page<Contact> {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             ContactTable.selectAll().paginate(pageable = pageable, transform = Contact)
         }
     }
@@ -77,7 +77,7 @@ internal class ContactRepository(
     }
 
     override fun create(employeeId: Uuid, request: ContactRequest): Uuid {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             ContactTable.insert { statement ->
                 statement.toStatement(
                     employeeId = employeeId,
@@ -88,7 +88,7 @@ internal class ContactRepository(
     }
 
     override fun update(employeeId: Uuid, contactId: Uuid, request: ContactRequest): Int {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             ContactTable.update(
                 where = {
                     ContactTable.id eq contactId
@@ -103,7 +103,7 @@ internal class ContactRepository(
     }
 
     override fun delete(contactId: Uuid): Int {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             ContactTable.deleteWhere {
                 id eq contactId
             }
@@ -111,7 +111,7 @@ internal class ContactRepository(
     }
 
     override fun deleteByEmployeeId(employeeId: Uuid): Int {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             ContactTable.deleteWhere {
                 ContactTable.employeeId eq employeeId
             }
@@ -119,7 +119,7 @@ internal class ContactRepository(
     }
 
     override fun count(employeeId: Uuid?): Int {
-        return transactionWithContext(sessionContext = sessionContext) {
+        return transaction(sessionContext = sessionContext) {
             ContactTable.selectAll().apply {
                 employeeId?.let { id ->
                     where { ContactTable.employeeId eq id }

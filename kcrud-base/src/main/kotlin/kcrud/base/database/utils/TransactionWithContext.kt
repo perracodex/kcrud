@@ -19,24 +19,24 @@ import org.jetbrains.exposed.sql.transactions.transaction
  *
  * See: [Schema Tests](https://github.com/JetBrains/Exposed/blob/main/exposed-tests/src/test/kotlin/org/jetbrains/exposed/sql/tests/shared/SchemaTests.kt)
  *
- * @param db Optional database instance to be used for the transaction.
  * @param sessionContext The [SessionContext] instance to be used for the transaction.
+ * @param db Optional database instance to be used for the transaction.
  * @param statement The block of code to execute within the transaction.
  * @return Returns the result of the block execution.
  */
-public fun <T> transactionWithContext(
-    db: Database? = null,
+public fun <T> transaction(
     sessionContext: SessionContext,
+    db: Database? = null,
     statement: Transaction.() -> T
 ): T {
-    return transaction(db = db) {
+    return transaction(db = db) scope@{
         val auditor = AuditInterceptor(sessionContext = sessionContext)
         registerInterceptor(interceptor = auditor)
 
         try {
             if (sessionContext.schema.isNullOrBlank()) {
                 // Directly proceed with the transaction if no schema is specified.
-                return@transaction statement()
+                return@scope statement()
             }
 
             val currentSchema: String = TransactionManager.current().connection.schema
@@ -49,7 +49,7 @@ public fun <T> transactionWithContext(
             }
 
             try {
-                return@transaction statement()
+                return@scope statement()
             } finally {
                 // Restore the original schema if it was changed.
                 originalSchema?.let { schemaName ->
