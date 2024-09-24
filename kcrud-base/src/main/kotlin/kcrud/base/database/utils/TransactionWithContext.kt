@@ -24,30 +24,40 @@ import org.jetbrains.exposed.sql.transactions.transaction
  * @param statement The block of code to execute within the transaction.
  * @return Returns the result of the block execution.
  */
-public fun <T> transactionWithContext(db: Database? = null, sessionContext: SessionContext, statement: Transaction.() -> T): T {
-    // Directly proceed with the transaction if no schema is specified.
-    if (sessionContext.schema.isNullOrBlank()) {
-        return transaction(db = db, statement = statement)
-    }
-
-    // Proceed with schema adjustment only if a schema is provided.
+public fun <T> transactionWithContext(
+    db: Database? = null,
+    sessionContext: SessionContext,
+    statement: Transaction.() -> T
+): T {
     return transaction(db = db) {
-        val currentSchema: String = TransactionManager.current().connection.schema
-        val changeSchema: Boolean = (sessionContext.schema != currentSchema)
-        val originalSchema: String? = currentSchema.takeIf { changeSchema }
-
-        // Change the schema only if it's different from the current one.
-        if (changeSchema) {
-            SchemaUtils.setSchema(schema = Schema(name = sessionContext.schema))
-        }
+        val auditor = AuditInterceptor(sessionContext = sessionContext)
+        registerInterceptor(interceptor = auditor)
 
         try {
-            statement()
-        } finally {
-            // Restore the original schema if it was changed.
-            originalSchema?.let { schemaName ->
-                SchemaUtils.setSchema(schema = Schema(name = schemaName))
+            if (sessionContext.schema.isNullOrBlank()) {
+                // Directly proceed with the transaction if no schema is specified.
+                return@transaction statement()
             }
+
+            val currentSchema: String = TransactionManager.current().connection.schema
+            val changeSchema: Boolean = (sessionContext.schema != currentSchema)
+            val originalSchema: String? = currentSchema.takeIf { changeSchema }
+
+            // Change the schema only if it's different from the current one.
+            if (changeSchema) {
+                SchemaUtils.setSchema(schema = Schema(name = sessionContext.schema))
+            }
+
+            try {
+                return@transaction statement()
+            } finally {
+                // Restore the original schema if it was changed.
+                originalSchema?.let { schemaName ->
+                    SchemaUtils.setSchema(schema = Schema(name = schemaName))
+                }
+            }
+        } finally {
+            unregisterInterceptor(interceptor = auditor)
         }
     }
 }

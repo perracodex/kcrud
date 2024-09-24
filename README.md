@@ -27,7 +27,7 @@ A [Ktor](https://ktor.io/) REST server.
 * [Snowflake](./kcrud-base/src/main/kotlin/kcrud/base/security/snowflake) unique IDs for logging purposes, suitable for distributed systems.
 * [Micrometer Metrics](./kcrud-base/src/main/kotlin/kcrud/base/plugins/MicrometerMetrics.kt) with Prometheus integration. Configuration steps for Prometheus and Grafana are [included](.wiki/10.micrometer-metrics).
 * [Flyway](https://github.com/flyway/flyway) database migration example.
-* [Schema aware database transactions](./kcrud-base/src/main/kotlin/kcrud/base/database/utils/TransactionWithSchema.kt), allowing to execute concrete transactions per schema.
+* [Schema aware database transactions](./kcrud-base/src/main/kotlin/kcrud/base/database/utils/TransactionWithContext.kt), allowing to execute concrete transactions per schema.
 * [Custom exceptions](./kcrud-base/src/main/kotlin/kcrud/base/errors) including composite error responses.
 * [Custom serializers](./kcrud-base/src/main/kotlin/kcrud/base/persistence/serializers) examples.
 * [Custom validators](./kcrud-base/src/main/kotlin/kcrud/base/errors/validators) and [custom table column](./kcrud-base/src/main/kotlin/kcrud/base/database/columns) constraints.
