@@ -14,7 +14,7 @@ import org.jetbrains.exposed.sql.statements.StatementInterceptor
  *
  * @param sessionContext The [SessionContext] details.
  */
-public class AuditInterceptor(private val sessionContext: SessionContext) : StatementInterceptor {
+internal class AuditInterceptor(private val sessionContext: SessionContext) : StatementInterceptor {
     override fun beforeExecution(
         transaction: Transaction,
         context: StatementContext
