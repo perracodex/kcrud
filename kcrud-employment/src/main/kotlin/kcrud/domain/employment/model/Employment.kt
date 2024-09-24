@@ -5,13 +5,13 @@
 package kcrud.domain.employment.model
 
 import io.perracodex.exposed.pagination.IModelTransform
-import kcrud.base.database.schema.employment.EmploymentTable
-import kcrud.base.database.schema.employment.types.EmploymentStatus
-import kcrud.base.database.schema.employment.types.WorkModality
-import kcrud.base.persistence.model.Meta
-import kcrud.base.persistence.model.Period
-import kcrud.base.plugins.Uuid
-import kcrud.base.utils.KLocalDate
+import kcrud.core.database.schema.employment.EmploymentTable
+import kcrud.core.database.schema.employment.types.EmploymentStatus
+import kcrud.core.database.schema.employment.types.WorkModality
+import kcrud.core.persistence.model.Meta
+import kcrud.core.persistence.model.Period
+import kcrud.core.plugins.Uuid
+import kcrud.core.utils.KLocalDate
 import kcrud.domain.employee.model.Employee
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow

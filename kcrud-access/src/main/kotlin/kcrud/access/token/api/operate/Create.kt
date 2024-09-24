@@ -10,8 +10,8 @@ import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.routing.*
 import kcrud.access.token.annotation.TokenAPI
 import kcrud.access.token.api.respondWithToken
-import kcrud.base.plugins.RateLimitScope
-import kcrud.base.settings.AppSettings
+import kcrud.core.plugins.RateLimitScope
+import kcrud.core.settings.AppSettings
 
 /**
  * Generates a new JWT token using Basic Authentication.

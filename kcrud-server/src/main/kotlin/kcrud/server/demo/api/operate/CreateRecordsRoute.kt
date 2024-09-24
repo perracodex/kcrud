@@ -9,8 +9,8 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import kcrud.base.env.SessionContext
-import kcrud.base.env.SessionContext.Companion.getContext
+import kcrud.core.env.SessionContext
+import kcrud.core.env.SessionContext.Companion.getContext
 import kcrud.domain.employee.service.EmployeeService
 import kcrud.domain.employment.service.EmploymentService
 import kcrud.server.demo.DemoAPI

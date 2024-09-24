@@ -6,8 +6,8 @@ package kcrud.domain.employee.service
 
 import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.Pageable
-import kcrud.base.env.SessionContext
-import kcrud.base.env.Tracer
+import kcrud.core.env.SessionContext
+import kcrud.core.env.Tracer
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeFilterSet
 import kcrud.domain.employee.model.EmployeeRequest

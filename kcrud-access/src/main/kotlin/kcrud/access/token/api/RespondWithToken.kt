@@ -10,9 +10,9 @@ import io.ktor.server.response.*
 import kcrud.access.credential.CredentialService
 import kcrud.access.token.annotation.TokenAPI
 import kcrud.access.token.service.AuthenticationTokenService
-import kcrud.base.env.SessionContext
-import kcrud.base.env.SessionContext.Companion.getContext
-import kcrud.base.env.Tracer
+import kcrud.core.env.SessionContext
+import kcrud.core.env.SessionContext.Companion.getContext
+import kcrud.core.env.Tracer
 
 /**
  * Application call extension function for responding with a JWT token.

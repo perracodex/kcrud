@@ -9,8 +9,8 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import kcrud.base.env.SessionContext.Companion.getContext
-import kcrud.base.persistence.utils.toUuid
+import kcrud.core.env.SessionContext.Companion.getContext
+import kcrud.core.persistence.utils.toUuid
 import kcrud.domain.employee.api.EmployeeRouteAPI
 import kcrud.domain.employee.errors.EmployeeError
 import kcrud.domain.employee.model.Employee

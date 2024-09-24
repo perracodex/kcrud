@@ -4,10 +4,10 @@
 
 package kcrud.domain.employment.model
 
-import kcrud.base.database.schema.employment.types.EmploymentStatus
-import kcrud.base.database.schema.employment.types.WorkModality
-import kcrud.base.persistence.model.Period
-import kcrud.base.utils.KLocalDate
+import kcrud.core.database.schema.employment.types.EmploymentStatus
+import kcrud.core.database.schema.employment.types.WorkModality
+import kcrud.core.persistence.model.Period
+import kcrud.core.utils.KLocalDate
 import kcrud.domain.employment.errors.EmploymentError
 import kotlinx.serialization.Serializable
 

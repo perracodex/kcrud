@@ -4,9 +4,9 @@
 
 import kcrud.access.rbac.model.base.BaseRbac
 import kcrud.access.rbac.service.RbacFieldAnonymization
-import kcrud.base.utils.KLocalDate
-import kcrud.base.utils.KLocalDateTime
-import kcrud.base.utils.KLocalTime
+import kcrud.core.utils.KLocalDate
+import kcrud.core.utils.KLocalDateTime
+import kcrud.core.utils.KLocalTime
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull

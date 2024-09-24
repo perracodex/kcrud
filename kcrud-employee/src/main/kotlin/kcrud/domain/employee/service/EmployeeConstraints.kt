@@ -4,10 +4,10 @@
 
 package kcrud.domain.employee.service
 
-import kcrud.base.errors.AppException
-import kcrud.base.errors.CompositeAppException
-import kcrud.base.errors.validators.EmailValidator
-import kcrud.base.errors.validators.PhoneValidator
+import kcrud.core.errors.AppException
+import kcrud.core.errors.CompositeAppException
+import kcrud.core.errors.validators.EmailValidator
+import kcrud.core.errors.validators.PhoneValidator
 import kcrud.domain.employee.errors.EmployeeError
 import kcrud.domain.employee.model.EmployeeRequest
 import kotlin.uuid.Uuid

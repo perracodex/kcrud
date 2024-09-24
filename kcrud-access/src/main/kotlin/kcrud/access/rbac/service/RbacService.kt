@@ -12,10 +12,10 @@ import kcrud.access.rbac.model.role.RbacRoleRequest
 import kcrud.access.rbac.model.scope.RbacScopeRuleRequest
 import kcrud.access.rbac.repository.role.IRbacRoleRepository
 import kcrud.access.rbac.repository.scope.IRbacScopeRuleRepository
-import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.base.database.schema.admin.rbac.types.RbacScope
-import kcrud.base.env.SessionContext
-import kcrud.base.env.Tracer
+import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
+import kcrud.core.database.schema.admin.rbac.types.RbacScope
+import kcrud.core.env.SessionContext
+import kcrud.core.env.Tracer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock

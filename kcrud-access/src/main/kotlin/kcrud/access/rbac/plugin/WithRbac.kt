@@ -6,9 +6,9 @@ package kcrud.access.rbac.plugin
 
 import io.ktor.server.routing.*
 import kcrud.access.rbac.plugin.annotation.RbacAPI
-import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.base.database.schema.admin.rbac.types.RbacScope
-import kcrud.base.settings.AppSettings
+import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
+import kcrud.core.database.schema.admin.rbac.types.RbacScope
+import kcrud.core.settings.AppSettings
 
 /**
  * Extension function designed to apply RBAC authorizations to Ktor routes.

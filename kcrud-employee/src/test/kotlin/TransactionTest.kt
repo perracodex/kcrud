@@ -7,11 +7,11 @@ import io.mockk.every
 import io.mockk.mockk
 import kcrud.access.actor.di.ActorDomainInjection
 import kcrud.access.rbac.di.RbacDomainInjection
-import kcrud.base.database.schema.employee.types.Honorific
-import kcrud.base.database.schema.employee.types.MaritalStatus
-import kcrud.base.env.SessionContext
-import kcrud.base.utils.KLocalDate
-import kcrud.base.utils.TestUtils
+import kcrud.core.database.schema.employee.types.Honorific
+import kcrud.core.database.schema.employee.types.MaritalStatus
+import kcrud.core.env.SessionContext
+import kcrud.core.utils.KLocalDate
+import kcrud.core.utils.TestUtils
 import kcrud.domain.contact.model.ContactRequest
 import kcrud.domain.contact.repository.IContactRepository
 import kcrud.domain.employee.di.EmployeeDomainInjection

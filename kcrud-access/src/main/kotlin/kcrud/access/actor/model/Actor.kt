@@ -6,9 +6,9 @@ package kcrud.access.actor.model
 
 import kcrud.access.credential.CredentialService
 import kcrud.access.rbac.model.role.RbacRole
-import kcrud.base.database.schema.admin.actor.ActorTable
-import kcrud.base.env.SessionContext
-import kcrud.base.persistence.model.Meta
+import kcrud.core.database.schema.admin.actor.ActorTable
+import kcrud.core.env.SessionContext
+import kcrud.core.persistence.model.Meta
 import org.jetbrains.exposed.sql.ResultRow
 import kotlin.uuid.Uuid
 

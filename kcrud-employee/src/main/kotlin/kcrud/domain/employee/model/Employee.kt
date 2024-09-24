@@ -5,14 +5,14 @@
 package kcrud.domain.employee.model
 
 import io.perracodex.exposed.pagination.IModelTransform
-import kcrud.base.database.schema.contact.ContactTable
-import kcrud.base.database.schema.employee.EmployeeTable
-import kcrud.base.database.schema.employee.types.Honorific
-import kcrud.base.database.schema.employee.types.MaritalStatus
-import kcrud.base.persistence.model.Meta
-import kcrud.base.plugins.Uuid
-import kcrud.base.utils.DateTimeUtils.age
-import kcrud.base.utils.KLocalDate
+import kcrud.core.database.schema.contact.ContactTable
+import kcrud.core.database.schema.employee.EmployeeTable
+import kcrud.core.database.schema.employee.types.Honorific
+import kcrud.core.database.schema.employee.types.MaritalStatus
+import kcrud.core.persistence.model.Meta
+import kcrud.core.plugins.Uuid
+import kcrud.core.utils.DateTimeUtils.age
+import kcrud.core.utils.KLocalDate
 import kcrud.domain.contact.model.Contact
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow

@@ -4,8 +4,8 @@
 
 package kcrud.domain.employee.model
 
-import kcrud.base.database.schema.employee.types.Honorific
-import kcrud.base.database.schema.employee.types.MaritalStatus
+import kcrud.core.database.schema.employee.types.Honorific
+import kcrud.core.database.schema.employee.types.MaritalStatus
 import kotlinx.serialization.Serializable
 
 /**

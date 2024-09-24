@@ -14,8 +14,8 @@ import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.service.RbacDashboardManager
 import kcrud.access.rbac.view.RbacDashboardView
 import kcrud.access.rbac.view.RbacLoginView
-import kcrud.base.env.SessionContext
-import kcrud.base.persistence.utils.toUuidOrNull
+import kcrud.core.env.SessionContext
+import kcrud.core.persistence.utils.toUuidOrNull
 
 /**
  * Retrieves the current [SessionContext] and renders the RBAC dashboard based

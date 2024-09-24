@@ -7,8 +7,8 @@ package kcrud.access.rbac.plugin
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 import kcrud.access.rbac.plugin.annotation.RbacAPI
-import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.base.database.schema.admin.rbac.types.RbacScope
+import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
+import kcrud.core.database.schema.admin.rbac.types.RbacScope
 
 /**
  * Creates an RBAC-authorized route within the Ktor routing structure. This function is a key part

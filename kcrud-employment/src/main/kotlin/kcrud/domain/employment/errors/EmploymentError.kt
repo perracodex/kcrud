@@ -5,8 +5,8 @@
 package kcrud.domain.employment.errors
 
 import io.ktor.http.*
-import kcrud.base.errors.AppException
-import kcrud.base.utils.KLocalDate
+import kcrud.core.errors.AppException
+import kcrud.core.utils.KLocalDate
 import kotlin.uuid.Uuid
 
 /**

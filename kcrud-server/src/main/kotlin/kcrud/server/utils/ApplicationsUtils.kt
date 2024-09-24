@@ -5,10 +5,10 @@
 package kcrud.server.utils
 
 import io.ktor.server.application.*
-import kcrud.base.env.Tracer
-import kcrud.base.security.snowflake.SnowflakeFactory
-import kcrud.base.settings.AppSettings
-import kcrud.base.utils.NetworkUtils
+import kcrud.core.env.Tracer
+import kcrud.core.security.snowflake.SnowflakeFactory
+import kcrud.core.settings.AppSettings
+import kcrud.core.utils.NetworkUtils
 
 /**
  * Utility functions for the application server.

@@ -7,9 +7,9 @@ package kcrud.access.credential
 import io.ktor.server.auth.*
 import kcrud.access.actor.model.Actor
 import kcrud.access.actor.service.ActorService
-import kcrud.base.env.Tracer
-import kcrud.base.security.hash.SecureHash
-import kcrud.base.security.hash.SecureSalt
+import kcrud.core.env.Tracer
+import kcrud.core.security.hash.SecureHash
+import kcrud.core.security.hash.SecureSalt
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import org.koin.core.component.KoinComponent

@@ -8,7 +8,7 @@
 !gradlew.bat
 !keystore.p12
 !kcrud-access/**
-!kcrud-base/**
+!kcrud-core/**
 !kcrud-employee/**
 !kcrud-employment/**
 !kcrud-server/**

@@ -14,9 +14,9 @@ import kcrud.access.rbac.api.login.rbacLoginSubmissionRoute
 import kcrud.access.rbac.api.login.rbacLogoutRoute
 import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.plugin.withRbac
-import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.base.database.schema.admin.rbac.types.RbacScope
-import kcrud.base.plugins.RateLimitScope
+import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
+import kcrud.core.database.schema.admin.rbac.types.RbacScope
+import kcrud.core.plugins.RateLimitScope
 
 /**
  * Contains the RBAC endpoints.

@@ -4,13 +4,13 @@
 
 package kcrud.server.demo
 
-import kcrud.base.database.schema.employee.types.Honorific
-import kcrud.base.database.schema.employee.types.MaritalStatus
-import kcrud.base.database.schema.employment.types.EmploymentStatus
-import kcrud.base.database.schema.employment.types.WorkModality
-import kcrud.base.persistence.model.Period
-import kcrud.base.utils.KLocalDate
-import kcrud.base.utils.TestUtils
+import kcrud.core.database.schema.employee.types.Honorific
+import kcrud.core.database.schema.employee.types.MaritalStatus
+import kcrud.core.database.schema.employment.types.EmploymentStatus
+import kcrud.core.database.schema.employment.types.WorkModality
+import kcrud.core.persistence.model.Period
+import kcrud.core.utils.KLocalDate
+import kcrud.core.utils.TestUtils
 import kcrud.domain.contact.model.ContactRequest
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest

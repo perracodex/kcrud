@@ -4,7 +4,7 @@
 
 package kcrud.access.actor.model
 
-import kcrud.base.plugins.Uuid
+import kcrud.core.plugins.Uuid
 import kotlinx.serialization.Serializable
 
 /**

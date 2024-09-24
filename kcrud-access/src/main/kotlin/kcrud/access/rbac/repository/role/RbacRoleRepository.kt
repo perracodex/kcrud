@@ -7,10 +7,10 @@ package kcrud.access.rbac.repository.role
 import kcrud.access.rbac.model.role.RbacRole
 import kcrud.access.rbac.model.role.RbacRoleRequest
 import kcrud.access.rbac.repository.scope.IRbacScopeRuleRepository
-import kcrud.base.database.schema.admin.actor.ActorTable
-import kcrud.base.database.schema.admin.rbac.RbacFieldRuleTable
-import kcrud.base.database.schema.admin.rbac.RbacRoleTable
-import kcrud.base.database.schema.admin.rbac.RbacScopeRuleTable
+import kcrud.core.database.schema.admin.actor.ActorTable
+import kcrud.core.database.schema.admin.rbac.RbacFieldRuleTable
+import kcrud.core.database.schema.admin.rbac.RbacRoleTable
+import kcrud.core.database.schema.admin.rbac.RbacScopeRuleTable
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll

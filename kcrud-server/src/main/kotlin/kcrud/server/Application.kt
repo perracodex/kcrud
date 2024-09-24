@@ -7,8 +7,8 @@ package kcrud.server
 import io.ktor.server.application.*
 import io.ktor.server.netty.*
 import kcrud.access.plugins.*
-import kcrud.base.plugins.*
-import kcrud.base.settings.AppSettings
+import kcrud.core.plugins.*
+import kcrud.core.settings.AppSettings
 import kcrud.server.plugins.configureKoin
 import kcrud.server.plugins.configureRoutes
 import kcrud.server.utils.ApplicationsUtils

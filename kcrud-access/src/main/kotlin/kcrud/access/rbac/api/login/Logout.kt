@@ -10,7 +10,7 @@ import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.view.RbacLoginView
-import kcrud.base.env.SessionContext
+import kcrud.core.env.SessionContext
 
 /**
  * Manages the session termination and redirection to the login page.

@@ -13,9 +13,9 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import kcrud.access.context.SessionContextFactory
-import kcrud.base.env.SessionContext
-import kcrud.base.env.SessionContext.Companion.setContext
-import kcrud.base.settings.AppSettings
+import kcrud.core.env.SessionContext
+import kcrud.core.env.SessionContext.Companion.setContext
+import kcrud.core.settings.AppSettings
 
 /**
  * Configures OAuth authentication.

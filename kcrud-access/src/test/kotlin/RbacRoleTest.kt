@@ -9,9 +9,9 @@ import kcrud.access.rbac.model.role.RbacRole
 import kcrud.access.rbac.model.role.RbacRoleRequest
 import kcrud.access.rbac.model.scope.RbacScopeRuleRequest
 import kcrud.access.rbac.service.RbacService
-import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.base.database.schema.admin.rbac.types.RbacScope
-import kcrud.base.utils.TestUtils
+import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
+import kcrud.core.database.schema.admin.rbac.types.RbacScope
+import kcrud.core.utils.TestUtils
 import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

@@ -6,8 +6,8 @@ package kcrud.domain.employment.service
 
 import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.Pageable
-import kcrud.base.env.SessionContext
-import kcrud.base.env.Tracer
+import kcrud.core.env.SessionContext
+import kcrud.core.env.Tracer
 import kcrud.domain.employment.model.Employment
 import kcrud.domain.employment.model.EmploymentRequest
 import kcrud.domain.employment.repository.IEmploymentRepository

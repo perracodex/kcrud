@@ -15,9 +15,9 @@ import kcrud.access.plugins.configureBasicAuthentication
 import kcrud.access.plugins.configureJwtAuthentication
 import kcrud.access.plugins.configureOAuthAuthentication
 import kcrud.access.rbac.service.RbacService
-import kcrud.base.env.SessionContext
-import kcrud.base.env.Tracer
-import kcrud.base.settings.AppSettings
+import kcrud.core.env.SessionContext
+import kcrud.core.env.Tracer
+import kcrud.core.settings.AppSettings
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

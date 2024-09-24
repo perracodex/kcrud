@@ -97,7 +97,7 @@ subprojects {
 }
 
 dependencies {
-    implementation(project(":kcrud-base"))
+    implementation(project(":kcrud-core"))
     implementation(project(":kcrud-employee"))
     implementation(project(":kcrud-employment"))
     implementation(project(":kcrud-server"))

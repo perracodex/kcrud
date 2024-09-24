@@ -6,8 +6,8 @@ package kcrud.access.credential
 
 import io.ktor.server.auth.*
 import io.ktor.util.*
-import kcrud.base.security.hash.SecureHash
-import kcrud.base.security.hash.SecureSalt
+import kcrud.core.security.hash.SecureHash
+import kcrud.core.security.hash.SecureSalt
 
 /**
  * Provides authentication functionality by storing and validating hashed passwords with salts.

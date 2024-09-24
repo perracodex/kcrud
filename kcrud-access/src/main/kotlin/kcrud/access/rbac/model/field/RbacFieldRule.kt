@@ -4,11 +4,11 @@
 
 package kcrud.access.rbac.model.field
 
-import kcrud.base.database.schema.admin.rbac.RbacFieldRuleTable
-import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.base.database.schema.admin.rbac.types.RbacScope
-import kcrud.base.persistence.model.Meta
-import kcrud.base.plugins.Uuid
+import kcrud.core.database.schema.admin.rbac.RbacFieldRuleTable
+import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
+import kcrud.core.database.schema.admin.rbac.types.RbacScope
+import kcrud.core.persistence.model.Meta
+import kcrud.core.plugins.Uuid
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 

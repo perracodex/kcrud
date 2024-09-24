@@ -5,7 +5,7 @@
 package kcrud.access.rbac.repository.field
 
 import kcrud.access.rbac.model.field.RbacFieldRuleRequest
-import kcrud.base.database.schema.admin.rbac.RbacFieldRuleTable
+import kcrud.core.database.schema.admin.rbac.RbacFieldRuleTable
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.batchInsert
 import org.jetbrains.exposed.sql.deleteWhere

@@ -16,8 +16,8 @@ import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.service.RbacDashboardManager
 import kcrud.access.rbac.view.RbacDashboardView
 import kcrud.access.rbac.view.RbacLoginView
-import kcrud.base.env.SessionContext
-import kcrud.base.persistence.utils.toUuid
+import kcrud.core.env.SessionContext
+import kcrud.core.persistence.utils.toUuid
 import kotlin.uuid.Uuid
 
 /**

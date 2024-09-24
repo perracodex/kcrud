@@ -1,0 +1,40 @@
+/*
+ * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
+ */
+
+package kcrud.core.settings.config.sections.security.sections.auth
+
+import kcrud.core.settings.config.parser.IConfigSection
+import kotlinx.serialization.Serializable
+
+/**
+ * OAuth-authentication settings.
+ *
+ * @property providerName Name of the OAuth provider.
+ * @property redirectCallbackUrl Redirect URL opened when authorization is completed. Must be registered in the OAuth provider.
+ * @property authorizeUrl OAuth server authorization page URL. Provided by OAuth server vendor.
+ * @property accessTokenUrl OAuth server access token request domain URL. Provided by OAuth server vendor.
+ * @property clientId Client id parameter. Provided by OAuth server vendor.
+ * @property clientSecret client secret parameter. Provided by OAuth server vendor.
+ * @property defaultScopes List of OAuth scopes used by default. Provided by OAuth server vendor.
+ */
+@Serializable
+public data class OAuthSettings(
+    val providerName: String,
+    val redirectCallbackUrl: String,
+    val authorizeUrl: String,
+    val accessTokenUrl: String,
+    val clientId: String,
+    val clientSecret: String,
+    val defaultScopes: List<String>
+) : IConfigSection {
+    init {
+        require(providerName.isNotBlank()) { "Missing OAuth provider name." }
+        require(redirectCallbackUrl.isNotBlank()) { "Missing OAuth redirect callback Url." }
+        require(authorizeUrl.isNotBlank()) { "Missing OAuth authorize Url." }
+        require(accessTokenUrl.isNotBlank()) { "Missing OAuth token Url." }
+        require(clientId.isNotBlank()) { "Missing OAuth client Id." }
+        require(clientSecret.isNotBlank()) { "Missing OAuth client secret." }
+        require(defaultScopes.isNotEmpty()) { "Missing OAuth default scopes." }
+    }
+}

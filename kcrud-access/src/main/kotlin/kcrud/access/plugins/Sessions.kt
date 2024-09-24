@@ -6,10 +6,10 @@ package kcrud.access.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.sessions.*
-import kcrud.base.env.SessionContext
-import kcrud.base.security.utils.EncryptionUtils.toByteKey
-import kcrud.base.settings.AppSettings
-import kcrud.base.settings.config.sections.security.sections.EncryptionSettings
+import kcrud.core.env.SessionContext
+import kcrud.core.security.utils.EncryptionUtils.toByteKey
+import kcrud.core.settings.AppSettings
+import kcrud.core.settings.config.sections.security.sections.EncryptionSettings
 
 /**
  * Configure the [Sessions] plugin.

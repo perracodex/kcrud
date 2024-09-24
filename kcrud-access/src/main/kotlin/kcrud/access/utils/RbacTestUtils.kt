@@ -14,9 +14,9 @@ import kcrud.access.rbac.model.scope.RbacScopeRuleRequest
 import kcrud.access.rbac.service.RbacService
 import kcrud.access.token.annotation.TokenAPI
 import kcrud.access.token.service.AuthenticationTokenService
-import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.base.database.schema.admin.rbac.types.RbacScope
-import kcrud.base.env.SessionContext
+import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
+import kcrud.core.database.schema.admin.rbac.types.RbacScope
+import kcrud.core.env.SessionContext
 import org.koin.java.KoinJavaComponent.getKoin
 import kotlin.test.assertNotNull
 import kotlin.uuid.Uuid

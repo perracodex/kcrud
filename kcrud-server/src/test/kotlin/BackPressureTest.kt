@@ -9,9 +9,9 @@ import io.ktor.server.testing.*
 import io.ktor.test.dispatcher.*
 import io.ktor.util.collections.*
 import kcrud.access.utils.RbacTestUtils
-import kcrud.base.database.schema.employee.types.Honorific
-import kcrud.base.database.schema.employee.types.MaritalStatus
-import kcrud.base.utils.TestUtils
+import kcrud.core.database.schema.employee.types.Honorific
+import kcrud.core.database.schema.employee.types.MaritalStatus
+import kcrud.core.utils.TestUtils
 import kcrud.domain.contact.model.ContactRequest
 import kcrud.domain.employee.model.EmployeeRequest
 import kotlinx.coroutines.*

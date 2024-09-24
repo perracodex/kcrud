@@ -4,7 +4,7 @@
 
 package kcrud.domain.contact.model
 
-import kcrud.base.persistence.serializers.EmailString
+import kcrud.core.persistence.serializers.EmailString
 import kotlinx.serialization.Serializable
 
 /**

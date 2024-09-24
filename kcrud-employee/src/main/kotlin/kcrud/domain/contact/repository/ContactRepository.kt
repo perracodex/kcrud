@@ -7,9 +7,9 @@ package kcrud.domain.contact.repository
 import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.Pageable
 import io.perracodex.exposed.pagination.paginate
-import kcrud.base.database.schema.contact.ContactTable
-import kcrud.base.database.utils.transaction
-import kcrud.base.env.SessionContext
+import kcrud.core.database.schema.contact.ContactTable
+import kcrud.core.database.utils.transaction
+import kcrud.core.env.SessionContext
 import kcrud.domain.contact.model.Contact
 import kcrud.domain.contact.model.ContactRequest
 import kcrud.domain.employee.model.EmployeeRequest

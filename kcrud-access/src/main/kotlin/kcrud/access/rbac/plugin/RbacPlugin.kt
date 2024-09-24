@@ -11,9 +11,9 @@ import io.ktor.server.response.*
 import io.ktor.server.sessions.*
 import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.service.RbacService
-import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.base.database.schema.admin.rbac.types.RbacScope
-import kcrud.base.env.SessionContext
+import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
+import kcrud.core.database.schema.admin.rbac.types.RbacScope
+import kcrud.core.env.SessionContext
 import org.koin.ktor.ext.inject
 
 /**

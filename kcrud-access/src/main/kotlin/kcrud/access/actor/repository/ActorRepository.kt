@@ -8,7 +8,7 @@ import kcrud.access.actor.model.Actor
 import kcrud.access.actor.model.ActorRequest
 import kcrud.access.errors.RbacError
 import kcrud.access.rbac.repository.role.IRbacRoleRepository
-import kcrud.base.database.schema.admin.actor.ActorTable
+import kcrud.core.database.schema.admin.actor.ActorTable
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.lowerCase
 import org.jetbrains.exposed.sql.selectAll

@@ -7,7 +7,7 @@ version = "1.0.0"
 
 dependencies {
 
-    implementation(project(":kcrud-base"))
+    implementation(project(":kcrud-core"))
     implementation(project(":kcrud-access"))
     implementation(project(":kcrud-employee"))
     implementation(project(":kcrud-employment"))

@@ -7,7 +7,7 @@ version = "1.0.0"
 
 dependencies {
 
-    implementation(project(":kcrud-base"))
+    implementation(project(":kcrud-core"))
 
     implementation(libs.kotlinx.serialization)
 

@@ -14,7 +14,7 @@ import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.service.RbacDashboardManager
 import kcrud.access.rbac.view.RbacDashboardView
 import kcrud.access.rbac.view.RbacLoginView
-import kcrud.base.env.SessionContext
+import kcrud.core.env.SessionContext
 
 /**
  * Manages access to the RBAC login page. If a valid [SessionContext] is already exists, the actor
