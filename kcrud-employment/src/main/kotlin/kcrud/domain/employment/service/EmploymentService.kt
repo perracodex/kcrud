@@ -6,7 +6,7 @@ package kcrud.domain.employment.service
 
 import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.Pageable
-import kcrud.base.env.CallContext
+import kcrud.base.env.SessionContext
 import kcrud.base.env.Tracer
 import kcrud.domain.employment.model.Employment
 import kcrud.domain.employment.model.EmploymentRequest
@@ -19,7 +19,7 @@ import kotlin.uuid.Uuid
  * Employment service, where all the employment business logic should be defined.
  */
 public class EmploymentService internal constructor(
-    @Suppress("unused") private val context: CallContext,
+    @Suppress("unused") private val sessionContext: SessionContext,
     private val employmentRepository: IEmploymentRepository
 ) {
     private val tracer = Tracer<EmploymentService>()

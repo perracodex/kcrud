@@ -53,7 +53,7 @@ paths:
                 type: "string"
               examples:
                 Example#1:
-                  value: "Invalid CallContext. Use either admin/admin or guest/guest."
+                  value: "Invalid SessionContext. Use either admin/admin or guest/guest."
         "500":
           description: "Internal Server Error"
           content:
@@ -93,7 +93,7 @@ paths:
                 type: "string"
               examples:
                 Example#1:
-                  value: "Invalid CallContext. Use either admin/admin or guest/guest."
+                  value: "Invalid SessionContext. Use either admin/admin or guest/guest."
         "500":
           description: "Internal Server Error"
           content:
@@ -227,7 +227,7 @@ paths:
       tags:
         - "RBAC"
       description: "Opens the RBAC dashboard. Redirects to the login screen if the\
-        \ CallContext is invalid."
+        \ SessionContext is invalid."
       parameters:
         - name: "role"
           in: "query"
@@ -300,7 +300,7 @@ paths:
     get:
       tags:
         - "RBAC"
-      description: "Redirects actors to the dashboard if they have an existing CallContext\
+      description: "Redirects actors to the dashboard if they have an existing SessionContext\
         \ , <br> or to the login page if no valid one is found."
       responses:
         "302":

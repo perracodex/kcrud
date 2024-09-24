@@ -7,9 +7,9 @@ package kcrud.access.plugins
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.sessions.*
-import kcrud.access.context.CallContextFactory
-import kcrud.base.env.CallContext
-import kcrud.base.env.CallContext.Companion.setContext
+import kcrud.access.context.SessionContextFactory
+import kcrud.base.env.SessionContext
+import kcrud.base.env.SessionContext.Companion.setContext
 import kcrud.base.settings.AppSettings
 
 /**
@@ -27,12 +27,12 @@ public fun Application.configureBasicAuthentication() {
             realm = AppSettings.security.basicAuth.realm
 
             validate { credential ->
-                CallContextFactory.from(credential = credential)?.let { callContext ->
-                    this.setContext(callContext = callContext)
-                    return@validate callContext
+                SessionContextFactory.from(credential = credential)?.let { sessionContext ->
+                    this.setContext(sessionContext = sessionContext)
+                    return@validate sessionContext
                 }
 
-                this.sessions.clear(name = CallContext.SESSION_NAME)
+                this.sessions.clear(name = SessionContext.SESSION_NAME)
                 return@validate null
             }
         }

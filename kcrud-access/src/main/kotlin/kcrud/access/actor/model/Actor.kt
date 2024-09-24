@@ -7,7 +7,7 @@ package kcrud.access.actor.model
 import kcrud.access.credential.CredentialService
 import kcrud.access.rbac.model.role.RbacRole
 import kcrud.base.database.schema.admin.actor.ActorTable
-import kcrud.base.env.CallContext
+import kcrud.base.env.SessionContext
 import kcrud.base.persistence.model.Meta
 import org.jetbrains.exposed.sql.ResultRow
 import kotlin.uuid.Uuid
@@ -16,7 +16,7 @@ import kotlin.uuid.Uuid
  * Represents a single Actor. An Actor is a user with a role and access to scopes.
  *
  * This data is meant to be short-lived and not serialized, as it contains the Actor's password.
- * Instead, its details must be mapped to a [CallContext] instance, while the password is automatically
+ * Instead, its details must be mapped to a [SessionContext] instance, while the password is automatically
  * cached by [CredentialService] at the server startup, where it is hashed and kept in-memory for
  * authentication purposes.
  *

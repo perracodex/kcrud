@@ -9,7 +9,7 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import kcrud.base.env.CallContext.Companion.getContext
+import kcrud.base.env.SessionContext.Companion.getContext
 import kcrud.base.persistence.utils.toUuid
 import kcrud.domain.employment.api.EmploymentRouteAPI
 import kcrud.domain.employment.service.EmploymentService

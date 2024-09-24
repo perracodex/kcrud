@@ -11,8 +11,8 @@ import kcrud.base.database.extensions.exists
 import kcrud.base.database.schema.contact.ContactTable
 import kcrud.base.database.schema.employee.EmployeeTable
 import kcrud.base.database.schema.employment.EmploymentTable
-import kcrud.base.database.utils.transactionWithSchema
-import kcrud.base.env.CallContext
+import kcrud.base.database.utils.transactionWithContext
+import kcrud.base.env.SessionContext
 import kcrud.domain.employment.model.Employment
 import kcrud.domain.employment.model.EmploymentRequest
 import org.jetbrains.exposed.sql.*
@@ -25,11 +25,11 @@ import kotlin.uuid.Uuid
  * Responsible for managing employment data.
  */
 internal class EmploymentRepository(
-    private val context: CallContext
+    private val sessionContext: SessionContext
 ) : IEmploymentRepository {
 
     override fun findAll(pageable: Pageable?): Page<Employment> {
-        return transactionWithSchema(schema = context.schema) {
+        return transactionWithContext(sessionContext = sessionContext) {
             EmploymentTable
                 .innerJoin(EmployeeTable)
                 .leftJoin(ContactTable)
@@ -39,7 +39,7 @@ internal class EmploymentRepository(
     }
 
     override fun findById(employeeId: Uuid, employmentId: Uuid): Employment? {
-        return transactionWithSchema(schema = context.schema) {
+        return transactionWithContext(sessionContext = sessionContext) {
             EmploymentTable
                 .innerJoin(EmployeeTable)
                 .leftJoin(ContactTable)
@@ -53,7 +53,7 @@ internal class EmploymentRepository(
     }
 
     override fun findByEmployeeId(employeeId: Uuid): List<Employment> {
-        return transactionWithSchema(schema = context.schema) {
+        return transactionWithContext(sessionContext = sessionContext) {
             EmploymentTable
                 .innerJoin(EmployeeTable)
                 .leftJoin(ContactTable)
@@ -66,7 +66,7 @@ internal class EmploymentRepository(
     }
 
     override fun create(employeeId: Uuid, request: EmploymentRequest): Employment? {
-        return transactionWithSchema(schema = context.schema) {
+        return transactionWithContext(sessionContext = sessionContext) {
             employeeExists(employeeId = employeeId).takeIf { it }?.let {
                 EmploymentTable.insert { statement ->
                     statement.toStatement(
@@ -82,7 +82,7 @@ internal class EmploymentRepository(
     }
 
     override fun update(employeeId: Uuid, employmentId: Uuid, request: EmploymentRequest): Employment? {
-        return transactionWithSchema(schema = context.schema) {
+        return transactionWithContext(sessionContext = sessionContext) {
             EmploymentTable.update(
                 where = {
                     (EmploymentTable.employeeId eq employeeId) and (EmploymentTable.id eq employmentId)
@@ -99,7 +99,7 @@ internal class EmploymentRepository(
     }
 
     override fun delete(employmentId: Uuid): Int {
-        return transactionWithSchema(schema = context.schema) {
+        return transactionWithContext(sessionContext = sessionContext) {
             EmploymentTable.deleteWhere {
                 id eq employmentId
             }
@@ -107,7 +107,7 @@ internal class EmploymentRepository(
     }
 
     override fun deleteAll(employeeId: Uuid): Int {
-        return transactionWithSchema(schema = context.schema) {
+        return transactionWithContext(sessionContext = sessionContext) {
             EmploymentTable.deleteWhere {
                 EmploymentTable.employeeId eq employeeId
             }
@@ -115,7 +115,7 @@ internal class EmploymentRepository(
     }
 
     override fun count(employeeId: Uuid?): Int {
-        return transactionWithSchema(schema = context.schema) {
+        return transactionWithContext(sessionContext = sessionContext) {
             EmploymentTable.selectAll().apply {
                 employeeId?.let {
                     where { EmploymentTable.employeeId eq employeeId }
@@ -125,7 +125,7 @@ internal class EmploymentRepository(
     }
 
     override fun employeeExists(employeeId: Uuid): Boolean {
-        return transactionWithSchema(schema = context.schema) {
+        return transactionWithContext(sessionContext = sessionContext) {
             EmployeeTable.selectAll().where { EmployeeTable.id eq employeeId }.exists()
         }
     }

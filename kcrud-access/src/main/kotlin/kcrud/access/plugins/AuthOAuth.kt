@@ -12,9 +12,9 @@ import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
-import kcrud.access.context.CallContextFactory
-import kcrud.base.env.CallContext
-import kcrud.base.env.CallContext.Companion.setContext
+import kcrud.access.context.SessionContextFactory
+import kcrud.base.env.SessionContext
+import kcrud.base.env.SessionContext.Companion.setContext
 import kcrud.base.settings.AppSettings
 
 /**
@@ -60,14 +60,14 @@ public fun Application.configureOAuthAuthentication() {
             get("/oauth/callback") {
 
                 call.principal<OAuthAccessTokenResponse.OAuth2>()?.let { principal ->
-                    CallContextFactory.from(oauth2 = principal)?.let { callContext ->
-                        call.setContext(callContext = callContext)
+                    SessionContextFactory.from(oauth2 = principal)?.let { sessionContext ->
+                        call.setContext(sessionContext = sessionContext)
                         call.respondText(text = "You are now logged in through OAuth.")
                         return@get
                     }
                 }
 
-                call.sessions.clear(name = CallContext.SESSION_NAME)
+                call.sessions.clear(name = SessionContext.SESSION_NAME)
                 call.respond(message = HttpStatusCode.Unauthorized)
             }
         }

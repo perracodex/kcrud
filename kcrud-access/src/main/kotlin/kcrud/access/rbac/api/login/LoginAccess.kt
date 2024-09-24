@@ -14,25 +14,25 @@ import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.service.RbacDashboardManager
 import kcrud.access.rbac.view.RbacDashboardView
 import kcrud.access.rbac.view.RbacLoginView
-import kcrud.base.env.CallContext
+import kcrud.base.env.SessionContext
 
 /**
- * Manages access to the RBAC login page. If a valid [CallContext] is already exists, the actor
+ * Manages access to the RBAC login page. If a valid [SessionContext] is already exists, the actor
  * is directly redirected to the dashboard. Otherwise, any existing session cookies are
  * cleared and the login page is presented.
  */
 @RbacAPI
 internal fun Route.rbacLoginAccessRoute() {
     /**
-     * Redirects actors to the dashboard if they have an existing [CallContext],
+     * Redirects actors to the dashboard if they have an existing [SessionContext],
      * or to the login page if no valid one is found.
      * @OpenAPITag RBAC
      */
     get("rbac/login") {
-        RbacDashboardManager.getCallContext(call = call)?.let {
+        RbacDashboardManager.getSessionContext(call = call)?.let {
             call.respondRedirect(url = RbacDashboardView.RBAC_DASHBOARD_PATH)
         } ?: run {
-            call.sessions.clear(name = CallContext.SESSION_NAME)
+            call.sessions.clear(name = SessionContext.SESSION_NAME)
             call.respondHtml(status = HttpStatusCode.OK) {
                 RbacLoginView.build(html = this)
             }

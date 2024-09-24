@@ -5,6 +5,7 @@
 package kcrud.access.rbac.service
 
 import kcrud.access.actor.model.Actor
+import kcrud.access.actor.model.BasicActor
 import kcrud.access.actor.repository.IActorRepository
 import kcrud.access.rbac.model.role.RbacRole
 import kcrud.access.rbac.model.role.RbacRoleRequest
@@ -13,7 +14,7 @@ import kcrud.access.rbac.repository.role.IRbacRoleRepository
 import kcrud.access.rbac.repository.scope.IRbacScopeRuleRepository
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacScope
-import kcrud.base.env.CallContext
+import kcrud.base.env.SessionContext
 import kcrud.base.env.Tracer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
@@ -50,7 +51,12 @@ internal class RbacService(
     private val cache: ConcurrentHashMap<Uuid, ActorRole> = ConcurrentHashMap()
 
     /** Data class holding role attributes and the actor's locked status. */
-    private data class ActorRole(val isLocked: Boolean, val role: RbacRole)
+    private data class ActorRole(
+        val isLocked: Boolean,
+        val actorId: Uuid,
+        val actorUsername: String,
+        val role: RbacRole
+    )
 
     /** Lock to ensure thread-safe access and updates to the service cache. */
     private val lock: Mutex = Mutex()
@@ -99,7 +105,12 @@ internal class RbacService(
         }
 
         // Set the new ActorRole entry in the cache.
-        val actorRole = ActorRole(isLocked = actor.isLocked, role = actor.role)
+        val actorRole = ActorRole(
+            isLocked = actor.isLocked,
+            actorId = actorId,
+            actorUsername = actor.username,
+            role = actor.role
+        )
         lock.withLock {
             cache[actorId] = actorRole
         }
@@ -124,7 +135,12 @@ internal class RbacService(
         }.filter { actor ->
             actor.role.scopeRules.isNotEmpty()
         }.associateTo(ConcurrentHashMap()) { actor ->
-            actor.id to ActorRole(isLocked = actor.isLocked, role = actor.role)
+            actor.id to ActorRole(
+                isLocked = actor.isLocked,
+                actorId = actor.id,
+                actorUsername = actor.username,
+                role = actor.role
+            )
         }.also { actors ->
             if (actors.isEmpty()) {
                 tracer.warning("No actors found with scope rules. RBAC cache is empty.")
@@ -142,24 +158,24 @@ internal class RbacService(
     }
 
     /**
-     * Checks if the given [CallContext] has the given [RbacAccessLevel] for the given [RbacScope].
+     * Checks if the given [SessionContext] has the given [RbacAccessLevel] for the given [RbacScope].
      *
-     * @param callContext The current request [CallContext].
+     * @param sessionContext The current request [SessionContext].
      * @param scope The [RbacScope] to check.
      * @param accessLevel The [RbacAccessLevel] to check. Expected to have minimal this access level.
-     * @return True if the [CallContext] has permission, false otherwise.
+     * @return True if the [SessionContext] has permission, false otherwise.
      */
     suspend fun hasPermission(
-        callContext: CallContext,
+        sessionContext: SessionContext,
         scope: RbacScope,
         accessLevel: RbacAccessLevel
     ): Boolean {
         if (isCacheEmpty())
             return false
 
-        return cache[callContext.actorId]?.let { actorRole ->
+        return cache[sessionContext.actorId]?.let { actorRole ->
             !actorRole.isLocked && actorRole.role.scopeRules.any { scopeRule ->
-                (scopeRule.roleId == callContext.roleId) &&
+                (scopeRule.roleId == sessionContext.roleId) &&
                         (scopeRule.scope == scope) &&
                         scopeRule.accessLevel.hasSufficientPrivileges(requiredAccessLevel = accessLevel)
             }
@@ -167,23 +183,23 @@ internal class RbacService(
     }
 
     /**
-     * Retrieves the [RbacAccessLevel] for the given [CallContext] and [RbacScope].
+     * Retrieves the [RbacAccessLevel] for the given [SessionContext] and [RbacScope].
      *
-     * @param callContext The [CallContext] to check.
+     * @param sessionContext The [SessionContext] to check.
      * @param scope The [RbacScope] to check.
-     * @return The [RbacAccessLevel] for the given [CallContext] and [RbacScope].
+     * @return The [RbacAccessLevel] for the given [SessionContext] and [RbacScope].
      */
-    suspend fun getPermissionLevel(callContext: CallContext, scope: RbacScope): RbacAccessLevel {
+    suspend fun getPermissionLevel(sessionContext: SessionContext, scope: RbacScope): RbacAccessLevel {
         if (isCacheEmpty()) {
             return RbacAccessLevel.NONE
         }
 
-        return cache[callContext.actorId]?.let { role ->
+        return cache[sessionContext.actorId]?.let { role ->
             if (role.isLocked) {
                 RbacAccessLevel.NONE
             } else {
                 role.role.scopeRules.find { scopeRule ->
-                    scopeRule.roleId == callContext.roleId && scopeRule.scope == scope
+                    scopeRule.roleId == sessionContext.roleId && scopeRule.scope == scope
                 }?.accessLevel ?: RbacAccessLevel.NONE
             }
         } ?: RbacAccessLevel.NONE
@@ -216,6 +232,23 @@ internal class RbacService(
      */
     suspend fun findRoleByActorId(actorId: Uuid): RbacRole? = withContext(Dispatchers.IO) {
         return@withContext roleRepository.findByActorId(actorId = actorId)
+    }
+
+    /**
+     * Retrieves the [BasicActor] for the given [username].
+     *
+     * @param username The username of the actor to find.
+     * @return The [BasicActor] for the given [username], or null if it doesn't exist.
+     */
+    fun findActorByUsername(username: String): BasicActor? {
+        return cache.values.find { it.actorUsername == username }?.let { actorRole ->
+            BasicActor(
+                id = actorRole.actorId,
+                username = actorRole.actorUsername,
+                roleId = actorRole.role.id,
+                isLocked = actorRole.isLocked
+            )
+        }
     }
 
     /**

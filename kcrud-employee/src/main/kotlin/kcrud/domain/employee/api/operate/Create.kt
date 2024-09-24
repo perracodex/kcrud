@@ -9,7 +9,7 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.base.env.CallContext.Companion.getContext
+import kcrud.base.env.SessionContext.Companion.getContext
 import kcrud.domain.employee.api.EmployeeRouteAPI
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest

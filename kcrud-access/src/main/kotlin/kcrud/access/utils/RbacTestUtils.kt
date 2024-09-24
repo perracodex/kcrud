@@ -16,7 +16,7 @@ import kcrud.access.token.annotation.TokenAPI
 import kcrud.access.token.service.AuthenticationTokenService
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacScope
-import kcrud.base.env.CallContext
+import kcrud.base.env.SessionContext
 import org.koin.java.KoinJavaComponent.getKoin
 import kotlin.test.assertNotNull
 import kotlin.uuid.Uuid
@@ -38,14 +38,14 @@ public object RbacTestUtils {
         val actor: Actor? = actorService.findByUsername(username = username)
         assertNotNull(actual = actor)
 
-        val callContext = CallContext(
+        val sessionContext = SessionContext(
             actorId = actor.id,
             username = actor.username,
             roleId = actor.role.id,
             schema = null,
         )
 
-        return AuthenticationTokenService.generate(callContext = callContext)
+        return AuthenticationTokenService.generate(sessionContext = sessionContext)
     }
 
     /**
@@ -59,14 +59,14 @@ public object RbacTestUtils {
     public suspend fun newAuthenticationToken(accessLevel: RbacAccessLevel, testIteration: Int): String {
         val actor: Actor = createActor(accessLevel = accessLevel, iteration = testIteration)
 
-        val callContext = CallContext(
+        val sessionContext = SessionContext(
             actorId = actor.id,
             username = actor.username,
             roleId = actor.role.id,
             schema = null
         )
 
-        return AuthenticationTokenService.generate(callContext = callContext)
+        return AuthenticationTokenService.generate(sessionContext = sessionContext)
     }
 
     /**

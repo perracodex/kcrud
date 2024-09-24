@@ -9,8 +9,8 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import kcrud.base.env.CallContext
-import kcrud.base.env.CallContext.Companion.getContext
+import kcrud.base.env.SessionContext
+import kcrud.base.env.SessionContext.Companion.getContext
 import kcrud.domain.employee.service.EmployeeService
 import kcrud.domain.employment.service.EmploymentService
 import kcrud.server.demo.DemoAPI
@@ -30,9 +30,9 @@ internal fun Route.createRecordsRoute() {
         val count: Int = call.request.queryParameters.getOrFail<Int>(name = "count")
 
         if (count in 1..maxAllowedBatch) {
-            val callContext: CallContext? = call.getContext()
-            val employeeService: EmployeeService = call.scope.get<EmployeeService> { parametersOf(callContext) }
-            val employmentService: EmploymentService = call.scope.get<EmploymentService> { parametersOf(callContext) }
+            val sessionContext: SessionContext? = call.getContext()
+            val employeeService: EmployeeService = call.scope.get<EmployeeService> { parametersOf(sessionContext) }
+            val employmentService: EmploymentService = call.scope.get<EmploymentService> { parametersOf(sessionContext) }
 
             DemoUtils.createDemoRecords(
                 employeeService = employeeService,

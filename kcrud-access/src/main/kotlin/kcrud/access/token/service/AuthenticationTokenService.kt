@@ -12,7 +12,7 @@ import com.auth0.jwt.interfaces.DecodedJWT
 import io.ktor.http.*
 import io.ktor.http.auth.*
 import kcrud.access.token.annotation.TokenAPI
-import kcrud.base.env.CallContext
+import kcrud.base.env.SessionContext
 import kcrud.base.env.Tracer
 import kcrud.base.settings.AppSettings
 import kcrud.base.settings.config.sections.security.sections.auth.JwtAuthSettings
@@ -100,19 +100,19 @@ internal object AuthenticationTokenService {
     /**
      * Generate a new authorization token.
      *
-     * @param callContext The [CallContext] details to embed in the token.
+     * @param sessionContext The [SessionContext] details to embed in the token.
      * @return The generated JWT token.
      */
-    fun generate(callContext: CallContext): String {
+    fun generate(sessionContext: SessionContext): String {
         val jwtAuthSettings: JwtAuthSettings = AppSettings.security.jwtAuth
         val tokenLifetimeSec: Long = jwtAuthSettings.tokenLifetimeSec
         val expirationDate = Date(System.currentTimeMillis() + tokenLifetimeSec.seconds.inWholeMilliseconds)
-        val callContextJson: String = Json.encodeToString<CallContext>(value = callContext)
+        val sessionContextJson: String = Json.encodeToString<SessionContext>(value = sessionContext)
 
         tracer.debug("Generating new authorization token. Expiration: $expirationDate.")
 
         return JWT.create()
-            .withClaim(CallContext.CLAIM_KEY, callContextJson)
+            .withClaim(SessionContext.CLAIM_KEY, sessionContextJson)
             .withAudience(jwtAuthSettings.audience)
             .withIssuer(jwtAuthSettings.issuer)
             .withExpiresAt(expirationDate)

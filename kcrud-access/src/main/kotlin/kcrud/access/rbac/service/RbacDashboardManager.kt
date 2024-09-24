@@ -12,7 +12,7 @@ import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.view.RbacDashboardView
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.admin.rbac.types.RbacScope
-import kcrud.base.env.CallContext
+import kcrud.base.env.SessionContext
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -28,19 +28,19 @@ import kotlin.uuid.Uuid
 internal object RbacDashboardManager : KoinComponent {
 
     /**
-     * Get the [CallContext] from the given [ApplicationCall]
+     * Get the [SessionContext] from the given [ApplicationCall]
      * if the actor has access to the RBAC dashboard.
      *
      * @param call The application call.
-     * @return The [CallContext] if the actor has access to the RBAC dashboard; null otherwise.
+     * @return The [SessionContext] if the actor has access to the RBAC dashboard; null otherwise.
      */
-    suspend fun getCallContext(call: ApplicationCall): CallContext? {
-        val callContext: CallContext? = call.sessions.get<CallContext>()
+    suspend fun getSessionContext(call: ApplicationCall): SessionContext? {
+        val sessionContext: SessionContext? = call.sessions.get<SessionContext>()
 
-        return callContext?.takeIf {
+        return sessionContext?.takeIf {
             val rbacService: RbacService = KoinJavaComponent.getKoin().get()
             rbacService.hasPermission(
-                callContext = callContext,
+                sessionContext = sessionContext,
                 scope = RbacScope.RBAC_DASHBOARD,
                 accessLevel = RbacAccessLevel.VIEW
             )
@@ -49,24 +49,24 @@ internal object RbacDashboardManager : KoinComponent {
 
     /**
      * Determines the current actor's role and access level within the
-     * RBAC dashboard scope based on the provided [callContext] and [roleId].
+     * RBAC dashboard scope based on the provided [sessionContext] and [roleId].
      *
-     * @param callContext The current actor's [CallContext].
+     * @param sessionContext The current actor's [SessionContext].
      * @param roleId The role ID if specified, otherwise null.
      * @return [Context] containing the access details for the RBAC dashboard.
      */
-    suspend fun determineAccessDetails(callContext: CallContext, roleId: Uuid?): Context {
+    suspend fun determineAccessDetails(sessionContext: SessionContext, roleId: Uuid?): Context {
         val rbacService: RbacService by inject()
 
         // Fetch the current actor's permission level for the RBAC dashboard scope.
         val sessionRolePermissionLevel: RbacAccessLevel = rbacService.getPermissionLevel(
-            callContext = callContext,
+            sessionContext = sessionContext,
             scope = RbacScope.RBAC_DASHBOARD
         )
 
         // Retrieve all RBAC roles.
         val rbacRoles: List<RbacRole> = rbacService.findAllRoles()
-        val sessionRoleName: String = rbacService.findRoleById(roleId = callContext.roleId)?.roleName ?: ""
+        val sessionRoleName: String = rbacService.findRoleById(roleId = sessionContext.roleId)?.roleName ?: ""
 
         // Select the current role based on the role ID or default to the first role if none specified.
         val targetRole: RbacRole = roleId?.let { id ->
@@ -85,19 +85,19 @@ internal object RbacDashboardManager : KoinComponent {
     /**
      * Process updates to the RBAC dashboard.
      *
-     * @param callContext The current actor's [CallContext].
+     * @param sessionContext The current actor's [SessionContext].
      * @param roleId The role ID to update.
      * @param updates The updates to apply to the role.
      * @return The result of the update operation.
      */
-    suspend fun processUpdate(callContext: CallContext, roleId: Uuid, updates: Map<String, String>): UpdateResult {
+    suspend fun processUpdate(sessionContext: SessionContext, roleId: Uuid, updates: Map<String, String>): UpdateResult {
         // Update role-specific scope rules based on submitted parameters.
         applyRoleUpdates(roleId = roleId, updates = updates)
 
         // Check if the actor has permission to access the RBAC dashboard.
         val rbacService: RbacService by inject()
         val sessionRolePermissionLevel: RbacAccessLevel = rbacService.getPermissionLevel(
-            callContext = callContext,
+            sessionContext = sessionContext,
             scope = RbacScope.RBAC_DASHBOARD
         )
         if (sessionRolePermissionLevel == RbacAccessLevel.NONE) {
@@ -108,7 +108,7 @@ internal object RbacDashboardManager : KoinComponent {
         val rbacRoles: List<RbacRole> = rbacService.findAllRoles()
         val targetRole: RbacRole = rbacRoles.first { it.id == roleId }
         val isViewOnly: Boolean = (sessionRolePermissionLevel == RbacAccessLevel.VIEW) or (targetRole.isSuper)
-        val sessionRoleName: String = rbacService.findRoleById(roleId = callContext.roleId)?.roleName ?: ""
+        val sessionRoleName: String = rbacService.findRoleById(roleId = sessionContext.roleId)?.roleName ?: ""
 
         // Return the updated roles and current role ID.
         return UpdateResult.Success(

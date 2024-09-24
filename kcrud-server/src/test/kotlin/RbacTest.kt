@@ -13,7 +13,7 @@ import kcrud.access.utils.RbacTestUtils
 import kcrud.base.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
-import kcrud.base.env.CallContext
+import kcrud.base.env.SessionContext
 import kcrud.base.utils.KLocalDate
 import kcrud.base.utils.TestUtils
 import kcrud.domain.contact.model.ContactRequest
@@ -202,11 +202,11 @@ class RbacTest : KoinComponent {
             )
         )
 
-        val callContext: CallContext = mockk<CallContext>()
-        every { callContext.schema } returns null
+        val sessionContext: SessionContext = mockk<SessionContext>()
+        every { sessionContext.schema } returns null
 
         val employeeService: EmployeeService by inject(
-            parameters = { org.koin.core.parameter.parametersOf(callContext) }
+            parameters = { org.koin.core.parameter.parametersOf(sessionContext) }
         )
 
         return employeeService.create(request = employeeRequest).getOrThrow()

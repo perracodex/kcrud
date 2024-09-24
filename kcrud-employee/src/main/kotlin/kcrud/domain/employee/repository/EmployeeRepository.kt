@@ -9,8 +9,8 @@ import io.perracodex.exposed.pagination.Pageable
 import io.perracodex.exposed.pagination.paginate
 import kcrud.base.database.schema.contact.ContactTable
 import kcrud.base.database.schema.employee.EmployeeTable
-import kcrud.base.database.utils.transactionWithSchema
-import kcrud.base.env.CallContext
+import kcrud.base.database.utils.transactionWithContext
+import kcrud.base.env.SessionContext
 import kcrud.domain.contact.repository.IContactRepository
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeFilterSet
@@ -25,12 +25,12 @@ import kotlin.uuid.Uuid
  * Responsible for managing employee data.
  */
 internal class EmployeeRepository(
-    private val context: CallContext,
+    private val sessionContext: SessionContext,
     private val contactRepository: IContactRepository
 ) : IEmployeeRepository {
 
     override fun findById(employeeId: Uuid): Employee? {
-        return transactionWithSchema(schema = context.schema) {
+        return transactionWithContext(sessionContext = sessionContext) {
             EmployeeTable.join(
                 otherTable = ContactTable,
                 joinType = JoinType.LEFT,
@@ -45,7 +45,7 @@ internal class EmployeeRepository(
     }
 
     override fun findAll(pageable: Pageable?): Page<Employee> {
-        return transactionWithSchema(schema = context.schema) {
+        return transactionWithContext(sessionContext = sessionContext) {
             EmployeeTable.join(
                 otherTable = ContactTable,
                 joinType = JoinType.LEFT,
@@ -56,7 +56,7 @@ internal class EmployeeRepository(
     }
 
     override fun search(filterSet: EmployeeFilterSet, pageable: Pageable?): Page<Employee> {
-        return transactionWithSchema(schema = context.schema) {
+        return transactionWithContext(sessionContext = sessionContext) {
             EmployeeTable.selectAll().apply {
                 // Apply filters dynamically based on the presence of criteria in filterSet.
                 // Using lowerCase() to make the search case-insensitive.
@@ -91,7 +91,7 @@ internal class EmployeeRepository(
     }
 
     override fun create(request: EmployeeRequest): Employee {
-        return transactionWithSchema(schema = context.schema) {
+        return transactionWithContext(sessionContext = sessionContext) {
             EmployeeTable.insert { statement ->
                 statement.toStatement(request = request)
             }[EmployeeTable.id].let { employeeId ->
@@ -109,7 +109,7 @@ internal class EmployeeRepository(
     }
 
     override fun update(employeeId: Uuid, request: EmployeeRequest): Employee? {
-        return transactionWithSchema(schema = context.schema) {
+        return transactionWithContext(sessionContext = sessionContext) {
             EmployeeTable.update(
                 where = {
                     EmployeeTable.id eq employeeId
@@ -128,7 +128,7 @@ internal class EmployeeRepository(
     }
 
     override fun delete(employeeId: Uuid): Int {
-        return transactionWithSchema(schema = context.schema) {
+        return transactionWithContext(sessionContext = sessionContext) {
             EmployeeTable.deleteWhere {
                 id eq employeeId
             }
@@ -136,13 +136,13 @@ internal class EmployeeRepository(
     }
 
     override fun deleteAll(): Int {
-        return transactionWithSchema(schema = context.schema) {
+        return transactionWithContext(sessionContext = sessionContext) {
             EmployeeTable.deleteAll()
         }
     }
 
     override fun count(): Int {
-        return transactionWithSchema(schema = context.schema) {
+        return transactionWithContext(sessionContext = sessionContext) {
             EmployeeTable.selectAll().count().toInt()
         }
     }

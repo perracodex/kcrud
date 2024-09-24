@@ -12,9 +12,9 @@ import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import io.ktor.server.sessions.*
-import kcrud.access.context.CallContextFactory
-import kcrud.base.env.CallContext
-import kcrud.base.env.CallContext.Companion.setContext
+import kcrud.access.context.SessionContextFactory
+import kcrud.base.env.SessionContext
+import kcrud.base.env.SessionContext.Companion.setContext
 import kcrud.base.settings.AppSettings
 
 /**
@@ -52,17 +52,17 @@ public fun Application.configureJwtAuthentication() {
             // The JWT library automatically verifies the token's signature before this block.
             // This ensures that the token was not tampered with and was signed with the correct secret key.
             validate { credential ->
-                CallContextFactory.from(jwtCredential = credential)?.let { callContext ->
-                    this.setContext(callContext = callContext)
-                    return@validate callContext
+                SessionContextFactory.from(jwtCredential = credential)?.let { sessionContext ->
+                    this.setContext(sessionContext = sessionContext)
+                    return@validate sessionContext
                 }
 
-                this.sessions.clear(name = CallContext.SESSION_NAME)
+                this.sessions.clear(name = SessionContext.SESSION_NAME)
                 return@validate null
             }
 
             challenge { _, _ ->
-                call.sessions.clear(name = CallContext.SESSION_NAME)
+                call.sessions.clear(name = SessionContext.SESSION_NAME)
                 call.respond(status = HttpStatusCode.Unauthorized, message = "Token is not valid or has expired.")
             }
         }

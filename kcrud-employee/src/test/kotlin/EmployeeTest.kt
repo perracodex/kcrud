@@ -11,7 +11,7 @@ import kcrud.access.actor.di.ActorDomainInjection
 import kcrud.access.rbac.di.RbacDomainInjection
 import kcrud.base.database.schema.employee.types.Honorific
 import kcrud.base.database.schema.employee.types.MaritalStatus
-import kcrud.base.env.CallContext
+import kcrud.base.env.SessionContext
 import kcrud.base.persistence.model.Meta
 import kcrud.base.utils.DateTimeUtils.age
 import kcrud.base.utils.KLocalDate
@@ -83,12 +83,12 @@ class EmployeeServiceTest : KoinComponent {
                 assert(value = mockEmployee.age != 0)
                 assert(value = mockEmployee.fullName.isNotBlank())
 
-                val callContext: CallContext = mockk<CallContext>()
-                every { callContext.schema } returns null
+                val sessionContext: SessionContext = mockk<SessionContext>()
+                every { sessionContext.schema } returns null
 
                 val mockEmployeeRepository = mockk<IEmployeeRepository>()
                 val employeeService = EmployeeService(
-                    context = callContext,
+                    sessionContext = sessionContext,
                     employeeRepository = mockEmployeeRepository
                 )
                 coEvery { mockEmployeeRepository.findById(employeeId = employeeId) } returns mockEmployee
@@ -114,11 +114,11 @@ class EmployeeServiceTest : KoinComponent {
         )
 
         newSuspendedTransaction {
-            val callContext: CallContext = mockk<CallContext>()
-            every { callContext.schema } returns null
+            val sessionContext: SessionContext = mockk<SessionContext>()
+            every { sessionContext.schema } returns null
 
             val employeeService: EmployeeService by inject(
-                parameters = { parametersOf(callContext) }
+                parameters = { parametersOf(sessionContext) }
             )
 
             // Create
