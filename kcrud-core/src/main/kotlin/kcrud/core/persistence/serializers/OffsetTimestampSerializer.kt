@@ -38,7 +38,8 @@ internal object OffsetTimestampSerializer : KSerializer<OffsetDateTime> {
  * Represents a serializable [OffsetDateTime].
  *
  * @property OffsetDateTime The type representing the serializable [OffsetDateTime].
- * @see OffsetDateTime
- * @see OffsetTimestampSerializer
+ *
+ * @see [OffsetDateTime]
+ * @see [OffsetTimestampSerializer]
  */
 public typealias OffsetTimestamp = @Serializable(with = OffsetTimestampSerializer::class) OffsetDateTime

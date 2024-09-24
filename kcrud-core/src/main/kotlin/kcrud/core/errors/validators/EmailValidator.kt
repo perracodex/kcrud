@@ -47,8 +47,8 @@ import kcrud.core.errors.validators.base.ValidationException
  *      • email@example...com (top-level domain has consecutive dots)
  * ```
  *
- * @see IValidator
- * @see ValidationException
+ * @see [IValidator]
+ * @see [ValidationException]
  */
 public object EmailValidator : IValidator<String> {
     /** The maximum length of an email address (as per RFC 5321). */

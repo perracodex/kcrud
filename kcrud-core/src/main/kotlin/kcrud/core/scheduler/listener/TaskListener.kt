@@ -54,7 +54,7 @@ internal class TaskListener : JobListener {
      * This method will not be invoked if the execution of the Job was vetoed
      * by a [org.quartz.TriggerListener].
      *
-     * @see jobExecutionVetoed
+     * @see [jobExecutionVetoed]
      */
     override fun jobToBeExecuted(context: JobExecutionContext) {
         tracer.debug("Task to be executed: ${context.jobDetail.key}")
@@ -65,7 +65,7 @@ internal class TaskListener : JobListener {
      * was about to be executed (an associated [org.quartz.Trigger] has occurred),
      * but a [org.quartz.TriggerListener] vetoed its execution.
      *
-     * @see jobToBeExecuted
+     * @see [jobToBeExecuted]
      */
     override fun jobExecutionVetoed(context: JobExecutionContext) {
         tracer.debug("Task execution vetoed: ${context.jobDetail.key}")

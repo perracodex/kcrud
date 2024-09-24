@@ -70,7 +70,7 @@ public class TaskDispatch(
      * @param job The job details and trigger builder for the task.
      * @param interval The [Schedule.Interval] at which the task should be repeated.
      *
-     * @see Schedule.Interval
+     * @see [Schedule.Interval]
      */
     private fun send(job: BasicJob, interval: Schedule.Interval): TaskKey {
         // Define the schedule builder and set misfire instructions to
@@ -102,7 +102,7 @@ public class TaskDispatch(
      * @param job The job details and trigger builder for the task.
      * @param cron The [Schedule.Cron] expression at which the task should be executed.
      *
-     * @see Schedule.Cron
+     * @see [Schedule.Cron]
      */
     private fun send(job: BasicJob, cron: String): TaskKey {
         val trigger: CronTrigger = job.triggerBuilder

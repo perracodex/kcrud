@@ -20,7 +20,7 @@ import kotlin.uuid.Uuid
  * Implementation of [IRbacScopeRuleRepository].
  * Responsible for managing [RbacScopeRuleRequest] data.
  *
- * @see RbacScopeRuleRequest
+ * @see [RbacScopeRuleRequest]
  */
 internal class RbacScopeRuleRepository(
     private val fieldRuleRepository: IRbacFieldRuleRepository

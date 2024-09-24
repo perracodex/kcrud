@@ -15,9 +15,9 @@ import kcrud.core.errors.validators.PhoneValidator
  * or any type of data. The validation logic should ensure that
  * the input value adheres to the required format or business rules.
  *
- * @see EmailValidator
- * @see PhoneValidator
- * @see ValidationException
+ * @see [EmailValidator]
+ * @see [PhoneValidator]
+ * @see [ValidationException]
  */
 public interface IValidator<T> {
     /**

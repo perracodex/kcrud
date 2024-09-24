@@ -17,7 +17,7 @@ import kotlin.reflect.KClass
  * @property path The section in the configuration file, i.e. "ktor.deployment".
  * @property kClass The target data class type which will map the configuration, i.e. [DeploymentSettings].
  *
- * @see ConfigurationCatalog
+ * @see [ConfigurationCatalog]
  */
 @ConfigurationAPI
 internal data class ConfigClassMap<T : IConfigSection>(

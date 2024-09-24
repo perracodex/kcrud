@@ -22,7 +22,8 @@ import kotlin.uuid.toKotlinUuid
  *
  * Note that Exposed framework team has opened a ticket regarding this issue.
  *
- * See [EXPOSED-507](https://youtrack.jetbrains.com/issue/EXPOSED-507/Support-kotlin.uuid.Uuid-as-a-column-type)
+ * #### Issues
+ * - [EXPOSED-507](https://youtrack.jetbrains.com/issue/EXPOSED-507/Support-kotlin.uuid.Uuid-as-a-column-type)
  */
 internal class UuidColumnType : ColumnType<Uuid>() {
     override fun sqlType(): String = currentDialect.dataTypeProvider.uuidType()

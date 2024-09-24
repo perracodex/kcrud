@@ -15,13 +15,11 @@ import io.ktor.server.plugins.forwardedheaders.*
 /**
  * Configures header related plugins.
  *
- * See: [Default Headers Documentation](https://ktor.io/docs/server-default-headers.html)
- *
- * See: [Auto Head Response Documentation](https://ktor.io/docs/server-autoheadresponse.html)
- *
- * See: [Caching Headers Plugin](https://ktor.io/docs/server-caching-headers.html)
- *
- * See: [Forwarded-Header Plugin](https://ktor.io/docs/server-forward-headers.html)
+ * #### References
+ * - [Default Headers Documentation](https://ktor.io/docs/server-default-headers.html)
+ * - [Auto Head Response Documentation](https://ktor.io/docs/server-autoheadresponse.html)
+ * - [Caching Headers Plugin](https://ktor.io/docs/server-caching-headers.html)
+ * - [Forwarded-Header Plugin](https://ktor.io/docs/server-forward-headers.html)
  */
 public fun Application.configureHeaders() {
 

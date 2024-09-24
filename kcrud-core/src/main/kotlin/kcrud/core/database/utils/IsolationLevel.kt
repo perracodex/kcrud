@@ -11,7 +11,7 @@ import java.sql.Connection
  *
  * @property id The id of the isolation level.
  *
- * @see java.sql.Connection
+ * @see [java.sql.Connection]
  */
 @Suppress("unused")
 internal enum class IsolationLevel(val id: Int) {

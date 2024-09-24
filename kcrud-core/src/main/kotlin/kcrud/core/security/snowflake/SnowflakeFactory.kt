@@ -19,7 +19,8 @@ import kotlin.time.Duration.Companion.nanoseconds
  * These IDs are useful in scenarios where unique identification across
  * multiple machines is needed.
  *
- * See: [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)
+ * #### References
+ * - [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)
  */
 public object SnowflakeFactory {
     private val tracer = Tracer<SnowflakeFactory>()

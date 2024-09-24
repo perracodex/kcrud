@@ -11,7 +11,8 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
 /**
  * Configures the Thymeleaf plugin for the application used to render HTML templates.
  *
- * See: [Ktor Thymeleaf Plugin](https://ktor.io/docs/server-thymeleaf.html)
+ * #### References
+ * - [Thymeleaf Plugin](https://ktor.io/docs/server-thymeleaf.html)
  */
 public fun Application.configureThymeleaf() {
 

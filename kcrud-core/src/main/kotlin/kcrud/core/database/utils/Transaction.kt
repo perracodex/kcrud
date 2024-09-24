@@ -16,9 +16,9 @@ import org.jetbrains.exposed.sql.transactions.transaction
  * Executes a transaction taking into account the specified [sessionContext] instance,
  * which may include for example a schema name or other session-context-specific information.
  *
- * See: [Transactions](https://github.com/JetBrains/Exposed/wiki/Transactions)
- *
- * See: [Schema Tests](https://github.com/JetBrains/Exposed/blob/main/exposed-tests/src/test/kotlin/org/jetbrains/exposed/sql/tests/shared/SchemaTests.kt)
+ * #### References
+ * - [Transactions](https://github.com/JetBrains/Exposed/wiki/Transactions)
+ * - [Schema Tests](https://github.com/JetBrains/Exposed/blob/main/exposed-tests/src/test/kotlin/org/jetbrains/exposed/sql/tests/shared/SchemaTests.kt)
  *
  * @param sessionContext The [SessionContext] instance to be used for the transaction.
  * @param db Optional database instance to be used for the transaction.

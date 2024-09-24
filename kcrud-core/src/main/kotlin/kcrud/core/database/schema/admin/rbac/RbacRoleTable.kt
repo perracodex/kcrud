@@ -16,7 +16,7 @@ import kotlin.uuid.Uuid
  *
  * Roles are used to define the access level of an actor to concrete scopes.
  *
- * @see RbacScopeRuleTable
+ * @see [RbacScopeRuleTable]
  */
 public object RbacRoleTable : TimestampedTable(name = "rbac_role") {
     /**

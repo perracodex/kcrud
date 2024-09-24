@@ -15,13 +15,11 @@ import kcrud.core.settings.AppSettings
 /**
  * Configures OpenAPI, Swagger-UI and Redoc.
  *
- * See [OpenAPI](https://ktor.io/docs/server-openapi.html)
- *
- * See [OpenAPI Generation](https://www.jetbrains.com/help/idea/ktor.html#openapi)
- *
- * See [Swagger-UI](https://ktor.io/docs/server-swagger-ui.html)
- *
- * See [Redoc](https://swagger.io/blog/api-development/redoc-openapi-powered-documentation/)
+ * #### References
+ * - [OpenAPI](https://ktor.io/docs/server-openapi.html)
+ * - [OpenAPI Generation](https://www.jetbrains.com/help/idea/ktor.html#openapi)
+ * - [Swagger-UI](https://ktor.io/docs/server-swagger-ui.html)
+ * - [Redoc](https://swagger.io/blog/api-development/redoc-openapi-powered-documentation/)
  */
 public fun Application.configureApiSchema() {
 

@@ -22,8 +22,8 @@ import org.jetbrains.exposed.sql.Table
  * @return A Column<String> representing the values in the database table.
  * @throws ValidationException if the value is invalid during data insertion.
  *
- * @see IValidator
- * @see validVarchar
+ * @see [IValidator]
+ * @see [validVarchar]
  */
 internal fun Table.validEncryptedVarchar(
     name: String,

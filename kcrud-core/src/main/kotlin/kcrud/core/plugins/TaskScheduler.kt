@@ -15,11 +15,11 @@ import kcrud.core.scheduler.service.SchedulerService
  * for tasks that need to be executed at specific times or intervals, or need to ensure
  * execution even if the server is restarted.
  *
- * See: [Quartz Scheduler Documentation](https://github.com/quartz-scheduler/quartz/blob/main/docs/index.adoc)
+ * #### References
+ * - [Quartz Scheduler Documentation](https://github.com/quartz-scheduler/quartz/blob/main/docs/index.adoc)
+ * - [Quartz Scheduler Configuration](https://www.quartz-scheduler.org/documentation/2.4.0-SNAPSHOT/configuration.html)
  *
- * See: [Quartz Scheduler Configuration](https://www.quartz-scheduler.org/documentation/2.4.0-SNAPSHOT/configuration.html)
- *
- * @see SchedulerService
+ * @see [SchedulerService]
  */
 public fun Application.configureTaskScheduler() {
 

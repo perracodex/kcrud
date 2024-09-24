@@ -25,12 +25,11 @@ import kcrud.core.settings.AppSettings
  * using a shared secret (with the HS256 algorithm) or a public/private key pair (for example, RS256).
  *
  * Ktor handles JWTs passed in the Authorization header using the Bearer schema and allows to:
- *
  * 1. Verify the signature of a JSON web token.
  * 2. Perform additional validations on the JWT payload.
  *
- *
- * See: [Ktor JWT Authentication Documentation](https://ktor.io/docs/server-jwt.html)
+ * #### References
+ * - [Ktor JWT Authentication Documentation](https://ktor.io/docs/server-jwt.html)
  */
 public fun Application.configureJwtAuthentication() {
 

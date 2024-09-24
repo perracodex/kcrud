@@ -28,9 +28,10 @@ import kotlin.uuid.Uuid
  * Password hashing is done using SHA-256 and a random salt per password, so two identical
  * passwords will produce different hashes due to their unique salts.
  *
- * See: [Ktor UserHashedTableAuth](https://ktor.io/docs/server-basic-auth.html#validate-user-hash)
+ * #### References
+ * - [Ktor UserHashedTableAuth](https://ktor.io/docs/server-basic-auth.html#validate-user-hash)
  *
- * @see HashedPasswordTableAuth
+ * @see [HashedPasswordTableAuth]
  */
 internal class CredentialService : KoinComponent {
     private val tracer = Tracer<CredentialService>()

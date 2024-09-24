@@ -15,9 +15,9 @@ import kcrud.core.errors.validators.PhoneValidator
  * @param message The detail message describing the validation failure.
  * @param cause Optional underlying reason for this [ValidationException].
  *
- * @see IValidator
- * @see EmailValidator
- * @see PhoneValidator
+ * @see [IValidator]
+ * @see [EmailValidator]
+ * @see [PhoneValidator]
  */
 public class ValidationException(
     public val code: String,

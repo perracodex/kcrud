@@ -26,9 +26,9 @@ import org.slf4j.event.Level
  * [CallId] generates or retrieves a unique identifier for each request, facilitating
  * end-to-end request tracing and correlation in logs, essential for debugging and monitoring.
  *
- * See: [CallLogging Documentation](https://ktor.io/docs/server-call-logging.html)
- *
- * See: [CallId Documentation](https://ktor.io/docs/server-call-id.html)
+ * #### References
+ * - [CallLogging Documentation](https://ktor.io/docs/server-call-logging.html)
+ * - [CallId Documentation](https://ktor.io/docs/server-call-id.html)
  */
 public fun Application.configureCallLogging() {
 

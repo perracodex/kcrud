@@ -44,6 +44,6 @@ internal object EmailSerializer : KSerializer<String> {
  *
  * @property EmailString The type representing the serializable Email.
  *
- * @see EmailSerializer
+ * @see [EmailSerializer]
  */
 public typealias EmailString = @Serializable(with = EmailSerializer::class) String

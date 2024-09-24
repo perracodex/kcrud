@@ -14,7 +14,8 @@ import org.koin.ktor.plugin.Koin
 /**
  * Sets up and initializes dependency injection using the Koin framework,
  *
- * See: [Koin for Ktor Documentation](https://insert-koin.io/docs/quickstart/ktor)
+ * #### References
+ * - [Koin for Ktor Documentation](https://insert-koin.io/docs/quickstart/ktor)
  */
 internal fun Application.configureKoin() {
 

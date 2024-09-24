@@ -22,9 +22,9 @@ import java.util.*
 /**
  * The task scheduler service managing the scheduling and execution of tasks.
  *
- * See: [Quartz Scheduler Documentation](https://github.com/quartz-scheduler/quartz/blob/main/docs/index.adoc)
- *
- * See: [Quartz Scheduler Configuration](https://www.quartz-scheduler.org/documentation/2.4.0-SNAPSHOT/configuration.html)
+ * #### References
+ * - [Quartz Scheduler Documentation](https://github.com/quartz-scheduler/quartz/blob/main/docs/index.adoc)
+ * - [Quartz Scheduler Configuration](https://www.quartz-scheduler.org/documentation/2.4.0-SNAPSHOT/configuration.html)
  */
 @OptIn(SchedulerAPI::class)
 internal object SchedulerService {
@@ -142,7 +142,7 @@ internal object SchedulerService {
      *
      * @return true if the scheduler has any paused trigger groups, false otherwise
      *
-     * @see pause
+     * @see [pause]
      */
     fun isPaused(): Boolean {
         return SchedulerService::scheduler.isInitialized && scheduler.pausedTriggerGroups.isNotEmpty()

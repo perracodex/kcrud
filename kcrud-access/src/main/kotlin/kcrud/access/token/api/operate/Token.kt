@@ -18,9 +18,9 @@ import kcrud.access.token.service.AuthenticationTokenService
  * Depending on the state of the provided token (valid, expired, or invalid), it either
  * returns the same token, generates a new one, or denies access.
  *
- * See: [Ktor JWT Authentication Documentation](https://ktor.io/docs/server-jwt.html)
- *
- * See: [Basic Authentication Documentation](https://ktor.io/docs/server-basic-auth.html)
+ * #### References
+ * - [Ktor JWT Authentication](https://ktor.io/docs/server-jwt.html)
+ * - [Basic Authentication](https://ktor.io/docs/server-basic-auth.html)
  */
 @TokenAPI
 internal fun Route.refreshTokenRoute() {

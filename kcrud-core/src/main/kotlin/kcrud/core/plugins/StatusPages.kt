@@ -23,7 +23,8 @@ import kcrud.core.settings.AppSettings
  * The [StatusPages] plugin allows Ktor applications to respond appropriately
  * to any failure state based on a thrown exception or status code.
  *
- * See: [Ktor Status Pages Documentation](https://ktor.io/docs/server-status-pages.html)
+ * #### References
+ * - [StatusPages Plugin](https://ktor.io/docs/server-status-pages.html)
  */
 public fun Application.configureStatusPages() {
     val tracer = Tracer<Application>()

@@ -24,7 +24,8 @@ import kcrud.core.settings.AppSettings
  * Additionally, careful consideration is needed to ensure that when receiving sensitive data, this is
  * received in a secure format so is not inadvertently cached in a way that could pose a security risk.
  *
- * See: [DoubleReceive](https://ktor.io/docs/server-double-receive.html).
+ * #### References
+ * - [DoubleReceive](https://ktor.io/docs/server-double-receive.html).
  */
 public fun Application.configureDoubleReceive() {
     if (!AppSettings.runtime.doubleReceiveEnvironments.contains(AppSettings.runtime.environment)) {

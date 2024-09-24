@@ -11,7 +11,7 @@ import kotlin.uuid.Uuid
 /**
  * Repository for [RbacRole] data.
  *
- * @see RbacRoleRequest
+ * @see [RbacRoleRequest]
  */
 internal interface IRbacRoleRepository {
 

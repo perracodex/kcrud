@@ -21,7 +21,8 @@ import kcrud.core.settings.config.sections.security.sections.EncryptionSettings
  * In Ktor, is possible can implement sessions by using cookies or custom headers, choose whether to store
  * session data on the server or pass it to the client, sign and encrypt session data and more.
  *
- * See: [Sessions](https://ktor.io/docs/server-sessions.html)
+ * #### References
+ * - [Sessions](https://ktor.io/docs/server-sessions.html)
  */
 public fun Application.configureSessions() {
 

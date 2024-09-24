@@ -27,9 +27,9 @@ import kcrud.core.settings.AppSettings
  * The oauth provider supports the authorization code flow. Can configure OAuth parameters in one place,
  * and Ktor will automatically make a request to a specified authorization server with the necessary parameters.
  *
- * See: [Ktor OAuth Authentication Documentation](https://ktor.io/docs/server-oauth.html)
- *
- * See: [OAuth 2.0 Authorization](https://auth0.com/blog/adding-auth0-authorization-to-a-ktor-http-api/)
+ * #### References
+ * - [Ktor OAuth Authentication Documentation](https://ktor.io/docs/server-oauth.html)
+ * - [OAuth 2.0 Authorization](https://auth0.com/blog/adding-auth0-authorization-to-a-ktor-http-api/)
  */
 public fun Application.configureOAuthAuthentication() {
 

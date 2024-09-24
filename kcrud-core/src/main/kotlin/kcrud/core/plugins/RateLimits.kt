@@ -27,7 +27,8 @@ import kotlin.time.Duration.Companion.milliseconds
  * }
  *```
  *
- * See: [Ktor Rate Limit](https://ktor.io/docs/server-rate-limit.html)
+ * #### References
+ * - [Ktor Rate Limit](https://ktor.io/docs/server-rate-limit.html)
  */
 public fun Application.configureRateLimit() {
 

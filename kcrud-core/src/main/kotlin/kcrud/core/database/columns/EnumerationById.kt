@@ -14,7 +14,7 @@ import kotlin.enums.EnumEntries
  *
  * @property id The integer ID of the enum item. Expected to be unique across all enum items.
  *
- * @see enumerationById
+ * @see [enumerationById]
  */
 public interface IEnumWithId {
     public val id: Int
@@ -47,7 +47,7 @@ public interface IEnumWithId {
  * @return A Column<E> representing the enum in the Exposed table.
  * @throws IllegalArgumentException if an unknown enum id is encountered in the database.
  *
- * @see IEnumWithId
+ * @see [IEnumWithId]
  */
 internal fun <E> Table.enumerationById(name: String, entries: EnumEntries<E>): Column<E>
         where E : Enum<E>, E : IEnumWithId {

@@ -12,7 +12,8 @@ import io.ktor.server.routing.*
 /**
  * Configures Http related plugins.
  *
- * See: [Compression Plugin](https://ktor.io/docs/server-compression.html)
+ * #### References
+ * - [Compression Plugin](https://ktor.io/docs/server-compression.html)
  */
 public fun Application.configureHttp() {
 

@@ -29,7 +29,8 @@ import java.nio.file.Paths
  * serving as a centralized point for setting up database connections, and other
  * database-related configurations.
  *
- * See: [Exposed](https://github.com/JetBrains/Exposed/wiki)
+ * #### References
+ * [Exposed](https://github.com/JetBrains/Exposed/wiki)
  */
 @OptIn(DatabaseAPI::class)
 internal object DatabaseService {

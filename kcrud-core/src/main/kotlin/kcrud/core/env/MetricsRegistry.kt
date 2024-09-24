@@ -16,9 +16,9 @@ import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
  * The PrometheusMeterRegistry is a Micrometer registry that allows to monitor an application
  * using Prometheus, a popular open-source monitoring system and time series database.
  *
- * See: [Prometheus](https://prometheus.io/)
- *
- * See: [Micrometer Prometheus](https://micrometer.io/docs/registry/prometheus)
+ * #### References
+ * - [Prometheus](https://prometheus.io/)
+ * - [Micrometer Prometheus](https://micrometer.io/docs/registry/prometheus)
  */
 public object MetricsRegistry {
     /**

@@ -23,7 +23,7 @@ import kotlin.uuid.Uuid
  * Is up to the designer to define what a scope is, and act accordingly when its
  * associated RBAC rule is verified.
  *
- * @see RbacRoleTable
+ * @see [RbacRoleTable]
  */
 public object RbacScopeRuleTable : TimestampedTable(name = "rbac_scope_rule") {
     /**

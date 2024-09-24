@@ -17,7 +17,7 @@ import kotlin.uuid.Uuid
  * Implementation of [IRbacFieldRuleRepository].
  * Manages the persistence of [RbacFieldRuleRequest] instances.
  *
- * @see RbacFieldRuleRequest
+ * @see [RbacFieldRuleRequest]
  */
 internal class RbacFieldRuleRepository : IRbacFieldRuleRepository {
 

@@ -18,8 +18,8 @@ import org.jetbrains.exposed.sql.Table
  * @return A Column<String> representing the value in the database table.
  * @throws IllegalArgumentException if the value is invalid during data insertion.
  *
- * @see IValidator
- * @see validEncryptedVarchar
+ * @see [IValidator]
+ * @see [validEncryptedVarchar]
  */
 internal fun Table.validVarchar(name: String, length: Int, validator: IValidator<String>): Column<String> {
     return varchar(name = name, length = length).transform(

@@ -17,9 +17,9 @@ import kcrud.core.settings.AppSettings
  * Generates a new JWT token using Basic Authentication.
  * This endpoint is rate-limited to prevent abuse and requires valid Basic Authentication credentials.
  *
- * See: [Ktor JWT Authentication Documentation](https://ktor.io/docs/server-jwt.html)
- *
- * See: [Basic Authentication Documentation](https://ktor.io/docs/server-basic-auth.html)
+ * #### References
+ * - [Ktor JWT Authentication](https://ktor.io/docs/server-jwt.html)
+ * - [Basic Authentication](https://ktor.io/docs/server-basic-auth.html)
  */
 @TokenAPI
 internal fun Route.createTokenRoute() {

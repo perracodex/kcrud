@@ -12,7 +12,7 @@ import kotlin.uuid.Uuid
 /**
  * Repository for [RbacFieldRule] data.
  *
- * @see RbacFieldRuleRequest
+ * @see [RbacFieldRuleRequest]
  */
 internal interface IRbacFieldRuleRepository {
 

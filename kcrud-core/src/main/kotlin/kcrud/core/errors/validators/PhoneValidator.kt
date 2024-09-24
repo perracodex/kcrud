@@ -13,8 +13,8 @@ import kcrud.core.errors.validators.base.ValidationException
 /**
  * Verifies if a phone number is in the correct format.
  *
- * @see IValidator
- * @see ValidationException
+ * @see [IValidator]
+ * @see [ValidationException]
  */
 public object PhoneValidator : IValidator<String> {
     private val tracer = Tracer<PhoneValidator>()

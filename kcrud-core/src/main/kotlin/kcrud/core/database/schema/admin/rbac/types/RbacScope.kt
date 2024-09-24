@@ -17,7 +17,7 @@ import kcrud.core.database.columns.IEnumWithId
  *
  * @property id The id of the RBAC scope.
  *
- * @see RbacAccessLevel
+ * @see [RbacAccessLevel]
  */
 public enum class RbacScope(override val id: Int) : IEnumWithId {
     /** RBAC dashboard, allows access to RBAC administrative functions. */

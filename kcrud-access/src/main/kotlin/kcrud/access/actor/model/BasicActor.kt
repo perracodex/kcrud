@@ -14,7 +14,7 @@ import kotlin.uuid.Uuid
  * @property roleId The associated RBAC role id.
  * @property isLocked Whether the Actor is locked, so its role and associated rules are ignored, loosing all accesses.
  *
- * @see Actor
+ * @see [Actor]
  */
 internal data class BasicActor(
     var id: Uuid,

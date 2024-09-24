@@ -31,11 +31,11 @@ import kotlinx.serialization.Serializable
  *    }
  * ```
  *
- * For more on polymorphic serialization, see:
+ * #### References
  * - [Serialization with Polymorphism](https://medium.com/livefront/intro-to-polymorphism-with-kotlinx-serialization-b8f5f1cedc99)
  * - [Kotlin Serialization](https://medium.com/lightricks-tech-blog/using-the-kotlin-serialization-library-for-tough-json-serialization-82f8b7ae70dc)
  *
- * @see ScheduleSerializer
+ * @see [ScheduleSerializer]
  */
 @Serializable(ScheduleSerializer::class)
 public sealed class Schedule {

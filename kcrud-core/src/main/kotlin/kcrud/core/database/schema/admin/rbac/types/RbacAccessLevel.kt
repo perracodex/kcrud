@@ -17,7 +17,7 @@ import kcrud.core.database.columns.IEnumWithId
  *
  * @property id The unique identifier of the access level.
  *
- * @see RbacScope
+ * @see [RbacScope]
  */
 public enum class RbacAccessLevel(override val id: Int) : IEnumWithId {
     /** No access rights to a scope. */

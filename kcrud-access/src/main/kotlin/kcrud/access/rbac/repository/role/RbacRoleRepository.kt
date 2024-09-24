@@ -23,7 +23,7 @@ import kotlin.uuid.Uuid
  * Implementation of [IRbacRoleRepository].
  * Handles the persistence of [RbacRole] data.
  *
- * @see IRbacRoleRepository
+ * @see [IRbacRoleRepository]
  */
 internal class RbacRoleRepository(
     private val scopeRuleRepository: IRbacScopeRuleRepository

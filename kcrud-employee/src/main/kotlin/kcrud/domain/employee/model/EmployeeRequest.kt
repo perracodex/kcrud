@@ -21,7 +21,7 @@ import kotlinx.serialization.Serializable
  * Note that the project also includes examples demonstrating how perform verifications
  * at service level or database field level, instead of using serializers.
  * Such validation variants can send to the client a more detailed error than
- * would do a serializer. See: [EmployeeError]
+ * would do a serializer.
  *
  * @property firstName The first name of the employee. Must not be blank.
  * @property lastName The last name of the employee. Must not be blank.
@@ -29,6 +29,8 @@ import kotlinx.serialization.Serializable
  * @property maritalStatus The [MaritalStatus] of the employee.
  * @property honorific The [Honorific] or title of the employee.
  * @property contact Optional [ContactRequest] details of the employee.
+ *
+ * @see [EmployeeError]
  */
 @Serializable
 public data class EmployeeRequest(
