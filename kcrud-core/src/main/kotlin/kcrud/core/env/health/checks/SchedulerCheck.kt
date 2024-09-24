@@ -5,7 +5,7 @@
 package kcrud.core.env.health.checks
 
 import kcrud.core.env.health.annotation.HealthCheckAPI
-import kcrud.core.scheduler.service.core.SchedulerService
+import kcrud.core.scheduler.service.SchedulerService
 import kotlinx.serialization.Serializable
 
 /**

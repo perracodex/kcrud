@@ -25,9 +25,9 @@ public object SnowflakeFactory {
     private val tracer = Tracer<SnowflakeFactory>()
 
     /**
-     * The core used for converting the generated ID to a compact alphanumeric string.
+     * The base used for converting the generated ID to a compact alphanumeric string.
      * For example, 12345 in Base 36 might be represented as '9ix' in alphanumeric.
-     * Note: The core must be a value between 2 and 36, inclusive, as per the limitations
+     * Note: The base must be a value between 2 and 36, inclusive, as per the limitations
      * of Kotlin's toString(radix) function used for this conversion.
      */
     private const val ALPHA_NUMERIC_BASE: Int = 36
@@ -110,7 +110,7 @@ public object SnowflakeFactory {
     /**
      * Generates the next unique Snowflake ID.
      *
-     * @return The generated Snowflake ID in the configured core alphanumeric string.
+     * @return The generated Snowflake ID in the base-configured alphanumeric string.
      * @throws IllegalStateException If the system clock has moved backwards, breaking the ID sequence.
      */
     @Synchronized

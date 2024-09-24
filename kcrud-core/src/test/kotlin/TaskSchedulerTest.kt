@@ -3,7 +3,7 @@
  */
 
 import io.ktor.test.dispatcher.*
-import kcrud.core.scheduler.service.core.SchedulerService
+import kcrud.core.scheduler.service.SchedulerService
 import kcrud.core.scheduler.service.schedule.Schedule
 import kcrud.core.scheduler.service.schedule.TaskStartAt
 import kcrud.core.scheduler.service.task.TaskConsumer

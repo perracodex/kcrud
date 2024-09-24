@@ -5,7 +5,7 @@
 package kcrud.domain
 
 /**
- * Main function for the employment module.
+ * Main function for the Employment module.
  * This module is not executable. Execute the application server module instead.
  */
 public fun main() {

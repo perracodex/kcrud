@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.core.scheduler.service.core
+package kcrud.core.scheduler.service
 
 import it.burning.cron.CronExpressionDescriptor
 import kcrud.core.env.Tracer
@@ -11,8 +11,8 @@ import kcrud.core.scheduler.audit.AuditService
 import kcrud.core.scheduler.model.audit.AuditLog
 import kcrud.core.scheduler.model.task.TaskSchedule
 import kcrud.core.scheduler.model.task.TaskStateChange
+import kcrud.core.scheduler.service.SchedulerTasks.Companion.create
 import kcrud.core.scheduler.service.annotation.SchedulerAPI
-import kcrud.core.scheduler.service.core.SchedulerTasks.Companion.create
 import kcrud.core.scheduler.service.task.TaskState
 import kcrud.core.security.snowflake.SnowflakeFactory
 import kcrud.core.utils.DateTimeUtils.toKotlinLocalDateTime

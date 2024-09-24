@@ -10,7 +10,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import kcrud.core.scheduler.api.SchedulerRouteAPI
-import kcrud.core.scheduler.service.core.SchedulerService
+import kcrud.core.scheduler.service.SchedulerService
 
 /**
  * Resends a concrete scheduler task.

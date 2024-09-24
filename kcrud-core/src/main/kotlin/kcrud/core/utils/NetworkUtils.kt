@@ -29,7 +29,7 @@ public object NetworkUtils {
      * to document accessible endpoints under specific conditions or configurations.
      *
      * @param reason A description of why these endpoints are being logged, providing context.
-     * @param endpoints A list of endpoint paths (without core URL) to be logged.
+     * @param endpoints A list of endpoint paths (without base URL) to be logged.
      */
     public fun logEndpoints(reason: String, endpoints: List<String>) {
         tracer.info("$reason:")
@@ -43,10 +43,10 @@ public object NetworkUtils {
     }
 
     /**
-     * Constructs the server's core URL based on current deployment settings.
+     * Constructs the server's base URL based on current deployment settings.
      *
      * This function checks the application's configured host, port, and protocol settings
-     * to construct the core URL.
+     * to construct the base URL.
      *
      * If the application is configured to listen on all interfaces (0.0.0.0),
      * the function substitutes 'localhost' for the host in the constructed URL,
@@ -57,9 +57,9 @@ public object NetworkUtils {
      *
      * Note: This URL might not be accessible externally if the server is behind a proxy
      * or in a Docker/container environment. In such cases, external configuration or
-     * environment settings should provide the correct core URL.
+     * environment settings should provide the correct base URL.
      *
-     * @return The constructed Url object representing the server's core URL.
+     * @return The constructed Url object representing the server's base URL.
      */
     public fun getServerUrl(): Url {
         val port: Int = getPort()

@@ -4,7 +4,7 @@
 
 package kcrud.core.scheduler.service.task
 
-import kcrud.core.scheduler.service.core.SchedulerService
+import kcrud.core.scheduler.service.SchedulerService
 import kcrud.core.settings.AppSettings
 import org.quartz.Job
 import org.quartz.JobDataMap

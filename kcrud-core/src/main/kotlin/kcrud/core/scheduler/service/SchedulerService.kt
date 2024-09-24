@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.core.scheduler.service.core
+package kcrud.core.scheduler.service
 
 import io.ktor.server.application.*
 import kcrud.core.env.Tracer
@@ -20,7 +20,7 @@ import org.quartz.impl.matchers.GroupMatcher
 import java.util.*
 
 /**
- * Core task scheduler service that manages the scheduling and execution of tasks.
+ * The task scheduler service managing the scheduling and execution of tasks.
  *
  * See: [Quartz Scheduler Documentation](https://github.com/quartz-scheduler/quartz/blob/main/docs/index.adoc)
  *

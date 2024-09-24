@@ -10,7 +10,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.core.scheduler.api.SchedulerRouteAPI
 import kcrud.core.scheduler.model.task.TaskStateChange
-import kcrud.core.scheduler.service.core.SchedulerService
+import kcrud.core.scheduler.service.SchedulerService
 
 /**
  * Pauses all the scheduler tasks.

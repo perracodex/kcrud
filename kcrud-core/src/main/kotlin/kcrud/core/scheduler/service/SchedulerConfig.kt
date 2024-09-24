@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.core.scheduler.service.core
+package kcrud.core.scheduler.service
 
 import kcrud.core.scheduler.service.annotation.SchedulerAPI
 import kcrud.core.settings.AppSettings

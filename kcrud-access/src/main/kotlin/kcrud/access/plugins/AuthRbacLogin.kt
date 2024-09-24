@@ -18,7 +18,7 @@ import kcrud.core.env.SessionContext.Companion.setContext
 /**
  * Refreshes the default actors, and configures the RBAC form login authentication.
  *
- * Demonstrates how to use form-core authentication, in which case
+ * Demonstrates how to use form-based authentication, in which case
  * principal are not propagated across different requests, so we
  * must use [Sessions] to store the actor information.
  *

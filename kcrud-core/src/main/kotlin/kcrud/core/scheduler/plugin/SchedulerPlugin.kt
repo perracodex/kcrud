@@ -5,7 +5,7 @@
 package kcrud.core.scheduler.plugin
 
 import io.ktor.server.application.*
-import kcrud.core.scheduler.service.core.SchedulerService
+import kcrud.core.scheduler.service.SchedulerService
 
 /**
  * Custom Ktor plugin to configure the task scheduler.

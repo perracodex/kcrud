@@ -96,7 +96,7 @@ public abstract class AppException(
         /**
          * Builds the final exception message by concatenating the provided error description and reason.
          *
-         * @param description The core description of the error.
+         * @param description The base description of the error.
          * @param reason An optional additional reason to be appended to the error description.
          * @return The concatenated error message.
          */

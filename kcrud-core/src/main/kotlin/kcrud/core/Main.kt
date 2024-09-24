@@ -5,9 +5,9 @@
 package kcrud.core
 
 /**
- * Main function for the core module.
+ * Main function for the Core module.
  * This module is not executable. Execute the application server module instead.
  */
 public fun main() {
-    println("Base module. Execute the application server module instead.")
+    println("Core module. Execute the application server module instead.")
 }

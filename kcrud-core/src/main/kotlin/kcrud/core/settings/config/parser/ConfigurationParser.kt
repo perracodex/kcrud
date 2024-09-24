@@ -112,7 +112,7 @@ internal object ConfigurationParser {
      * Data classes constructor parameters and setting key names must match exactly.
      *
      * @param config The application configuration object.
-     * @param keyPath The core path in the configuration for fetching values.
+     * @param keyPath The key path in the configuration for fetching values.
      * @param kClass The KClass of the type to instantiate.
      * @return An instance of the specified class with properties populated from the configuration.
      * @throws IllegalArgumentException If a required configuration key is missing or if there is a type mismatch.

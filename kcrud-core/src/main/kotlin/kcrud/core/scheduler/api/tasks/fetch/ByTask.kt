@@ -11,7 +11,7 @@ import io.ktor.server.routing.*
 import kcrud.core.persistence.utils.toUuidOrNull
 import kcrud.core.scheduler.api.SchedulerRouteAPI
 import kcrud.core.scheduler.model.task.TaskSchedule
-import kcrud.core.scheduler.service.core.SchedulerService
+import kcrud.core.scheduler.service.SchedulerService
 import kotlin.uuid.Uuid
 
 /**
