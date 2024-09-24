@@ -12,7 +12,7 @@ import kotlin.uuid.Uuid
  * Repository for [RbacScopeRule] data.
  * Responsible for managing [RbacScopeRuleRequest] data.
  *
- * @see RbacScopeRuleRequest
+ * @see [RbacScopeRuleRequest]
  */
 internal interface IRbacScopeRuleRepository {
 
