@@ -29,4 +29,4 @@ ALTER TABLE actor
 CREATE TRIGGER IF NOT EXISTS tg_actor__updated_at
 BEFORE UPDATE ON actor
 FOR EACH ROW
-CALL 'UpdateTimestampTrigger';
+CALL 'kcrud.core.database.utils.UpdateTimestampTrigger';

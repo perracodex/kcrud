@@ -26,7 +26,7 @@ CREATE INDEX IF NOT EXISTS ix_employee__last_name ON employee (last_name);
 CREATE TRIGGER IF NOT EXISTS tg_employee__updated_at
 BEFORE UPDATE ON employee
 FOR EACH ROW
-CALL 'UpdateTimestampTrigger';
+CALL 'kcrud.core.database.utils.UpdateTimestampTrigger';
 
 -------------------------------------------------------------------------------------
 
@@ -49,4 +49,4 @@ CREATE INDEX IF NOT EXISTS ix_contact__employee_id ON contact (employee_id);
 CREATE TRIGGER IF NOT EXISTS tg_contact__updated_at
 BEFORE UPDATE ON contact
 FOR EACH ROW
-CALL 'UpdateTimestampTrigger';
+CALL 'kcrud.core.database.utils.UpdateTimestampTrigger';
