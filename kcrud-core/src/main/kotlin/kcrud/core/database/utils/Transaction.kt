@@ -40,21 +40,21 @@ public fun <T> transaction(
                 return@scope statement()
             }
 
-            val currentSchema: String = TransactionManager.current().connection.schema
-            val changeSchema: Boolean = (sessionContext.schema != currentSchema)
-            val originalSchema: String? = currentSchema.takeIf { changeSchema }
+            TransactionManager.current().connection.schema.let { originalSchema ->
+                val changeSchema: Boolean = (sessionContext.schema != originalSchema)
 
-            // Change the schema only if it's different from the current one.
-            if (changeSchema) {
-                SchemaUtils.setSchema(schema = Schema(name = sessionContext.schema))
-            }
+                // Change the schema only if it's different from the current one.
+                if (changeSchema) {
+                    SchemaUtils.setSchema(schema = Schema(name = sessionContext.schema))
+                }
 
-            try {
-                return@scope statement()
-            } finally {
-                // Restore the original schema if it was changed.
-                originalSchema?.let { schemaName ->
-                    SchemaUtils.setSchema(schema = Schema(name = schemaName))
+                try {
+                    return@scope statement()
+                } finally {
+                    // Restore the original schema if it was changed.
+                    if (changeSchema) {
+                        SchemaUtils.setSchema(schema = Schema(name = originalSchema))
+                    }
                 }
             }
         } finally {
