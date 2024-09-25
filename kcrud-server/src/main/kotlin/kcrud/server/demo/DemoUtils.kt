@@ -9,6 +9,7 @@ import kcrud.core.database.schema.employee.types.MaritalStatus
 import kcrud.core.database.schema.employment.types.EmploymentStatus
 import kcrud.core.database.schema.employment.types.WorkModality
 import kcrud.core.persistence.model.Period
+import kcrud.core.security.snowflake.SnowflakeFactory
 import kcrud.core.utils.KLocalDate
 import kcrud.core.utils.TestUtils
 import kcrud.domain.contact.model.ContactRequest
@@ -66,6 +67,7 @@ internal object DemoUtils {
     private fun newEmployeeRequest(): EmployeeRequest {
         val firstName: String = TestUtils.randomName()
         val lastName: String = TestUtils.randomName()
+        val snowflakeId: String = SnowflakeFactory.nextId()
 
         return EmployeeRequest(
             firstName = firstName,
@@ -74,7 +76,7 @@ internal object DemoUtils {
             honorific = Honorific.entries.random(),
             maritalStatus = MaritalStatus.entries.random(),
             contact = ContactRequest(
-                email = "$firstName.$lastName@kcrud.com".lowercase(),
+                email = "${lastName}_$snowflakeId@kcrud.com".lowercase(),
                 phone = TestUtils.randomPhoneNumber()
             )
         )
