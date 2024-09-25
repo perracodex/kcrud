@@ -121,8 +121,8 @@ public object DateTimeUtils {
      * Converts a Kotlin [LocalDateTime] to a Java [Date].
      */
     public fun KLocalDateTime.toJavaDate(): Date {
-        this.toInstant(timeZone = timezone()).toJavaInstant().let {
-            return Date.from(it)
+        this.toInstant(timeZone = timezone()).toJavaInstant().let { instant ->
+            return Date.from(instant)
         }
     }
 
