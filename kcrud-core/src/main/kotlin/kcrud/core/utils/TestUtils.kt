@@ -14,6 +14,7 @@ import org.koin.core.context.GlobalContext.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.core.module.Module
 import java.io.File
+import java.util.concurrent.ConcurrentHashMap
 import kotlin.random.Random
 
 /**
@@ -69,8 +70,7 @@ public object TestUtils {
      * Generates a random phone number.
      */
     public fun randomPhoneNumber(): String {
-        val phoneSuffix: Int = (111..999).random()
-        return "+34611222$phoneSuffix"
+        return PhoneNumberGenerator.generateUniqueUSPhoneNumber()
     }
 
     /**
@@ -123,5 +123,29 @@ public object TestUtils {
         val middle: List<String> = listOf("li", "ven", "na", "la", "son", "fer", "man", "der", "tan", "ron")
         val end: List<String> = listOf("a", "o", "y", "e", "n", "d", "r", "th", "s", "m")
         return beginning.random() + middle.random() + end.random()
+    }
+}
+
+/**
+ * Utility class to generate random unique US test phone numbers.
+ */
+private object PhoneNumberGenerator {
+    private val usedNumbers = ConcurrentHashMap<String, Boolean>()
+    private val random: Random = Random(DateTimeUtils.utcDateTime().toEpochMilliseconds())
+    private val areaCodes: List<Int> = listOf(212, 310, 415, 512, 607, 702)
+    private val lock = Any()
+
+    fun generateUniqueUSPhoneNumber(): String {
+        return synchronized(lock) {
+            var phoneNumber: String
+            do {
+                val areaCode = areaCodes.random(random) // Randomly select a valid area code
+                val exchangeCode = random.nextInt(200, 999) // Generate a valid exchange code
+                val subscriberNumber = random.nextInt(1000, 9999) // Generate a subscriber number
+                phoneNumber = "+1$areaCode$exchangeCode$subscriberNumber"
+            } while (usedNumbers.containsKey(phoneNumber))
+            usedNumbers[phoneNumber] = true
+            return@synchronized phoneNumber
+        }
     }
 }
