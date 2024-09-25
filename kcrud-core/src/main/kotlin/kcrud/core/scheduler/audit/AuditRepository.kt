@@ -83,7 +83,7 @@ internal object AuditRepository {
                 .where { SchedulerAuditTable.taskName eq taskName }
                 .andWhere { SchedulerAuditTable.taskGroup eq taskGroup }
                 .orderBy(SchedulerAuditTable.createdAt to SortOrder.DESC)
-                .limit(n = 1)
+                .limit(count = 1)
                 .map { AuditLog.from(row = it) }
                 .singleOrNull()
         }
