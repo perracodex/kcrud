@@ -43,7 +43,9 @@ internal object RbacLoginView {
      */
     private fun HTML.buildForm() {
         body {
-            h1 { +"RBAC Login" }
+            h2(classes = "header") {
+                +"RBAC Login"
+            }
 
             form(action = RBAC_LOGIN_PATH, method = FormMethod.post) {
                 acceptCharset = "utf-8"

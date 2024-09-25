@@ -44,8 +44,10 @@ internal object RbacDashboardView {
         dashboardContext: RbacDashboardManager.Context
     ) {
         body {
-            h1 { +"RBAC Permissions" }
-            h3 { +"Logged-In Role: ${dashboardContext.sessionRoleName}" }
+            h2(classes = "header") {
+                +"RBAC Permissions - logged as: "
+                span(classes = "role") { +dashboardContext.sessionRoleName }
+            }
 
             form(action = RBAC_DASHBOARD_PATH, method = FormMethod.get) {
                 showRoleSelector(dashboardContext = dashboardContext)
