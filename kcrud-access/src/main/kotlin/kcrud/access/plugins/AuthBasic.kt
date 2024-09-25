@@ -6,10 +6,9 @@ package kcrud.access.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
-import io.ktor.server.sessions.*
 import kcrud.access.context.SessionContextFactory
-import kcrud.core.env.SessionContext
-import kcrud.core.env.SessionContext.Companion.setContext
+import kcrud.core.context.clearContext
+import kcrud.core.context.setContext
 import kcrud.core.settings.AppSettings
 
 /**
@@ -29,11 +28,10 @@ public fun Application.configureBasicAuthentication() {
 
             validate { credential ->
                 SessionContextFactory.from(credential = credential)?.let { sessionContext ->
-                    this.setContext(sessionContext = sessionContext)
-                    return@validate sessionContext
+                    return@validate this.setContext(sessionContext = sessionContext)
                 }
 
-                this.sessions.clear(name = SessionContext.SESSION_NAME)
+                this.clearContext()
                 return@validate null
             }
         }

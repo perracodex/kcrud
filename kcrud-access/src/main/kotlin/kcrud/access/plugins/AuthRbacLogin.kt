@@ -12,8 +12,8 @@ import kcrud.access.actor.service.DefaultActorFactory
 import kcrud.access.context.SessionContextFactory
 import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.view.RbacLoginView
-import kcrud.core.env.SessionContext
-import kcrud.core.env.SessionContext.Companion.setContext
+import kcrud.core.context.clearContext
+import kcrud.core.context.setContext
 
 /**
  * Refreshes the default actors, and configures the RBAC form login authentication.
@@ -38,17 +38,16 @@ public fun Application.configureRbac() {
             passwordParamName = RbacLoginView.KEY_PASSWORD
 
             challenge {
-                call.sessions.clear(name = SessionContext.SESSION_NAME)
+                call.clearContext()
                 call.respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
             }
 
             validate { credential ->
                 SessionContextFactory.from(credential = credential)?.let { sessionContext ->
-                    this.setContext(sessionContext = sessionContext)
-                    return@validate sessionContext
+                    return@validate this.setContext(sessionContext = sessionContext)
                 }
 
-                this.sessions.clear(name = SessionContext.SESSION_NAME)
+                this.clearContext()
                 return@validate null
             }
         }

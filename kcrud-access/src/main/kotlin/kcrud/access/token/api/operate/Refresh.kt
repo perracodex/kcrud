@@ -10,7 +10,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.access.token.annotation.TokenAPI
 import kcrud.access.token.api.respondWithToken
-import kcrud.access.token.service.AuthenticationTokenService
+import kcrud.access.token.service.TokenService
 
 /**
  * Allows a client to refresh their existing JWT token. This endpoint does not require
@@ -34,19 +34,19 @@ internal fun Route.refreshTokenRoute() {
     post("auth/token/refresh") {
         val headers: Headers = call.request.headers
 
-        AuthenticationTokenService.getState(headers = headers).let { result ->
+        TokenService.getState(headers = headers).let { result ->
             when (result) {
-                is AuthenticationTokenService.TokenState.Valid -> {
+                is TokenService.TokenState.Valid -> {
                     // Token is still valid; return the same token to the client.
                     call.respond(status = HttpStatusCode.OK, message = result.token)
                 }
 
-                is AuthenticationTokenService.TokenState.Expired -> {
+                is TokenService.TokenState.Expired -> {
                     // Token has expired; generate a new token and respond with it.
                     call.respondWithToken()
                 }
 
-                is AuthenticationTokenService.TokenState.Invalid -> {
+                is TokenService.TokenState.Invalid -> {
                     // Token is invalid; respond with an Unauthorized status.
                     call.respond(status = HttpStatusCode.Unauthorized, message = "Invalid token.")
                 }

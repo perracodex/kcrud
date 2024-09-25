@@ -9,9 +9,9 @@ import io.mockk.mockk
 import io.perracodex.exposed.pagination.Page
 import kcrud.access.actor.di.ActorDomainInjection
 import kcrud.access.rbac.di.RbacDomainInjection
+import kcrud.core.context.SessionContext
 import kcrud.core.database.schema.employee.types.Honorific
 import kcrud.core.database.schema.employee.types.MaritalStatus
-import kcrud.core.env.SessionContext
 import kcrud.core.persistence.model.Meta
 import kcrud.core.utils.DateTimeUtils.age
 import kcrud.core.utils.KLocalDate

@@ -6,8 +6,8 @@ package kcrud.access.actor.model
 
 import kcrud.access.credential.CredentialService
 import kcrud.access.rbac.model.role.RbacRole
+import kcrud.core.context.SessionContext
 import kcrud.core.database.schema.admin.actor.ActorTable
-import kcrud.core.env.SessionContext
 import kcrud.core.persistence.model.Meta
 import org.jetbrains.exposed.sql.ResultRow
 import kotlin.uuid.Uuid
@@ -26,6 +26,8 @@ import kotlin.uuid.Uuid
  * @property role The associated role.
  * @property isLocked Whether the Actor is locked, so its role and associated rules are ignored, loosing all accesses.
  * @property meta The metadata of the record.
+ *
+ * @see [BasicActor]
  */
 internal data class Actor(
     var id: Uuid,

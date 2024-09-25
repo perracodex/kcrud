@@ -7,10 +7,10 @@ package kcrud.domain.employee.repository
 import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.Pageable
 import io.perracodex.exposed.pagination.paginate
+import kcrud.core.context.SessionContext
 import kcrud.core.database.schema.contact.ContactTable
 import kcrud.core.database.schema.employee.EmployeeTable
 import kcrud.core.database.utils.transaction
-import kcrud.core.env.SessionContext
 import kcrud.domain.contact.repository.IContactRepository
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeFilterSet

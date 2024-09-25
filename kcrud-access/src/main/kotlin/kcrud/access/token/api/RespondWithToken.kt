@@ -9,9 +9,9 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import kcrud.access.credential.CredentialService
 import kcrud.access.token.annotation.TokenAPI
-import kcrud.access.token.service.AuthenticationTokenService
-import kcrud.core.env.SessionContext
-import kcrud.core.env.SessionContext.Companion.getContext
+import kcrud.access.token.service.TokenService
+import kcrud.core.context.SessionContext
+import kcrud.core.context.getContext
 import kcrud.core.env.Tracer
 import kcrud.core.errors.UnauthorizedException
 
@@ -29,7 +29,7 @@ import kcrud.core.errors.UnauthorizedException
 internal suspend fun ApplicationCall.respondWithToken() {
     val result: Result<String> = runCatching {
         this.getContext().let { sessionContext ->
-            return@runCatching AuthenticationTokenService.generate(sessionContext = sessionContext)
+            return@runCatching TokenService.generate(sessionContext = sessionContext)
         }
     }
 

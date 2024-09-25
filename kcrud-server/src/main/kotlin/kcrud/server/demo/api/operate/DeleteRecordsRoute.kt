@@ -8,7 +8,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.core.env.SessionContext.Companion.getContext
+import kcrud.core.context.getContext
 import kcrud.domain.employee.service.EmployeeService
 import kcrud.server.demo.DemoAPI
 import org.koin.core.parameter.parametersOf

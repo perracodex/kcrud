@@ -8,6 +8,7 @@ import kotlin.uuid.Uuid
 
 /**
  * Represents teh basic details of single Actor. An Actor is a user with a role and access to scopes.
+ * Contrary to [Actor], this data class does not hold sensitive information, such as the Actor's password.
  *
  * @property id The Actor's unique id.
  * @property username The Actor's unique username.

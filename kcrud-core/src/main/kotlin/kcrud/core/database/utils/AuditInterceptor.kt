@@ -4,7 +4,7 @@
 
 package kcrud.core.database.utils
 
-import kcrud.core.env.SessionContext
+import kcrud.core.context.SessionContext
 import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.statements.StatementContext
 import org.jetbrains.exposed.sql.statements.StatementInterceptor

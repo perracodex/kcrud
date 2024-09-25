@@ -11,10 +11,9 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import io.ktor.server.sessions.*
 import kcrud.access.context.SessionContextFactory
-import kcrud.core.env.SessionContext
-import kcrud.core.env.SessionContext.Companion.setContext
+import kcrud.core.context.clearContext
+import kcrud.core.context.setContext
 import kcrud.core.settings.AppSettings
 
 /**
@@ -67,7 +66,7 @@ public fun Application.configureOAuthAuthentication() {
                     }
                 }
 
-                call.sessions.clear(name = SessionContext.SESSION_NAME)
+                call.clearContext()
                 call.respond(message = HttpStatusCode.Unauthorized)
             }
         }

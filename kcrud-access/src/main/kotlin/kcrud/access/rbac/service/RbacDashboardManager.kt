@@ -4,19 +4,16 @@
 
 package kcrud.access.rbac.service
 
-import io.ktor.server.application.*
-import io.ktor.server.sessions.*
 import kcrud.access.rbac.model.role.RbacRole
 import kcrud.access.rbac.model.scope.RbacScopeRuleRequest
 import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.view.RbacDashboardView
+import kcrud.core.context.SessionContext
 import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.core.database.schema.admin.rbac.types.RbacScope
-import kcrud.core.env.SessionContext
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import org.koin.java.KoinJavaComponent
 import kotlin.uuid.Uuid
 
 /**
@@ -28,23 +25,15 @@ import kotlin.uuid.Uuid
 internal object RbacDashboardManager : KoinComponent {
 
     /**
-     * Get the [SessionContext] from the given [ApplicationCall]
-     * if the actor has access to the RBAC dashboard.
-     *
-     * @param call The application call.
-     * @return The [SessionContext] if the actor has access to the RBAC dashboard; null otherwise.
+     * Checks if the [SessionContext] actor has permission to access the RBAC dashboard.
      */
-    suspend fun getSessionContext(call: ApplicationCall): SessionContext? {
-        val sessionContext: SessionContext? = call.sessions.get<SessionContext>()
-
-        return sessionContext?.takeIf {
-            val rbacService: RbacService = KoinJavaComponent.getKoin().get()
-            rbacService.hasPermission(
-                sessionContext = sessionContext,
-                scope = RbacScope.RBAC_DASHBOARD,
-                accessLevel = RbacAccessLevel.VIEW
-            )
-        }
+    suspend fun hasPermission(sessionContext: SessionContext): Boolean {
+        val rbacService: RbacService by inject()
+        return rbacService.hasPermission(
+            sessionContext = sessionContext,
+            scope = RbacScope.RBAC_DASHBOARD,
+            accessLevel = RbacAccessLevel.VIEW
+        )
     }
 
     /**

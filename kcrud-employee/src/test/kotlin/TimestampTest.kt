@@ -5,9 +5,9 @@
 import io.ktor.test.dispatcher.*
 import io.mockk.every
 import io.mockk.mockk
+import kcrud.core.context.SessionContext
 import kcrud.core.database.schema.employee.types.Honorific
 import kcrud.core.database.schema.employee.types.MaritalStatus
-import kcrud.core.env.SessionContext
 import kcrud.core.utils.KLocalDate
 import kcrud.core.utils.TestUtils
 import kcrud.domain.employee.di.EmployeeDomainInjection

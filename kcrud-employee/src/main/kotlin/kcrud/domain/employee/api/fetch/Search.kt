@@ -11,7 +11,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.getPageable
-import kcrud.core.env.SessionContext.Companion.getContext
+import kcrud.core.context.getContext
 import kcrud.domain.employee.api.EmployeeRouteAPI
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeFilterSet

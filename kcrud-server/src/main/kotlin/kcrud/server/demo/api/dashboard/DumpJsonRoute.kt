@@ -10,7 +10,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.getPageable
-import kcrud.core.env.SessionContext.Companion.getContext
+import kcrud.core.context.getContext
 import kcrud.domain.employment.model.Employment
 import kcrud.domain.employment.service.EmploymentService
 import kcrud.server.demo.DemoAPI

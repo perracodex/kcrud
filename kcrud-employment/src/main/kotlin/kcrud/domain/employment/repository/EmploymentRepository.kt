@@ -7,12 +7,12 @@ package kcrud.domain.employment.repository
 import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.Pageable
 import io.perracodex.exposed.pagination.paginate
+import kcrud.core.context.SessionContext
 import kcrud.core.database.extensions.exists
 import kcrud.core.database.schema.contact.ContactTable
 import kcrud.core.database.schema.employee.EmployeeTable
 import kcrud.core.database.schema.employment.EmploymentTable
 import kcrud.core.database.utils.transaction
-import kcrud.core.env.SessionContext
 import kcrud.domain.employment.model.Employment
 import kcrud.domain.employment.model.EmploymentRequest
 import org.jetbrains.exposed.sql.*

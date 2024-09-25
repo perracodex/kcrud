@@ -12,12 +12,10 @@ import com.auth0.jwt.interfaces.DecodedJWT
 import io.ktor.http.*
 import io.ktor.http.auth.*
 import kcrud.access.token.annotation.TokenAPI
-import kcrud.core.env.SessionContext
+import kcrud.core.context.SessionContext
 import kcrud.core.env.Tracer
 import kcrud.core.settings.AppSettings
 import kcrud.core.settings.config.sections.security.sections.auth.JwtAuthSettings
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import java.util.*
 import kotlin.time.Duration.Companion.seconds
 
@@ -28,8 +26,13 @@ import kotlin.time.Duration.Companion.seconds
  * If the token is invalid or any exception occurs, an UnauthorizedException will be thrown.
  */
 @TokenAPI
-internal object AuthenticationTokenService {
-    private val tracer = Tracer<AuthenticationTokenService>()
+internal object TokenService {
+    private val tracer = Tracer<TokenService>()
+
+    /**
+     * Identifies the key under which the session data is stored within JWT payload claims.
+     */
+    const val SESSION_JWT_CLAIM_KEY: String = "session_context"
 
     /**
      * The token evaluation result, containing the state and the token if it is valid.
@@ -107,12 +110,12 @@ internal object AuthenticationTokenService {
         val jwtAuthSettings: JwtAuthSettings = AppSettings.security.jwtAuth
         val tokenLifetimeSec: Long = jwtAuthSettings.tokenLifetimeSec
         val expirationDate = Date(System.currentTimeMillis() + tokenLifetimeSec.seconds.inWholeMilliseconds)
-        val sessionContextJson: String = Json.encodeToString<SessionContext>(value = sessionContext)
+        val claim: String = sessionContext.actorId.toString()
 
         tracer.debug("Generating new authorization token. Expiration: $expirationDate.")
 
         return JWT.create()
-            .withClaim(SessionContext.CLAIM_KEY, sessionContextJson)
+            .withClaim(SESSION_JWT_CLAIM_KEY, claim)
             .withAudience(jwtAuthSettings.audience)
             .withIssuer(jwtAuthSettings.issuer)
             .withExpiresAt(expirationDate)

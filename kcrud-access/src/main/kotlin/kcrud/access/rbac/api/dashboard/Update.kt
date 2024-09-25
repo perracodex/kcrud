@@ -10,13 +10,14 @@ import io.ktor.server.html.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import io.ktor.server.sessions.*
 import io.ktor.server.util.*
 import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.service.RbacDashboardManager
 import kcrud.access.rbac.view.RbacDashboardView
 import kcrud.access.rbac.view.RbacLoginView
-import kcrud.core.env.SessionContext
+import kcrud.core.context.SessionContext
+import kcrud.core.context.clearContext
+import kcrud.core.context.getContext
 import kcrud.core.persistence.utils.toUuid
 import kotlin.uuid.Uuid
 
@@ -32,11 +33,12 @@ internal fun Route.rbacDashboardUpdateRoute() {
      */
     post("rbac/dashboard") {
         // Retrieve SessionContext or redirect to the login screen if it's missing.
-        val sessionContext: SessionContext = RbacDashboardManager.getSessionContext(call = call)
-            ?: return@post call.run {
-                call.sessions.clear(name = SessionContext.SESSION_NAME)
-                call.respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
-            }
+        val sessionContext: SessionContext = call.getContext()
+        if (!RbacDashboardManager.hasPermission(sessionContext = sessionContext)) {
+            call.clearContext()
+            call.respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
+            return@post
+        }
 
         // Receive and process form parameters.
         val parameters: Parameters = call.receiveParameters()
@@ -61,7 +63,7 @@ internal fun Route.rbacDashboardUpdateRoute() {
 
                 // If the update was unauthorized, clear the session and redirect to the login screen.
                 is RbacDashboardManager.UpdateResult.Unauthorized -> call.run {
-                    sessions.clear(name = SessionContext.SESSION_NAME)
+                    call.clearContext()
                     respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
                 }
             }

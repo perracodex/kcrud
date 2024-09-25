@@ -4,8 +4,7 @@
 
 package kcrud.core.database.utils
 
-import kcrud.core.env.SessionContext
-import org.jetbrains.exposed.sql.Database
+import kcrud.core.context.SessionContext
 import org.jetbrains.exposed.sql.Schema
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.Transaction
@@ -14,23 +13,22 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 /**
  * Executes a transaction taking into account the specified [sessionContext] instance,
- * which may include for example a schema name or other session-context-specific information.
+ * which may include for example a database connection, a schema name, or other
+ * session-context-specific information.
  *
  * #### References
  * - [Transactions](https://github.com/JetBrains/Exposed/wiki/Transactions)
  * - [Schema Tests](https://github.com/JetBrains/Exposed/blob/main/exposed-tests/src/test/kotlin/org/jetbrains/exposed/sql/tests/shared/SchemaTests.kt)
  *
  * @param sessionContext The [SessionContext] instance to be used for the transaction.
- * @param db Optional database instance to be used for the transaction.
  * @param statement The block of code to execute within the transaction.
  * @return Returns the result of the block execution.
  */
 public fun <T> transaction(
     sessionContext: SessionContext,
-    db: Database? = null,
     statement: Transaction.() -> T
 ): T {
-    return transaction(db = db) scope@{
+    return transaction(db = sessionContext.db) scope@{
         val auditor = AuditInterceptor(sessionContext = sessionContext)
         registerInterceptor(interceptor = auditor)
 

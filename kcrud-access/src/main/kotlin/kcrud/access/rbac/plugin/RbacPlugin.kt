@@ -9,11 +9,14 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.sessions.*
+import kcrud.access.context.SessionContextFactory
 import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.access.rbac.service.RbacService
+import kcrud.core.context.SessionContext
+import kcrud.core.context.getContextOrNull
+import kcrud.core.context.setContext
 import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.core.database.schema.admin.rbac.types.RbacScope
-import kcrud.core.env.SessionContext
 import org.koin.ktor.ext.inject
 
 /**
@@ -29,8 +32,14 @@ internal val RbacPlugin: RouteScopedPlugin<RbacPluginConfig> = createRouteScoped
     createConfiguration = ::RbacPluginConfig
 ) {
     on(hook = AuthenticationChecked) { call ->
-        val sessionContext: SessionContext? = call.principal<SessionContext>()
-            ?: call.sessions.get(name = SessionContext.SESSION_NAME) as SessionContext?
+        // This hook is triggered after authentication checks. For JWT and other token-based authentications,
+        // the SessionContext is typically derived directly from the token, populating the call pipeline automatically.
+        // In contrast, form-based authentication does not inherently carry the SessionContext across requests,
+        // so it must be manually set in the call pipeline from the persistence provided by the Sessions plugin.
+        val sessionContext: SessionContext? = call.getContextOrNull()
+            ?: SessionContextFactory.from(sessions = call.sessions)?.let { sessionContext ->
+                call.setContext(sessionContext = sessionContext)
+            }
 
         sessionContext?.let {
             val rbacService: RbacService by call.application.inject()

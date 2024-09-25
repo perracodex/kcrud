@@ -10,7 +10,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import kcrud.core.env.SessionContext.Companion.getContext
+import kcrud.core.context.getContext
 import kcrud.core.persistence.utils.toUuid
 import kcrud.domain.employment.api.EmploymentRouteAPI
 import kcrud.domain.employment.errors.EmploymentError

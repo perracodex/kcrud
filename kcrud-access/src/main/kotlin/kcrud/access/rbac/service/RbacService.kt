@@ -12,9 +12,9 @@ import kcrud.access.rbac.model.role.RbacRoleRequest
 import kcrud.access.rbac.model.scope.RbacScopeRuleRequest
 import kcrud.access.rbac.repository.role.IRbacRoleRepository
 import kcrud.access.rbac.repository.scope.IRbacScopeRuleRepository
+import kcrud.core.context.SessionContext
 import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.core.database.schema.admin.rbac.types.RbacScope
-import kcrud.core.env.SessionContext
 import kcrud.core.env.Tracer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
@@ -235,20 +235,58 @@ internal class RbacService(
     }
 
     /**
-     * Retrieves the [BasicActor] for the given [username].
+     * Retrieves a cached [BasicActor] for the given [actorId].
+     *
+     * No database queries are performed, unless the cache is empty,
+     * in which case it will be refreshed before attempting to find the actor.
+     *
+     * @param actorId The Actor ID to find.
+     * @return The [BasicActor] for the given [actorId], or null if it doesn't exist.
+     */
+    suspend fun findActor(actorId: Uuid): BasicActor? {
+        if (isCacheEmpty()) {
+            return null
+        }
+        return cache.values.find { actorRole ->
+            actorRole.actorId == actorId
+        }?.let { actorRole ->
+            buildBasicActor(actorRole = actorRole)
+        }
+    }
+
+    /**
+     * Retrieves the cached [BasicActor] for the given [username].
+     *
+     * No database queries are performed, unless the cache is empty,
+     * in which case it will be refreshed before attempting to find the actor.
      *
      * @param username The username of the actor to find.
      * @return The [BasicActor] for the given [username], or null if it doesn't exist.
      */
-    fun findActorByUsername(username: String): BasicActor? {
-        return cache.values.find { it.actorUsername == username }?.let { actorRole ->
-            BasicActor(
-                id = actorRole.actorId,
-                username = actorRole.actorUsername,
-                roleId = actorRole.role.id,
-                isLocked = actorRole.isLocked
-            )
+    suspend fun findActor(username: String): BasicActor? {
+        if (isCacheEmpty()) {
+            return null
         }
+        return cache.values.find { actorRole ->
+            actorRole.actorUsername.equals(other = username, ignoreCase = true)
+        }?.let { actorRole ->
+            buildBasicActor(actorRole = actorRole)
+        }
+    }
+
+    /**
+     * Constructs a [BasicActor] from the given [actorRole].
+     *
+     * @param actorRole The [ActorRole] to build the [BasicActor] from.
+     * @return The [BasicActor] built from the [ActorRole].
+     */
+    private fun buildBasicActor(actorRole: ActorRole): BasicActor {
+        return BasicActor(
+            id = actorRole.actorId,
+            username = actorRole.actorUsername,
+            roleId = actorRole.role.id,
+            isLocked = actorRole.isLocked
+        )
     }
 
     /**
