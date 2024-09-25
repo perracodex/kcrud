@@ -22,7 +22,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
  * a database connection, a schema name, or other session-context-specific information.
  *
  * #### References
- * - [Transactions](https://github.com/JetBrains/Exposed/wiki/Transactions)
+ * - [Transactions](https://jetbrains.github.io/Exposed/transactions.html)
  * - [Schema Tests](https://github.com/JetBrains/Exposed/blob/main/exposed-tests/src/test/kotlin/org/jetbrains/exposed/sql/tests/shared/SchemaTests.kt)
  *
  * @param sessionContext The [SessionContext] instance to be used for the transaction.
