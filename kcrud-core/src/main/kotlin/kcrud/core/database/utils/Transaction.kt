@@ -5,6 +5,7 @@
 package kcrud.core.database.utils
 
 import kcrud.core.context.SessionContext
+import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.Schema
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.Transaction
@@ -12,9 +13,13 @@ import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
 
 /**
- * Executes a transaction taking into account the specified [sessionContext] instance,
- * which may include for example a database connection, a schema name, or other
- * session-context-specific information.
+ * Creates a transaction then calls the [statement] block with this transaction as its receiver and returns the result.
+ *
+ * **Note** If the database value [db] is not set, the value used will be either the last [Database] instance created
+ * or the value associated with the parent transaction (if this function is invoked in an existing transaction).
+ *
+ * THe transaction takes into account the specified [sessionContext] instance, which may include for example
+ * a database connection, a schema name, or other session-context-specific information.
  *
  * #### References
  * - [Transactions](https://github.com/JetBrains/Exposed/wiki/Transactions)
@@ -22,7 +27,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
  *
  * @param sessionContext The [SessionContext] instance to be used for the transaction.
  * @param statement The block of code to execute within the transaction.
- * @return Returns the result of the block execution.
+ * @return The final result of the [statement] block.
  */
 public fun <T> transaction(
     sessionContext: SessionContext,
