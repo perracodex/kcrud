@@ -32,6 +32,8 @@ public object RbacRoleTable : TimestampedTable(name = "rbac_role") {
     public val role_name: Column<String> = varchar(
         name = "role_name",
         length = 64
+    ).uniqueIndex(
+        customIndexName = "uq_rbac_role__role_name"
     )
 
     /**
@@ -56,11 +58,4 @@ public object RbacRoleTable : TimestampedTable(name = "rbac_role") {
         firstColumn = id,
         name = "pk_role_id"
     )
-
-    init {
-        uniqueIndex(
-            customIndexName = "uq_rbac_role__role_name",
-            columns = arrayOf(role_name)
-        )
-    }
 }

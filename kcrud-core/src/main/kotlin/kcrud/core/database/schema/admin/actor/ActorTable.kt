@@ -37,6 +37,8 @@ public object ActorTable : TimestampedTable(name = "actor") {
     public val username: Column<String> = varchar(
         name = "username",
         length = 16
+    ).uniqueIndex(
+        customIndexName = "uq_actor__username"
     )
 
     /**
@@ -74,11 +76,4 @@ public object ActorTable : TimestampedTable(name = "actor") {
         firstColumn = id,
         name = "pk_actor_id"
     )
-
-    init {
-        uniqueIndex(
-            customIndexName = "uq_actor__username",
-            columns = arrayOf(username)
-        )
-    }
 }
