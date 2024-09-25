@@ -33,6 +33,8 @@ public object EmployeeTable : TimestampedTable(name = "employee") {
     public val firstName: Column<String> = varchar(
         name = "first_name",
         length = 64
+    ).index(
+        customIndexName = "ix_employee__first_name"
     )
 
     /**
@@ -41,6 +43,8 @@ public object EmployeeTable : TimestampedTable(name = "employee") {
     public val lastName: Column<String> = varchar(
         name = "last_name",
         length = 64
+    ).index(
+        customIndexName = "ix_employee__last_name"
     )
 
     /**
@@ -77,18 +81,4 @@ public object EmployeeTable : TimestampedTable(name = "employee") {
         firstColumn = id,
         name = "pk_employee_id"
     )
-
-    init {
-        index(
-            customIndexName = "ix_employee__first_name",
-            isUnique = false,
-            columns = arrayOf(firstName)
-        )
-
-        index(
-            customIndexName = "ix_employee__last_name",
-            isUnique = false,
-            columns = arrayOf(lastName)
-        )
-    }
 }

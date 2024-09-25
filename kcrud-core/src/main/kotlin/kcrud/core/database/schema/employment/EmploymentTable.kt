@@ -42,6 +42,8 @@ public object EmploymentTable : PeriodTable(name = "employment") {
         onDelete = ReferenceOption.CASCADE,
         onUpdate = ReferenceOption.RESTRICT,
         fkName = "fk_employment__employee_id"
+    ).index(
+        customIndexName = "ix_employment__employee_id"
     )
 
     /**
@@ -74,12 +76,4 @@ public object EmploymentTable : PeriodTable(name = "employment") {
         firstColumn = id,
         name = "pk_employment_id"
     )
-
-    init {
-        index(
-            customIndexName = "ix_employment__employee_id",
-            isUnique = false,
-            columns = arrayOf(employeeId)
-        )
-    }
 }
