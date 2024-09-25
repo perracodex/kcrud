@@ -16,7 +16,7 @@ import kotlinx.serialization.Serializable
  */
 public class CompositeAppException(
     public val errors: List<AppException>
-) : Exception("Multiple application errors occurred.") {
+) : Exception(buildMessage(errors)) {
 
     /**
      * Returns the concatenated list of error messages from
@@ -36,4 +36,10 @@ public class CompositeAppException(
     public data class Responses(
         val errors: List<AppException.Response>
     )
+
+    private companion object {
+        fun buildMessage(errors: List<AppException>): String {
+            return "Multiple application errors occurred.\n" + errors.joinToString(separator = "\n") { it.messageDetail() }
+        }
+    }
 }
