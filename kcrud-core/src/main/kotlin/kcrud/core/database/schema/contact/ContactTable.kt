@@ -47,6 +47,8 @@ public object ContactTable : TimestampedTable(name = "contact") {
         onDelete = ReferenceOption.CASCADE,
         onUpdate = ReferenceOption.RESTRICT,
         fkName = "fk_contact__employee_id"
+    ).index(
+        customIndexName = "ix_contact__employee_id"
     )
 
     /**
@@ -78,12 +80,4 @@ public object ContactTable : TimestampedTable(name = "contact") {
         firstColumn = id,
         name = "pk_contact_id"
     )
-
-    init {
-        index(
-            customIndexName = "ix_contact__employee_id",
-            isUnique = false,
-            columns = arrayOf(employeeId)
-        )
-    }
 }
