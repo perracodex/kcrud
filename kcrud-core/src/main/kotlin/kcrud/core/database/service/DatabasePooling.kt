@@ -22,12 +22,12 @@ internal object DatabasePooling {
      *
      * @param settings The [DatabaseSettings] settings to be used for the database connection pooling.
      * @param isolationLevel The isolation level to use for the database transactions.
-     * @param micrometerRegistry Optional [PrometheusMeterRegistry] instance for micro-metrics monitoring.
+     * @param telemetryRegistry Optional metrics registry for telemetry monitoring.
      */
     fun createDataSource(
         settings: DatabaseSettings,
         isolationLevel: IsolationLevel = IsolationLevel.TRANSACTION_REPEATABLE_READ,
-        micrometerRegistry: PrometheusMeterRegistry? = null
+        telemetryRegistry: PrometheusMeterRegistry? = null
     ): HikariDataSource {
         require(value = settings.connectionPoolSize > 0) { "Database connection pooling must be >= 1." }
 
@@ -61,9 +61,9 @@ internal object DatabasePooling {
                 this.password = settings.password
             }
 
-            // Integrates a micrometer registry for monitoring and metrics.
-            micrometerRegistry?.let {
-                metricRegistry = it
+            // Integrates a telemetry registry for monitoring and metrics.
+            telemetryRegistry?.let {
+                metricRegistry = telemetryRegistry
             }
 
             validate()

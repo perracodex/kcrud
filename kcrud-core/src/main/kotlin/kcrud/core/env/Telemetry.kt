@@ -20,7 +20,7 @@ import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
  * - [Prometheus](https://prometheus.io/)
  * - [Micrometer Prometheus](https://micrometer.io/docs/registry/prometheus)
  */
-public object MetricsRegistry {
+public object Telemetry {
     /**
      * Constant for the metric ID used to track server requests within Ktor applications.
      * This ID is used to identify metrics specifically for HTTP server requests in Prometheus.

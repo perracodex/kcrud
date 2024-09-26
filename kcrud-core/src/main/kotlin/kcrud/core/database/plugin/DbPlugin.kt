@@ -19,7 +19,7 @@ internal val DbPlugin: ApplicationPlugin<DbPluginConfig> = createApplicationPlug
 ) {
     DatabaseService.init(
         settings = AppSettings.database,
-        micrometerRegistry = pluginConfig.micrometerRegistry
+        telemetryRegistry = pluginConfig.telemetryRegistry
     ) {
         pluginConfig.tables.forEach { table ->
             addTable(table)
@@ -34,6 +34,6 @@ internal class DbPluginConfig {
     /** List of tables to be registered with the database. */
     val tables: MutableList<Table> = mutableListOf()
 
-    /** Optional [PrometheusMeterRegistry] instance for micro-metrics monitoring. */
-    var micrometerRegistry: PrometheusMeterRegistry? = null
+    /** Optional metrics registry for telemetry monitoring. */
+    var telemetryRegistry: PrometheusMeterRegistry? = null
 }

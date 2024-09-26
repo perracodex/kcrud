@@ -14,7 +14,7 @@ import kcrud.core.database.schema.contact.ContactTable
 import kcrud.core.database.schema.employee.EmployeeTable
 import kcrud.core.database.schema.employment.EmploymentTable
 import kcrud.core.database.schema.scheduler.SchedulerAuditTable
-import kcrud.core.env.MetricsRegistry
+import kcrud.core.env.Telemetry
 
 /**
  * Configures the custom [DbPlugin].
@@ -27,7 +27,7 @@ import kcrud.core.env.MetricsRegistry
 public fun Application.configureDatabase() {
 
     install(plugin = DbPlugin) {
-        micrometerRegistry = MetricsRegistry.registry
+        telemetryRegistry = Telemetry.registry
 
         tables.addAll(
             listOf(

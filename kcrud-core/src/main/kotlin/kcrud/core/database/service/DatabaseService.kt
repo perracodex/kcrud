@@ -49,13 +49,13 @@ internal object DatabaseService {
      *
      * @param settings The [DatabaseSettings] to be used to configure the database.
      * @param isolationLevel The isolation level to use for the database transactions.
-     * @param micrometerRegistry Optional [PrometheusMeterRegistry] instance for micro-metrics monitoring.
+     * @param telemetryRegistry Optional metrics registry for telemetry monitoring.
      * @param schemaSetup Optional lambda to setup the database schema.
      */
     fun init(
         settings: DatabaseSettings,
         isolationLevel: IsolationLevel = IsolationLevel.TRANSACTION_REPEATABLE_READ,
-        micrometerRegistry: PrometheusMeterRegistry? = null,
+        telemetryRegistry: PrometheusMeterRegistry? = null,
         schemaSetup: (SchemaBuilder.() -> Unit) = {}
     ) {
         buildDatabase(settings = settings)
@@ -66,7 +66,7 @@ internal object DatabaseService {
             val dataSource: HikariDataSource = DatabasePooling.createDataSource(
                 settings = settings,
                 isolationLevel = isolationLevel,
-                micrometerRegistry = micrometerRegistry
+                telemetryRegistry = telemetryRegistry
             )
 
             hikariDataSource = dataSource
