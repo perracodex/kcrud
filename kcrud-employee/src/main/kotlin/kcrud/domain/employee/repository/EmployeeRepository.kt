@@ -133,30 +133,39 @@ internal class EmployeeRepository(
         val emailLocalSegmentPattern: Expression<String> = stringParam(value = "([^@]*?$searchTerm[^@]*)")
 
         return transaction(sessionContext = sessionContext) {
-            addLogger(StdOutSqlLogger)
-
             EmployeeTable.join(
                 otherTable = ContactTable,
                 joinType = JoinType.LEFT,
                 onColumn = EmployeeTable.id,
                 otherColumn = ContactTable.employeeId
             ).selectAll().where {
-                // Search in first name or last name.
-                (EmployeeTable.firstName.lowerCase() like "%${searchTerm}%") or
-                        (EmployeeTable.lastName.lowerCase() like "%${searchTerm}%") or
-
-                        // Search within the local part of emails (before '@').
-                        EmployeeTable.workEmail.regexp(pattern = emailLocalSegmentPattern, caseSensitive = false) or
-                        ContactTable.email.regexp(pattern = emailLocalSegmentPattern, caseSensitive = false) or
-
-                        // Search emails starting with the search term.
-                        (EmployeeTable.workEmail.lowerCase() like "$searchTerm%") or
-                        (ContactTable.email.lowerCase() like "$searchTerm%") or
-
-                        // Search emails ending with the search term.
-                        (EmployeeTable.workEmail.lowerCase() like "%$searchTerm") or
-                        (ContactTable.email.lowerCase() like "%$searchTerm")
-            }.paginate(pageable = pageable, transform = Employee)
+                // Search in first name.
+                (EmployeeTable.firstName.lowerCase() like "%${searchTerm}%")
+            }.orWhere {
+                // Search in last name.
+                (EmployeeTable.lastName.lowerCase() like "%${searchTerm}%")
+            }.orWhere {
+                // Search within the local part of work email (before '@').
+                EmployeeTable.workEmail.regexp(pattern = emailLocalSegmentPattern, caseSensitive = false)
+            }.orWhere {
+                // Search work email starting with the search term.
+                (EmployeeTable.workEmail.lowerCase() like "$searchTerm%")
+            }.orWhere {
+                // Search work email ending with the search term.
+                (EmployeeTable.workEmail.lowerCase() like "%$searchTerm")
+            }.orWhere {
+                // Search within the local part of contact email (before '@').
+                ContactTable.email.regexp(pattern = emailLocalSegmentPattern, caseSensitive = false)
+            }.orWhere {
+                // Search contact email starting with the search term.
+                (ContactTable.email.lowerCase() like "$searchTerm%")
+            }.orWhere {
+                // Search contact email ending with the search term.
+                (ContactTable.email.lowerCase() like "%$searchTerm")
+            }.paginate(
+                pageable = pageable,
+                transform = Employee
+            )
         }
     }
 
