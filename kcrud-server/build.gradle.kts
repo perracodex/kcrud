@@ -15,6 +15,7 @@ dependencies {
     implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.serialization)
 
+    implementation(libs.exposed.core)
     implementation(libs.exposed.pagination)
 
     implementation(libs.ktor.server.auth)

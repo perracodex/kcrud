@@ -97,7 +97,7 @@ internal sealed class EmployeeError(
     /**
      * Error for when an email invalid.
      *
-     * @param employeeId The affected employee id.
+     * @param employeeId The affected employee id. `null` if the employee is not yet created.
      * @param email The invalid email.
      * @param field Optional field identifier, typically the input field that caused the error.
      * @param reason Optional human-readable reason for the exception, providing more context.
@@ -112,7 +112,11 @@ internal sealed class EmployeeError(
     ) : EmployeeError(
         statusCode = STATUS_CODE,
         errorCode = ERROR_CODE,
-        description = "Invalid email: '$email'. Employee Id: $employeeId",
+        description = "Invalid email: '$email'.${
+            employeeId?.let {
+                " Employee Id: $employeeId"
+            } ?: ""
+        }",
         field = field,
         reason = reason,
         cause = cause
@@ -126,7 +130,7 @@ internal sealed class EmployeeError(
     /**
      * Error for when a phone number is invalid, typically due to an incorrect format.
      *
-     * @param employeeId The affected employee id.
+     * @param employeeId The affected employee id. `null` if the employee is not yet created.
      * @param phone The invalid phone number.
      * @param field Optional field identifier, typically the input field that caused the error.
      * @param reason Optional human-readable reason for the exception, providing more context.
@@ -141,7 +145,11 @@ internal sealed class EmployeeError(
     ) : EmployeeError(
         statusCode = STATUS_CODE,
         errorCode = ERROR_CODE,
-        description = "Invalid phone number: '$phone'. Employee Id: $employeeId",
+        description = "Invalid phone number: '$phone'.${
+            employeeId?.let {
+                " Employee Id: $employeeId"
+            } ?: ""
+        }",
         field = field,
         reason = reason,
         cause = cause

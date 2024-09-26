@@ -90,7 +90,7 @@ internal sealed class EmploymentError(
      * where the end date is prior to the start date.
      *
      * @param employeeId The affected employee id.
-     * @param employmentId The employment id associated with the error.
+     * @param employmentId The employment id associated with the error. `null` if the employment is not yet created.
      * @param startDate The start date of the employment period.
      * @param endDate The end date of the employment period.
      * @param field Optional field identifier, typically the input field that caused the error.
@@ -109,8 +109,12 @@ internal sealed class EmploymentError(
         statusCode = STATUS_CODE,
         errorCode = ERROR_CODE,
         description = "Employment end date cannot be prior to the start date. " +
-                "Employee Id: $employeeId. Employment Id: $employmentId. " +
-                "Start Date: $startDate. End Date: $endDate.",
+                "Start Date: $startDate. End Date: $endDate." +
+                "Employee Id: $employeeId.${
+                    employmentId?.let {
+                        " Employment Id: $employmentId."
+                    } ?: ""
+                }",
         field = field,
         reason = reason,
         cause = cause
@@ -125,7 +129,7 @@ internal sealed class EmploymentError(
      * Error when the probation end date is prior to the employment start date.
      *
      * @param employeeId The affected employee id.
-     * @param employmentId The employment id associated with the error.
+     * @param employmentId The employment id associated with the error. `null` if the employment is not yet created.
      * @param startDate The start date of the employment period.
      * @param probationEndDate The probation end date of the employment period.
      * @param field Optional field identifier, typically the input field that caused the error.
@@ -144,8 +148,12 @@ internal sealed class EmploymentError(
         statusCode = STATUS_CODE,
         errorCode = ERROR_CODE,
         description = "Employment probation end date cannot be prior to the start date. " +
-                "Employee Id: $employeeId. Employment Id: $employmentId. " +
-                "Start Date: $startDate. Probation End Date: $probationEndDate.",
+                "Start Date: $startDate. Probation End Date: $probationEndDate." +
+                "Employee Id: $employeeId.${
+                    employmentId?.let {
+                        " Employment Id: $employmentId."
+                    } ?: ""
+                }",
         field = field,
         reason = reason,
         cause = cause
