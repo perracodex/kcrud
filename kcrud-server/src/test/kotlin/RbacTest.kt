@@ -13,10 +13,10 @@ import kcrud.access.utils.RbacTestUtils
 import kcrud.core.context.SessionContext
 import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.core.utils.TestUtils
-import kcrud.domain.employee.EmployeeTestUtils
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.service.EmployeeService
+import kcrud.domain.employee.utils.EmployeeTestUtils
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent

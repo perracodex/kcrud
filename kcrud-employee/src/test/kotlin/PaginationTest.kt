@@ -14,12 +14,12 @@ import kcrud.core.database.schema.employee.types.Honorific
 import kcrud.core.database.schema.employee.types.MaritalStatus
 import kcrud.core.utils.KLocalDate
 import kcrud.core.utils.TestUtils
-import kcrud.domain.employee.EmployeeTestUtils
 import kcrud.domain.employee.di.EmployeeDomainInjection
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.repository.IEmployeeRepository
 import kcrud.domain.employee.service.EmployeeService
+import kcrud.domain.employee.utils.EmployeeTestUtils
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

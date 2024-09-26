@@ -9,10 +9,10 @@ import kcrud.core.database.schema.employment.types.WorkModality
 import kcrud.core.persistence.model.Period
 import kcrud.core.utils.KLocalDate
 import kcrud.core.utils.TestUtils
-import kcrud.domain.employee.EmployeeTestUtils
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.service.EmployeeService
+import kcrud.domain.employee.utils.EmployeeTestUtils
 import kcrud.domain.employment.model.EmploymentRequest
 import kcrud.domain.employment.service.EmploymentService
 import kotlinx.coroutines.*

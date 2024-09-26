@@ -11,11 +11,11 @@ import kcrud.core.context.SessionContext
 import kcrud.core.database.schema.employee.types.Honorific
 import kcrud.core.database.schema.employee.types.MaritalStatus
 import kcrud.core.utils.TestUtils
-import kcrud.domain.employee.EmployeeTestUtils
 import kcrud.domain.employee.di.EmployeeDomainInjection
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.service.EmployeeService
+import kcrud.domain.employee.utils.EmployeeTestUtils
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll

@@ -14,10 +14,10 @@ import kcrud.core.utils.KLocalDate
 import kcrud.core.utils.TestUtils
 import kcrud.domain.contact.model.ContactRequest
 import kcrud.domain.contact.repository.IContactRepository
-import kcrud.domain.employee.EmployeeTestUtils
 import kcrud.domain.employee.di.EmployeeDomainInjection
 import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.repository.IEmployeeRepository
+import kcrud.domain.employee.utils.EmployeeTestUtils
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.koin.core.component.KoinComponent
