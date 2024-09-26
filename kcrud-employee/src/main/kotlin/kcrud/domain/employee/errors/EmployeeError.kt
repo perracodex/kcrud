@@ -59,16 +59,17 @@ internal sealed class EmployeeError(
     }
 
     /**
-     * Error for when an employee's work email is already in use by another employee.
+     * Error for when a work email is already in use by an employee
+     * and cannot be reused by another employee.
      *
-     * @param affectedEmployeeId The affected employee id.
+     * @param affectedEmployeeId The affected employee id. `null` if the employee is not yet created.
      * @param usedByEmployeeId The employee id that is already using the email.
      * @param workEmail The duplicate email.
      * @param field Optional field identifier, typically the input field that caused the error.
      * @param reason Optional human-readable reason for the exception, providing more context.
      * @param cause Optional underlying cause of the exception, if any.
      */
-    class DuplicateWorkEmail(
+    class WorkEmailInUse(
         affectedEmployeeId: Uuid?,
         usedByEmployeeId: Uuid,
         workEmail: String,
@@ -78,7 +79,11 @@ internal sealed class EmployeeError(
     ) : EmployeeError(
         statusCode = STATUS_CODE,
         errorCode = ERROR_CODE,
-        description = "Work email in use: '$workEmail'. Affected employee ID: $affectedEmployeeId. Already used by: $usedByEmployeeId",
+        description = "Work email '$workEmail' in use by employee: $usedByEmployeeId${
+            affectedEmployeeId?.let {
+                ". Attempted reassignment to employee ID: $affectedEmployeeId"
+            } ?: ""
+        }",
         field = field,
         reason = reason,
         cause = cause

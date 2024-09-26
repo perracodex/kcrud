@@ -97,7 +97,7 @@ internal object EmployeeConstraints {
         // Check if the work email is already in use.
         repository.findByWorkEmail(workEmail, excludeEmployeeId = employeeId)?.let { employee ->
             errors.add(
-                EmployeeError.DuplicateWorkEmail(
+                EmployeeError.WorkEmailInUse(
                     affectedEmployeeId = employeeId,
                     usedByEmployeeId = employee.id,
                     workEmail = workEmail,
