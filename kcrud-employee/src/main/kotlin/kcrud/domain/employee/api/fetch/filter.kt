@@ -20,15 +20,15 @@ import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 
 @EmployeeRouteAPI
-internal fun Route.searchEmployeeRoute() {
+internal fun Route.filterEmployeeRoute() {
     /**
-     * Search (Filter) employees.
+     * Filter out employees given a filter set.
      * @OpenAPITag Employee
      */
-    post("v1/employees/search") {
+    post("v1/employees/filter") {
         val request: EmployeeFilterSet = call.receive<EmployeeFilterSet>()
         val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(call.getContext()) }
-        val employees: Page<Employee> = service.search(filterSet = request, pageable = call.getPageable())
+        val employees: Page<Employee> = service.filter(filterSet = request, pageable = call.getPageable())
         call.respond(status = HttpStatusCode.OK, message = employees)
     }
 }

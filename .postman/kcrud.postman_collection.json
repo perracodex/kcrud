@@ -55,7 +55,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"firstName\": \"AnyName\",\r\n    \"lastName\": \"AnySurname\",\r\n    \"workEmail\": \"AnyName.AnySurname@work.com\",\r\n    \"dob\": \"1988-01-09\",\r\n    \"maritalStatus\": \"SINGLE\",\r\n    \"honorific\": \"MR\",\r\n    \"contact\": {\r\n        \"email\": \"AnyName.AnySurname@public.com\",\r\n        \"phone\": \"+34-665-021024\"\r\n    }\r\n}\r\n",
+                                  "raw": "{\r\n    \"firstName\": \"AnyName\",\r\n    \"lastName\": \"AnySurname\",\r\n    \"workEmail\": \"AnyName.AnySurname2@work.com\",\r\n    \"dob\": \"1988-01-09\",\r\n    \"maritalStatus\": \"SINGLE\",\r\n    \"honorific\": \"MR\",\r\n    \"contact\": {\r\n        \"email\": \"AnyName.AnySurname@public.com\",\r\n        \"phone\": \"+34-665-021024\"\r\n    }\r\n}\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -194,10 +194,10 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"firstName\": \"AnyName2\",\r\n    \"lastName\": \"AnySurname2\",\r\n    \"workEmail\": \"AnyName.AnySurname@work.com\",\r\n    \"dob\": \"1888-01-01\",\r\n    \"maritalStatus\": \"MARRIED\",\r\n    \"honorific\": \"MISS\",\r\n    \"contact\": {\r\n        \"email\": \"AnyName.AnySurname@public.com\",\r\n        \"phone\": \"+34-665-021024\"\r\n    }\r\n}"
+                                  "raw": "{\r\n    \"firstName\": \"AnyName2\",\r\n    \"lastName\": \"AnySurname2\",\r\n    \"workEmail\": \"AnyName.AnySurname2@work.com\",\r\n    \"dob\": \"1888-01-01\",\r\n    \"maritalStatus\": \"MARRIED\",\r\n    \"honorific\": \"MISS\",\r\n    \"contact\": {\r\n        \"email\": \"AnyName.AnySurname@public.com\",\r\n        \"phone\": \"+34-665-021024\"\r\n    }\r\n}"
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/645b1b23-d46d-4ebc-b6f0-66f3414a16c4",
+                                  "raw": "http://localhost:8080/v1/employees/b3c82003-6830-4437-afd4-903f3eb032f3",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -206,7 +206,7 @@
 									"path": [
 										"v1",
 										"employees",
-										"645b1b23-d46d-4ebc-b6f0-66f3414a16c4"
+                                      "b3c82003-6830-4437-afd4-903f3eb032f3"
 									]
 								}
 							},
@@ -583,7 +583,7 @@
 					"name": "search",
 					"item": [
 						{
-							"name": "search (paginated)",
+                          "name": "filter (paginated)",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -634,7 +634,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/search?page=0&size=24",
+                                  "raw": "http://localhost:8080/v1/employees/filter?page=0&size=24",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -643,7 +643,7 @@
 									"path": [
 										"v1",
 										"employees",
-										"search"
+                                      "filter"
 									],
 									"query": [
 										{
@@ -660,7 +660,7 @@
 							"response": []
 						},
 						{
-							"name": "search (sort)",
+                          "name": "filter (sort)",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -711,7 +711,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/search?page=0&size=10&sort=lastName,asc&&sort=maritalStatus,asc",
+                                  "raw": "http://localhost:8080/v1/employees/filter?page=0&size=10&sort=lastName,asc&&sort=maritalStatus,asc",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -720,7 +720,7 @@
 									"path": [
 										"v1",
 										"employees",
-										"search"
+                                      "filter"
 									],
 									"query": [
 										{

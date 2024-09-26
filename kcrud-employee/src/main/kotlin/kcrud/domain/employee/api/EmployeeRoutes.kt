@@ -10,9 +10,9 @@ import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.core.database.schema.admin.rbac.types.RbacScope
 import kcrud.domain.employee.api.delete.deleteAllEmployeesRoute
 import kcrud.domain.employee.api.delete.deleteEmployeeByIdRoute
+import kcrud.domain.employee.api.fetch.filterEmployeeRoute
 import kcrud.domain.employee.api.fetch.findAllEmployeesRoute
 import kcrud.domain.employee.api.fetch.findEmployeeByIdRoute
-import kcrud.domain.employee.api.fetch.searchEmployeeRoute
 import kcrud.domain.employee.api.operate.createEmployeeRoute
 import kcrud.domain.employee.api.operate.updateEmployeeByIdRoute
 
@@ -43,6 +43,6 @@ public fun Route.employeeRoutes() {
     withRbac(scope = RbacScope.EMPLOYEE_RECORDS, accessLevel = RbacAccessLevel.VIEW) {
         findAllEmployeesRoute()
         findEmployeeByIdRoute()
-        searchEmployeeRoute()
+        filterEmployeeRoute()
     }
 }

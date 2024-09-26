@@ -50,7 +50,7 @@ internal interface IEmployeeRepository {
      * @param pageable The pagination options to be applied, or null for a single all-in-one page.
      * @return List of [Employee] entries.
      */
-    fun search(filterSet: EmployeeFilterSet, pageable: Pageable? = null): Page<Employee>
+    fun filter(filterSet: EmployeeFilterSet, pageable: Pageable? = null): Page<Employee>
 
     /**
      * Creates a new employee.

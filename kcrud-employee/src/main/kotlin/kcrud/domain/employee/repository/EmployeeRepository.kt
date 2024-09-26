@@ -78,7 +78,7 @@ internal class EmployeeRepository(
         }
     }
 
-    override fun search(filterSet: EmployeeFilterSet, pageable: Pageable?): Page<Employee> {
+    override fun filter(filterSet: EmployeeFilterSet, pageable: Pageable?): Page<Employee> {
         return transaction(sessionContext = sessionContext) {
             EmployeeTable.join(
                 otherTable = ContactTable,
