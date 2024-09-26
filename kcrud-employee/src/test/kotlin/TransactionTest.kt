@@ -58,6 +58,7 @@ class TransactionTest : KoinComponent {
     fun testNestedTransaction(): Unit = testSuspend {
         val sessionContext: SessionContext = mockk<SessionContext>()
         every { sessionContext.schema } returns null
+        every { sessionContext.db } returns null
 
         val contactRepository: IContactRepository by inject(
             parameters = { parametersOf(sessionContext) }
@@ -118,6 +119,7 @@ class TransactionTest : KoinComponent {
     fun testNestedTransactionRollbackByError(): Unit = testSuspend {
         val sessionContext: SessionContext = mockk<SessionContext>()
         every { sessionContext.schema } returns null
+        every { sessionContext.db } returns null
 
         val contactRepository: IContactRepository by inject(
             parameters = { parametersOf(sessionContext) }

@@ -37,6 +37,7 @@ class TimestampTest : KoinComponent {
     fun testTimestamp(): Unit = testSuspend {
         val sessionContext: SessionContext = mockk<SessionContext>()
         every { sessionContext.schema } returns null
+        every { sessionContext.db } returns null
 
         val employeeRepository: IEmployeeRepository by inject(
             parameters = { parametersOf(sessionContext) }

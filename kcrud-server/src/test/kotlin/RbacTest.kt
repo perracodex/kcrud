@@ -178,6 +178,7 @@ class RbacTest : KoinComponent {
         val employeeRequest: EmployeeRequest = EmployeeTestUtils.newEmployeeRequest()
         val sessionContext: SessionContext = mockk<SessionContext>()
         every { sessionContext.schema } returns null
+        every { sessionContext.db } returns null
 
         val employeeService: EmployeeService by inject(
             parameters = { org.koin.core.parameter.parametersOf(sessionContext) }

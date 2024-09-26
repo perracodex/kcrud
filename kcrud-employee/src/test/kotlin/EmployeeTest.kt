@@ -87,6 +87,7 @@ class EmployeeServiceTest : KoinComponent {
 
                 val sessionContext: SessionContext = mockk<SessionContext>()
                 every { sessionContext.schema } returns null
+                every { sessionContext.db } returns null
 
                 val mockEmployeeRepository = mockk<IEmployeeRepository>()
                 val employeeService = EmployeeService(
@@ -112,6 +113,7 @@ class EmployeeServiceTest : KoinComponent {
         newSuspendedTransaction {
             val sessionContext: SessionContext = mockk<SessionContext>()
             every { sessionContext.schema } returns null
+            every { sessionContext.db } returns null
 
             val employeeService: EmployeeService by inject(
                 parameters = { parametersOf(sessionContext) }

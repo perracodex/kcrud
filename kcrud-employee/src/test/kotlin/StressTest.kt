@@ -47,6 +47,7 @@ class StressTest : KoinComponent {
     fun largeConcurrentSet(): Unit = testSuspend {
         val sessionContext: SessionContext = mockk<SessionContext>()
         every { sessionContext.schema } returns null
+        every { sessionContext.db } returns null
 
         val employeeService: EmployeeService by inject(
             parameters = { parametersOf(sessionContext) }
@@ -93,6 +94,7 @@ class StressTest : KoinComponent {
     fun largeEmployeeSet(): Unit = testSuspend {
         val sessionContext: SessionContext = mockk<SessionContext>()
         every { sessionContext.schema } returns null
+        every { sessionContext.db } returns null
 
         val employeeService: EmployeeService by inject(
             parameters = { parametersOf(sessionContext) }
