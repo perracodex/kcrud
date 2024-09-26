@@ -55,7 +55,7 @@
 								],
 								"body": {
 									"mode": "raw",
-                                  "raw": "{\r\n    \"firstName\": \"123hello123\",\r\n    \"lastName\": \"AnySurname\",\r\n    \"workEmail\": \"AnyName.AnySurname12@work.com\",\r\n    \"dob\": \"1988-01-09\",\r\n    \"maritalStatus\": \"SINGLE\",\r\n    \"honorific\": \"MR\",\r\n    \"contact\": {\r\n        \"email\": \"AnyName.AnySurname@public.com\",\r\n        \"phone\": \"+34-665-021024\"\r\n    }\r\n}\r\n",
+									"raw": "{\r\n    \"firstName\": \"123hello123\",\r\n    \"lastName\": \"AnySurname\",\r\n    \"workEmail\": \"AnyName.AnySurname12@work.com\",\r\n    \"dob\": \"1988-01-09\",\r\n    \"maritalStatus\": \"SINGLE\",\r\n    \"honorific\": \"MR\",\r\n    \"contact\": {\r\n        \"email\": \"AnyName.AnySurname@public.com\",\r\n        \"phone\": \"+34-665-021024\"\r\n    }\r\n}\r\n",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -194,10 +194,10 @@
 								],
 								"body": {
 									"mode": "raw",
-                                  "raw": "{\r\n    \"firstName\": \"AnyName2\",\r\n    \"lastName\": \"AnySurname2\",\r\n    \"workEmail\": \"AnyName.AnySurname2@work.com\",\r\n    \"dob\": \"1888-01-01\",\r\n    \"maritalStatus\": \"MARRIED\",\r\n    \"honorific\": \"MISS\",\r\n    \"contact\": {\r\n        \"email\": \"AnyName.AnySurname@public.com\",\r\n        \"phone\": \"+34-665-021024\"\r\n    }\r\n}"
+									"raw": "{\r\n    \"firstName\": \"AnyName2\",\r\n    \"lastName\": \"AnySurname2\",\r\n    \"workEmail\": \"AnyName.AnySurname2@work.com\",\r\n    \"dob\": \"1888-01-01\",\r\n    \"maritalStatus\": \"MARRIED\",\r\n    \"honorific\": \"MISS\",\r\n    \"contact\": {\r\n        \"email\": \"AnyName.AnySurname@public.com\",\r\n        \"phone\": \"+34-665-021024\"\r\n    }\r\n}"
 								},
 								"url": {
-                                  "raw": "http://localhost:8080/v1/employees/b3c82003-6830-4437-afd4-903f3eb032f3",
+									"raw": "http://localhost:8080/v1/employees/b3c82003-6830-4437-afd4-903f3eb032f3",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -206,7 +206,7 @@
 									"path": [
 										"v1",
 										"employees",
-                                      "b3c82003-6830-4437-afd4-903f3eb032f3"
+										"b3c82003-6830-4437-afd4-903f3eb032f3"
 									]
 								}
 							},
@@ -583,153 +583,161 @@
 					"name": "search",
 					"item": [
 						{
-                          "name": "search",
-                          "event": [
-                            {
-                              "listen": "prerequest",
-                              "script": {
-                                "exec": [
-                                  "pm.sendRequest({\r",
-                                  "    url: \"http://localhost:8080/auth/token/create\",\r",
-                                  "    method: 'POST',\r",
-                                  "    header: {\r",
-                                  "        'Authorization': 'Basic ' + btoa('admin:admin')\r",
-                                  "    }\r",
-                                  "}, function (err, response) {\r",
-                                  "    if (!err) {\r",
-                                  "        token = response.stream.toString()\r",
-                                  "        pm.request.headers.add({\r",
-                                  "            key: 'Authorization',\r",
-                                  "            value: 'Bearer ' + token\r",
-                                  "        });\r",
-                                  "    }\r",
-                                  "});\r",
-                                  ""
-                                ],
-                                "type": "text/javascript",
-                                "packages": {}
-                              }
-                            }
-                          ],
-                          "protocolProfileBehavior": {
-                            "strictSSL": false
-                          },
-                          "request": {
-                            "method": "POST",
-                            "header": [
-                              {
-                                "key": "Authorization",
-                                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2NvbnRleHQiOiJ7XCJhcGlVc2VySWRcIjpcImYyNzE2MDg2LTkzZjktNDQ0OS05ODY1LWYzOTExNWM3NTlkMlwiLFwidXNlcm5hbWVcIjpcImFkbWluXCIsXCJ1c2VyUm9sZUlkXCI6XCJmMjcxMWEzMS1kYmEwLTQ1N2UtOTc2My03Y2IxNjNjMDQ5YWRcIn0iLCJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcxMTIwOTU4OX0.02FHlez1MtpeTI3o9gjqtoyLnEVieMFlrwG-LZe60dg",
-                                "type": "default",
-                                "disabled": true
-                              }
-                            ],
-                            "body": {
-                              "mode": "raw",
-                              "raw": "",
-                              "options": {
-                                "raw": {
-                                  "language": "json"
-                                }
-                              }
-                            },
-                            "url": {
-                              "raw": "http://localhost:8080/v1/employees/search/AnySurname12",
-                              "protocol": "http",
-                              "host": [
-                                "localhost"
-                              ],
-                              "port": "8080",
-                              "path": [
-                                "v1",
-                                "employees",
-                                "search",
-                                "AnySurname12"
-                              ]
-                            }
-                          },
-                          "response": []
-                        },
-                      {
-                        "name": "search (paginated)",
-                        "event": [
-                          {
-                            "listen": "prerequest",
-                            "script": {
-                              "exec": [
-                                "pm.sendRequest({\r",
-                                "    url: \"http://localhost:8080/auth/token/create\",\r",
-                                "    method: 'POST',\r",
-                                "    header: {\r",
-                                "        'Authorization': 'Basic ' + btoa('admin:admin')\r",
-                                "    }\r",
-                                "}, function (err, response) {\r",
-                                "    if (!err) {\r",
-                                "        token = response.stream.toString()\r",
-                                "        pm.request.headers.add({\r",
-                                "            key: 'Authorization',\r",
-                                "            value: 'Bearer ' + token\r",
-                                "        });\r",
-                                "    }\r",
-                                "});\r",
-                                ""
-                              ],
-                              "type": "text/javascript",
-                              "packages": {}
-                            }
-                          }
-                        ],
-                        "protocolProfileBehavior": {
-                          "strictSSL": false
-                        },
-                        "request": {
-                          "method": "POST",
-                          "header": [
-                            {
-                              "key": "Authorization",
-                              "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2NvbnRleHQiOiJ7XCJhcGlVc2VySWRcIjpcImYyNzE2MDg2LTkzZjktNDQ0OS05ODY1LWYzOTExNWM3NTlkMlwiLFwidXNlcm5hbWVcIjpcImFkbWluXCIsXCJ1c2VyUm9sZUlkXCI6XCJmMjcxMWEzMS1kYmEwLTQ1N2UtOTc2My03Y2IxNjNjMDQ5YWRcIn0iLCJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcxMTIwOTU4OX0.02FHlez1MtpeTI3o9gjqtoyLnEVieMFlrwG-LZe60dg",
-                              "type": "default",
-                              "disabled": true
-                            }
-                          ],
-                          "body": {
-                            "mode": "raw",
-                            "raw": "",
-                            "options": {
-                              "raw": {
-                                "language": "json"
-                              }
-                            }
-                          },
-                          "url": {
-                            "raw": "http://localhost:8080/v1/employees/search/AnySurname12?page=0&size=24",
-                            "protocol": "http",
-                            "host": [
-                              "localhost"
-                            ],
-                            "port": "8080",
-                            "path": [
-                              "v1",
-                              "employees",
-                              "search",
-                              "AnySurname12"
-                            ],
-                            "query": [
-                              {
-                                "key": "page",
-                                "value": "0"
-                              },
-                              {
-                                "key": "size",
-                                "value": "24"
-                              }
-                            ]
-                          }
-                        },
-                        "response": []
-                      },
-                      {
-                        "name": "filter (paginated)",
+							"name": "search",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({\r",
+											"    url: \"http://localhost:8080/auth/token/create\",\r",
+											"    method: 'POST',\r",
+											"    header: {\r",
+											"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+											"    }\r",
+											"}, function (err, response) {\r",
+											"    if (!err) {\r",
+											"        token = response.stream.toString()\r",
+											"        pm.request.headers.add({\r",
+											"            key: 'Authorization',\r",
+											"            value: 'Bearer ' + token\r",
+											"        });\r",
+											"    }\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"strictSSL": false
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2NvbnRleHQiOiJ7XCJhcGlVc2VySWRcIjpcImYyNzE2MDg2LTkzZjktNDQ0OS05ODY1LWYzOTExNWM3NTlkMlwiLFwidXNlcm5hbWVcIjpcImFkbWluXCIsXCJ1c2VyUm9sZUlkXCI6XCJmMjcxMWEzMS1kYmEwLTQ1N2UtOTc2My03Y2IxNjNjMDQ5YWRcIn0iLCJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcxMTIwOTU4OX0.02FHlez1MtpeTI3o9gjqtoyLnEVieMFlrwG-LZe60dg",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/v1/employees/search?term=AnySurname12",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"employees",
+										"search"
+									],
+									"query": [
+										{
+											"key": "term",
+											"value": "AnySurname12"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "search (paginated)",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.sendRequest({\r",
+											"    url: \"http://localhost:8080/auth/token/create\",\r",
+											"    method: 'POST',\r",
+											"    header: {\r",
+											"        'Authorization': 'Basic ' + btoa('admin:admin')\r",
+											"    }\r",
+											"}, function (err, response) {\r",
+											"    if (!err) {\r",
+											"        token = response.stream.toString()\r",
+											"        pm.request.headers.add({\r",
+											"            key: 'Authorization',\r",
+											"            value: 'Bearer ' + token\r",
+											"        });\r",
+											"    }\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"strictSSL": false
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2NvbnRleHQiOiJ7XCJhcGlVc2VySWRcIjpcImYyNzE2MDg2LTkzZjktNDQ0OS05ODY1LWYzOTExNWM3NTlkMlwiLFwidXNlcm5hbWVcIjpcImFkbWluXCIsXCJ1c2VyUm9sZUlkXCI6XCJmMjcxMWEzMS1kYmEwLTQ1N2UtOTc2My03Y2IxNjNjMDQ5YWRcIn0iLCJhdWQiOiJLY3J1ZCIsImlzcyI6ImxvY2FsaG9zdCIsImV4cCI6MTcxMTIwOTU4OX0.02FHlez1MtpeTI3o9gjqtoyLnEVieMFlrwG-LZe60dg",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/v1/employees/search?term=AnySurname12&page=0&size=24",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"employees",
+										"search"
+									],
+									"query": [
+										{
+											"key": "term",
+											"value": "AnySurname12"
+										},
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "24"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "filter (paginated)",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -780,7 +788,7 @@
 									}
 								},
 								"url": {
-                                  "raw": "http://localhost:8080/v1/employees/filter?page=0&size=24",
+									"raw": "http://localhost:8080/v1/employees/filter?page=0&size=24",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -789,7 +797,7 @@
 									"path": [
 										"v1",
 										"employees",
-                                      "filter"
+										"filter"
 									],
 									"query": [
 										{
@@ -806,7 +814,7 @@
 							"response": []
 						},
 						{
-                          "name": "filter (sort)",
+							"name": "filter (sort)",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -857,7 +865,7 @@
 									}
 								},
 								"url": {
-                                  "raw": "http://localhost:8080/v1/employees/filter?page=0&size=10&sort=lastName,asc&&sort=maritalStatus,asc",
+									"raw": "http://localhost:8080/v1/employees/filter?page=0&size=10&sort=lastName,asc&&sort=maritalStatus,asc",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -866,7 +874,7 @@
 									"path": [
 										"v1",
 										"employees",
-                                      "filter"
+										"filter"
 									],
 									"query": [
 										{
