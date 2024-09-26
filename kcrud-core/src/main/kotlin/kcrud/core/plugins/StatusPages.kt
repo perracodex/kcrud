@@ -13,6 +13,7 @@ import io.perracodex.exposed.pagination.PaginationError
 import kcrud.core.env.Tracer
 import kcrud.core.errors.*
 import kcrud.core.settings.AppSettings
+import org.jetbrains.exposed.exceptions.ExposedSQLException
 
 /**
  * Install the [StatusPages] feature for handling HTTP status codes.
@@ -45,6 +46,15 @@ public fun Application.configureStatusPages() {
             call.respond(
                 status = HttpStatusCode.BadRequest,
                 message = "${cause.errorCode} | ${cause.message} | ${cause.reason ?: ""}"
+            )
+        }
+
+        // Handle database exceptions.
+        exception<ExposedSQLException> { call: ApplicationCall, cause: ExposedSQLException ->
+            tracer.error(message = cause.message, cause = cause)
+            call.respond(
+                status = HttpStatusCode.InternalServerError,
+                message = "Unexpected database error. Code: ${cause.errorCode}"
             )
         }
 
