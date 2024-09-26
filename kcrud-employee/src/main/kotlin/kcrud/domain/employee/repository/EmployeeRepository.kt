@@ -124,6 +124,42 @@ internal class EmployeeRepository(
         }
     }
 
+    override fun search(term: String, pageable: Pageable?): Page<Employee> {
+        // Normalize the search term.
+        // The lowercasing could be removed if the database is configured to use a case-insensitive collation.
+        val searchTerm: String = term.trim().lowercase()
+
+        // Pattern to match any part within an email local segment, before '@'.
+        val emailLocalSegmentPattern: Expression<String> = stringParam(value = "([^@]*?$searchTerm[^@]*)")
+
+        return transaction(sessionContext = sessionContext) {
+            addLogger(StdOutSqlLogger)
+
+            EmployeeTable.join(
+                otherTable = ContactTable,
+                joinType = JoinType.LEFT,
+                onColumn = EmployeeTable.id,
+                otherColumn = ContactTable.employeeId
+            ).selectAll().where {
+                // Search in first name or last name.
+                (EmployeeTable.firstName.lowerCase() like "%${searchTerm}%") or
+                        (EmployeeTable.lastName.lowerCase() like "%${searchTerm}%") or
+
+                        // Search within the local part of emails (before '@').
+                        EmployeeTable.workEmail.regexp(pattern = emailLocalSegmentPattern, caseSensitive = false) or
+                        ContactTable.email.regexp(pattern = emailLocalSegmentPattern, caseSensitive = false) or
+
+                        // Search emails starting with the search term.
+                        (EmployeeTable.workEmail.lowerCase() like "$searchTerm%") or
+                        (ContactTable.email.lowerCase() like "$searchTerm%") or
+
+                        // Search emails ending with the search term.
+                        (EmployeeTable.workEmail.lowerCase() like "%$searchTerm") or
+                        (ContactTable.email.lowerCase() like "%$searchTerm")
+            }.paginate(pageable = pageable, transform = Employee)
+        }
+    }
+
     override fun create(request: EmployeeRequest): Employee {
         return transaction(sessionContext = sessionContext) {
             EmployeeTable.insert { statement ->

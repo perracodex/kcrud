@@ -59,6 +59,19 @@ public class EmployeeService internal constructor(
     }
 
     /**
+     * Retrieves all employees matching the provided given [term].
+     *
+     * @param term The search term to be used. Can be partial.
+     * @param pageable The pagination options to be applied, or null for a single all-in-one page.
+     * @return List of [Employee] entries.
+     */
+    public suspend fun search(term: String, pageable: Pageable? = null): Page<Employee> {
+        return withContext(Dispatchers.IO) {
+            employeeRepository.search(term = term, pageable = pageable)
+        }
+    }
+
+    /**
      * Creates a new employee.
      *
      * @param request The [EmployeeRequest] to be created.

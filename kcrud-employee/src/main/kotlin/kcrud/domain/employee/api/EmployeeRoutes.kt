@@ -13,6 +13,7 @@ import kcrud.domain.employee.api.delete.deleteEmployeeByIdRoute
 import kcrud.domain.employee.api.fetch.filterEmployeeRoute
 import kcrud.domain.employee.api.fetch.findAllEmployeesRoute
 import kcrud.domain.employee.api.fetch.findEmployeeByIdRoute
+import kcrud.domain.employee.api.fetch.searchEmployeeRoute
 import kcrud.domain.employee.api.operate.createEmployeeRoute
 import kcrud.domain.employee.api.operate.updateEmployeeByIdRoute
 
@@ -44,5 +45,6 @@ public fun Route.employeeRoutes() {
         findAllEmployeesRoute()
         findEmployeeByIdRoute()
         filterEmployeeRoute()
+        searchEmployeeRoute()
     }
 }

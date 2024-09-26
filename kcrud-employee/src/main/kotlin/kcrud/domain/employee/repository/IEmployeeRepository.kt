@@ -53,6 +53,15 @@ internal interface IEmployeeRepository {
     fun filter(filterSet: EmployeeFilterSet, pageable: Pageable? = null): Page<Employee>
 
     /**
+     * Retrieves all employees matching the provided given [term].
+     *
+     * @param term The search term to be used. Can be partial.
+     * @param pageable The pagination options to be applied, or null for a single all-in-one page.
+     * @return List of [Employee] entries.
+     */
+    fun search(term: String, pageable: Pageable? = null): Page<Employee>
+
+    /**
      * Creates a new employee.
      *
      * @param request The employee to be created.
