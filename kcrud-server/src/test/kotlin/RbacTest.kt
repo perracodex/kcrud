@@ -12,11 +12,8 @@ import io.mockk.mockk
 import kcrud.access.utils.RbacTestUtils
 import kcrud.core.context.SessionContext
 import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.core.database.schema.employee.types.Honorific
-import kcrud.core.database.schema.employee.types.MaritalStatus
-import kcrud.core.utils.KLocalDate
 import kcrud.core.utils.TestUtils
-import kcrud.domain.contact.model.ContactRequest
+import kcrud.domain.employee.EmployeeTestUtils
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.service.EmployeeService
@@ -50,17 +47,7 @@ class RbacTest : KoinComponent {
         startApplication()
 
         // Prepare a generic employee request used in POST and PUT endpoints.
-        val employeeRequest = EmployeeRequest(
-            firstName = "AnyName",
-            lastName = "AnySurname",
-            dob = KLocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1),
-            honorific = Honorific.MR,
-            maritalStatus = MaritalStatus.MARRIED,
-            contact = ContactRequest(
-                email = "AnyName.AnySurname@email.com",
-                phone = "+34-611-222-333"
-            )
-        )
+        val employeeRequest: EmployeeRequest = EmployeeTestUtils.newEmployeeRequest()
         val employeeRequestJson: String = Json.encodeToString<EmployeeRequest>(value = employeeRequest)
 
         // List defining the expected outcomes for various operations based on different RBAC levels.
@@ -188,20 +175,7 @@ class RbacTest : KoinComponent {
     }
 
     private suspend fun createEmployee(): Employee {
-        val firstName = TestUtils.randomName()
-        val lastName = TestUtils.randomName()
-        val employeeRequest = EmployeeRequest(
-            firstName = firstName,
-            lastName = lastName,
-            dob = TestUtils.randomDob(),
-            honorific = Honorific.entries.random(),
-            maritalStatus = MaritalStatus.entries.random(),
-            contact = ContactRequest(
-                email = "$lastName.$firstName@email.com",
-                phone = TestUtils.randomPhoneNumber()
-            )
-        )
-
+        val employeeRequest: EmployeeRequest = EmployeeTestUtils.newEmployeeRequest()
         val sessionContext: SessionContext = mockk<SessionContext>()
         every { sessionContext.schema } returns null
 

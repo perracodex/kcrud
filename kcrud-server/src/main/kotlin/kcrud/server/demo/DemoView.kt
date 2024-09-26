@@ -82,8 +82,8 @@ internal object DemoView {
                     div { +"Date of Birth" }
                     div { +"Honorific" }
                     div { +"Marital Status" }
-                    div { +"Email" }
-                    div { +"Phone" }
+                    div { +"Work Email" }
+                    div { +"Contact Phone" }
                     div { +"Status" }
                     div { +"Modality" }
                 }

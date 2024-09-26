@@ -59,6 +59,37 @@ internal sealed class EmployeeError(
     }
 
     /**
+     * Error for when an employee's work email is already in use by another employee.
+     *
+     * @param affectedEmployeeId The affected employee id.
+     * @param usedByEmployeeId The employee id that is already using the email.
+     * @param workEmail The duplicate email.
+     * @param field Optional field identifier, typically the input field that caused the error.
+     * @param reason Optional human-readable reason for the exception, providing more context.
+     * @param cause Optional underlying cause of the exception, if any.
+     */
+    class DuplicateWorkEmail(
+        affectedEmployeeId: Uuid?,
+        usedByEmployeeId: Uuid,
+        workEmail: String,
+        field: String? = null,
+        reason: String? = null,
+        cause: Throwable? = null
+    ) : EmployeeError(
+        statusCode = STATUS_CODE,
+        errorCode = ERROR_CODE,
+        description = "Work email in use: '$workEmail'. Affected employee ID: $affectedEmployeeId. Already used by: $usedByEmployeeId",
+        field = field,
+        reason = reason,
+        cause = cause
+    ) {
+        companion object {
+            val STATUS_CODE: HttpStatusCode = HttpStatusCode.BadRequest
+            const val ERROR_CODE: String = "DUPLICATE_EMAIL"
+        }
+    }
+
+    /**
      * Error for when an email invalid.
      *
      * @param employeeId The affected employee id.

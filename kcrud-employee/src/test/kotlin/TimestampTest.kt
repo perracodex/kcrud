@@ -6,10 +6,8 @@ import io.ktor.test.dispatcher.*
 import io.mockk.every
 import io.mockk.mockk
 import kcrud.core.context.SessionContext
-import kcrud.core.database.schema.employee.types.Honorific
-import kcrud.core.database.schema.employee.types.MaritalStatus
-import kcrud.core.utils.KLocalDate
 import kcrud.core.utils.TestUtils
+import kcrud.domain.employee.EmployeeTestUtils
 import kcrud.domain.employee.di.EmployeeDomainInjection
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest
@@ -44,14 +42,7 @@ class TimestampTest : KoinComponent {
             parameters = { parametersOf(sessionContext) }
         )
 
-        val employeeRequest = EmployeeRequest(
-            firstName = "AnyName",
-            lastName = "AnySurname",
-            dob = KLocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1),
-            honorific = Honorific.MR,
-            maritalStatus = MaritalStatus.SINGLE
-        )
-
+        val employeeRequest: EmployeeRequest = EmployeeTestUtils.newEmployeeRequest()
         val employee: Employee = employeeRepository.create(request = employeeRequest)
 
         // Assert that both timestamps are the same after creation.

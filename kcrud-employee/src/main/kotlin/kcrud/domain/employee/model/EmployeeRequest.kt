@@ -25,6 +25,7 @@ import kotlinx.serialization.Serializable
  *
  * @property firstName The first name of the employee. Must not be blank.
  * @property lastName The last name of the employee. Must not be blank.
+ * @property workEmail The unique work email of the employee. Must not be blank.
  * @property dob The date of birth of the employee.
  * @property maritalStatus The [MaritalStatus] of the employee.
  * @property honorific The [Honorific] or title of the employee.
@@ -36,6 +37,7 @@ import kotlinx.serialization.Serializable
 public data class EmployeeRequest(
     val firstName: NoBlankString,
     val lastName: NoBlankString,
+    val workEmail: NoBlankString,
     val dob: KLocalDate,
     val maritalStatus: MaritalStatus,
     val honorific: Honorific,

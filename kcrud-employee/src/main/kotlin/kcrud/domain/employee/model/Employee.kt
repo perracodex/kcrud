@@ -24,6 +24,7 @@ import org.jetbrains.exposed.sql.ResultRow
  * @property firstName The first name of the employee.
  * @property lastName The last name of the employee.
  * @property fullName The full name of the employee, computed as "lastName, firstName".
+ * @property workEmail The unique work email of the employee.
  * @property dob The date of birth of the employee.
  * @property age The age of the employee, computed from [dob].
  * @property maritalStatus The [MaritalStatus] of the employee.
@@ -37,6 +38,7 @@ public data class Employee(
     val firstName: String,
     val lastName: String,
     val fullName: String,
+    val workEmail: String,
     val dob: KLocalDate,
     val age: Int,
     val maritalStatus: MaritalStatus,
@@ -59,6 +61,7 @@ public data class Employee(
                 firstName = firstName,
                 lastName = lastName,
                 fullName = "$lastName, $firstName",
+                workEmail = row[EmployeeTable.workEmail],
                 dob = dob,
                 age = dob.age(),
                 maritalStatus = row[EmployeeTable.maritalStatus],

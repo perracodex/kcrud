@@ -33,6 +33,17 @@ internal interface IEmployeeRepository {
     fun findAll(pageable: Pageable? = null): Page<Employee>
 
     /**
+     * Retrieves an employee by the given [workEmail].
+     *
+     * Optionally, an [excludeEmployeeId] can be provided to exclude a specific employee
+     * from the search, which is useful when updating an employee's email.
+     *
+     * @param workEmail The work email of the employee to be retrieved.
+     * @param excludeEmployeeId Optional ID of the employee to be excluded from the search.
+     */
+    fun findByWorkEmail(workEmail: String, excludeEmployeeId: Uuid?): Employee?
+
+    /**
      * Retrieves all employees matching the provided [filterSet].
      *
      * @param filterSet The [EmployeeFilterSet] to be applied.

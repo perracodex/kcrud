@@ -7,9 +7,11 @@ package kcrud.core.database.schema.employee
 import kcrud.core.database.columns.autoGenerate
 import kcrud.core.database.columns.enumerationById
 import kcrud.core.database.columns.kotlinUuid
+import kcrud.core.database.columns.validVarchar
 import kcrud.core.database.schema.base.TimestampedTable
 import kcrud.core.database.schema.employee.types.Honorific
 import kcrud.core.database.schema.employee.types.MaritalStatus
+import kcrud.core.errors.validators.EmailValidator
 import kcrud.core.utils.KLocalDate
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
@@ -45,6 +47,17 @@ public object EmployeeTable : TimestampedTable(name = "employee") {
         length = 64
     ).index(
         customIndexName = "ix_employee__last_name"
+    )
+
+    /**
+     * The employee's unique work email.
+     */
+    public val workEmail: Column<String> = validVarchar(
+        name = "work_email",
+        length = 128,
+        validator = EmailValidator
+    ).uniqueIndex(
+        customIndexName = "uq_employee__work_email"
     )
 
     /**

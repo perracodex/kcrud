@@ -4,15 +4,12 @@
 
 package kcrud.server.demo
 
-import kcrud.core.database.schema.employee.types.Honorific
-import kcrud.core.database.schema.employee.types.MaritalStatus
 import kcrud.core.database.schema.employment.types.EmploymentStatus
 import kcrud.core.database.schema.employment.types.WorkModality
 import kcrud.core.persistence.model.Period
-import kcrud.core.security.snowflake.SnowflakeFactory
 import kcrud.core.utils.KLocalDate
 import kcrud.core.utils.TestUtils
-import kcrud.domain.contact.model.ContactRequest
+import kcrud.domain.employee.EmployeeTestUtils
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.service.EmployeeService
@@ -49,7 +46,8 @@ internal object DemoUtils {
             repeat(times = count) {
                 // Launch each employee creation as a separate coroutine job.
                 val job: Deferred<Unit> = async {
-                    val result: Result<Employee> = employeeService.create(request = newEmployeeRequest())
+                    val employeeRequest: EmployeeRequest = EmployeeTestUtils.newEmployeeRequest()
+                    val result: Result<Employee> = employeeService.create(request = employeeRequest)
                     val employee: Employee = result.getOrThrow()
                     employmentService.create(
                         employeeId = employee.id,
@@ -62,24 +60,6 @@ internal object DemoUtils {
             // Wait for all jobs to complete.
             jobs.awaitAll()
         }
-    }
-
-    private fun newEmployeeRequest(): EmployeeRequest {
-        val firstName: String = TestUtils.randomName()
-        val lastName: String = TestUtils.randomName()
-        val snowflakeId: String = SnowflakeFactory.nextId()
-
-        return EmployeeRequest(
-            firstName = firstName,
-            lastName = lastName,
-            dob = TestUtils.randomDob(),
-            honorific = Honorific.entries.random(),
-            maritalStatus = MaritalStatus.entries.random(),
-            contact = ContactRequest(
-                email = "${lastName}_$snowflakeId@kcrud.com".lowercase(),
-                phone = TestUtils.randomPhoneNumber()
-            )
-        )
     }
 
     private fun newEmploymentRequest(employee: Employee): EmploymentRequest {
@@ -104,7 +84,8 @@ internal object DemoUtils {
             period = period,
             probationEndDate = probationEndDate,
             status = status,
-            workModality = WorkModality.entries.random()
+            workModality = WorkModality.entries.random(),
+            sensitiveData = "Sensitive data: ${System.nanoTime()}"
         )
     }
 }

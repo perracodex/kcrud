@@ -12,7 +12,10 @@ import kcrud.core.database.schema.base.PeriodTable
 import kcrud.core.database.schema.employee.EmployeeTable
 import kcrud.core.database.schema.employment.types.EmploymentStatus
 import kcrud.core.database.schema.employment.types.WorkModality
+import kcrud.core.security.utils.EncryptionUtils
 import kcrud.core.utils.KLocalDate
+import org.jetbrains.exposed.crypt.Encryptor
+import org.jetbrains.exposed.crypt.encryptedVarchar
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
@@ -25,6 +28,8 @@ import kotlin.uuid.Uuid
  * An employee may have multiple employments, which indicates re-hiring.
  */
 public object EmploymentTable : PeriodTable(name = "employment") {
+    private val encryptor: Encryptor = EncryptionUtils.getEncryptor(type = EncryptionUtils.Type.AT_REST)
+
     /**
      * The unique id of the employment record.
      */
@@ -68,6 +73,23 @@ public object EmploymentTable : PeriodTable(name = "employment") {
         name = "work_modality_id",
         entries = WorkModality.entries
     )
+
+    /**
+     * Demonstrates how to use an encrypted column.
+     *
+     * In encrypted fields, the lengths are larger than the actual length of the unencrypted data,
+     * since the encrypted final output will be larger than the original unencrypted value.
+     * The [Encryptor.maxColLength] method must be used to calculate the maximum length
+     * of the encrypted data, passing as input the maximum length of the unencrypted data.
+     *
+     * Encrypted fields cannot be defined as `unique` at the database level due to varying
+     * encrypted outputs for the same data.
+     */
+    public val sensitiveData: Column<String?> = encryptedVarchar(
+        name = "sensitive_data",
+        cipherTextLength = encryptor.maxColLength(inputByteSize = 512),
+        encryptor = encryptor
+    ).nullable()
 
     /**
      * The table's primary key.

@@ -17,6 +17,7 @@ import kcrud.core.utils.DateTimeUtils.age
 import kcrud.core.utils.KLocalDate
 import kcrud.core.utils.TestUtils
 import kcrud.domain.contact.model.Contact
+import kcrud.domain.employee.EmployeeTestUtils
 import kcrud.domain.employee.di.EmployeeDomainInjection
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest
@@ -61,13 +62,14 @@ class EmployeeServiceTest : KoinComponent {
                     firstName = firstName,
                     lastName = lastName,
                     fullName = "$lastName, $firstName",
+                    workEmail = "$firstName.$lastName@work.com",
                     dob = dob,
                     age = dob.age(),
                     honorific = honorific,
                     maritalStatus = maritalStatus,
                     contact = Contact(
                         id = Uuid.random(),
-                        email = "$firstName.$lastName@kcrud.com",
+                        email = "$firstName.$lastName@public.com",
                         phone = "+34-611-222-333",
                         meta = Meta(
                             createdAt = timestamp,
@@ -105,13 +107,7 @@ class EmployeeServiceTest : KoinComponent {
 
     @Test
     fun testCreateUpdateEmployee(): Unit = testSuspend {
-        val employeeRequest = EmployeeRequest(
-            firstName = "AnyName",
-            lastName = "AnySurname",
-            dob = KLocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1),
-            honorific = Honorific.MR,
-            maritalStatus = MaritalStatus.MARRIED
-        )
+        val employeeRequest: EmployeeRequest = EmployeeTestUtils.newEmployeeRequest()
 
         newSuspendedTransaction {
             val sessionContext: SessionContext = mockk<SessionContext>()
@@ -130,6 +126,7 @@ class EmployeeServiceTest : KoinComponent {
                 val updateEmployeeRequest = EmployeeRequest(
                     firstName = "AnyName_$index",
                     lastName = "AnySurname_$index",
+                    workEmail = "AnyName.AnySurname.$index@work.com",
                     dob = KLocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1 + index),
                     honorific = Honorific.MR,
                     maritalStatus = maritalStatus

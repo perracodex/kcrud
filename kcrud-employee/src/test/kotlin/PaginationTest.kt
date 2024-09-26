@@ -14,7 +14,7 @@ import kcrud.core.database.schema.employee.types.Honorific
 import kcrud.core.database.schema.employee.types.MaritalStatus
 import kcrud.core.utils.KLocalDate
 import kcrud.core.utils.TestUtils
-import kcrud.domain.contact.model.ContactRequest
+import kcrud.domain.employee.EmployeeTestUtils
 import kcrud.domain.employee.di.EmployeeDomainInjection
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest
@@ -121,7 +121,7 @@ class PaginationTest : KoinComponent {
 
             // Create test records.
             repeat(times = totalRecords) {
-                val employeeRequest = createEmployeeRequest()
+                val employeeRequest: EmployeeRequest = EmployeeTestUtils.newEmployeeRequest()
                 employeeService.create(request = employeeRequest)
             }
 
@@ -256,7 +256,7 @@ class PaginationTest : KoinComponent {
 
             // Create test records.
             repeat(times = totalRecords) {
-                val employeeRequest = createEmployeeRequest()
+                val employeeRequest: EmployeeRequest = EmployeeTestUtils.newEmployeeRequest()
                 employeeService.create(request = employeeRequest)
             }
 
@@ -392,7 +392,7 @@ class PaginationTest : KoinComponent {
             val totalRecords = 10
 
             repeat(times = totalRecords) {
-                val employeeRequest = createEmployeeRequest()
+                val employeeRequest: EmployeeRequest = EmployeeTestUtils.newEmployeeRequest()
                 employeeRepository.create(employeeRequest)
             }
 
@@ -439,6 +439,7 @@ class PaginationTest : KoinComponent {
                 val employeeRequest = EmployeeRequest(
                     firstName = name,
                     lastName = "Surname_$index",
+                    workEmail = "$name.surname_$index@work.com",
                     dob = KLocalDate(year = 2000, monthNumber = 1, dayOfMonth = (index % 28) + 1), // Ensure valid day of month.
                     honorific = Honorific.entries.random(),
                     maritalStatus = MaritalStatus.entries.random()
@@ -519,6 +520,7 @@ class PaginationTest : KoinComponent {
                 val employeeRequest = EmployeeRequest(
                     firstName = name,
                     lastName = "Surname_$index",
+                    workEmail = "$name.surname_$index@work.com",
                     dob = KLocalDate(year = 2000, monthNumber = 1, dayOfMonth = (index % 28) + 1),
                     honorific = Honorific.MS,
                     maritalStatus = MaritalStatus.SINGLE
@@ -642,21 +644,5 @@ class PaginationTest : KoinComponent {
             "dob" -> this.dob
             else -> throw IllegalArgumentException("Unknown sort field: $sortField")
         }
-    }
-
-    private fun createEmployeeRequest(): EmployeeRequest {
-        val firstName = TestUtils.randomName()
-        val lastName = TestUtils.randomName()
-        return EmployeeRequest(
-            firstName = firstName,
-            lastName = lastName,
-            dob = TestUtils.randomDob(),
-            honorific = Honorific.entries.random(),
-            maritalStatus = MaritalStatus.entries.random(),
-            contact = ContactRequest(
-                email = "$lastName.$firstName@email.com",
-                phone = TestUtils.randomPhoneNumber()
-            )
-        )
     }
 }

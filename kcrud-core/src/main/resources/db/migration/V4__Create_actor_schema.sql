@@ -16,17 +16,19 @@ CREATE TABLE IF NOT EXISTS actor (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT pk_actor_id PRIMARY KEY (actor_id),
+    CONSTRAINT pk_actor_id
+        PRIMARY KEY (actor_id),
 
-    CONSTRAINT fk_rbac_role__role_id FOREIGN KEY (role_id)
-        REFERENCES rbac_role(role_id) ON DELETE RESTRICT ON UPDATE RESTRICT
+    CONSTRAINT fk_rbac_role__role_id
+        FOREIGN KEY (role_id) REFERENCES rbac_role(role_id)
+        ON DELETE RESTRICT
+        ON UPDATE RESTRICT
 );
 
 ALTER TABLE actor
     ADD CONSTRAINT uq_actor__username
-        UNIQUE (username);
+    UNIQUE (username);
 
 CREATE TRIGGER IF NOT EXISTS tg_actor__updated_at
-BEFORE UPDATE ON actor
-FOR EACH ROW
-CALL 'kcrud.core.database.utils.UpdateTimestampTrigger';
+    BEFORE UPDATE ON actor
+    FOR EACH ROW CALL 'kcrud.core.database.utils.UpdateTimestampTrigger';

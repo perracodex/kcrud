@@ -9,10 +9,8 @@ import io.ktor.server.testing.*
 import io.ktor.test.dispatcher.*
 import io.ktor.util.collections.*
 import kcrud.access.utils.RbacTestUtils
-import kcrud.core.database.schema.employee.types.Honorific
-import kcrud.core.database.schema.employee.types.MaritalStatus
 import kcrud.core.utils.TestUtils
-import kcrud.domain.contact.model.ContactRequest
+import kcrud.domain.employee.EmployeeTestUtils
 import kcrud.domain.employee.model.EmployeeRequest
 import kotlinx.coroutines.*
 import kotlinx.serialization.encodeToString
@@ -66,7 +64,7 @@ class BackPressureTest : KoinComponent {
 
                             if (operationType == "write") {
                                 val employeeRequestJson = Json.encodeToString<EmployeeRequest>(
-                                    value = createEmployeeRequest()
+                                    value = EmployeeTestUtils.newEmployeeRequest()
                                 )
 
                                 val writeResponse: HttpResponse = client.post("/v1/employees") {
@@ -133,7 +131,7 @@ class BackPressureTest : KoinComponent {
         startApplication()
 
         // Prepare the employee request.
-        val employeeRequest = createEmployeeRequest()
+        val employeeRequest: EmployeeRequest = EmployeeTestUtils.newEmployeeRequest()
         val employeeRequestJson: String = Json.encodeToString<EmployeeRequest>(value = employeeRequest)
 
         // Generate the authentication token required for the request call.
@@ -182,7 +180,7 @@ class BackPressureTest : KoinComponent {
         startApplication()
 
         // Prepare the employee request.
-        val employeeRequest = createEmployeeRequest()
+        val employeeRequest: EmployeeRequest = EmployeeTestUtils.newEmployeeRequest()
         val employeeRequestJson: String = Json.encodeToString<EmployeeRequest>(value = employeeRequest)
 
         // Generate the authentication token required for the request call.
@@ -230,7 +228,7 @@ class BackPressureTest : KoinComponent {
                 if (index % 2 == 0) {
                     async {
                         // Prepare a unique employee request for write operations.
-                        val employeeRequest = createEmployeeRequest()
+                        val employeeRequest: EmployeeRequest = EmployeeTestUtils.newEmployeeRequest()
                         val employeeRequestJson = Json.encodeToString<EmployeeRequest>(value = employeeRequest)
                         val writeResponse: HttpResponse = client.post("/v1/employees") {
                             header(key = HttpHeaders.Authorization, value = "Bearer $authToken")
@@ -273,22 +271,6 @@ class BackPressureTest : KoinComponent {
             // Await completion of all jobs.
             jobs.awaitAll()
         }
-    }
-
-    private fun createEmployeeRequest(): EmployeeRequest {
-        val firstName = TestUtils.randomName()
-        val lastName = TestUtils.randomName()
-        return EmployeeRequest(
-            firstName = firstName,
-            lastName = lastName,
-            dob = TestUtils.randomDob(),
-            honorific = Honorific.entries.random(),
-            maritalStatus = MaritalStatus.entries.random(),
-            contact = ContactRequest(
-                email = "$lastName.$firstName@email.com",
-                phone = TestUtils.randomPhoneNumber()
-            )
-        )
     }
 
     @Suppress("SameParameterValue")

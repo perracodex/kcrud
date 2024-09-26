@@ -139,6 +139,7 @@ internal class EmploymentRepository(
         this[EmploymentTable.status] = request.status
         this[EmploymentTable.probationEndDate] = request.probationEndDate
         this[EmploymentTable.workModality] = request.workModality
+        this[EmploymentTable.sensitiveData] = request.sensitiveData
         this[EmploymentTable.isActive] = request.period.isActive
         this[EmploymentTable.startDate] = request.period.startDate
         this[EmploymentTable.endDate] = request.period.endDate

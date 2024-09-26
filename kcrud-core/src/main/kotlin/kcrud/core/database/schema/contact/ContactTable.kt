@@ -7,13 +7,11 @@ package kcrud.core.database.schema.contact
 import kcrud.core.database.columns.autoGenerate
 import kcrud.core.database.columns.kotlinUuid
 import kcrud.core.database.columns.references
-import kcrud.core.database.columns.validEncryptedVarchar
+import kcrud.core.database.columns.validVarchar
 import kcrud.core.database.schema.base.TimestampedTable
 import kcrud.core.database.schema.employee.EmployeeTable
 import kcrud.core.errors.validators.EmailValidator
 import kcrud.core.errors.validators.PhoneValidator
-import kcrud.core.security.utils.EncryptionUtils
-import org.jetbrains.exposed.crypt.Encryptor
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
@@ -21,15 +19,9 @@ import kotlin.uuid.Uuid
 
 /**
  * Database table definition for employee contact details.
- * Demonstrates how to encrypt data in the database,
- * in addition of how to validate column data.
- *
- * For encrypted fields, the lengths are larger than the actual length of the data,
- * since the encrypted data will be larger than the original value.
+ * Demonstrates custom columns validators (see email and phone).
  */
 public object ContactTable : TimestampedTable(name = "contact") {
-    private val encryptor: Encryptor = EncryptionUtils.getEncryptor(type = EncryptionUtils.Type.AT_REST)
-
     /**
      * The unique id of the contact record.
      */
@@ -52,25 +44,25 @@ public object ContactTable : TimestampedTable(name = "contact") {
     )
 
     /**
-     * The contact's email.
-     * Must be a valid email.
+     * The contact's personal email.
      */
-    public val email: Column<String> = validEncryptedVarchar(
+    public val email: Column<String> = validVarchar(
         name = "email",
         length = EmailValidator.MAX_EMAIL_LENGTH,
-        encryptor = encryptor,
         validator = EmailValidator
+    ).index(
+        customIndexName = "ix_contact__email"
     )
 
     /**
-     * The contact's phone.
-     * Must be a valid phone number.
+     * The contact's personal phone.
      */
-    public val phone: Column<String> = validEncryptedVarchar(
+    public val phone: Column<String> = validVarchar(
         name = "phone",
         length = PhoneValidator.MAX_PHONE_LENGTH,
-        encryptor = encryptor,
         validator = PhoneValidator
+    ).index(
+        customIndexName = "ix_contact__phone"
     )
 
     /**

@@ -10,9 +10,8 @@ import kcrud.access.rbac.di.RbacDomainInjection
 import kcrud.core.context.SessionContext
 import kcrud.core.database.schema.employee.types.Honorific
 import kcrud.core.database.schema.employee.types.MaritalStatus
-import kcrud.core.utils.KLocalDate
 import kcrud.core.utils.TestUtils
-import kcrud.domain.contact.model.ContactRequest
+import kcrud.domain.employee.EmployeeTestUtils
 import kcrud.domain.employee.di.EmployeeDomainInjection
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest
@@ -46,18 +45,6 @@ class StressTest : KoinComponent {
 
     @Test
     fun largeConcurrentSet(): Unit = testSuspend {
-        val employeeRequest = EmployeeRequest(
-            firstName = "AnyName",
-            lastName = "AnySurname",
-            dob = KLocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1),
-            honorific = Honorific.MR,
-            maritalStatus = MaritalStatus.MARRIED,
-            contact = ContactRequest(
-                email = "AnyName.AnySurname@email.com",
-                phone = "+34-611-222-333"
-            )
-        )
-
         val sessionContext: SessionContext = mockk<SessionContext>()
         every { sessionContext.schema } returns null
 
@@ -65,6 +52,7 @@ class StressTest : KoinComponent {
             parameters = { parametersOf(sessionContext) }
         )
 
+        val employeeRequest: EmployeeRequest = EmployeeTestUtils.newEmployeeRequest()
         val totalElements = 10000
 
         val jobs: List<Deferred<Employee>> = List(size = totalElements) { index ->
@@ -103,18 +91,6 @@ class StressTest : KoinComponent {
 
     @Test
     fun largeEmployeeSet(): Unit = testSuspend {
-        val employeeRequest = EmployeeRequest(
-            firstName = "AnyName",
-            lastName = "AnySurname",
-            dob = KLocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1),
-            honorific = Honorific.MR,
-            maritalStatus = MaritalStatus.MARRIED,
-            contact = ContactRequest(
-                email = "AnyName.AnySurname@email.com",
-                phone = "+34-611-222-333"
-            )
-        )
-
         val sessionContext: SessionContext = mockk<SessionContext>()
         every { sessionContext.schema } returns null
 
@@ -122,6 +98,7 @@ class StressTest : KoinComponent {
             parameters = { parametersOf(sessionContext) }
         )
 
+        val employeeRequest: EmployeeRequest = EmployeeTestUtils.newEmployeeRequest()
         val totalElements = 10000
 
         (1..totalElements).forEach { index ->

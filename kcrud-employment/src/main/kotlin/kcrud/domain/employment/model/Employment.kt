@@ -24,6 +24,7 @@ import org.jetbrains.exposed.sql.ResultRow
  * @property status The current [EmploymentStatus].
  * @property probationEndDate Optional employment's probation end date.
  * @property workModality The employment's [WorkModality].
+ * @property sensitiveData Optional sensitive data. Demonstrates encrypted columns.
  * @property employee The employment's [Employee].
  * @property meta The metadata of the record.
  */
@@ -34,6 +35,7 @@ public data class Employment(
     val status: EmploymentStatus,
     val probationEndDate: KLocalDate?,
     val workModality: WorkModality,
+    val sensitiveData: String?,
     val employee: Employee,
     val meta: Meta
 ) {
@@ -45,6 +47,7 @@ public data class Employment(
                 status = row[EmploymentTable.status],
                 probationEndDate = row[EmploymentTable.probationEndDate],
                 workModality = row[EmploymentTable.workModality],
+                sensitiveData = row[EmploymentTable.sensitiveData],
                 employee = Employee.from(row = row),
                 meta = Meta.from(row = row, table = EmploymentTable)
             )

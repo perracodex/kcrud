@@ -165,8 +165,8 @@ document.addEventListener('DOMContentLoaded', () => {
         page.content.forEach((employment) => {
             const employee = employment.employee;
             const dob = new Date(employee.dob).toISOString().slice(0, 10);
-            const email = employee.contact ? employee.contact.email : 'N/A';
-            const phone = employee.contact ? employee.contact.phone : 'N/A';
+            const workEmail = employee.workEmail ? employee.workEmail : 'N/A';
+            const contact_phone = employee.contact ? employee.contact.phone : 'N/A';
 
             const row = document.createElement('div');
             row.className = 'table-row';
@@ -182,8 +182,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 `<div>${dob}</div>` +
                 `<div>${capitalize(employee.honorific)}</div>` +
                 `<div>${capitalize(employee.maritalStatus)}</div>` +
-                `<div>${email}</div>` +
-                `<div>${phone}</div>` +
+                `<div>${workEmail}</div>` +
+                `<div>${contact_phone}</div>` +
                 `<div>${capitalize(employment.status)}</div>` +
                 `<div>${capitalize(employment.workModality).replace("_", " ")}</div>`;
 

@@ -55,9 +55,37 @@ internal class EmployeeRepository(
         }
     }
 
+    override fun findByWorkEmail(workEmail: String, excludeEmployeeId: Uuid?): Employee? {
+        return transaction(sessionContext = sessionContext) {
+            val query: Query = EmployeeTable.join(
+                otherTable = ContactTable,
+                joinType = JoinType.LEFT,
+                onColumn = EmployeeTable.id,
+                otherColumn = ContactTable.employeeId
+            ).selectAll().where {
+                EmployeeTable.workEmail eq workEmail
+            }
+
+            excludeEmployeeId?.let {
+                query.andWhere {
+                    EmployeeTable.id neq excludeEmployeeId
+                }
+            }
+
+            query.singleOrNull()?.let { resultRow ->
+                Employee.from(row = resultRow)
+            }
+        }
+    }
+
     override fun search(filterSet: EmployeeFilterSet, pageable: Pageable?): Page<Employee> {
         return transaction(sessionContext = sessionContext) {
-            EmployeeTable.selectAll().apply {
+            EmployeeTable.join(
+                otherTable = ContactTable,
+                joinType = JoinType.LEFT,
+                onColumn = EmployeeTable.id,
+                otherColumn = ContactTable.employeeId
+            ).selectAll().apply {
                 // Apply filters dynamically based on the presence of criteria in filterSet.
                 // Using lowerCase() to make the search case-insensitive.
                 // This could be removed if the database is configured to use a case-insensitive collation.
@@ -70,6 +98,20 @@ internal class EmployeeRepository(
                 filterSet.lastName?.let { lastName ->
                     andWhere {
                         EmployeeTable.lastName.lowerCase() like "%${lastName.lowercase()}%"
+                    }
+                }
+                filterSet.workEmail?.let { workEmail ->
+                    if (workEmail.isNotEmpty()) {
+                        andWhere {
+                            EmployeeTable.workEmail.lowerCase() like "%${workEmail.lowercase()}%"
+                        }
+                    }
+                }
+                filterSet.contactEmail?.let { contactEmail ->
+                    if (contactEmail.isNotEmpty()) {
+                        andWhere {
+                            ContactTable.email.lowerCase() like "%${contactEmail.lowercase()}%"
+                        }
                     }
                 }
                 filterSet.honorific?.let { honorificList ->
@@ -154,6 +196,7 @@ internal class EmployeeRepository(
     private fun UpdateBuilder<Int>.toStatement(request: EmployeeRequest) {
         this[EmployeeTable.firstName] = request.firstName.trim()
         this[EmployeeTable.lastName] = request.lastName.trim()
+        this[EmployeeTable.workEmail] = request.workEmail.trim()
         this[EmployeeTable.dob] = request.dob
         this[EmployeeTable.maritalStatus] = request.maritalStatus
         this[EmployeeTable.honorific] = request.honorific

@@ -14,6 +14,7 @@ import kcrud.core.utils.KLocalDate
 import kcrud.core.utils.TestUtils
 import kcrud.domain.contact.model.ContactRequest
 import kcrud.domain.contact.repository.IContactRepository
+import kcrud.domain.employee.EmployeeTestUtils
 import kcrud.domain.employee.di.EmployeeDomainInjection
 import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.repository.IEmployeeRepository
@@ -65,17 +66,7 @@ class TransactionTest : KoinComponent {
             parameters = { parametersOf(sessionContext) }
         )
 
-        val employeeRequest = EmployeeRequest(
-            firstName = "AnyName",
-            lastName = "AnySurname",
-            dob = KLocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1),
-            honorific = Honorific.MR,
-            maritalStatus = MaritalStatus.SINGLE,
-            contact = ContactRequest(
-                email = "AnyName.AnySurname@email.com",
-                phone = "+34-611-222-333"
-            )
-        )
+        val employeeRequest: EmployeeRequest = EmployeeTestUtils.newEmployeeRequest()
 
         newSuspendedTransaction {
             assertEquals(
@@ -136,17 +127,7 @@ class TransactionTest : KoinComponent {
         )
 
         // Create an employee with a valid contact detail.
-        val employeeRequest = EmployeeRequest(
-            firstName = "AnyName",
-            lastName = "AnySurname",
-            dob = KLocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1),
-            honorific = Honorific.MR,
-            maritalStatus = MaritalStatus.SINGLE,
-            contact = ContactRequest(
-                email = "AnyName.AnySurname@mail.com",
-                phone = "+34-611-222-333"
-            )
-        )
+        val employeeRequest: EmployeeRequest = EmployeeTestUtils.newEmployeeRequest()
 
         assertFailsWith<IllegalArgumentException> {
             transaction {
@@ -167,6 +148,7 @@ class TransactionTest : KoinComponent {
                             firstName = "AnyName",
                             lastName = "AnySurname",
                             dob = KLocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1),
+                            workEmail = "X".repeat(100), // Invalid email length..
                             honorific = Honorific.MR,
                             maritalStatus = MaritalStatus.SINGLE,
                             contact = ContactRequest(

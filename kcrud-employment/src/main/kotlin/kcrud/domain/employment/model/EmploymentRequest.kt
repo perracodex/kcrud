@@ -18,13 +18,15 @@ import kotlinx.serialization.Serializable
  * @property status The [EmploymentStatus] to set.
  * @property probationEndDate Optional employment's probation end date.
  * @property workModality The employment's [WorkModality] to set.
+ * @property sensitiveData Optional sensitive data. Demonstrates encrypted columns.
  */
 @Serializable
 public data class EmploymentRequest(
     val period: Period,
     val status: EmploymentStatus,
     val probationEndDate: KLocalDate? = null,
-    val workModality: WorkModality
+    val workModality: WorkModality,
+    val sensitiveData: String? = null
 ) {
     /**
      * Example of a validation within a data class.

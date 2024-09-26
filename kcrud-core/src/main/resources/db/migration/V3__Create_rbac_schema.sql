@@ -15,17 +15,17 @@ CREATE TABLE IF NOT EXISTS rbac_role (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT pk_role_id PRIMARY KEY (role_id)
+    CONSTRAINT pk_role_id
+        PRIMARY KEY (role_id)
 );
 
 ALTER TABLE rbac_role
     ADD CONSTRAINT uq_rbac_role__role_name
-        UNIQUE (role_name);
+    UNIQUE (role_name);
 
 CREATE TRIGGER IF NOT EXISTS tg_rbac_role__updated_at
-BEFORE UPDATE ON rbac_role
-FOR EACH ROW
-CALL 'kcrud.core.database.utils.UpdateTimestampTrigger';
+    BEFORE UPDATE ON rbac_role
+    FOR EACH ROW CALL 'kcrud.core.database.utils.UpdateTimestampTrigger';
 
 -------------------------------------------------------------------------------------
 
@@ -37,20 +37,22 @@ CREATE TABLE IF NOT EXISTS rbac_scope_rule (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT pk_scope_rule_id PRIMARY KEY (scope_rule_id),
+    CONSTRAINT pk_scope_rule_id
+        PRIMARY KEY (scope_rule_id),
 
-    CONSTRAINT fk_rbac_scope_rule__role_id FOREIGN KEY (role_id)
-        REFERENCES rbac_role(role_id) ON DELETE CASCADE ON UPDATE RESTRICT
+    CONSTRAINT fk_rbac_scope_rule__role_id
+        FOREIGN KEY (role_id) REFERENCES rbac_role(role_id)
+        ON DELETE CASCADE
+        ON UPDATE RESTRICT
 );
 
 ALTER TABLE rbac_scope_rule
     ADD CONSTRAINT uq_rbac_scope_rule__role_id__scope
-        UNIQUE (role_id, scope_id);
+    UNIQUE (role_id, scope_id);
 
 CREATE TRIGGER IF NOT EXISTS tg_rbac_scope_rule__updated_at
-BEFORE UPDATE ON rbac_scope_rule
-FOR EACH ROW
-CALL 'kcrud.core.database.utils.UpdateTimestampTrigger';
+    BEFORE UPDATE ON rbac_scope_rule
+    FOR EACH ROW CALL 'kcrud.core.database.utils.UpdateTimestampTrigger';
 
 -------------------------------------------------------------------------------------
 
@@ -62,17 +64,19 @@ CREATE TABLE IF NOT EXISTS rbac_field_rule (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT pk_field_rule_id PRIMARY KEY (field_rule_id),
+    CONSTRAINT pk_field_rule_id
+        PRIMARY KEY (field_rule_id),
 
-    CONSTRAINT fk_rbac_field_rule__scope_rule_id FOREIGN KEY (scope_rule_id)
-        REFERENCES rbac_scope_rule(scope_rule_id) ON DELETE CASCADE ON UPDATE RESTRICT
+    CONSTRAINT fk_rbac_field_rule__scope_rule_id
+        FOREIGN KEY (scope_rule_id) REFERENCES rbac_scope_rule(scope_rule_id)
+        ON DELETE CASCADE
+        ON UPDATE RESTRICT
 );
 
 ALTER TABLE rbac_field_rule
     ADD CONSTRAINT uq_rbac_field_rule__scope_rule_id__field_name
-        UNIQUE (scope_rule_id, field_name);
+    UNIQUE (scope_rule_id, field_name);
 
 CREATE TRIGGER IF NOT EXISTS tg_rbac_field_rule__updated_at
-BEFORE UPDATE ON rbac_field_rule
-FOR EACH ROW
-CALL 'kcrud.core.database.utils.UpdateTimestampTrigger';
+    BEFORE UPDATE ON rbac_field_rule
+    FOR EACH ROW CALL 'kcrud.core.database.utils.UpdateTimestampTrigger';

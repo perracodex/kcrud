@@ -16,6 +16,8 @@ import kotlinx.serialization.Serializable
  *
  * @property firstName The first name of the employee to filter by.
  * @property lastName The last name of the employee to filter by.
+ * @property workEmail The work email of the employee to filter by.
+ * @property contactEmail The contact email of the employee to filter by.
  * @property honorific A [Honorific] list choices to filter the employees.
  * @property maritalStatus A list of [MaritalStatus] choices to filter the employees.
  */
@@ -23,6 +25,8 @@ import kotlinx.serialization.Serializable
 public data class EmployeeFilterSet(
     val firstName: String? = null,
     val lastName: String? = null,
+    val workEmail: String? = null,
+    val contactEmail: String? = null,
     val honorific: List<Honorific>? = null,
     val maritalStatus: List<MaritalStatus>? = null
 )

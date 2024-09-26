@@ -70,7 +70,8 @@ public class EmployeeService internal constructor(
         return EmployeeConstraints.check(
             employeeId = null,
             request = request,
-            reason = "Create Employee."
+            reason = "Create Employee.",
+            repository = employeeRepository
         ).fold(
             onSuccess = {
                 runCatching {
@@ -102,7 +103,8 @@ public class EmployeeService internal constructor(
         return EmployeeConstraints.check(
             employeeId = employeeId,
             request = request,
-            reason = "Update Employee."
+            reason = "Update Employee.",
+            repository = employeeRepository
         ).fold(
             onSuccess = {
                 runCatching {
