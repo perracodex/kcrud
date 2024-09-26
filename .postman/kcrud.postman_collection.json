@@ -612,10 +612,11 @@
 								}
 							],
 							"protocolProfileBehavior": {
-								"strictSSL": false
+                              "strictSSL": false,
+                              "disableBodyPruning": true
 							},
 							"request": {
-								"method": "POST",
+                              "method": "GET",
 								"header": [
 									{
 										"key": "Authorization",
@@ -685,10 +686,11 @@
 								}
 							],
 							"protocolProfileBehavior": {
-								"strictSSL": false
+                              "strictSSL": false,
+                              "disableBodyPruning": true
 							},
 							"request": {
-								"method": "POST",
+                              "method": "GET",
 								"header": [
 									{
 										"key": "Authorization",
