@@ -90,42 +90,34 @@ internal class EmployeeRepository(
                 // Using lowerCase() to make the search case-insensitive.
                 // This could be removed if the database is configured to use a case-insensitive collation.
 
-                filterSet.firstName?.let { firstName ->
+                if (!filterSet.firstName.isNullOrBlank()) {
                     andWhere {
-                        EmployeeTable.firstName.lowerCase() like "%${firstName.lowercase()}%"
+                        EmployeeTable.firstName.lowerCase() like "%${filterSet.firstName.trim().lowercase()}%"
                     }
                 }
-                filterSet.lastName?.let { lastName ->
+                if (!filterSet.lastName.isNullOrBlank()) {
                     andWhere {
-                        EmployeeTable.lastName.lowerCase() like "%${lastName.lowercase()}%"
+                        EmployeeTable.lastName.lowerCase() like "%${filterSet.lastName.trim().lowercase()}%"
                     }
                 }
-                filterSet.workEmail?.let { workEmail ->
-                    if (workEmail.isNotEmpty()) {
-                        andWhere {
-                            EmployeeTable.workEmail.lowerCase() like "%${workEmail.lowercase()}%"
-                        }
+                if (!filterSet.workEmail.isNullOrBlank()) {
+                    andWhere {
+                        EmployeeTable.workEmail.lowerCase() like "%${filterSet.workEmail.trim().lowercase()}%"
                     }
                 }
-                filterSet.contactEmail?.let { contactEmail ->
-                    if (contactEmail.isNotEmpty()) {
-                        andWhere {
-                            ContactTable.email.lowerCase() like "%${contactEmail.lowercase()}%"
-                        }
+                if (!filterSet.contactEmail.isNullOrBlank()) {
+                    andWhere {
+                        ContactTable.email.lowerCase() like "%${filterSet.contactEmail.trim().lowercase()}%"
                     }
                 }
-                filterSet.honorific?.let { honorificList ->
-                    if (honorificList.isNotEmpty()) {
-                        andWhere {
-                            EmployeeTable.honorific inList honorificList
-                        }
+                if (!filterSet.honorific.isNullOrEmpty()) {
+                    andWhere {
+                        EmployeeTable.honorific inList filterSet.honorific
                     }
                 }
-                filterSet.maritalStatus?.let { maritalStatusList ->
-                    if (maritalStatusList.isNotEmpty()) {
-                        andWhere {
-                            EmployeeTable.maritalStatus inList maritalStatusList
-                        }
+                if (!filterSet.maritalStatus.isNullOrEmpty()) {
+                    andWhere {
+                        EmployeeTable.maritalStatus inList filterSet.maritalStatus
                     }
                 }
             }.paginate(pageable = pageable, transform = Employee)
