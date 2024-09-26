@@ -24,7 +24,7 @@ internal fun Route.searchEmployeeRoute() {
      * Search for employees given a search term. Can be partial.
      * @OpenAPITag Employee
      */
-    post("v1/employees/search/{term?}") {
+    get("v1/employees/search/{term?}") {
         val term: String = call.request.queryParameters.getOrFail(name = "term")
         val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(call.getContext()) }
         val employees: Page<Employee> = service.search(term = term, pageable = call.getPageable())
