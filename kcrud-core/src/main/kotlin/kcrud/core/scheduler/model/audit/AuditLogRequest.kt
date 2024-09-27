@@ -6,7 +6,7 @@ package kcrud.core.scheduler.model.audit
 
 import kcrud.core.scheduler.service.annotation.SchedulerAPI
 import kcrud.core.scheduler.service.task.TaskOutcome
-import kcrud.core.utils.KLocalDateTime
+import kotlinx.datetime.LocalDateTime
 
 /**
  * Represents a log request to be stored in the database.
@@ -23,7 +23,7 @@ import kcrud.core.utils.KLocalDateTime
 public data class AuditLogRequest(
     val taskName: String,
     val taskGroup: String,
-    val fireTime: KLocalDateTime,
+    val fireTime: LocalDateTime,
     val runTime: Long,
     val outcome: TaskOutcome,
     val log: String?,

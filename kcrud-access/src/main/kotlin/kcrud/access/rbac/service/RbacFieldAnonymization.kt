@@ -5,9 +5,9 @@
 package kcrud.access.rbac.service
 
 import kcrud.access.rbac.model.base.BaseRbac
-import kcrud.core.utils.KLocalDate
-import kcrud.core.utils.KLocalDateTime
-import kcrud.core.utils.KLocalTime
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
 
 /**
  * Utility class to anonymize fields based on their type.
@@ -35,9 +35,9 @@ public object RbacFieldAnonymization {
     private const val ANONYMIZED_LONG: Long = Long.MIN_VALUE
     private const val ANONYMIZED_DOUBLE: Double = Double.MIN_VALUE
     private const val ANONYMIZED_FLOAT: Float = Float.MIN_VALUE
-    private val ANONYMIZED_DATE: KLocalDate = KLocalDate(year = 1900, monthNumber = 1, dayOfMonth = 1)
-    private val ANONYMIZED_TIME: KLocalTime = KLocalTime(hour = 0, minute = 0, second = 0, nanosecond = 0)
-    private val ANONYMIZED_DATE_TIME: KLocalDateTime = KLocalDateTime(date = ANONYMIZED_DATE, time = ANONYMIZED_TIME)
+    private val ANONYMIZED_DATE: LocalDate = LocalDate(year = 1900, monthNumber = 1, dayOfMonth = 1)
+    private val ANONYMIZED_TIME: LocalTime = LocalTime(hour = 0, minute = 0, second = 0, nanosecond = 0)
+    private val ANONYMIZED_DATE_TIME: LocalDateTime = LocalDateTime(date = ANONYMIZED_DATE, time = ANONYMIZED_TIME)
 
     /**
      * Internal method to replace the value of a field with a placeholder based on the field's type.
@@ -52,9 +52,9 @@ public object RbacFieldAnonymization {
             is Long -> ANONYMIZED_LONG
             is Double -> ANONYMIZED_DOUBLE
             is Float -> ANONYMIZED_FLOAT
-            is KLocalDate -> ANONYMIZED_DATE
-            is KLocalTime -> ANONYMIZED_TIME
-            is KLocalDateTime -> ANONYMIZED_DATE_TIME
+            is LocalDate -> ANONYMIZED_DATE
+            is LocalTime -> ANONYMIZED_TIME
+            is LocalDateTime -> ANONYMIZED_DATE_TIME
             is List<*> -> emptyList<Any?>() // Return an empty list regardless of the element type.
             else -> value
         }
@@ -73,9 +73,9 @@ public object RbacFieldAnonymization {
             is Long -> value == ANONYMIZED_LONG
             is Double -> value == ANONYMIZED_DOUBLE
             is Float -> value == ANONYMIZED_FLOAT
-            is KLocalDate -> value == ANONYMIZED_DATE
-            is KLocalTime -> value == ANONYMIZED_TIME
-            is KLocalDateTime -> value == ANONYMIZED_DATE_TIME
+            is LocalDate -> value == ANONYMIZED_DATE
+            is LocalTime -> value == ANONYMIZED_TIME
+            is LocalDateTime -> value == ANONYMIZED_DATE_TIME
             else -> false
         }
     }

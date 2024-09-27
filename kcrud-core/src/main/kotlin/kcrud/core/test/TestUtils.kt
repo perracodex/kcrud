@@ -10,8 +10,9 @@ import kcrud.core.database.schema.employee.EmployeeTable
 import kcrud.core.database.service.DatabaseService
 import kcrud.core.persistence.model.Period
 import kcrud.core.settings.AppSettings
-import kcrud.core.utils.DateTimeUtils
-import kcrud.core.utils.KLocalDate
+import kcrud.core.utils.DateTimeUtils.current
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
 import org.koin.core.context.GlobalContext
 import org.koin.core.context.stopKoin
 import org.koin.core.module.Module
@@ -78,11 +79,11 @@ public object TestUtils {
     /**
      * Generates a random email.
      */
-    public fun randomDob(): KLocalDate {
+    public fun randomDob(): LocalDate {
         val year: Int = (1960..2000).random()
         val month: Int = (1..12).random()
         val day: Int = (1..28).random()
-        return KLocalDate(year = year, monthNumber = month, dayOfMonth = day)
+        return LocalDate(year = year, monthNumber = month, dayOfMonth = day)
     }
 
     /**
@@ -90,17 +91,17 @@ public object TestUtils {
      *
      * @param threshold The threshold date to start generating [Period]s from.
      */
-    public fun randomPeriod(threshold: KLocalDate): Period {
+    public fun randomPeriod(threshold: LocalDate): Period {
         val startYear: Int = threshold.year + 18 + Random.nextInt(from = 0, until = 5)
         val startMonth: Int = Random.nextInt(from = 1, until = 13)
         val startDay: Int = Random.nextInt(from = 1, until = 29)
-        val startDate: KLocalDate = KLocalDate(year = startYear, monthNumber = startMonth, dayOfMonth = startDay)
+        val startDate = LocalDate(year = startYear, monthNumber = startMonth, dayOfMonth = startDay)
 
         // Give 80% chance for isActive to be true.
         val isActive: Boolean = Random.nextInt(from = 0, until = 100) < 80
 
-        val endDate: KLocalDate? = if (!isActive) {
-            KLocalDate(
+        val endDate: LocalDate? = if (!isActive) {
+            LocalDate(
                 year = startYear + Random.nextInt(from = 1, until = 5),
                 monthNumber = Random.nextInt(from = 1, until = 13),
                 dayOfMonth = Random.nextInt(from = 1, until = 29)
@@ -133,7 +134,7 @@ public object TestUtils {
  */
 private object PhoneNumberGenerator {
     private val usedNumbers = ConcurrentHashMap<String, Boolean>()
-    private val random: Random = Random(DateTimeUtils.utcDateTime().toEpochMilliseconds())
+    private val random: Random = Random(Instant.current().toEpochMilliseconds())
     private val areaCodes: List<Int> = listOf(212, 310, 415, 512, 607, 702)
     private val lock = Any()
 

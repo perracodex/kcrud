@@ -7,8 +7,8 @@ package kcrud.domain.employment.model
 import kcrud.core.database.schema.employment.types.EmploymentStatus
 import kcrud.core.database.schema.employment.types.WorkModality
 import kcrud.core.persistence.model.Period
-import kcrud.core.utils.KLocalDate
 import kcrud.domain.employment.errors.EmploymentError
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 
 /**
@@ -24,7 +24,7 @@ import kotlinx.serialization.Serializable
 public data class EmploymentRequest(
     val period: Period,
     val status: EmploymentStatus,
-    val probationEndDate: KLocalDate? = null,
+    val probationEndDate: LocalDate? = null,
     val workModality: WorkModality,
     val sensitiveData: String? = null
 ) {

@@ -6,7 +6,7 @@ package kcrud.domain.employment.errors
 
 import io.ktor.http.*
 import kcrud.core.errors.AppException
-import kcrud.core.utils.KLocalDate
+import kotlinx.datetime.LocalDate
 import kotlin.uuid.Uuid
 
 /**
@@ -100,8 +100,8 @@ internal sealed class EmploymentError(
     class PeriodDatesMismatch(
         employeeId: Uuid,
         employmentId: Uuid?,
-        startDate: KLocalDate,
-        endDate: KLocalDate,
+        startDate: LocalDate,
+        endDate: LocalDate,
         field: String? = null,
         reason: String? = null,
         cause: Throwable? = null
@@ -139,8 +139,8 @@ internal sealed class EmploymentError(
     class InvalidProbationEndDate(
         employeeId: Uuid,
         employmentId: Uuid?,
-        startDate: KLocalDate,
-        probationEndDate: KLocalDate,
+        startDate: LocalDate,
+        probationEndDate: LocalDate,
         field: String? = null,
         reason: String? = null,
         cause: Throwable? = null

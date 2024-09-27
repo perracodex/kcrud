@@ -5,7 +5,7 @@
 package kcrud.core.persistence.model
 
 import kcrud.core.database.schema.base.PeriodTable
-import kcrud.core.utils.KLocalDate
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 
@@ -20,8 +20,8 @@ import org.jetbrains.exposed.sql.ResultRow
 @Serializable
 public data class Period(
     val isActive: Boolean,
-    val startDate: KLocalDate,
-    val endDate: KLocalDate?,
+    val startDate: LocalDate,
+    val endDate: LocalDate?,
     val comments: String?
 ) {
     public companion object {

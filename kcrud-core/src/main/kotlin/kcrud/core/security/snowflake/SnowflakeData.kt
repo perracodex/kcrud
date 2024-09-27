@@ -4,7 +4,7 @@
 
 package kcrud.core.security.snowflake
 
-import kcrud.core.utils.KLocalDateTime
+import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 
 /**
@@ -25,6 +25,6 @@ import kotlinx.serialization.Serializable
 public data class SnowflakeData(
     val machineId: Int,
     val sequence: Long,
-    val utc: KLocalDateTime,
-    val local: KLocalDateTime
+    val utc: LocalDateTime,
+    val local: LocalDateTime
 )

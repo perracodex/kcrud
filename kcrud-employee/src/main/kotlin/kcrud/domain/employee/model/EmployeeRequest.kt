@@ -7,9 +7,9 @@ package kcrud.domain.employee.model
 import kcrud.core.database.schema.employee.types.Honorific
 import kcrud.core.database.schema.employee.types.MaritalStatus
 import kcrud.core.persistence.serializers.NoBlankString
-import kcrud.core.utils.KLocalDate
 import kcrud.domain.contact.model.ContactRequest
 import kcrud.domain.employee.errors.EmployeeError
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 
 /**
@@ -38,7 +38,7 @@ public data class EmployeeRequest(
     val firstName: NoBlankString,
     val lastName: NoBlankString,
     val workEmail: NoBlankString,
-    val dob: KLocalDate,
+    val dob: LocalDate,
     val maritalStatus: MaritalStatus,
     val honorific: Honorific,
     val contact: ContactRequest? = null

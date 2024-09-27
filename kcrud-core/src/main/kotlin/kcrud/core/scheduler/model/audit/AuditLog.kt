@@ -8,7 +8,7 @@ import kcrud.core.database.schema.scheduler.SchedulerAuditTable
 import kcrud.core.persistence.model.Meta
 import kcrud.core.plugins.Uuid
 import kcrud.core.scheduler.service.task.TaskOutcome
-import kcrud.core.utils.KLocalDateTime
+import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 
@@ -30,7 +30,7 @@ public data class AuditLog(
     val id: Uuid,
     val taskName: String,
     val taskGroup: String,
-    val fireTime: KLocalDateTime,
+    val fireTime: LocalDateTime,
     val runTime: Long,
     val outcome: TaskOutcome,
     val log: String?,

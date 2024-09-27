@@ -4,7 +4,7 @@
 
 package kcrud.core.scheduler.service.schedule
 
-import kcrud.core.utils.KLocalDateTime
+import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 
 /**
@@ -40,7 +40,7 @@ import kotlinx.serialization.Serializable
 @Serializable(ScheduleSerializer::class)
 public sealed class Schedule {
     /** Optional datetime when the task must start. Null to start immediately. */
-    public abstract val start: KLocalDateTime?
+    public abstract val start: LocalDateTime?
 
     /**
      * Represents a schedule for a task using a fixed interval.
@@ -53,7 +53,7 @@ public sealed class Schedule {
      */
     @Serializable
     public data class Interval(
-        override val start: KLocalDateTime? = null,
+        override val start: LocalDateTime? = null,
         val days: UInt = 0u,
         val hours: UInt = 0u,
         val minutes: UInt = 0u,
@@ -105,7 +105,7 @@ public sealed class Schedule {
      */
     @Serializable
     public data class Cron(
-        override val start: KLocalDateTime? = null,
+        override val start: LocalDateTime? = null,
         val cron: String
     ) : Schedule() {
         init {

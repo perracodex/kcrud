@@ -12,8 +12,8 @@ import kcrud.core.database.schema.employee.types.MaritalStatus
 import kcrud.core.persistence.model.Meta
 import kcrud.core.plugins.Uuid
 import kcrud.core.utils.DateTimeUtils.age
-import kcrud.core.utils.KLocalDate
 import kcrud.domain.contact.model.Contact
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 
@@ -39,7 +39,7 @@ public data class Employee(
     val lastName: String,
     val fullName: String,
     val workEmail: String,
-    val dob: KLocalDate,
+    val dob: LocalDate,
     val age: Int,
     val maritalStatus: MaritalStatus,
     val honorific: Honorific,
@@ -52,7 +52,7 @@ public data class Employee(
                 Contact.from(row = row)
             }
 
-            val dob: KLocalDate = row[EmployeeTable.dob]
+            val dob: LocalDate = row[EmployeeTable.dob]
             val firstName: String = row[EmployeeTable.firstName]
             val lastName: String = row[EmployeeTable.lastName]
 

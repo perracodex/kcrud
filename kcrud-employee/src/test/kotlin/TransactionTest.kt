@@ -12,13 +12,13 @@ import kcrud.core.database.schema.employee.types.Honorific
 import kcrud.core.database.schema.employee.types.MaritalStatus
 import kcrud.core.errors.validators.base.ValidationException
 import kcrud.core.test.TestUtils
-import kcrud.core.utils.KLocalDate
 import kcrud.domain.contact.model.ContactRequest
 import kcrud.domain.contact.repository.IContactRepository
 import kcrud.domain.employee.di.EmployeeDomainInjection
 import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.repository.IEmployeeRepository
 import kcrud.domain.employee.test.EmployeeTestUtils
+import kotlinx.datetime.LocalDate
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.koin.core.component.KoinComponent
@@ -153,7 +153,7 @@ class TransactionTest : KoinComponent {
                     val invalidEmployeeRequest = EmployeeRequest(
                         firstName = "AnyName",
                         lastName = "AnySurname",
-                        dob = KLocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1),
+                        dob = LocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1),
                         workEmail = "X".repeat(100), // Invalid email length..
                         honorific = Honorific.MR,
                         maritalStatus = MaritalStatus.SINGLE,

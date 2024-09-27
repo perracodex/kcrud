@@ -13,7 +13,7 @@ import kcrud.core.database.schema.employee.EmployeeTable
 import kcrud.core.database.schema.employment.types.EmploymentStatus
 import kcrud.core.database.schema.employment.types.WorkModality
 import kcrud.core.security.utils.EncryptionUtils
-import kcrud.core.utils.KLocalDate
+import kotlinx.datetime.LocalDate
 import org.jetbrains.exposed.crypt.Encryptor
 import org.jetbrains.exposed.crypt.encryptedVarchar
 import org.jetbrains.exposed.sql.Column
@@ -62,7 +62,7 @@ public object EmploymentTable : PeriodTable(name = "employment") {
     /**
      * The date the employment started.
      */
-    public val probationEndDate: Column<KLocalDate?> = date(
+    public val probationEndDate: Column<LocalDate?> = date(
         name = "probation_end_date"
     ).nullable()
 

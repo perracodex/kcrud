@@ -11,8 +11,8 @@ import kcrud.core.database.schema.employment.types.WorkModality
 import kcrud.core.persistence.model.Meta
 import kcrud.core.persistence.model.Period
 import kcrud.core.plugins.Uuid
-import kcrud.core.utils.KLocalDate
 import kcrud.domain.employee.model.Employee
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow
 
@@ -33,7 +33,7 @@ public data class Employment(
     val id: Uuid,
     val period: Period,
     val status: EmploymentStatus,
-    val probationEndDate: KLocalDate?,
+    val probationEndDate: LocalDate?,
     val workModality: WorkModality,
     val sensitiveData: String?,
     val employee: Employee,

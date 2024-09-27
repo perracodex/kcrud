@@ -6,8 +6,8 @@ package kcrud.core.security.snowflake
 
 import kcrud.core.env.Tracer
 import kcrud.core.utils.DateTimeUtils
-import kcrud.core.utils.KInstant
-import kcrud.core.utils.KLocalDateTime
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Duration.Companion.nanoseconds
@@ -170,11 +170,11 @@ public object SnowflakeFactory {
 
         // Extract the timestamp segment.
         val timestampMs: Long = (normalizedId ushr (MACHINE_ID_BITS + SEQUENCE_BITS))
-        val instant: KInstant = KInstant.fromEpochMilliseconds(epochMilliseconds = timestampMs)
-        val utcTimestampSegment: KLocalDateTime = instant.toLocalDateTime(timeZone = TimeZone.UTC)
+        val instant: Instant = Instant.fromEpochMilliseconds(epochMilliseconds = timestampMs)
+        val utcTimestampSegment: LocalDateTime = instant.toLocalDateTime(timeZone = TimeZone.UTC)
 
         // Convert the timestamp to LocalDateTime using the system's default timezone.
-        val localTimestampSegment: KLocalDateTime = instant.toLocalDateTime(timeZone = DateTimeUtils.timezone())
+        val localTimestampSegment: LocalDateTime = instant.toLocalDateTime(timeZone = DateTimeUtils.timezone())
 
         // Extract the sequence number segment.
         val sequenceSegment: Long = normalizedId and MAX_SEQUENCE

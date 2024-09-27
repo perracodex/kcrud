@@ -8,9 +8,9 @@ import io.ktor.server.application.*
 import kcrud.core.env.EnvironmentType
 import kcrud.core.env.health.annotation.HealthCheckAPI
 import kcrud.core.settings.AppSettings
-import kcrud.core.utils.DateTimeUtils
-import kcrud.core.utils.KLocalDateTime
+import kcrud.core.utils.DateTimeUtils.current
 import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 
 /**
@@ -31,15 +31,15 @@ public data class RuntimeCheck(
     val environment: EnvironmentType,
     val developmentModeEnabled: Boolean,
     val utc: Instant,
-    val local: KLocalDateTime,
+    val local: LocalDateTime,
 ) {
     internal constructor(call: ApplicationCall) : this(
         errors = mutableListOf(),
         machineId = AppSettings.runtime.machineId,
         environment = AppSettings.runtime.environment,
         developmentModeEnabled = call.application.developmentMode,
-        utc = DateTimeUtils.utcDateTime(),
-        local = DateTimeUtils.currentDateTime()
+        utc = Instant.current(),
+        local = LocalDateTime.current()
     )
 
     init {

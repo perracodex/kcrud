@@ -15,7 +15,6 @@ import kcrud.core.database.schema.employee.types.MaritalStatus
 import kcrud.core.persistence.model.Meta
 import kcrud.core.test.TestUtils
 import kcrud.core.utils.DateTimeUtils.age
-import kcrud.core.utils.KLocalDate
 import kcrud.domain.contact.model.Contact
 import kcrud.domain.employee.di.EmployeeDomainInjection
 import kcrud.domain.employee.model.Employee
@@ -25,6 +24,7 @@ import kcrud.domain.employee.service.EmployeeService
 import kcrud.domain.employee.test.EmployeeTestUtils
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -58,7 +58,7 @@ class EmployeeServiceTest : KoinComponent {
             Honorific.entries.forEach { honorific ->
 
                 val timestamp: Instant = Clock.System.now()
-                val dob: KLocalDate = KLocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1 + index)
+                val dob = LocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1 + index)
                 val firstName = "AnyName_$index"
                 val lastName = "AnySurname_$index"
                 val employeeId: Uuid = Uuid.random()
@@ -135,7 +135,7 @@ class EmployeeServiceTest : KoinComponent {
                     firstName = "AnyName_$index",
                     lastName = "AnySurname_$index",
                     workEmail = "AnyName.AnySurname.$index@work.com",
-                    dob = KLocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1 + index),
+                    dob = LocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1 + index),
                     honorific = Honorific.MR,
                     maritalStatus = maritalStatus
                 )

@@ -4,7 +4,7 @@
 
 package kcrud.core.scheduler.service.schedule
 
-import kcrud.core.utils.KLocalDateTime
+import kotlinx.datetime.LocalDateTime
 import kotlin.time.Duration
 
 /**
@@ -22,7 +22,7 @@ public sealed class TaskStartAt {
      *
      * @property datetime The date and time at which the task should start.
      */
-    public data class AtDateTime(val datetime: KLocalDateTime) : TaskStartAt()
+    public data class AtDateTime(val datetime: LocalDateTime) : TaskStartAt()
 
     /**
      * Data class representing a duration from the current time.

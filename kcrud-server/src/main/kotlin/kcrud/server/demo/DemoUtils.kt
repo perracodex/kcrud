@@ -8,7 +8,6 @@ import kcrud.core.database.schema.employment.types.EmploymentStatus
 import kcrud.core.database.schema.employment.types.WorkModality
 import kcrud.core.persistence.model.Period
 import kcrud.core.test.TestUtils
-import kcrud.core.utils.KLocalDate
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.service.EmployeeService
@@ -17,6 +16,7 @@ import kcrud.domain.employment.model.EmploymentRequest
 import kcrud.domain.employment.service.EmploymentService
 import kotlinx.coroutines.*
 import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.plus
 import kotlin.random.Random
 
@@ -64,7 +64,7 @@ internal object DemoUtils {
 
     private fun newEmploymentRequest(employee: Employee): EmploymentRequest {
         val period: Period = TestUtils.randomPeriod(threshold = employee.dob)
-        val probationEndDate: KLocalDate = period.startDate.plus(
+        val probationEndDate: LocalDate = period.startDate.plus(
             value = Random.nextInt(from = 3, until = 6),
             unit = DateTimeUnit.MONTH
         )

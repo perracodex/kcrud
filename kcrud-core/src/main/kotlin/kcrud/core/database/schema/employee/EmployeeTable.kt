@@ -12,7 +12,7 @@ import kcrud.core.database.schema.base.TimestampedTable
 import kcrud.core.database.schema.employee.types.Honorific
 import kcrud.core.database.schema.employee.types.MaritalStatus
 import kcrud.core.errors.validators.EmailValidator
-import kcrud.core.utils.KLocalDate
+import kotlinx.datetime.LocalDate
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.date
@@ -63,7 +63,7 @@ public object EmployeeTable : TimestampedTable(name = "employee") {
     /**
      * The employee's date of birth.
      */
-    public val dob: Column<KLocalDate> = date(
+    public val dob: Column<LocalDate> = date(
         name = "dob"
     )
 

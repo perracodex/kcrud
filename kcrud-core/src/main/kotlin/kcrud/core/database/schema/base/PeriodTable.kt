@@ -4,7 +4,7 @@
 
 package kcrud.core.database.schema.base
 
-import kcrud.core.utils.KLocalDate
+import kotlinx.datetime.LocalDate
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.kotlin.datetime.date
 
@@ -22,12 +22,12 @@ public abstract class PeriodTable(name: String) : TimestampedTable(name = name) 
     )
 
     /** The date when the period started. */
-    public val startDate: Column<KLocalDate> = date(
+    public val startDate: Column<LocalDate> = date(
         name = "start_date"
     )
 
     /** Optional date when the period ended; null if ongoing. */
-    public val endDate: Column<KLocalDate?> = date(
+    public val endDate: Column<LocalDate?> = date(
         name = "end_date"
     ).nullable()
 

@@ -13,13 +13,13 @@ import kcrud.core.context.SessionContext
 import kcrud.core.database.schema.employee.types.Honorific
 import kcrud.core.database.schema.employee.types.MaritalStatus
 import kcrud.core.test.TestUtils
-import kcrud.core.utils.KLocalDate
 import kcrud.domain.employee.di.EmployeeDomainInjection
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.repository.IEmployeeRepository
 import kcrud.domain.employee.service.EmployeeService
 import kcrud.domain.employee.test.EmployeeTestUtils
+import kotlinx.datetime.LocalDate
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -451,7 +451,7 @@ class PaginationTest : KoinComponent {
                     firstName = name,
                     lastName = "Surname_$index",
                     workEmail = "$name.surname_$index@work.com",
-                    dob = KLocalDate(year = 2000, monthNumber = 1, dayOfMonth = (index % 28) + 1), // Ensure valid day of month.
+                    dob = LocalDate(year = 2000, monthNumber = 1, dayOfMonth = (index % 28) + 1), // Ensure valid day of month.
                     honorific = Honorific.entries.random(),
                     maritalStatus = MaritalStatus.entries.random()
                 )
@@ -533,7 +533,7 @@ class PaginationTest : KoinComponent {
                     firstName = name,
                     lastName = "Surname_$index",
                     workEmail = "$name.surname_$index@work.com",
-                    dob = KLocalDate(year = 2000, monthNumber = 1, dayOfMonth = (index % 28) + 1),
+                    dob = LocalDate(year = 2000, monthNumber = 1, dayOfMonth = (index % 28) + 1),
                     honorific = Honorific.MS,
                     maritalStatus = MaritalStatus.SINGLE
                 )
@@ -575,9 +575,9 @@ class PaginationTest : KoinComponent {
 
                     "dob" -> {
                         if (sortOrder == Pageable.Direction.ASC) {
-                            createdEmployees.sortedBy { it.getSortValue(sortField) as KLocalDate }
+                            createdEmployees.sortedBy { it.getSortValue(sortField) as LocalDate }
                         } else {
-                            createdEmployees.sortedByDescending { it.getSortValue(sortField) as KLocalDate }
+                            createdEmployees.sortedByDescending { it.getSortValue(sortField) as LocalDate }
                         }
                     }
 
