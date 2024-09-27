@@ -10,12 +10,15 @@ import kcrud.core.settings.config.sections.DeploymentSettings
 import kotlin.reflect.KClass
 
 /**
- * Maps a configuration path to a data class type.
+ * Represents a mapping between a configuration path in the configuration file
+ * and a corresponding data class to which the configuration values will be mapped.
  *
- * @property mappingName The corresponding name of the property in the [ConfigurationCatalog] class,
- *                       to which the configuration values will be mapped to.
- * @property path The section in the configuration file, i.e. "ktor.deployment".
- * @property kClass The target data class type which will map the configuration, i.e. [DeploymentSettings].
+ * Each instance of this class defines how a specific section of the configuration
+ * file is mapped to a property within the [ConfigurationCatalog].
+ *
+ * @property mappingName The name of the property in the [ConfigurationCatalog] where to map into.
+ * @property path The hierarchical path in the configuration file (e.g., `"ktor.deployment"`) from which the settings are loaded.
+ * @property kClass The [KClass] of the data class that represents the configuration section (e.g., [DeploymentSettings]).
  *
  * @see [ConfigurationCatalog]
  */
