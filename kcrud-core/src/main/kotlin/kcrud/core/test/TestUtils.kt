@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.core.utils
+package kcrud.core.test
 
 import io.ktor.server.config.*
 import kcrud.core.database.schema.contact.ContactTable
@@ -10,7 +10,9 @@ import kcrud.core.database.schema.employee.EmployeeTable
 import kcrud.core.database.service.DatabaseService
 import kcrud.core.persistence.model.Period
 import kcrud.core.settings.AppSettings
-import org.koin.core.context.GlobalContext.startKoin
+import kcrud.core.utils.DateTimeUtils
+import kcrud.core.utils.KLocalDate
+import org.koin.core.context.GlobalContext
 import org.koin.core.context.stopKoin
 import org.koin.core.module.Module
 import java.io.File
@@ -47,7 +49,7 @@ public object TestUtils {
      * @param modules The modules to load.
      */
     public fun setupKoin(modules: List<Module> = emptyList()) {
-        startKoin {
+        GlobalContext.startKoin {
             modules(modules)
         }
     }
@@ -135,6 +137,11 @@ private object PhoneNumberGenerator {
     private val areaCodes: List<Int> = listOf(212, 310, 415, 512, 607, 702)
     private val lock = Any()
 
+    /**
+     * Generates a random unique US phone number.
+     *
+     * @return A random unique US phone number.
+     */
     fun generateUniqueUSPhoneNumber(): String {
         return synchronized(lock) {
             var phoneNumber: String

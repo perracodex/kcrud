@@ -2,12 +2,12 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.domain.employee.utils
+package kcrud.domain.employee.test
 
 import kcrud.core.database.schema.employee.types.Honorific
 import kcrud.core.database.schema.employee.types.MaritalStatus
 import kcrud.core.security.snowflake.SnowflakeFactory
-import kcrud.core.utils.TestUtils
+import kcrud.core.test.TestUtils
 import kcrud.domain.contact.model.ContactRequest
 import kcrud.domain.employee.model.EmployeeRequest
 

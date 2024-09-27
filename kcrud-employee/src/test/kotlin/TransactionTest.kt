@@ -10,14 +10,15 @@ import kcrud.access.rbac.di.RbacDomainInjection
 import kcrud.core.context.SessionContext
 import kcrud.core.database.schema.employee.types.Honorific
 import kcrud.core.database.schema.employee.types.MaritalStatus
+import kcrud.core.errors.validators.base.ValidationException
+import kcrud.core.test.TestUtils
 import kcrud.core.utils.KLocalDate
-import kcrud.core.utils.TestUtils
 import kcrud.domain.contact.model.ContactRequest
 import kcrud.domain.contact.repository.IContactRepository
 import kcrud.domain.employee.di.EmployeeDomainInjection
 import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.repository.IEmployeeRepository
-import kcrud.domain.employee.utils.EmployeeTestUtils
+import kcrud.domain.employee.test.EmployeeTestUtils
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.koin.core.component.KoinComponent
@@ -31,7 +32,13 @@ class TransactionTest : KoinComponent {
     fun setUp() {
         TestUtils.loadSettings()
         TestUtils.setupDatabase()
-        TestUtils.setupKoin(modules = listOf(RbacDomainInjection.get(), ActorDomainInjection.get(), EmployeeDomainInjection.get()))
+        TestUtils.setupKoin(
+            modules = listOf(
+                RbacDomainInjection.get(),
+                ActorDomainInjection.get(),
+                EmployeeDomainInjection.get()
+            )
+        )
     }
 
     @AfterTest
@@ -128,12 +135,10 @@ class TransactionTest : KoinComponent {
             parameters = { parametersOf(sessionContext) }
         )
 
-        // Create an employee with a valid contact detail.
-        val employeeRequest: EmployeeRequest = EmployeeTestUtils.newEmployeeRequest()
-
-        assertFailsWith<IllegalArgumentException> {
+        assertFailsWith<ValidationException> {
             transaction {
-                employeeRepository.create(request = employeeRequest)
+                // Create an employee with a valid contact detail.
+                employeeRepository.create(request = EmployeeTestUtils.newEmployeeRequest())
 
                 assertEquals(
                     expected = 1,
@@ -145,38 +150,21 @@ class TransactionTest : KoinComponent {
                 // Done in an even one more nested transaction to test how it behaves.
                 // Expected all the transaction tree to be rolled back.
                 transaction {
-                    assertFailsWith<IllegalArgumentException> {
-                        val invalidEmployeeRequest = EmployeeRequest(
-                            firstName = "AnyName",
-                            lastName = "AnySurname",
-                            dob = KLocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1),
-                            workEmail = "X".repeat(100), // Invalid email length..
-                            honorific = Honorific.MR,
-                            maritalStatus = MaritalStatus.SINGLE,
-                            contact = ContactRequest(
-                                email = "X".repeat(100), // Invalid email length..
-                                phone = "X".repeat(100), // Invalid phone length.
-                            )
+                    val invalidEmployeeRequest = EmployeeRequest(
+                        firstName = "AnyName",
+                        lastName = "AnySurname",
+                        dob = KLocalDate(year = 2000, monthNumber = 1, dayOfMonth = 1),
+                        workEmail = "X".repeat(100), // Invalid email length..
+                        honorific = Honorific.MR,
+                        maritalStatus = MaritalStatus.SINGLE,
+                        contact = ContactRequest(
+                            email = "X".repeat(100), // Invalid email length..
+                            phone = "X".repeat(100), // Invalid phone length.
                         )
+                    )
 
-                        employeeRepository.create(request = invalidEmployeeRequest)
-                    }
+                    employeeRepository.create(request = invalidEmployeeRequest)
                 }
-
-                // The transaction will get rollback only after the top-most transaction block is finished.
-                assertEquals(
-                    expected = 2,
-                    actual = employeeRepository.count(),
-                    message = "There must be 2 employees in the database."
-                )
-                assertEquals(
-                    expected = 1,
-                    actual = contactRepository.count(),
-                    message = "There must be 1 contact in the database."
-                )
-
-                // Throw an exception to force the rollback.
-                throw IllegalArgumentException("Invalid contact detail.")
             }
         }
 

@@ -10,12 +10,12 @@ import kcrud.access.rbac.di.RbacDomainInjection
 import kcrud.core.context.SessionContext
 import kcrud.core.database.schema.employee.types.Honorific
 import kcrud.core.database.schema.employee.types.MaritalStatus
-import kcrud.core.utils.TestUtils
+import kcrud.core.test.TestUtils
 import kcrud.domain.employee.di.EmployeeDomainInjection
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.service.EmployeeService
-import kcrud.domain.employee.utils.EmployeeTestUtils
+import kcrud.domain.employee.test.EmployeeTestUtils
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -35,7 +35,13 @@ class StressTest : KoinComponent {
     fun setUp() {
         TestUtils.loadSettings()
         TestUtils.setupDatabase()
-        TestUtils.setupKoin(modules = listOf(RbacDomainInjection.get(), ActorDomainInjection.get(), EmployeeDomainInjection.get()))
+        TestUtils.setupKoin(
+            modules = listOf(
+                RbacDomainInjection.get(),
+                ActorDomainInjection.get(),
+                EmployeeDomainInjection.get()
+            )
+        )
     }
 
     @AfterTest

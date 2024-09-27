@@ -4,7 +4,7 @@
 
 @file:Suppress("ExposedReference")
 
-import kcrud.core.utils.TestUtils
+import kcrud.core.test.TestUtils
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import kotlin.test.AfterTest

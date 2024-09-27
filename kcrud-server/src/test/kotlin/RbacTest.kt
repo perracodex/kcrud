@@ -9,14 +9,14 @@ import io.ktor.server.testing.*
 import io.ktor.test.dispatcher.*
 import io.mockk.every
 import io.mockk.mockk
-import kcrud.access.utils.RbacTestUtils
+import kcrud.access.test.RbacTestUtils
 import kcrud.core.context.SessionContext
 import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.core.utils.TestUtils
+import kcrud.core.test.TestUtils
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.service.EmployeeService
-import kcrud.domain.employee.utils.EmployeeTestUtils
+import kcrud.domain.employee.test.EmployeeTestUtils
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
@@ -125,7 +125,12 @@ class RbacTest : KoinComponent {
             val createdEmployeeId: Uuid = createEmployee().id
 
             // Iterate over each endpoint and method pair, along with their expected outcomes.
-            for ((endpointTemplate, requestMethod, testOutcomes) in endpointsAndExpectedOutcomes) {
+            for (endpointData in endpointsAndExpectedOutcomes) {
+                val (
+                    endpointTemplate: String,
+                    requestMethod: String,
+                    testOutcomes: Map<RbacAccessLevel, HttpStatusCode>
+                ) = endpointData
 
                 // Update the target endpoint by replacing its placeholder with the actual employee ID.
                 // This is necessary for the GET, PUT, and DELETE operations.
@@ -138,7 +143,10 @@ class RbacTest : KoinComponent {
                 testOutcomes.forEach { (accessLevel, expectedStatus) ->
 
                     // Create a unique Actor for each test case to ensure clear RBAC role assignments.
-                    val authToken: String = RbacTestUtils.newAuthenticationToken(accessLevel = accessLevel, testIteration = testIteration)
+                    val authToken: String = RbacTestUtils.newAuthenticationToken(
+                        accessLevel = accessLevel,
+                        testIteration = testIteration
+                    )
                     testIteration++
                     assertNotNull(actual = authToken, message = "Auth token should not be null")
 

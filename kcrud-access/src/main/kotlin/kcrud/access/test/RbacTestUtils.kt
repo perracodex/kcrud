@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.access.utils
+package kcrud.access.test
 
 import kcrud.access.actor.model.Actor
 import kcrud.access.actor.model.ActorRequest

@@ -9,7 +9,7 @@ import kcrud.core.scheduler.service.schedule.TaskStartAt
 import kcrud.core.scheduler.service.task.TaskConsumer
 import kcrud.core.scheduler.service.task.TaskDispatch
 import kcrud.core.scheduler.service.task.TaskKey
-import kcrud.core.utils.TestUtils
+import kcrud.core.test.TestUtils
 import kotlinx.coroutines.delay
 import org.quartz.*
 import kotlin.test.AfterTest

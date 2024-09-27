@@ -6,12 +6,12 @@ import io.ktor.test.dispatcher.*
 import io.mockk.every
 import io.mockk.mockk
 import kcrud.core.context.SessionContext
-import kcrud.core.utils.TestUtils
+import kcrud.core.test.TestUtils
 import kcrud.domain.employee.di.EmployeeDomainInjection
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.repository.IEmployeeRepository
-import kcrud.domain.employee.utils.EmployeeTestUtils
+import kcrud.domain.employee.test.EmployeeTestUtils
 import kotlinx.datetime.Instant
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

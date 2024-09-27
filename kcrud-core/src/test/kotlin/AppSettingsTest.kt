@@ -3,7 +3,7 @@
  */
 
 import kcrud.core.settings.AppSettings
-import kcrud.core.utils.TestUtils
+import kcrud.core.test.TestUtils
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test

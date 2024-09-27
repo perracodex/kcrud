@@ -11,7 +11,7 @@ import kcrud.access.rbac.model.scope.RbacScopeRuleRequest
 import kcrud.access.rbac.service.RbacService
 import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.core.database.schema.admin.rbac.types.RbacScope
-import kcrud.core.utils.TestUtils
+import kcrud.core.test.TestUtils
 import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -28,7 +28,12 @@ class RbacRoleTest : KoinComponent {
     fun setUp() {
         TestUtils.loadSettings()
         TestUtils.setupDatabase()
-        TestUtils.setupKoin(modules = listOf(RbacDomainInjection.get(), ActorDomainInjection.get()))
+        TestUtils.setupKoin(
+            modules = listOf(
+                RbacDomainInjection.get(),
+                ActorDomainInjection.get()
+            )
+        )
     }
 
     @AfterTest

@@ -8,10 +8,10 @@ import io.ktor.http.*
 import io.ktor.server.testing.*
 import io.ktor.test.dispatcher.*
 import io.ktor.util.collections.*
-import kcrud.access.utils.RbacTestUtils
-import kcrud.core.utils.TestUtils
+import kcrud.access.test.RbacTestUtils
+import kcrud.core.test.TestUtils
 import kcrud.domain.employee.model.EmployeeRequest
-import kcrud.domain.employee.utils.EmployeeTestUtils
+import kcrud.domain.employee.test.EmployeeTestUtils
 import kotlinx.coroutines.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.*
