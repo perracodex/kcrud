@@ -46,9 +46,9 @@ internal object ConfigurationParser {
      * Represents the regex pattern used to split strings by the delimiter,
      * ensuring that delimiters within single quotes are ignored.
      */
-    private val SINGLE_STRING_ARRAY_REGEX_PATTERN: Regex = Regex(
-        pattern = "${Regex.escape(SINGLE_STRING_ARRAY_DELIMITER.toString())}(?=(?:[^']*'[^']*')*[^']*\$)"
-    )
+    private val SINGLE_STRING_ARRAY_REGEX_PATTERN: Regex by lazy {
+        Regex(pattern = "${Regex.escape(SINGLE_STRING_ARRAY_DELIMITER.toString())}(?=(?:[^']*'[^']*')*[^']*\$)")
+    }
 
     /**
      * Represents a mapping from a constructor parameter to its corresponding configuration value.
