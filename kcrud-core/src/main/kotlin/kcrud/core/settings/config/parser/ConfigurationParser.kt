@@ -8,7 +8,7 @@ import com.typesafe.config.ConfigException
 import io.ktor.server.config.*
 import kcrud.core.env.Tracer
 import kcrud.core.settings.annotation.ConfigurationAPI
-import kcrud.core.settings.config.ConfigurationCatalog
+import kcrud.core.settings.config.IConfigurationCatalog
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -63,19 +63,25 @@ internal object ConfigurationParser {
      * Top-level configurations are parsed concurrently.
      *
      * @param configuration The application configuration object to be parsed.
+     * @param catalogClass The class holding all the configuration groups. Must implement [IConfigurationCatalog].
      * @param configMappings Map of top-level configuration paths to their corresponding classes.
-     * @return A new [ConfigurationCatalog] object populated with the parsed configuration data.
+     * @return A new [catalogClass] instance populated with the parsed configuration data.
+     * @throws IllegalArgumentException if the primary constructor is missing in the [catalogClass],
+     * or any error occurs during the parsing process.
+     *
+     * @see IConfigurationCatalog
+     * @see IConfigSection
      */
-    suspend fun parse(
+    suspend fun <T : IConfigurationCatalog> parse(
         configuration: ApplicationConfig,
+        catalogClass: KClass<T>,
         configMappings: List<ConfigClassMap<out IConfigSection>>
-    ): ConfigurationCatalog {
-
+    ): T {
         // Retrieve the primary constructor of the ConfigurationCatalog class,
         // which will be used to instantiate the output object.
-        val configConstructor: KFunction<ConfigurationCatalog> = ConfigurationCatalog::class.primaryConstructor
+        val configConstructor: KFunction<T> = catalogClass.primaryConstructor
             ?: throw IllegalArgumentException(
-                "Primary constructor is required for ${ConfigurationCatalog::class.simpleName}."
+                "Primary constructor is required for ${catalogClass.simpleName}."
             )
 
         // Map each configuration path to its corresponding class,

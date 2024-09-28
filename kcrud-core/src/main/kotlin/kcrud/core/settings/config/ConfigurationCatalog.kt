@@ -33,4 +33,4 @@ internal data class ConfigurationCatalog(
     val deployment: DeploymentSettings,
     val runtime: RuntimeSettings,
     val security: SecuritySettings
-)
+) : IConfigurationCatalog
