@@ -2,10 +2,10 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.core.settings.config.catalog.sections.security.sections
+package kcrud.core.settings.catalog.sections.security.sections
 
-import kcrud.core.settings.config.catalog.sections.security.SecuritySettings
-import kcrud.core.settings.config.parser.IConfigSection
+import kcrud.core.settings.catalog.sections.security.SecuritySettings
+import kcrud.core.settings.parser.IConfigCatalogSection
 import kotlinx.serialization.Serializable
 
 /**
@@ -18,7 +18,7 @@ import kotlinx.serialization.Serializable
 public data class EncryptionSettings(
     val atRest: Spec,
     val atTransit: Spec
-) : IConfigSection {
+) : IConfigCatalogSection {
 
     /**
      * Configuration settings for a specific encryption.
@@ -34,7 +34,7 @@ public data class EncryptionSettings(
         val salt: String,
         val key: String,
         val sign: String
-    ) : IConfigSection {
+    ) : IConfigCatalogSection {
         init {
             require(algorithm.isNotBlank()) { "Missing encryption algorithm." }
             require(salt.isNotBlank()) { "Missing encryption salt." }

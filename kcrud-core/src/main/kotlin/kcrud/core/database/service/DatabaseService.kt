@@ -12,7 +12,7 @@ import kcrud.core.env.Tracer
 import kcrud.core.env.health.annotation.HealthCheckAPI
 import kcrud.core.env.health.checks.DatabaseCheck
 import kcrud.core.settings.AppSettings
-import kcrud.core.settings.config.catalog.sections.DatabaseSettings
+import kcrud.core.settings.catalog.sections.DatabaseSettings
 import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.DatabaseConfig

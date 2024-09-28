@@ -2,11 +2,11 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.core.settings.config.catalog
+package kcrud.core.settings.catalog
 
-import kcrud.core.settings.config.catalog.sections.*
-import kcrud.core.settings.config.catalog.sections.security.SecuritySettings
-import kcrud.core.settings.config.parser.IConfigCatalog
+import kcrud.core.settings.catalog.sections.*
+import kcrud.core.settings.catalog.sections.security.SecuritySettings
+import kcrud.core.settings.parser.IConfigCatalog
 import kotlinx.serialization.Serializable
 
 /**

@@ -2,10 +2,10 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.core.settings.config.catalog.sections
+package kcrud.core.settings.catalog.sections
 
 import kcrud.core.env.EnvironmentType
-import kcrud.core.settings.config.parser.IConfigSection
+import kcrud.core.settings.parser.IConfigCatalogSection
 import kotlinx.serialization.Serializable
 
 /**
@@ -44,4 +44,4 @@ public data class DatabaseSettings(
     val useMigrations: Boolean,
     val username: String? = null,
     val password: String? = null,
-) : IConfigSection
+) : IConfigCatalogSection

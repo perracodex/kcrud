@@ -9,7 +9,7 @@ import com.zaxxer.hikari.HikariDataSource
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
 import kcrud.core.database.annotation.DatabaseAPI
 import kcrud.core.database.utils.IsolationLevel
-import kcrud.core.settings.config.catalog.sections.DatabaseSettings
+import kcrud.core.settings.catalog.sections.DatabaseSettings
 
 @DatabaseAPI
 internal object DatabasePooling {

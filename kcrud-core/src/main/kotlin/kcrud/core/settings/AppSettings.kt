@@ -8,12 +8,12 @@ import io.ktor.server.config.*
 import kcrud.core.env.Tracer
 import kcrud.core.settings.AppSettings.load
 import kcrud.core.settings.annotation.ConfigurationAPI
-import kcrud.core.settings.config.catalog.ConfigurationCatalog
-import kcrud.core.settings.config.catalog.sections.*
-import kcrud.core.settings.config.catalog.sections.security.SecuritySettings
-import kcrud.core.settings.config.parser.ConfigClassMap
-import kcrud.core.settings.config.parser.ConfigurationParser
-import kcrud.core.settings.config.parser.IConfigSection
+import kcrud.core.settings.catalog.ConfigurationCatalog
+import kcrud.core.settings.catalog.sections.*
+import kcrud.core.settings.catalog.sections.security.SecuritySettings
+import kcrud.core.settings.parser.ConfigClassMap
+import kcrud.core.settings.parser.ConfigurationParser
+import kcrud.core.settings.parser.IConfigCatalogSection
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -122,7 +122,7 @@ public object AppSettings {
             // 1. 'keyPath' - The hierarchical key-path in the configuration file from which to parse, (e.g., `"ktor.deployment"`).
             // 2. 'catalogProperty' - The name of the property within ConfigurationCatalog to hold the loaded configuration data.
             // 3. 'kClass' - The [KClass] to instantiate and assign to the [catalogProperty] from the [IConfigCatalog] instance.
-            val configMappings: List<ConfigClassMap<out IConfigSection>> = listOf(
+            val configMappings: List<ConfigClassMap<out IConfigCatalogSection>> = listOf(
                 ConfigClassMap(keyPath = "apiSchema", catalogProperty = "apiSchema", kClass = ApiSchemaSettings::class),
                 ConfigClassMap(keyPath = "cors", catalogProperty = "cors", kClass = CorsSettings::class),
                 ConfigClassMap(keyPath = "database", catalogProperty = "database", kClass = DatabaseSettings::class),

@@ -2,9 +2,9 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.core.settings.config.catalog.sections.security.sections.auth
+package kcrud.core.settings.catalog.sections.security.sections.auth
 
-import kcrud.core.settings.config.parser.IConfigSection
+import kcrud.core.settings.parser.IConfigCatalogSection
 import kotlinx.serialization.Serializable
 
 /**
@@ -27,7 +27,7 @@ public data class OAuthSettings(
     val clientId: String,
     val clientSecret: String,
     val defaultScopes: List<String>
-) : IConfigSection {
+) : IConfigCatalogSection {
     init {
         require(providerName.isNotBlank()) { "Missing OAuth provider name." }
         require(redirectCallbackUrl.isNotBlank()) { "Missing OAuth redirect callback Url." }

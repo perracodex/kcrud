@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.core.settings.config.parser
+package kcrud.core.settings.parser
 
 import kcrud.core.settings.annotation.ConfigurationAPI
 import kotlin.reflect.KClass
@@ -19,10 +19,10 @@ import kotlin.reflect.KClass
  * @property kClass The settings [KClass] instantiate and assign to the [catalogProperty] from the [IConfigCatalog] instance.
  *
  * @see [IConfigCatalog]
- * @see [IConfigSection]
+ * @see [IConfigCatalogSection]
  */
 @ConfigurationAPI
-internal data class ConfigClassMap<T : IConfigSection>(
+internal data class ConfigClassMap<T : IConfigCatalogSection>(
     val keyPath: String,
     val catalogProperty: String,
     val kClass: KClass<T>

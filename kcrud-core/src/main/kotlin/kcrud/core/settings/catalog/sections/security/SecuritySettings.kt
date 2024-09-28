@@ -2,15 +2,15 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.core.settings.config.catalog.sections.security
+package kcrud.core.settings.catalog.sections.security
 
-import kcrud.core.settings.config.catalog.sections.security.sections.ConstraintsSettings
-import kcrud.core.settings.config.catalog.sections.security.sections.EncryptionSettings
-import kcrud.core.settings.config.catalog.sections.security.sections.RbacSettings
-import kcrud.core.settings.config.catalog.sections.security.sections.auth.BasicAuthSettings
-import kcrud.core.settings.config.catalog.sections.security.sections.auth.JwtAuthSettings
-import kcrud.core.settings.config.catalog.sections.security.sections.auth.OAuthSettings
-import kcrud.core.settings.config.parser.IConfigSection
+import kcrud.core.settings.catalog.sections.security.sections.ConstraintsSettings
+import kcrud.core.settings.catalog.sections.security.sections.EncryptionSettings
+import kcrud.core.settings.catalog.sections.security.sections.RbacSettings
+import kcrud.core.settings.catalog.sections.security.sections.auth.BasicAuthSettings
+import kcrud.core.settings.catalog.sections.security.sections.auth.JwtAuthSettings
+import kcrud.core.settings.catalog.sections.security.sections.auth.OAuthSettings
+import kcrud.core.settings.parser.IConfigCatalogSection
 import kotlinx.serialization.Serializable
 
 /**
@@ -35,7 +35,7 @@ public data class SecuritySettings(
     val jwtAuth: JwtAuthSettings,
     val oAuth: OAuthSettings,
     val rbac: RbacSettings
-) : IConfigSection {
+) : IConfigCatalogSection {
     public companion object {
         /** The minimum length for a security key, such as encryption and secret keys. */
         public const val MIN_KEY_LENGTH: Int = 12
