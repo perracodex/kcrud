@@ -92,8 +92,7 @@ private object SessionContextUtils {
     val SESSION_CONTEXT_KEY: AttributeKey<SessionContext> = AttributeKey(name = "SessionContext")
 
     /**
-     * The default empty [SessionContext] instance. when security is disabled
-     * or the actor is not authenticated.
+     * A default empty [SessionContext] instance. when security is disabled.
      */
     val emptySessionContext: SessionContext by lazy {
         val uuid: Uuid = "00000000-0000-0000-0000-000000000000".toUuid()
