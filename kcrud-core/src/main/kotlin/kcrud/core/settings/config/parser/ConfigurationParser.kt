@@ -40,7 +40,15 @@ internal object ConfigurationParser {
      * Represents the delimiter used for separating elements in a list,
      * when the list is represented as a single string in the configuration.
      */
-    private const val ARRAY_DELIMITER: Char = ','
+    private const val SINGLE_STRING_ARRAY_DELIMITER: Char = ','
+
+    /**
+     * Represents the regex pattern used to split strings by the delimiter,
+     * ensuring that delimiters within single quotes are ignored.
+     */
+    private val SINGLE_STRING_ARRAY_REGEX_PATTERN: Regex = Regex(
+        pattern = "${Regex.escape(SINGLE_STRING_ARRAY_DELIMITER.toString())}(?=(?:[^']*'[^']*')*[^']*\$)"
+    )
 
     /**
      * Represents a mapping from a constructor parameter to its corresponding configuration value.
@@ -243,9 +251,9 @@ internal object ConfigurationParser {
 
             kClass.java.isEnum -> {
                 // Check if the config value is build by single string with comma-delimited values.
-                if (stringValue.contains(char = ARRAY_DELIMITER)) {
+                if (stringValue.contains(char = SINGLE_STRING_ARRAY_DELIMITER)) {
                     // Split the string by commas and trim spaces, then convert each part to enum.
-                    stringValue.split(ARRAY_DELIMITER).mapNotNull { part ->
+                    stringValue.split(SINGLE_STRING_ARRAY_DELIMITER).mapNotNull { part ->
                         convertToEnum(enumKClass = kClass, stringValue = part.trim(), keyPath = keyPath)
                     }
                 } else {
@@ -304,7 +312,7 @@ internal object ConfigurationParser {
 
             if (stringValue.isNotBlank()) {
                 // Use regex to split by commas that are not within single quotes.
-                stringValue.split(regex = Regex(pattern = ",(?=(?:[^']*'[^']*')*[^']*$)"))
+                stringValue.split(regex = SINGLE_STRING_ARRAY_REGEX_PATTERN)
                     .map { it.trim().trim('\'') } // Trim whitespace and single quotes.
                     .filter { it.isNotEmpty() }
             } else {
