@@ -40,7 +40,7 @@ internal object ConfigurationParser {
      * Represents the delimiter used for separating elements in a list,
      * when the list is represented as a single string in the configuration.
      */
-    private const val ARRAY_DELIMITER: Char = ';'
+    private const val ARRAY_DELIMITER: Char = ','
 
     /**
      * Represents a mapping from a constructor parameter to its corresponding configuration value.
@@ -302,10 +302,13 @@ internal object ConfigurationParser {
             // If failed to get a list, then treat it as a single string with comma-delimited values.
             val stringValue: String = config.tryGetString(key = keyPath) ?: ""
 
-            if (stringValue.contains(char = ARRAY_DELIMITER)) {
-                stringValue.split(ARRAY_DELIMITER).map { it.trim() }
+            if (stringValue.isNotBlank()) {
+                // Use regex to split by commas that are not within single quotes.
+                stringValue.split(regex = Regex(pattern = ",(?=(?:[^']*'[^']*')*[^']*$)"))
+                    .map { it.trim().trim('\'') } // Trim whitespace and single quotes.
+                    .filter { it.isNotEmpty() }
             } else {
-                listOf(stringValue.trim())
+                listOf()
             }
         }
 

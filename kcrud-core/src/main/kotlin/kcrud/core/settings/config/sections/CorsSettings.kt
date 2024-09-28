@@ -54,6 +54,27 @@ public data class CorsSettings(
 
     internal companion object {
         /**
+         * The delimiter used to separate the host, schemes, and subdomains.
+         *
+         * #### Example
+         * "example.com;http,https;api,admin" will be split into 3 sections:
+         * - host: "example.com"
+         * - schemes: "http,https"
+         * - subdomains: "api,admin"
+         */
+        private const val SECTION_DELIMITER: Char = ';'
+
+        /**
+         * The delimiter used to separate multiple values within a section.
+         *
+         * #### Example
+         * "example.com;http,https;api,admin" will split the schemes and subdomains sections into the values:
+         * - schemes: "http", "https"
+         * - subdomains: "api", "admin"
+         */
+        private const val VALUE_DELIMITER: Char = ','
+
+        /**
          * Parses a host configuration from a string.
          *
          * @param spec The string to parse.
@@ -65,11 +86,11 @@ public data class CorsSettings(
             var schemes: List<String> = emptyList()
             var subDomains: List<String> = emptyList()
 
-            spec.split('|').forEachIndexed { index, part ->
+            spec.split(SECTION_DELIMITER).forEachIndexed { index, part ->
                 when (index) {
                     0 -> host = part.trim()
-                    1 -> schemes = part.split(',').filterNot { it.isBlank() }.map { it.trim() }
-                    2 -> subDomains = part.split(',').filterNot { it.isBlank() }.map { it.trim() }
+                    1 -> schemes = part.split(VALUE_DELIMITER).filterNot { it.isBlank() }.map { it.trim() }
+                    2 -> subDomains = part.split(VALUE_DELIMITER).filterNot { it.isBlank() }.map { it.trim() }
                 }
             }
 
