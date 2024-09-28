@@ -4,7 +4,6 @@
 
 package kcrud.core.context
 
-
 import io.ktor.server.application.*
 import io.ktor.server.sessions.*
 import io.ktor.util.*
@@ -15,11 +14,11 @@ import kcrud.core.plugins.Uuid
 import kcrud.core.settings.AppSettings
 
 /**
- * Extension function to adding the given [sessionContext] into the [ApplicationCall] attributes,
+ * Extension function to add the given [sessionContext] into the [ApplicationCall] attributes,
  * in addition to setting it also in the [Sessions] property to persist between different HTTP requests.
  *
  * @param sessionContext The [SessionContext] to be added.
- * @return The [SessionContext] that was set.
+ * @return The [SessionContext] that was set. Returned to allow for chaining.
  *
  * @see [getContext]
  * @see [getContextOrNull]
