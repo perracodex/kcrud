@@ -85,7 +85,7 @@ internal object ConfigurationParser {
 
                     // Find the constructor parameter corresponding to the configuration class.
                     val parameter: KParameter = configConstructor.parameters.find { parameter ->
-                        parameter.name == configClassMap.mappingName
+                        configClassMap.mappingName.equals(other = parameter.name, ignoreCase = true)
                     } ?: throw IllegalArgumentException("Config argument for ${configClassMap.mappingName} not found.")
 
                     // Return the mapping of the constructor argument parameter to its value.
@@ -141,7 +141,7 @@ internal object ConfigurationParser {
             } else {
                 // Find the target property attribute corresponding to the parameter in the class.
                 val property: KProperty1<T, *> = kClass.memberProperties.find { property ->
-                    property.name == parameter.name
+                    property.name.equals(other = parameter.name, ignoreCase = true)
                 } ?: throw IllegalArgumentException("Property '${parameter.name}' not found in '${kClass.simpleName}'.")
 
                 // Convert and return the configuration value for the parameter.
