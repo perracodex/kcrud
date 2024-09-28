@@ -120,7 +120,7 @@ public object AppSettings {
             // List defining the mappings between configuration file sections and properties within ConfigurationCatalog.
             // Each entry in the list consists of three components:
             // 1. keyPath: The hierarchical key-path in the configuration file from which to parse, (e.g., `"ktor.deployment"`).
-            // 2. catalogProperty: The name of the property within ConfigurationCatalog to hold the configuration data.
+            // 2. catalogProperty: The property name in the [IConfigCatalog] implementation.
             // 3. propertyClass: The catalogProperty class to instantiate.
             val configMappings: List<ConfigClassMap<out IConfigCatalogSection>> = listOf(
                 ConfigClassMap(keyPath = "apiSchema", catalogProperty = "apiSchema", propertyClass = ApiSchemaSettings::class),
