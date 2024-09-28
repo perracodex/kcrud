@@ -8,5 +8,4 @@ package kcrud.core.settings.config.parser
  * Base interface for the configuration catalog
  * that holds all [IConfigSection] settings.
  */
-internal interface IConfigurationCatalog
-
+internal interface IConfigCatalog

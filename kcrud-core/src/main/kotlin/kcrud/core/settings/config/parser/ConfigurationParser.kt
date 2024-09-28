@@ -62,16 +62,16 @@ internal object ConfigurationParser {
      * Top-level configurations are parsed concurrently.
      *
      * @param configuration The application configuration object to be parsed.
-     * @param catalogClass The class holding all the configuration groups. Must implement [IConfigurationCatalog].
+     * @param catalogClass The class holding all the configuration groups. Must implement [IConfigCatalog].
      * @param configMappings Map of top-level configuration paths to their corresponding classes.
      * @return A new [catalogClass] instance populated with the parsed configuration data.
      * @throws IllegalArgumentException if the primary constructor is missing in the [catalogClass],
      * or any error occurs during the parsing process.
      *
-     * @see IConfigurationCatalog
+     * @see IConfigCatalog
      * @see IConfigSection
      */
-    suspend fun <T : IConfigurationCatalog> parse(
+    suspend fun <T : IConfigCatalog> parse(
         configuration: ApplicationConfig,
         catalogClass: KClass<T>,
         configMappings: List<ConfigClassMap<out IConfigSection>>

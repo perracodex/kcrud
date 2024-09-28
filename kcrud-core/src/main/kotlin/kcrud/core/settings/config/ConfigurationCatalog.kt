@@ -4,7 +4,7 @@
 
 package kcrud.core.settings.config
 
-import kcrud.core.settings.config.parser.IConfigurationCatalog
+import kcrud.core.settings.config.parser.IConfigCatalog
 import kcrud.core.settings.config.sections.*
 import kcrud.core.settings.config.sections.security.SecuritySettings
 import kotlinx.serialization.Serializable
@@ -34,4 +34,4 @@ internal data class ConfigurationCatalog(
     val deployment: DeploymentSettings,
     val runtime: RuntimeSettings,
     val security: SecuritySettings
-) : IConfigurationCatalog
+) : IConfigCatalog
