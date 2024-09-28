@@ -8,12 +8,12 @@ import io.ktor.server.config.*
 import kcrud.core.env.Tracer
 import kcrud.core.settings.AppSettings.load
 import kcrud.core.settings.annotation.ConfigurationAPI
-import kcrud.core.settings.config.ConfigurationCatalog
+import kcrud.core.settings.config.catalog.ConfigurationCatalog
+import kcrud.core.settings.config.catalog.sections.*
+import kcrud.core.settings.config.catalog.sections.security.SecuritySettings
 import kcrud.core.settings.config.parser.ConfigClassMap
 import kcrud.core.settings.config.parser.ConfigurationParser
 import kcrud.core.settings.config.parser.IConfigSection
-import kcrud.core.settings.config.sections.*
-import kcrud.core.settings.config.sections.security.SecuritySettings
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

@@ -2,10 +2,10 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.core.settings.config.sections.security.sections.auth
+package kcrud.core.settings.config.catalog.sections.security.sections.auth
 
+import kcrud.core.settings.config.catalog.sections.security.SecuritySettings
 import kcrud.core.settings.config.parser.IConfigSection
-import kcrud.core.settings.config.sections.security.SecuritySettings
 import kotlinx.serialization.Serializable
 
 /**

@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.core.settings.config.sections
+package kcrud.core.settings.config.catalog.sections
 
 import kcrud.core.env.EnvironmentType
 import kcrud.core.settings.config.parser.IConfigSection

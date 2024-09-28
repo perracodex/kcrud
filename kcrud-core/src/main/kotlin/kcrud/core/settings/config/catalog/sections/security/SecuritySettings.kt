@@ -2,15 +2,15 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.core.settings.config.sections.security
+package kcrud.core.settings.config.catalog.sections.security
 
+import kcrud.core.settings.config.catalog.sections.security.sections.ConstraintsSettings
+import kcrud.core.settings.config.catalog.sections.security.sections.EncryptionSettings
+import kcrud.core.settings.config.catalog.sections.security.sections.RbacSettings
+import kcrud.core.settings.config.catalog.sections.security.sections.auth.BasicAuthSettings
+import kcrud.core.settings.config.catalog.sections.security.sections.auth.JwtAuthSettings
+import kcrud.core.settings.config.catalog.sections.security.sections.auth.OAuthSettings
 import kcrud.core.settings.config.parser.IConfigSection
-import kcrud.core.settings.config.sections.security.sections.ConstraintsSettings
-import kcrud.core.settings.config.sections.security.sections.EncryptionSettings
-import kcrud.core.settings.config.sections.security.sections.RbacSettings
-import kcrud.core.settings.config.sections.security.sections.auth.BasicAuthSettings
-import kcrud.core.settings.config.sections.security.sections.auth.JwtAuthSettings
-import kcrud.core.settings.config.sections.security.sections.auth.OAuthSettings
 import kotlinx.serialization.Serializable
 
 /**
