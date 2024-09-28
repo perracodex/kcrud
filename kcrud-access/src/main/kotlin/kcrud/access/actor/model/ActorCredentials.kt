@@ -15,7 +15,6 @@ import kotlin.uuid.Uuid
  * #### Security
  * This data is meant to be short-lived, as it contains the Actor's password.
  * For in-memory caching the [CredentialService] is used, which hashes and salts the password.
- * If the password is not needed use the [Actor] class instead.
  *
  * @property id The Actor's unique id.
  * @property username The Actor's unique username.
