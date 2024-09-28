@@ -8,7 +8,7 @@ import io.ktor.server.application.*
 import kcrud.core.database.service.DatabaseService
 import kcrud.core.env.health.annotation.HealthCheckAPI
 import kcrud.core.env.health.checks.*
-import kcrud.core.env.health.utils.collectRoutes
+import kcrud.core.utils.collectRoutes
 import kotlinx.serialization.Serializable
 
 /**
