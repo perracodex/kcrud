@@ -94,12 +94,16 @@ public object AppSettings {
     public val security: SecuritySettings get() = configuration.security
 
     /**
-     * Initializes the application's configuration settings by loading them from the provided [ApplicationConfig].
-     * This method must be called as the very first step during the application startup process to ensure that all
-     * other components have access to a consistently configured environment.
+     * Initializes the application's configuration settings for type-safe access.
      *
-     * The settings are loaded exactly only once. This method employs [runBlocking] to ensure that all configuration
-     * settings are loaded synchronously before proceeding with any further application initialization.
+     * #### Caution
+     * This method must be called as the very first step during the application
+     * startup process to ensure that all other components have immediate access
+     * to the configuration settings during their own configuration and initialization.
+     *
+     * #### Note
+     * This method employs [runBlocking] to ensure that all configuration settings
+     * are loaded synchronously before proceeding with any further application initialization.
      * The use of [runBlocking] is appropriate here due to its one-time execution at startup.
      *
      * @param applicationConfig The [ApplicationConfig] instance from which the settings are loaded.
