@@ -5,22 +5,17 @@
 package kcrud.access.actor.model
 
 import kcrud.core.plugins.Uuid
-import kotlinx.serialization.Serializable
 
 /**
  * Request to create/update an Actor.
  * An Actor is a user with specific role and designated access to a set of concrete scopes.
  *
- * Regarding the [isLocked] flag:
- * This flag represents whether the Actor is currently locked out of the system, suspending all their
- * privileges and access regardless of their assigned role. While this is a critical security feature,
- * the flag is exposed in the API for scenarios where initial states need to be programmatically set, such
- * as during batch imports of new actors who might be pre-configured as locked due to pending verifications
- * or other conditions. This exposure allows for flexibility in managing actors' states through automated
- * processes while maintaining the guideline that unlocking should primarily be controlled by the server's
- * internal logic to prevent security breaches.
+ * #### Locked State:
+ * The [isLocked] flag represents whether an Actor is currently locked out of the system, suspending all
+ * of its privileges and access, regardless of its assigned role.
  *
- * Caution: Manipulating the [isLocked] flag through public-facing APIs can lead to potential security risks.
+ * #### Caution
+ * Manipulating the [isLocked] flag through public-facing APIs can lead to potential security risks.
  * It is advisable to restrict the ability to unlock an actor to internal mechanisms only, ensuring that any
  * changes to this status through external endpoints are rigorously validated and securely handled.
  *
@@ -29,7 +24,6 @@ import kotlinx.serialization.Serializable
  * @property password The Actor's password in plaintext. Must ensure secure handling and storage.
  * @property isLocked Whether the Actor is locked, so its role and scope rules are ignored, loosing all accesses.
  */
-@Serializable
 public data class ActorRequest(
     val roleId: Uuid,
     val username: String,
