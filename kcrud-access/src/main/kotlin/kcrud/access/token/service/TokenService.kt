@@ -15,7 +15,7 @@ import kcrud.access.token.annotation.TokenAPI
 import kcrud.core.context.SessionContext
 import kcrud.core.env.Tracer
 import kcrud.core.settings.AppSettings
-import kcrud.core.settings.catalog.sections.security.sections.auth.JwtAuthSettings
+import kcrud.core.settings.catalog.sections.security.nodes.auth.JwtAuthSettings
 import java.util.*
 import kotlin.time.Duration.Companion.seconds
 

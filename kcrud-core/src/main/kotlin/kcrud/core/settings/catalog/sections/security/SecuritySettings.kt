@@ -4,12 +4,12 @@
 
 package kcrud.core.settings.catalog.sections.security
 
-import kcrud.core.settings.catalog.sections.security.sections.ConstraintsSettings
-import kcrud.core.settings.catalog.sections.security.sections.EncryptionSettings
-import kcrud.core.settings.catalog.sections.security.sections.RbacSettings
-import kcrud.core.settings.catalog.sections.security.sections.auth.BasicAuthSettings
-import kcrud.core.settings.catalog.sections.security.sections.auth.JwtAuthSettings
-import kcrud.core.settings.catalog.sections.security.sections.auth.OAuthSettings
+import kcrud.core.settings.catalog.sections.security.nodes.ConstraintsSettings
+import kcrud.core.settings.catalog.sections.security.nodes.EncryptionSettings
+import kcrud.core.settings.catalog.sections.security.nodes.RbacSettings
+import kcrud.core.settings.catalog.sections.security.nodes.auth.BasicAuthSettings
+import kcrud.core.settings.catalog.sections.security.nodes.auth.JwtAuthSettings
+import kcrud.core.settings.catalog.sections.security.nodes.auth.OAuthSettings
 import kcrud.core.settings.parser.IConfigCatalogSection
 import kotlinx.serialization.Serializable
 

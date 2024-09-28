@@ -10,7 +10,7 @@ import kcrud.core.context.SessionContext
 import kcrud.core.plugins.Uuid
 import kcrud.core.security.utils.EncryptionUtils.toByteKey
 import kcrud.core.settings.AppSettings
-import kcrud.core.settings.catalog.sections.security.sections.EncryptionSettings
+import kcrud.core.settings.catalog.sections.security.nodes.EncryptionSettings
 
 /**
  * Configure the [Sessions] plugin.

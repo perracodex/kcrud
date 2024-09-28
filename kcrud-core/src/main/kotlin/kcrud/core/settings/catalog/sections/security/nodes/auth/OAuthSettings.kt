@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.core.settings.catalog.sections.security.sections.auth
+package kcrud.core.settings.catalog.sections.security.nodes.auth
 
 import kcrud.core.settings.parser.IConfigCatalogSection
 import kotlinx.serialization.Serializable

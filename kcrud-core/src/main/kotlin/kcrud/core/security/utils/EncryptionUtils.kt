@@ -5,7 +5,7 @@
 package kcrud.core.security.utils
 
 import kcrud.core.settings.AppSettings
-import kcrud.core.settings.catalog.sections.security.sections.EncryptionSettings
+import kcrud.core.settings.catalog.sections.security.nodes.EncryptionSettings
 import org.jetbrains.exposed.crypt.Algorithms
 import org.jetbrains.exposed.crypt.Encryptor
 
