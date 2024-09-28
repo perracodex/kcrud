@@ -10,7 +10,7 @@ import org.jetbrains.exposed.sql.ResultRow
 import kotlin.uuid.Uuid
 
 /**
- * Represents the credentials of a concrete [Actor].
+ * Represents the credentials from a concrete [Actor].
  *
  * #### Security
  * This data is meant to be short-lived, as it contains the Actor's password.

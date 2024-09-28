@@ -8,7 +8,8 @@ import kcrud.core.plugins.Uuid
 import kotlinx.serialization.Serializable
 
 /**
- * Request to create/update an Actor. An Actor is a user with a specific role and designated access to scopes.
+ * Request to create/update an Actor.
+ * An Actor is a user with specific role and designated access to a set of concrete scopes.
  *
  * Regarding the [isLocked] flag:
  * This flag represents whether the Actor is currently locked out of the system, suspending all their

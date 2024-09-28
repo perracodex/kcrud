@@ -11,9 +11,10 @@ import org.jetbrains.exposed.sql.ResultRow
 import kotlin.uuid.Uuid
 
 /**
- * Represents a single Actor. An Actor is a user with a role and access to scopes.
+ * Represents a concrete Actor.
+ * An Actor is a user with a role and access to a set of defined scopes.
  *
- * This class does not contain the Actor's password, so the class can be cached in memory
+ * This class does not contain the Actor's password, so it can be cached in memory
  * without security concerns. If the password is needed, use [ActorCredentials] instead.
  *
  * @property id The Actor's unique id.
