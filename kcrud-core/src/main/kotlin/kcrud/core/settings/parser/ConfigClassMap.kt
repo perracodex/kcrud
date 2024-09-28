@@ -15,8 +15,8 @@ import kotlin.reflect.KClass
  * file is mapped to a property within the [IConfigCatalog].
  *
  * @property keyPath The hierarchical key-path in the configuration file from which to parse, (e.g., `"ktor.deployment"`).
- * @property catalogProperty The property name in the class implementing [IConfigCatalog] to hold the loaded configuration section.
- * @property kClass The settings [KClass] instantiate and assign to the [catalogProperty] from the [IConfigCatalog] instance.
+ * @property catalogProperty The property name in the [IConfigCatalog] implementation.
+ * @property propertyClass The [catalogProperty] class to instantiate.
  *
  * @see [IConfigCatalog]
  * @see [IConfigCatalogSection]
@@ -25,5 +25,5 @@ import kotlin.reflect.KClass
 internal data class ConfigClassMap<T : IConfigCatalogSection>(
     val keyPath: String,
     val catalogProperty: String,
-    val kClass: KClass<T>
+    val propertyClass: KClass<T>
 )

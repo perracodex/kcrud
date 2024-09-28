@@ -119,16 +119,16 @@ public object AppSettings {
         val timeTaken: Long = measureTimeMillis {
             // List defining the mappings between configuration file sections and properties within ConfigurationCatalog.
             // Each entry in the list consists of three components:
-            // 1. 'keyPath' - The hierarchical key-path in the configuration file from which to parse, (e.g., `"ktor.deployment"`).
-            // 2. 'catalogProperty' - The name of the property within ConfigurationCatalog to hold the loaded configuration data.
-            // 3. 'kClass' - The [KClass] to instantiate and assign to the [catalogProperty] from the [IConfigCatalog] instance.
+            // 1. keyPath: The hierarchical key-path in the configuration file from which to parse, (e.g., `"ktor.deployment"`).
+            // 2. catalogProperty: The name of the property within ConfigurationCatalog to hold the configuration data.
+            // 3. propertyClass: The catalogProperty class to instantiate.
             val configMappings: List<ConfigClassMap<out IConfigCatalogSection>> = listOf(
-                ConfigClassMap(keyPath = "apiSchema", catalogProperty = "apiSchema", kClass = ApiSchemaSettings::class),
-                ConfigClassMap(keyPath = "cors", catalogProperty = "cors", kClass = CorsSettings::class),
-                ConfigClassMap(keyPath = "database", catalogProperty = "database", kClass = DatabaseSettings::class),
-                ConfigClassMap(keyPath = "ktor.deployment", catalogProperty = "deployment", kClass = DeploymentSettings::class),
-                ConfigClassMap(keyPath = "runtime", catalogProperty = "runtime", kClass = RuntimeSettings::class),
-                ConfigClassMap(keyPath = "security", catalogProperty = "security", kClass = SecuritySettings::class)
+                ConfigClassMap(keyPath = "apiSchema", catalogProperty = "apiSchema", propertyClass = ApiSchemaSettings::class),
+                ConfigClassMap(keyPath = "cors", catalogProperty = "cors", propertyClass = CorsSettings::class),
+                ConfigClassMap(keyPath = "database", catalogProperty = "database", propertyClass = DatabaseSettings::class),
+                ConfigClassMap(keyPath = "ktor.deployment", catalogProperty = "deployment", propertyClass = DeploymentSettings::class),
+                ConfigClassMap(keyPath = "runtime", catalogProperty = "runtime", propertyClass = RuntimeSettings::class),
+                ConfigClassMap(keyPath = "security", catalogProperty = "security", propertyClass = SecuritySettings::class)
             )
 
             // Since the configuration is loaded only once, it is safe to use runBlocking here,
