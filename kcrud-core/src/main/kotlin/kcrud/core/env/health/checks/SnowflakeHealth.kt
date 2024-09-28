@@ -20,7 +20,7 @@ import kotlinx.serialization.Serializable
  */
 @HealthCheckAPI
 @Serializable
-public data class SnowflakeCheck(
+public data class SnowflakeHealth(
     val errors: MutableList<String> = mutableListOf(),
     var testId: String? = null,
     var testResult: SnowflakeData? = null,
@@ -35,7 +35,7 @@ public data class SnowflakeCheck(
             testResult = SnowflakeFactory.parse(id = generatedId)
         } catch (ex: Exception) {
             errors.add(
-                "${SnowflakeCheck::class.simpleName}: ${ex.message} - " +
+                "${SnowflakeHealth::class.simpleName}: ${ex.message} - " +
                         "timestampEpoch: $timestampEpoch, nanoTimeStart: $nanoTimeStart."
             )
             // If any step fails, assign null to both to ensure consistency.

@@ -8,8 +8,8 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import kcrud.core.env.EnvironmentType
 import kcrud.core.env.health.annotation.HealthCheckAPI
-import kcrud.core.env.health.checks.DeploymentCheck.Configured
-import kcrud.core.env.health.checks.DeploymentCheck.ServerSpec
+import kcrud.core.env.health.checks.DeploymentHealth.Configured
+import kcrud.core.env.health.checks.DeploymentHealth.ServerSpec
 import kcrud.core.settings.AppSettings
 import kcrud.core.utils.NetworkUtils
 import kotlinx.serialization.Serializable
@@ -24,7 +24,7 @@ import kotlinx.serialization.Serializable
  */
 @HealthCheckAPI
 @Serializable
-public data class DeploymentCheck(
+public data class DeploymentHealth(
     val errors: MutableList<String>,
     val configured: Configured,
     val serverSpec: ServerSpec,

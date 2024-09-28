@@ -6,7 +6,7 @@ package kcrud.core.env.health.checks
 
 import com.zaxxer.hikari.HikariDataSource
 import kcrud.core.env.health.annotation.HealthCheckAPI
-import kcrud.core.env.health.checks.DatabaseCheck.*
+import kcrud.core.env.health.checks.DatabaseHealth.*
 import kcrud.core.settings.AppSettings
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Database
@@ -27,7 +27,7 @@ import org.jetbrains.exposed.sql.vendors.currentDialect
  */
 @HealthCheckAPI
 @Serializable
-public data class DatabaseCheck(
+public data class DatabaseHealth(
     val errors: MutableList<String>,
     val isAlive: Boolean,
     val datasource: Datasource?,

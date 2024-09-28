@@ -18,7 +18,7 @@ import kotlinx.serialization.Serializable
  */
 @HealthCheckAPI
 @Serializable
-public class SchedulerCheck private constructor(
+public class SchedulerHealth private constructor(
     public val errors: MutableList<String>,
     public val isStarted: Boolean,
     public val isPaused: Boolean,
@@ -26,17 +26,17 @@ public class SchedulerCheck private constructor(
 ) {
     init {
         if (!isStarted) {
-            errors.add("SchedulerCheck. Scheduler is not started.")
+            errors.add("SchedulerHealth. Scheduler is not started.")
         }
     }
 
     internal companion object {
         /**
-         * Creates a new [SchedulerCheck] instance.
+         * Creates a new [SchedulerHealth] instance.
          * We need to use a suspendable factory method as totalTasks is a suspend function.
          */
-        suspend fun create(): SchedulerCheck {
-            return SchedulerCheck(
+        suspend fun create(): SchedulerHealth {
+            return SchedulerHealth(
                 errors = mutableListOf(),
                 isStarted = SchedulerService.isStarted(),
                 isPaused = SchedulerService.isPaused(),

@@ -25,7 +25,7 @@ import kotlinx.serialization.Serializable
  */
 @HealthCheckAPI
 @Serializable
-public data class RuntimeCheck(
+public data class RuntimeHealth(
     val errors: MutableList<String>,
     val machineId: Int,
     val environment: EnvironmentType,
