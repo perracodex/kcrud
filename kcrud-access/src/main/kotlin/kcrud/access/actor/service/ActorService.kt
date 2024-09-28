@@ -5,6 +5,7 @@
 package kcrud.access.actor.service
 
 import kcrud.access.actor.model.Actor
+import kcrud.access.actor.model.ActorCredentials
 import kcrud.access.actor.model.ActorRequest
 import kcrud.access.actor.repository.IActorRepository
 import kcrud.access.credential.CredentialService
@@ -30,15 +31,6 @@ internal class ActorService(
     private val tracer = Tracer<ActorService>()
 
     /**
-     * Finds the [Actor] for the given username.
-     * @param username The username of the [Actor] to find.
-     * @return The [Actor] for the given username, or null if it doesn't exist.
-     */
-    suspend fun findByUsername(username: String): Actor? = withContext(Dispatchers.IO) {
-        return@withContext actorRepository.findByUsername(username = username)
-    }
-
-    /**
      * Finds the [Actor] for the given id.
      *
      * @param actorId The id of the [Actor] to find.
@@ -49,11 +41,38 @@ internal class ActorService(
     }
 
     /**
+     * Finds the [Actor] for the given username.
+     * @param username The username of the [Actor] to find.
+     * @return The [Actor] for the given username, or null if it doesn't exist.
+     */
+    suspend fun findByUsername(username: String): Actor? = withContext(Dispatchers.IO) {
+        return@withContext actorRepository.findByUsername(username = username)
+    }
+
+    /**
      * Finds all existing [Actor] entries.
      * @return A list with all existing [Actor] entries.
      */
     suspend fun findAll(): List<Actor> = withContext(Dispatchers.IO) {
         return@withContext actorRepository.findAll()
+    }
+
+    /**
+     * Finds the credentials for the given [actorId].
+     *
+     * @param actorId The id of the actor to find the credentials for.
+     * @return The resolved [ActorCredentials], or null if the actor doesn't exist.
+     */
+    suspend fun findCredentials(actorId: Uuid): ActorCredentials? = withContext(Dispatchers.IO) {
+        return@withContext actorRepository.findCredentials(actorId = actorId)
+    }
+
+    /**
+     * Finds all existing [ActorCredentials] for all actors.
+     * @return A list with all existing [ActorCredentials] entries.
+     */
+    suspend fun findAllCredentials(): List<ActorCredentials> = withContext(Dispatchers.IO) {
+        return@withContext actorRepository.findAllCredentials()
     }
 
     /**

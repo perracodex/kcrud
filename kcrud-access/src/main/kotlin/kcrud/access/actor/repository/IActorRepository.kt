@@ -5,6 +5,7 @@
 package kcrud.access.actor.repository
 
 import kcrud.access.actor.model.Actor
+import kcrud.access.actor.model.ActorCredentials
 import kcrud.access.actor.model.ActorRequest
 import kotlin.uuid.Uuid
 
@@ -12,6 +13,14 @@ import kotlin.uuid.Uuid
  * Repository responsible for [Actor] data.
  */
 internal interface IActorRepository {
+
+    /**
+     * Finds the [Actor] for the given id.
+     *
+     * @param actorId The id of the [Actor] to find.
+     * @return The [Actor] for the given id, or null if it doesn't exist.
+     */
+    suspend fun findById(actorId: Uuid): Actor?
 
     /**
      * Finds the [Actor] for the given username.
@@ -28,12 +37,18 @@ internal interface IActorRepository {
     suspend fun findAll(): List<Actor>
 
     /**
-     * Finds the [Actor] for the given id.
+     * Finds the credentials for the given [actorId].
      *
-     * @param actorId The id of the [Actor] to find.
-     * @return The [Actor] for the given id, or null if it doesn't exist.
+     * @param actorId The id of the actor to find the credentials for.
+     * @return The resolved [ActorCredentials], or null if the actor doesn't exist.
      */
-    suspend fun findById(actorId: Uuid): Actor?
+    suspend fun findCredentials(actorId: Uuid): ActorCredentials?
+
+    /**
+     * Finds all existing [ActorCredentials] for all actors.
+     * @return A list with all existing [ActorCredentials] entries.
+     */
+    suspend fun findAllCredentials(): List<ActorCredentials>
 
     /**
      * Creates a new [Actor].

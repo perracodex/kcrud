@@ -5,7 +5,6 @@
 package kcrud.access.rbac.service
 
 import kcrud.access.actor.model.Actor
-import kcrud.access.actor.model.BasicActor
 import kcrud.access.actor.repository.IActorRepository
 import kcrud.access.rbac.model.role.RbacRole
 import kcrud.access.rbac.model.role.RbacRoleRequest
@@ -38,25 +37,13 @@ internal class RbacService(
     private val tracer = Tracer<RbacService>()
 
     /**
-     * Cache holding Actor IDs paired with their respective [RbacRole],
+     * Cache holding Actor IDs paired with their respective [Actor],
      * allowing to quickly check if an Actor has permission to access a scope,
      * whether is locked, and its Role attributes.
      *
-     * This approach is better than holding the full [Actor] tree,
-     * as it avoids exposing the Actor's password and other sensitive
-     * information while cached.
-     *
      * The cache is meant to be updated whenever roles are updated.
      */
-    private val cache: ConcurrentHashMap<Uuid, ActorRole> = ConcurrentHashMap()
-
-    /** Data class holding role attributes and the actor's locked status. */
-    private data class ActorRole(
-        val isLocked: Boolean,
-        val actorId: Uuid,
-        val actorUsername: String,
-        val role: RbacRole
-    )
+    private val cache: ConcurrentHashMap<Uuid, Actor> = ConcurrentHashMap()
 
     /** Lock to ensure thread-safe access and updates to the service cache. */
     private val lock: Mutex = Mutex()
@@ -104,15 +91,8 @@ internal class RbacService(
             return@withContext
         }
 
-        // Set the new ActorRole entry in the cache.
-        val actorRole = ActorRole(
-            isLocked = actor.isLocked,
-            actorId = actorId,
-            actorUsername = actor.username,
-            role = actor.role
-        )
         lock.withLock {
-            cache[actorId] = actorRole
+            cache[actorId] = actor
         }
 
         tracer.info("RBAC cache refreshed for actor with ID: $actorId.")
@@ -130,17 +110,12 @@ internal class RbacService(
         var totalActors: Int
 
         // Retrieve all actors from the database, filtering out those without any scope rules.
-        val newCache: ConcurrentHashMap<Uuid, ActorRole> = actorRepository.findAll().also { actors ->
+        val newCache: ConcurrentHashMap<Uuid, Actor> = actorRepository.findAll().also { actors ->
             totalActors = actors.size
         }.filter { actor ->
             actor.role.scopeRules.isNotEmpty()
-        }.associateTo(ConcurrentHashMap()) { actor ->
-            actor.id to ActorRole(
-                isLocked = actor.isLocked,
-                actorId = actor.id,
-                actorUsername = actor.username,
-                role = actor.role
-            )
+        }.associateByTo(ConcurrentHashMap()) { actor ->
+            actor.id
         }.also { actors ->
             if (actors.isEmpty()) {
                 tracer.warning("No actors found with scope rules. RBAC cache is empty.")
@@ -235,58 +210,37 @@ internal class RbacService(
     }
 
     /**
-     * Retrieves a cached [BasicActor] for the given [actorId].
+     * Retrieves a cached [Actor] for the given [actorId].
      *
      * No database queries are performed, unless the cache is empty,
      * in which case it will be refreshed before attempting to find the actor.
      *
      * @param actorId The Actor ID to find.
-     * @return The [BasicActor] for the given [actorId], or null if it doesn't exist.
+     * @return The [Actor] for the given [actorId], or null if it doesn't exist.
      */
-    suspend fun findActor(actorId: Uuid): BasicActor? {
+    suspend fun findActor(actorId: Uuid): Actor? {
         if (isCacheEmpty()) {
             return null
         }
-        return cache.values.find { actorRole ->
-            actorRole.actorId == actorId
-        }?.let { actorRole ->
-            buildBasicActor(actorRole = actorRole)
-        }
+        return cache[actorId]
     }
 
     /**
-     * Retrieves the cached [BasicActor] for the given [username].
+     * Retrieves the cached [Actor] for the given [username].
      *
      * No database queries are performed, unless the cache is empty,
      * in which case it will be refreshed before attempting to find the actor.
      *
      * @param username The username of the actor to find.
-     * @return The [BasicActor] for the given [username], or null if it doesn't exist.
+     * @return The [Actor] for the given [username], or null if it doesn't exist.
      */
-    suspend fun findActor(username: String): BasicActor? {
+    suspend fun findActor(username: String): Actor? {
         if (isCacheEmpty()) {
             return null
         }
-        return cache.values.find { actorRole ->
-            actorRole.actorUsername.equals(other = username, ignoreCase = true)
-        }?.let { actorRole ->
-            buildBasicActor(actorRole = actorRole)
+        return cache.values.find { actor ->
+            actor.username.equals(other = username, ignoreCase = true)
         }
-    }
-
-    /**
-     * Constructs a [BasicActor] from the given [actorRole].
-     *
-     * @param actorRole The [ActorRole] to build the [BasicActor] from.
-     * @return The [BasicActor] built from the [ActorRole].
-     */
-    private fun buildBasicActor(actorRole: ActorRole): BasicActor {
-        return BasicActor(
-            id = actorRole.actorId,
-            username = actorRole.actorUsername,
-            roleId = actorRole.role.id,
-            isLocked = actorRole.isLocked
-        )
     }
 
     /**

@@ -11,7 +11,7 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.sessions.*
-import kcrud.access.actor.model.BasicActor
+import kcrud.access.actor.model.Actor
 import kcrud.access.credential.CredentialService
 import kcrud.access.plugins.configureBasicAuthentication
 import kcrud.access.plugins.configureJwtAuthentication
@@ -194,14 +194,14 @@ internal object SessionContextFactory : KoinComponent {
     /**
      * Constructs a [SessionContext] instance from the provided [actor].
      *
-     * @param actor The [BasicActor] to build the [SessionContext] from.
+     * @param actor The [Actor] to build the [SessionContext] from.
      * @return A [SessionContext] instance representing the provided [actor].
      */
-    private fun buildSessionContext(actor: BasicActor): SessionContext {
+    private fun buildSessionContext(actor: Actor): SessionContext {
         return SessionContext(
             actorId = actor.id,
             username = actor.username,
-            roleId = actor.roleId
+            roleId = actor.role.id
         )
     }
 }

@@ -5,6 +5,7 @@
 import io.ktor.test.dispatcher.*
 import kcrud.access.actor.di.ActorDomainInjection
 import kcrud.access.actor.model.Actor
+import kcrud.access.actor.model.ActorCredentials
 import kcrud.access.actor.model.ActorRequest
 import kcrud.access.actor.service.ActorService
 import kcrud.access.rbac.di.RbacDomainInjection
@@ -84,12 +85,15 @@ class RbacActorTest : KoinComponent {
         var actor: Actor? = actorService.findByUsername(username = username)
         assertNotNull(actual = actor, message = "The actor was not found in the database after it was created.")
         assertEquals(expected = username, actual = actor.username)
-        assertEquals(expected = password, actual = actor.password)
 
         actor = actorService.findById(actorId = actorId)
         assertNotNull(actual = actor, message = "The actor was not found in the database after it was created.")
         assertEquals(expected = username, actual = actor.username)
-        assertEquals(expected = password, actual = actor.password)
+
+        val actorCredentials: ActorCredentials? = actorService.findCredentials(actorId = actorId)
+        assertNotNull(actual = actorCredentials, message = "The actor credentials was not found in the database after it was created.")
+        assertEquals(expected = password, actual = actorCredentials.username)
+        assertEquals(expected = password, actual = actorCredentials.password)
 
         // Try to create the same actor again.
         // This should fail because the username is unique.

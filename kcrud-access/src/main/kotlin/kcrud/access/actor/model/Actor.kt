@@ -4,9 +4,7 @@
 
 package kcrud.access.actor.model
 
-import kcrud.access.credential.CredentialService
 import kcrud.access.rbac.model.role.RbacRole
-import kcrud.core.context.SessionContext
 import kcrud.core.database.schema.admin.actor.ActorTable
 import kcrud.core.persistence.model.Meta
 import org.jetbrains.exposed.sql.ResultRow
@@ -15,24 +13,20 @@ import kotlin.uuid.Uuid
 /**
  * Represents a single Actor. An Actor is a user with a role and access to scopes.
  *
- * This data is meant to be short-lived and not serialized, as it contains the Actor's password.
- * Instead, its details must be mapped to a [SessionContext] instance, while the password is automatically
- * cached by [CredentialService] at the server startup, where it is hashed and kept in-memory for
- * authentication purposes.
+ * This class does not contain the Actor's password, so the class can be cached in memory
+ * without security concerns. If the password is needed, use [ActorCredentials] instead.
  *
  * @property id The Actor's unique id.
  * @property username The Actor's unique username.
- * @property password The unencrypted Actor's password.
  * @property role The associated role.
  * @property isLocked Whether the Actor is locked, so its role and associated rules are ignored, loosing all accesses.
  * @property meta The metadata of the record.
  *
- * @see [BasicActor]
+ * @see [ActorCredentials]
  */
 internal data class Actor(
     var id: Uuid,
     val username: String,
-    val password: String,
     val role: RbacRole,
     val isLocked: Boolean,
     val meta: Meta
@@ -49,7 +43,6 @@ internal data class Actor(
             return Actor(
                 id = row[ActorTable.id],
                 username = row[ActorTable.username],
-                password = row[ActorTable.password],
                 role = role,
                 isLocked = row[ActorTable.isLocked],
                 meta = Meta.from(row = row, table = ActorTable)
