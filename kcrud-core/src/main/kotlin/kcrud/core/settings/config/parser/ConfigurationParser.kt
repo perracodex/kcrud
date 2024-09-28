@@ -8,7 +8,6 @@ import com.typesafe.config.ConfigException
 import io.ktor.server.config.*
 import kcrud.core.env.Tracer
 import kcrud.core.settings.annotation.ConfigurationAPI
-import kcrud.core.settings.config.IConfigurationCatalog
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async

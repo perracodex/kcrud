@@ -4,6 +4,7 @@
 
 package kcrud.core.settings.config
 
+import kcrud.core.settings.config.parser.IConfigurationCatalog
 import kcrud.core.settings.config.sections.*
 import kcrud.core.settings.config.sections.security.SecuritySettings
 import kotlinx.serialization.Serializable
