@@ -17,15 +17,15 @@ import kcrud.core.security.hash.SecureSalt
  * This approach prevents identical passwords from resulting in the same hash and safeguards against
  * certain types of brute force attacks.
  *
- * @property digester A function that, given a password and a salt, produces a [SecureHash] containing
- *                    the hashed password and the used salt.
  * @property table A map associating usernames (as keys) with their corresponding [SecureHash] instances.
  *                 This table serves as the storage for the hashed passwords and their salts,
  *                 enabling the authentication process.
+ * @property digester A function that, given a password and a salt, produces a [SecureHash] containing
+ *                    the hashed password and the used salt.
  */
 internal class HashedPasswordTableAuth(
-    private val digester: (password: String, salt: SecureSalt) -> SecureHash,
-    private val table: Map<String, SecureHash>
+    private val table: Map<String, SecureHash>,
+    private val digester: (password: String, salt: SecureSalt) -> SecureHash
 ) {
     fun authenticate(credential: UserPasswordCredential): UserIdPrincipal? {
         val storedHash: SecureHash = table[credential.name.lowercase()] ?: return null

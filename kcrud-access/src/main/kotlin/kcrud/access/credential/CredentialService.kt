@@ -42,15 +42,15 @@ internal class CredentialService : KoinComponent {
     /** Mapping of usernames to hashed passwords. */
     private val cache: ConcurrentHashMap<String, SecureHash> = ConcurrentHashMap()
 
-    /** Provides the in-memory authentication store. */
+    /** Provides the in-memory authentication datastore. */
     private val store: HashedPasswordTableAuth = HashedPasswordTableAuth(
+        table = cache,
         digester = { password, salt ->
             HashedPasswordTableAuth.hashPassword(
                 password = password,
                 salt = salt
             )
-        },
-        table = cache
+        }
     )
 
     /**
