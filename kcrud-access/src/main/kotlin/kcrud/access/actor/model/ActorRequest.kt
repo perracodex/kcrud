@@ -24,7 +24,7 @@ import kcrud.core.plugins.Uuid
  * @property password The Actor's password in plaintext. Must ensure secure handling and storage.
  * @property isLocked Whether the Actor is locked, so its role and scope rules are ignored, loosing all accesses.
  */
-public data class ActorRequest(
+internal data class ActorRequest(
     val roleId: Uuid,
     val username: String,
     val password: String,
