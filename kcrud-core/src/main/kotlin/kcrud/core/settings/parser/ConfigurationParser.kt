@@ -93,7 +93,7 @@ internal object ConfigurationParser {
                     val configInstance: Any = instantiateConfig(
                         config = configuration,
                         keyPath = configClassMap.keyPath,
-                        kClass = configClassMap.kClass
+                        kClass = configClassMap.propertyClass
                     )
 
                     // Find the constructor parameter corresponding to the configuration class.
