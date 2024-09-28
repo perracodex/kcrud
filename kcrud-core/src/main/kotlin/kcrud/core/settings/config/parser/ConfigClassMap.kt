@@ -5,8 +5,6 @@
 package kcrud.core.settings.config.parser
 
 import kcrud.core.settings.annotation.ConfigurationAPI
-import kcrud.core.settings.config.ConfigurationCatalog
-import kcrud.core.settings.config.sections.DeploymentSettings
 import kotlin.reflect.KClass
 
 /**
@@ -14,17 +12,18 @@ import kotlin.reflect.KClass
  * and a corresponding data class to which the configuration values will be mapped.
  *
  * Each instance of this class defines how a specific section of the configuration
- * file is mapped to a property within the [ConfigurationCatalog].
+ * file is mapped to a property within the [IConfigCatalog].
  *
- * @property mappingName The name of the property in the [ConfigurationCatalog] where to map into.
- * @property path The hierarchical path in the configuration file (e.g., `"ktor.deployment"`) from which the settings are loaded.
- * @property kClass The [KClass] of the data class that represents the configuration section (e.g., [DeploymentSettings]).
+ * @property keyPath The hierarchical key-path in the configuration file from which to parse, (e.g., `"ktor.deployment"`).
+ * @property catalogProperty The property name in the class implementing [IConfigCatalog] to hold the loaded configuration section.
+ * @property kClass The settings [KClass] instantiate and assign to the [catalogProperty] from the [IConfigCatalog] instance.
  *
- * @see [ConfigurationCatalog]
+ * @see [IConfigCatalog]
+ * @see [IConfigSection]
  */
 @ConfigurationAPI
 internal data class ConfigClassMap<T : IConfigSection>(
-    val mappingName: String,
-    val path: String,
+    val keyPath: String,
+    val catalogProperty: String,
     val kClass: KClass<T>
 )

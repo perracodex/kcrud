@@ -5,6 +5,8 @@
 package kcrud.core.settings.config.parser
 
 /**
- * Base interface for configuration sections.
+ * Interface for configuration sections within the [IConfigCatalog].
+ *
+ * @see IConfigCatalog
  */
 internal interface IConfigSection

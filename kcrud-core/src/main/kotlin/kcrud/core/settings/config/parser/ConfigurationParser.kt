@@ -61,7 +61,7 @@ internal object ConfigurationParser {
      * Performs the application configuration parsing.
      * Top-level configurations are parsed concurrently.
      *
-     * @param configuration The application configuration object to be parsed.
+     * @param configuration The [ApplicationConfig] object to be parsed.
      * @param catalogClass The class holding all the configuration groups. Must implement [IConfigCatalog].
      * @param configMappings Map of top-level configuration paths to their corresponding classes.
      * @return A new [catalogClass] instance populated with the parsed configuration data.
@@ -76,8 +76,8 @@ internal object ConfigurationParser {
         catalogClass: KClass<T>,
         configMappings: List<ConfigClassMap<out IConfigSection>>
     ): T {
-        // Retrieve the primary constructor of the ConfigurationCatalog class,
-        // which will be used to instantiate the output object.
+        // Retrieve the primary constructor of the configuration catalog class,
+        // which will be used to instantiate the parsing output result.
         val configConstructor: KFunction<T> = catalogClass.primaryConstructor
             ?: throw IllegalArgumentException(
                 "Primary constructor is required for ${catalogClass.simpleName}."
@@ -92,14 +92,14 @@ internal object ConfigurationParser {
                     // Nested settings are handled recursively.
                     val configInstance: Any = instantiateConfig(
                         config = configuration,
-                        keyPath = configClassMap.path,
+                        keyPath = configClassMap.keyPath,
                         kClass = configClassMap.kClass
                     )
 
                     // Find the constructor parameter corresponding to the configuration class.
                     val parameter: KParameter = configConstructor.parameters.find { parameter ->
-                        configClassMap.mappingName.equals(other = parameter.name, ignoreCase = true)
-                    } ?: throw IllegalArgumentException("Config argument for ${configClassMap.mappingName} not found.")
+                        configClassMap.catalogProperty.equals(other = parameter.name, ignoreCase = true)
+                    } ?: throw IllegalArgumentException("Config argument for ${configClassMap.catalogProperty} not found.")
 
                     // Return the mapping of the constructor argument parameter to its value.
                     return@async ParameterMapping(parameter = parameter, value = configInstance)
@@ -113,7 +113,7 @@ internal object ConfigurationParser {
                 }
         }
 
-        // Create the instance of the ConfigurationCatalog class with the parsed configuration values.
+        // Create the instance of the configuration catalog with the parsed values.
         return configConstructor.callBy(args = constructorArguments)
     }
 
