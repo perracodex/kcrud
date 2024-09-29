@@ -49,9 +49,9 @@ allprojects {
         // Use Maven Central as the primary repository for fetching dependencies.
         mavenCentral()
 
-        // Add the Kotlin JS Wrappers repository from JetBrains Space,
-        // required for projects that depend on Kotlin/JS libraries or components.
-        maven { url = uri("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/kotlin-js-wrappers") }
+        // Used to include locally published libraries. Useful for testing libraries
+        // that are built and published locally.
+        mavenLocal()
     }
 }
 
