@@ -27,6 +27,8 @@ dependencies {
     implementation(libs.ktor.server.rateLimit)
     implementation(libs.ktor.server.tests)
 
+    implementation(libs.ktor.config)
+
     implementation(libs.koin.ktor)
     implementation(libs.koin.logger.slf4j)
     implementation(libs.koin.test)

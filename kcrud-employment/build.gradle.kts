@@ -17,6 +17,8 @@ dependencies {
     implementation(libs.ktor.server.auth)
     implementation(libs.ktor.server.core)
 
+    implementation(libs.ktor.config)
+
     implementation(libs.exposed.core)
     implementation(libs.exposed.kotlin.datetime)
     implementation(libs.exposed.pagination)

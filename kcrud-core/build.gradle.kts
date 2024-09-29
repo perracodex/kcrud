@@ -41,6 +41,8 @@ dependencies {
     implementation(libs.ktor.server.tests)
     implementation(libs.ktor.server.thymeleaf)
 
+    implementation(libs.ktor.config)
+
     implementation(libs.exposed.core)
     implementation(libs.exposed.crypt)
     implementation(libs.exposed.jdbc)

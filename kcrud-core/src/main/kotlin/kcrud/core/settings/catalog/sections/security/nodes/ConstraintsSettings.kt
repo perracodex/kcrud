@@ -4,7 +4,7 @@
 
 package kcrud.core.settings.catalog.sections.security.nodes
 
-import kcrud.core.settings.parser.IConfigCatalogSection
+import io.github.perracodex.ktor.config.IConfigCatalogSection
 import kotlinx.serialization.Serializable
 
 /**

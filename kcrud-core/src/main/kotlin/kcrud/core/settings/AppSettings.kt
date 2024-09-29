@@ -4,16 +4,15 @@
 
 package kcrud.core.settings
 
+import io.github.perracodex.ktor.config.ConfigCatalogMap
+import io.github.perracodex.ktor.config.ConfigurationParser
+import io.github.perracodex.ktor.config.IConfigCatalogSection
 import io.ktor.server.config.*
 import kcrud.core.env.Tracer
 import kcrud.core.settings.AppSettings.load
-import kcrud.core.settings.annotation.ConfigurationAPI
 import kcrud.core.settings.catalog.ConfigurationCatalog
 import kcrud.core.settings.catalog.sections.*
 import kcrud.core.settings.catalog.sections.security.SecuritySettings
-import kcrud.core.settings.parser.ConfigCatalogMap
-import kcrud.core.settings.parser.ConfigurationParser
-import kcrud.core.settings.parser.IConfigCatalogSection
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -108,7 +107,6 @@ public object AppSettings {
      *
      * @param applicationConfig The [ApplicationConfig] instance from which the settings are loaded.
      */
-    @OptIn(ConfigurationAPI::class)
     public fun load(applicationConfig: ApplicationConfig) {
         if (AppSettings::configuration.isInitialized) {
             return

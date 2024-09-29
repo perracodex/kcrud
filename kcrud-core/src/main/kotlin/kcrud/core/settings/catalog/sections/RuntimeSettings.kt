@@ -4,8 +4,8 @@
 
 package kcrud.core.settings.catalog.sections
 
+import io.github.perracodex.ktor.config.IConfigCatalogSection
 import kcrud.core.env.EnvironmentType
-import kcrud.core.settings.parser.IConfigCatalogSection
 import kotlinx.serialization.Serializable
 
 /**
