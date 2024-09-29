@@ -50,12 +50,12 @@ internal object ConfigurationParser {
     }
 
     /**
-     * Represents a mapping from a constructor parameter to its corresponding configuration value.
+     * Represents a mapping from a catalog constructor parameter to its corresponding configuration instance.
      *
-     * @property parameter The target constructor [KParameter].
-     * @property value The value corresponding to the constructor [parameter].
+     * @property parameter A catalog constructor [KParameter].
+     * @property instance The instance to be assigned to the  [parameter].
      */
-    private data class ParameterMapping(val parameter: KParameter, var value: Any)
+    private data class CatalogPropertyMap(val parameter: KParameter, var instance: IConfigCatalogSection)
 
     /**
      * Performs the application configuration parsing.
@@ -63,9 +63,9 @@ internal object ConfigurationParser {
      *
      * @param configuration The [ApplicationConfig] object to be parsed.
      * @param catalogClass The class holding all the configuration groups. Must implement [IConfigCatalog].
-     * @param configMappings Map of top-level configuration paths to their corresponding classes.
+     * @param catalogMappings Map of top-level configuration paths to their corresponding classes.
      * @return A new [catalogClass] instance populated with the parsed configuration data.
-     * @throws IllegalArgumentException if the primary constructor is missing in the [catalogClass],
+     * @throws ConfigurationException if the primary constructor is missing in the [catalogClass],
      * or any error occurs during the parsing process.
      *
      * @see IConfigCatalog
@@ -74,47 +74,54 @@ internal object ConfigurationParser {
     suspend fun <T : IConfigCatalog> parse(
         configuration: ApplicationConfig,
         catalogClass: KClass<T>,
-        configMappings: List<ConfigClassMap<out IConfigCatalogSection>>
+        catalogMappings: List<ConfigCatalogMap<out IConfigCatalogSection>>
     ): T {
         // Retrieve the primary constructor of the configuration catalog class,
         // which will be used to instantiate the parsing output result.
         val configConstructor: KFunction<T> = catalogClass.primaryConstructor
-            ?: throw IllegalArgumentException(
+            ?: throw ConfigurationException(
                 "Primary constructor is required for ${catalogClass.simpleName}."
             )
 
         // Map each configuration path to its corresponding class,
         // and construct the arguments map for the output object.
-        val constructorArguments: Map<KParameter, Any?> = withContext(Dispatchers.IO) {
-            val tasks: List<Deferred<ParameterMapping>> = configMappings.map { configClassMap ->
+        val catalogArguments: Map<KParameter, IConfigCatalogSection> = withContext(Dispatchers.IO) {
+            val tasks: List<Deferred<CatalogPropertyMap>> = catalogMappings.map { configCatalogMap ->
                 async {
                     // Map each configuration path to its corresponding class.
                     // Nested settings are handled recursively.
-                    val configInstance: Any = instantiateConfig(
+                    val catalogParameterInstance: IConfigCatalogSection = instantiateConfig(
                         config = configuration,
-                        keyPath = configClassMap.keyPath,
-                        kClass = configClassMap.propertyClass
+                        keyPath = configCatalogMap.keyPath,
+                        kClass = configCatalogMap.propertyClass
                     )
 
                     // Find the constructor parameter corresponding to the configuration class.
-                    val parameter: KParameter = configConstructor.parameters.find { parameter ->
-                        configClassMap.catalogProperty.equals(other = parameter.name, ignoreCase = true)
-                    } ?: throw IllegalArgumentException("Config argument for ${configClassMap.catalogProperty} not found.")
+                    val catalogParameter: KParameter = configConstructor.parameters.find { parameter ->
+                        configCatalogMap.catalogProperty.equals(other = parameter.name, ignoreCase = true)
+                    } ?: throw ConfigurationException("Catalog argument not found: ${configCatalogMap.catalogProperty}")
 
                     // Return the mapping of the constructor argument parameter to its value.
-                    return@async ParameterMapping(parameter = parameter, value = configInstance)
+                    return@async CatalogPropertyMap(
+                        parameter = catalogParameter,
+                        instance = catalogParameterInstance
+                    )
                 }
             }
 
-            // Await all results and construct the arguments map.
-            return@withContext tasks.map { mapping -> mapping.await() }
-                .associate { mapping ->
-                    mapping.parameter to mapping.value
+            // Await all results and construct the catalog parameter instance map.
+            return@withContext tasks.map { mappingTask -> mappingTask.await() }
+                .associate { propertyMap ->
+                    propertyMap.parameter to propertyMap.instance
                 }
         }
 
-        // Create the instance of the configuration catalog with the parsed values.
-        return configConstructor.callBy(args = constructorArguments)
+        // Create the instance of the configuration catalog with the parsed property instances.
+        return runCatching {
+            configConstructor.callBy(args = catalogArguments)
+        }.onFailure { error ->
+            throw ConfigurationException("Error instantiating: ${catalogClass.simpleName}", error)
+        }.getOrThrow()
     }
 
     /**
@@ -128,14 +135,18 @@ internal object ConfigurationParser {
      * @param keyPath The key path in the configuration for fetching values.
      * @param kClass The KClass of the type to instantiate.
      * @return An instance of the specified class with properties populated from the configuration.
-     * @throws IllegalArgumentException If a required configuration key is missing or if there is a type mismatch.
+     * @throws ConfigurationException If a required configuration key is missing or if there is a type mismatch.
      */
-    private fun <T : Any> instantiateConfig(config: ApplicationConfig, keyPath: String, kClass: KClass<T>): T {
+    private fun <T : Any> instantiateConfig(
+        config: ApplicationConfig,
+        keyPath: String,
+        kClass: KClass<T>
+    ): T {
         tracer.debug("Parsing '${kClass.simpleName}' from '$keyPath'")
 
         // Fetch the primary constructor of the class.
         val constructor: KFunction<T> = kClass.primaryConstructor
-            ?: throw IllegalArgumentException("No primary constructor found for ${kClass.simpleName}")
+            ?: throw ConfigurationException("No primary constructor found for ${kClass.simpleName}")
 
         // Map each constructor parameter to its corresponding value from the configuration.
         // This includes direct value assignment for simple types and recursive instantiation
@@ -155,7 +166,7 @@ internal object ConfigurationParser {
                 // Find the target property attribute corresponding to the parameter in the class.
                 val property: KProperty1<T, *> = kClass.memberProperties.find { property ->
                     property.name.equals(other = parameter.name, ignoreCase = true)
-                } ?: throw IllegalArgumentException("Property '${parameter.name}' not found in '${kClass.simpleName}'.")
+                } ?: throw ConfigurationException("Property '${parameter.name}' not found in '${kClass.simpleName}'.")
 
                 // Convert and return the configuration value for the parameter.
                 return@associateWith convertToType(
@@ -172,8 +183,13 @@ internal object ConfigurationParser {
             constructor.callBy(args = arguments)
         }.getOrElse { error ->
             val errorMessage: String = error.message ?: error.cause?.toString() ?: "Unknown error"
-            throw IllegalArgumentException(
-                "Error instantiating class $kClass at '$keyPath':\n$errorMessage\nArguments: $arguments"
+            val argumentNames: String = arguments.keys.joinToString(separator = ", ") { it.name ?: "null" }
+            throw ConfigurationException(
+                "Error instantiating: ${kClass.simpleName}" +
+                        "\nMake sure the key path and class properties names match exactly." +
+                        "\nKey path: $keyPath" +
+                        "\nArguments: $argumentNames" +
+                        "\nError: $errorMessage"
             )
         }
     }
@@ -189,7 +205,7 @@ internal object ConfigurationParser {
      * @param kClass The KClass to which the property should be converted.
      * @param property The property attribute from the type's KClass.
      * @return The converted property value or null if not found.
-     * @throws IllegalArgumentException for unsupported types or conversion failures.
+     * @throws ConfigurationException for unsupported types or conversion failures.
      */
     private fun convertToType(
         config: ApplicationConfig,
@@ -207,14 +223,14 @@ internal object ConfigurationParser {
             // Extract the KType of the list's elements by accessing its single type argument.
             // Example: For a property of type List<String>, extract the KType of the elements KType<String>.
             val elementKType: KType = property.returnType.arguments.singleOrNull()?.type
-                ?: throw IllegalArgumentException(
+                ?: throw ConfigurationException(
                     "Cannot determine the list elements type for property '${property.name}' in '${property.returnType}'."
                 )
 
             // Retrieve the KClass of the list element type.
             // Example: If elementType is KType<String> then elementsClass is KClass<String>.
             val elementsKClass: KClass<*> = (elementKType.classifier as? KClass<*>)
-                ?: throw IllegalArgumentException(
+                ?: throw ConfigurationException(
                     "Cannot determine list elements type class for property '${property.name}' in '${property.returnType}'."
                 )
 
@@ -234,7 +250,7 @@ internal object ConfigurationParser {
      * @param stringValue The string value to convert.
      * @param kClass The KClass to which the property should be converted.
      * @return The converted property value or null if not found.
-     * @throws IllegalArgumentException For unsupported types or conversion failures.
+     * @throws ConfigurationException For unsupported types or conversion failures.
      */
     private fun parseElementValue(keyPath: String, stringValue: String, kClass: KClass<*>): Any? {
         val key = "$keyPath: $stringValue"
@@ -243,16 +259,16 @@ internal object ConfigurationParser {
             kClass == String::class -> stringValue
 
             kClass == Boolean::class -> stringValue.toBooleanStrictOrNull()
-                ?: throw IllegalArgumentException("Invalid Boolean value in: '$key'")
+                ?: throw ConfigurationException("Invalid Boolean value in: '$key'")
 
             kClass == Int::class -> stringValue.toIntOrNull()
-                ?: throw IllegalArgumentException("Invalid Int value in: '$key'")
+                ?: throw ConfigurationException("Invalid Int value in: '$key'")
 
             kClass == Long::class -> stringValue.toLongOrNull()
-                ?: throw IllegalArgumentException("Invalid Long value in: '$key'")
+                ?: throw ConfigurationException("Invalid Long value in: '$key'")
 
             kClass == Double::class -> stringValue.toDoubleOrNull()
-                ?: throw IllegalArgumentException("Invalid Double value in: '$key'")
+                ?: throw ConfigurationException("Invalid Double value in: '$key'")
 
             kClass.java.isEnum -> {
                 // Check if the config value is build by single string with comma-delimited values.
@@ -267,7 +283,7 @@ internal object ConfigurationParser {
                 }
             }
 
-            else -> throw IllegalArgumentException("Unsupported type class '$kClass' in '$key'")
+            else -> throw ConfigurationException("Unsupported type class '$kClass' in '$key'")
         }
     }
 
@@ -278,7 +294,7 @@ internal object ConfigurationParser {
      * @param stringValue The string value to convert.
      * @param keyPath The key path for the property in the configuration.
      * @return The converted enum value or null if not found.
-     * @throws IllegalArgumentException If the enum value is not found.
+     * @throws ConfigurationException If the enum value is not found.
      */
     private fun convertToEnum(enumKClass: KClass<*>, stringValue: String, keyPath: String): Enum<*>? {
         if (stringValue.isBlank() || stringValue.lowercase() == "null") {
@@ -288,7 +304,7 @@ internal object ConfigurationParser {
         return enumKClass.java.enumConstants.firstOrNull {
             (it as Enum<*>).name.compareTo(stringValue, ignoreCase = true) == 0
         } as Enum<*>?
-            ?: throw IllegalArgumentException(
+            ?: throw ConfigurationException(
                 "Enum value '$stringValue' not found for type: $enumKClass. Found in path: $keyPath"
             )
     }

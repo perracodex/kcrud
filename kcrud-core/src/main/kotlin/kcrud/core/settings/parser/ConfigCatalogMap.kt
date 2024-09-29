@@ -8,8 +8,8 @@ import kcrud.core.settings.annotation.ConfigurationAPI
 import kotlin.reflect.KClass
 
 /**
- * Represents a mapping between a configuration path in the configuration file
- * and a corresponding data class to which the configuration values will be mapped.
+ * Represents a mapping between a configuration key path in the configuration file
+ * and a corresponding data class to which the configuration values will be loaded.
  *
  * Each instance of this class defines how a specific section of the configuration
  * file is mapped to a property within the [IConfigCatalog].
@@ -22,7 +22,7 @@ import kotlin.reflect.KClass
  * @see [IConfigCatalogSection]
  */
 @ConfigurationAPI
-internal data class ConfigClassMap<T : IConfigCatalogSection>(
+internal data class ConfigCatalogMap<T : IConfigCatalogSection>(
     val keyPath: String,
     val catalogProperty: String,
     val propertyClass: KClass<T>
