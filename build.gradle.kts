@@ -92,6 +92,8 @@ subprojects {
 
             // Enable the experimental Uuid API in the standard library.
             freeCompilerArgs.add("-opt-in=kotlin.uuid.ExperimentalUuidApi")
+            // Enable consistent copy visibility for UUIDs in the standard library.
+            freeCompilerArgs.add("-opt-in=kotlin.uuid.ConsistentCopyVisibility")
         }
     }
 }
