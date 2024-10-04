@@ -39,7 +39,7 @@ public abstract class BaseRbac {
      * Anonymized fields are replaced with predefined placeholders based on their type.
      * Fields of nested instances are also supported.
      *
-     * Usage example:
+     * #### Usage
      * ```
      * data class Sample(val name: String, val phone: String): BaseRbac()
      * val instance = Sample(...)

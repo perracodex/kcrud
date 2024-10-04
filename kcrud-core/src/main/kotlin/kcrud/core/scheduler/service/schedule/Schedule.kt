@@ -84,8 +84,8 @@ public sealed class Schedule {
      * * * * * * * *
      * ```
      *
+     * #### Samples
      * ```
-     * Sample cron expressions:
      *   - "0 0 0 * * ?" - At midnight every day.
      *   - "0 0 12 ? * MON-FRI" - At noon every weekday.
      *   - "0 0/30 9-17 * * ?" - Every 30 minutes between 9 to 17:59.

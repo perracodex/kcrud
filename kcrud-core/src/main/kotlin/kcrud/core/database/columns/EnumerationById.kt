@@ -27,7 +27,7 @@ public interface IEnumWithId {
  * It uses a transformation approach to map integers to enum instances, leveraging the
  * integer column type in Exposed.
  *
- * Usage example:
+ * #### Usage
  * ```
  * enum class SomeEnum(override val id: Int) : IEnumWithId {
  *     ELEMENT_A(100), ELEMENT_B(101), ...
