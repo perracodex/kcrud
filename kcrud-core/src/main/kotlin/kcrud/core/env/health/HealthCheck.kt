@@ -8,6 +8,7 @@ import io.ktor.server.application.*
 import kcrud.core.database.service.DatabaseService
 import kcrud.core.env.health.annotation.HealthCheckAPI
 import kcrud.core.env.health.checks.*
+import kcrud.core.utils.RouteInfo
 import kcrud.core.utils.collectRoutes
 import kotlinx.serialization.Serializable
 
@@ -35,7 +36,7 @@ public data class HealthCheck internal constructor(
     val security: SecurityHealth,
     val snowflake: SnowflakeHealth,
     val database: DatabaseHealth,
-    val endpoints: List<String>
+    val endpoints: List<RouteInfo>
 ) {
     init {
         health.addAll(application.errors)
@@ -63,7 +64,7 @@ public data class HealthCheck internal constructor(
             return HealthCheck(
                 health = mutableListOf(),
                 application = ApplicationHealth(),
-                deployment = DeploymentHealth(call = call),
+                deployment = DeploymentHealth.create(call = call),
                 runtime = RuntimeHealth(call = call),
                 scheduler = SchedulerHealth.create(),
                 security = SecurityHealth(),

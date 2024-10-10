@@ -14,7 +14,7 @@ internal val SchedulerPlugin: ApplicationPlugin<SchedulerPluginConfig> = createA
     name = "SchedulerPlugin",
     ::SchedulerPluginConfig
 ) {
-    SchedulerService.configure(environment = application.environment)
+    SchedulerService.configure(application = application)
 
     if (pluginConfig.autoStart) {
         SchedulerService.start()

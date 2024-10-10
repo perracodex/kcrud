@@ -151,11 +151,11 @@ internal object SchedulerService {
     /**
      * Configures the task scheduler to shut down when the application is stopped.
      *
-     * @param environment The [ApplicationEnvironment] in which application runs.
+     * @param application The server [Application] instance.
      */
-    fun configure(environment: ApplicationEnvironment) {
+    fun configure(application: Application) {
         // Add a shutdown hook to stop the scheduler when the application is stopped.
-        environment.monitor.subscribe(ApplicationStopping) {
+        application.monitor.subscribe(ApplicationStopping) {
             stop(interrupt = false)
         }
     }

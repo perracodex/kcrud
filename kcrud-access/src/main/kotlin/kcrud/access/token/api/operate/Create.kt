@@ -4,7 +4,6 @@
 
 package kcrud.access.token.api.operate
 
-import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.routing.*

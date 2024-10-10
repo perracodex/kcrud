@@ -7,62 +7,93 @@ package kcrud.core.utils
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 import kcrud.core.env.health.annotation.HealthCheckAPI
+import kotlinx.serialization.Serializable
 
 /**
- * Collects all the routes defined in the application.
+ * Extension function traverse and collect all routes.
  *
- * @return A list of strings representing the registered routes.
+ * @return A list of all found routes.
  */
 @HealthCheckAPI
-internal fun Application.collectRoutes(): List<String> {
-    return routing {}.allRoutes()
+internal fun Application.collectRoutes(): List<RouteInfo> {
+    val routes: MutableList<RouteInfo> = mutableListOf()
+
+    // Helper function to recursively traverse routes and collect attribute values.
+    fun Route.collectAttributes() {
+        when (this) {
+            is RoutingRoot -> {
+                this.children.forEach { it.collectAttributes() }
+            }
+
+            is RoutingNode -> {
+                if (this.selector is HttpMethodRouteSelector) {
+                    val method: String = (this.selector as HttpMethodRouteSelector).method.value
+                    val path: String = this.extractEndpointPath()
+                    val routeInfo = RouteInfo(path = path, method = method)
+                    routes.add(routeInfo)
+                }
+                this.children.forEach { it.collectAttributes() }
+            }
+        }
+    }
+
+    // Start collecting from the root route.
+    this.routing { }.collectAttributes()
+
+    return routes.sortedWith(
+        compareBy(
+            { it.path },
+            { it.method }
+        )
+    )
 }
 
 /**
- * Recursively collects all the terminal routes from the current route and its children.
- * Terminal routes are those that directly handle requests and are not just path prefixes.
+ * Holds information about a registered route.
  *
- * @param prefix The prefix to be used for the path of each route.
- *               It accumulates as it goes deeper into the route tree.
- * @return A list of strings representing the terminal routes.
+ * @property path The path of the route.
+ * @property method The HTTP method of the route.
  */
-private fun Route.allRoutes(prefix: String = ""): List<String> {
-    val routes: MutableList<String> = mutableListOf()
+@Serializable
+public data class RouteInfo(val path: String, val method: String)
 
-    /**
-     * Checks if the route is a prefix (non-terminal) route.
-     * A prefix route is identified by having children with specific HTTP method selectors.
-     *
-     * @return True if the route is a prefix route, false otherwise.
-     */
-    fun Route.isPrefixRoute(): Boolean {
-        return this.children.any { it.selector is HttpMethodRouteSelector }
+/**
+ * Constructs the full path of a route by aggregating path segments from the current route up to the root,
+ * by traversing the parent chain of the current route and collects segments defined by various
+ * types of [RouteSelector] types.
+ *
+ * It builds a full path by piecing together these segments in the order from the root to the current route.
+ * The method is designed to ignore segments that do not directly contribute to the path structure,
+ * such as HTTP method selectors and trailing slashes.
+ *
+ * @return A string representing the full path from the root to the current route, starting with a `/`.
+ * If the current route is at the root or no path segments are defined, the function returns just `/`.
+ */
+internal fun Route.extractEndpointPath(): String {
+    val segments: MutableList<String> = mutableListOf()
+    var currentRoute: Route? = this
+
+    // Traverse the parent chain of the current route and collect path segments.
+    while (currentRoute != null) {
+        // Cast to RoutingNode to access selector.
+        val routingNode: RoutingNode = currentRoute as? RoutingNode ?: break
+        // Stop if reached the root route.
+        if (routingNode.selector is RootRouteSelector) break
+
+        val segment: String = when (val selector: RouteSelector = routingNode.selector) {
+            is PathSegmentConstantRouteSelector -> selector.value
+            is PathSegmentParameterRouteSelector -> "{${selector.name}}"
+            is PathSegmentOptionalParameterRouteSelector -> "{${selector.name}?}"
+            is PathSegmentWildcardRouteSelector -> "*"
+            is TrailingSlashRouteSelector -> ""
+            is HttpMethodRouteSelector -> "" // Skip HTTP method selectors
+            else -> ""
+        }
+        if (segment.isNotEmpty()) {
+            segments.add(segment)
+        }
+        currentRoute = currentRoute.parent
     }
 
-    /**
-     * Recursive function to traverse the route tree and collect terminal routes.
-     *
-     * @param currentPath The current path accumulated from the parent routes.
-     */
-    fun Route.collectRoutes(currentPath: String) {
-        val pathSegment: String = when (val selector = this.selector) {
-            is PathSegmentConstantRouteSelector -> "${currentPath}/${selector.value}"
-            is PathSegmentParameterRouteSelector -> "${currentPath}/{${selector.name}}"
-            is PathSegmentWildcardRouteSelector -> "${currentPath}/*"
-            else -> currentPath
-        }
-
-        // Add the route if it's a terminal route (has an HttpMethodRouteSelector and is not a prefix route).
-        if (this.selector is HttpMethodRouteSelector && !this.isPrefixRoute()) {
-            val method: String = (this.selector as HttpMethodRouteSelector).method.value
-            routes.add("$method $pathSegment")
-        }
-
-        // Recursively collect routes from children.
-        this.children.forEach { it.collectRoutes(currentPath = pathSegment) }
-    }
-
-    this.collectRoutes(currentPath = prefix)
-
-    return routes.distinct()
+    return segments.reversed().joinToString(separator = "/", prefix = "/").trim()
 }

@@ -16,7 +16,7 @@ kotlin = "2.0.21"                       # https://github.com/JetBrains/kotlin/re
 kotlinx-atomicfu = "0.25.0"             # https://github.com/Kotlin/kotlinx-atomicfu/releases
 kotlinx-datetime = "0.6.1"              # https://github.com/Kotlin/kotlinx-datetime/releases
 kotlinx-serialization = "1.7.3"         # https://github.com/Kotlin/kotlinx.serialization/releases
-ktor = "2.3.12"                         # https://ktor.io/docs/releases.html#release-details
+ktor = "3.0.0"                          # https://ktor.io/docs/releases.html#release-details
 ktor-config = "1.0.0"                   # https://github.com/perracodex/ktor-config/releases
 logback = "1.5.9"                       # https://github.com/qos-ch/logback/tags
 micrometer-prometheus = "1.13.5"        # https://github.com/micrometer-metrics/micrometer/releases
@@ -147,7 +147,7 @@ ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor"
 ktor-server-rateLimit = { module = "io.ktor:ktor-server-rate-limit", version.ref = "ktor" }
 ktor-server-statusPages = { module = "io.ktor:ktor-server-status-pages", version.ref = "ktor" }
 ktor-server-sessions = { module = "io.ktor:ktor-server-sessions", version.ref = "ktor" }
-ktor-server-tests = { module = "io.ktor:ktor-server-tests", version.ref = "ktor" }
+ktor-server-tests = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 ktor-server-thymeleaf = { module = "io.ktor:ktor-server-thymeleaf", version.ref = "ktor" }
 
 # Logging.

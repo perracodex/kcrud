@@ -5,7 +5,6 @@
 package kcrud.server.demo.api.dashboard
 
 import io.ktor.http.*
-import io.ktor.server.application.*
 import io.ktor.server.html.*
 import io.ktor.server.routing.*
 import kcrud.server.demo.DemoAPI

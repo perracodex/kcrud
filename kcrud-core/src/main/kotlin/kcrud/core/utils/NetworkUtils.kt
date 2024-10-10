@@ -131,26 +131,22 @@ public object NetworkUtils {
     }
 
     /**
-     * Retrieves the active connectors configurations from the application's server environment.
+     * Retrieves the active connectors configurations from the application's engine.
      * Connectors detail the interfaces through which the server communicates over the network.
      * This function maps each connector type to its configuration details, such as host, port, and security settings.
      *
-     * @param environment [ApplicationEnvironment] providing context for accessing the application's runtime environment.
-     * @param errors A mutable list to log any errors encountered during connector retrieval.
+     * @param application [Application] providing context for accessing the engine connectors.
      * @return A map where each key represents a connector type and the value is a list of its configuration details.
      */
-    internal fun getConnectors(
-        environment: ApplicationEnvironment,
-        errors: MutableList<String>
-    ): MutableMap<String, List<String>> {
+    internal suspend fun getConnectors(application: Application): MutableMap<String, List<String>> {
         val connectors: MutableMap<String, List<String>> = mutableMapOf()
 
-        (environment as ApplicationEngineEnvironmentReloading).connectors.forEach { connection ->
+        application.engine.resolvedConnectors().forEach { connection ->
             val connectorData: String = connection.type.name
-            var attributes: MutableList<String>? = null
+            val attributes: MutableList<String>?
 
             when (connection) {
-                is EngineSSLConnectorBuilder -> {
+                is EngineSSLConnectorConfig -> {
                     attributes = mutableListOf(
                         "host: ${connection.host}",
                         "post: ${connection.port}",
@@ -164,7 +160,7 @@ public object NetworkUtils {
                     )
                 }
 
-                is EngineConnectorBuilder -> {
+                else -> {
                     attributes = mutableListOf(
                         "host: ${connection.host}",
                         "post: ${connection.port}"
@@ -172,9 +168,7 @@ public object NetworkUtils {
                 }
             }
 
-            attributes?.let { data ->
-                connectors[connectorData] = data
-            } ?: errors.add("Unknown Connector: $connection")
+            connectors[connectorData] = attributes
         }
 
         return connectors

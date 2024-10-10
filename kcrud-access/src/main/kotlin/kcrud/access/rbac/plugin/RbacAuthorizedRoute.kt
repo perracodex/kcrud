@@ -4,7 +4,6 @@
 
 package kcrud.access.rbac.plugin
 
-import io.ktor.server.application.*
 import io.ktor.server.routing.*
 import kcrud.access.rbac.plugin.annotation.RbacAPI
 import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
@@ -69,7 +68,7 @@ private class AuthorizedRouteSelector(
     private val scope: RbacScope,
     private val accessLevel: RbacAccessLevel
 ) : RouteSelector() {
-    override fun evaluate(context: RoutingResolveContext, segmentIndex: Int): RouteSelectorEvaluation {
+    override suspend fun evaluate(context: RoutingResolveContext, segmentIndex: Int): RouteSelectorEvaluation {
         return RouteSelectorEvaluation.Constant
     }
 

@@ -19,8 +19,8 @@ internal object ApplicationsUtils {
     /**
      * Watches the server for readiness and logs the server's endpoints to the console.
      */
-    fun watchServer(environment: ApplicationEnvironment) {
-        environment.monitor.subscribe(definition = ServerReady) {
+    fun watchServer(application: Application) {
+        application.monitor.subscribe(definition = ServerReady) {
 
             // Dumps the server's endpoints to the console for easy access and testing.
             // This does not include the actual API routes endpoints.
@@ -46,7 +46,7 @@ internal object ApplicationsUtils {
             }
 
             // Log the server readiness.
-            tracer.withSeverity("Development Mode Enabled: ${environment.developmentMode}.")
+            tracer.withSeverity("Development Mode Enabled: ${application.developmentMode}.")
             tracer.info("Server configured. Environment: ${AppSettings.runtime.environment}.")
         }
     }

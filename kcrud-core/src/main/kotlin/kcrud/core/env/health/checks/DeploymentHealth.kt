@@ -24,18 +24,30 @@ import kotlinx.serialization.Serializable
  */
 @HealthCheckAPI
 @Serializable
-public data class DeploymentHealth(
+public data class DeploymentHealth private constructor(
     val errors: MutableList<String>,
     val configured: Configured,
     val serverSpec: ServerSpec,
     val connectors: MutableMap<String, List<String>>,
 ) {
-    internal constructor(call: ApplicationCall) : this(
-        errors = mutableListOf(),
-        configured = Configured(),
-        serverSpec = ServerSpec(request = call.request),
-        connectors = NetworkUtils.getConnectors(environment = call.application.environment, errors = mutableListOf())
-    )
+    internal companion object {
+        /**
+         * Creates a new [DeploymentHealth] instance.
+         * We need to use a suspendable factory method as getting the connectors requires a suspend function.
+         */
+        suspend fun create(call: ApplicationCall): DeploymentHealth {
+            val connectors: MutableMap<String, List<String>> = NetworkUtils.getConnectors(
+                application = call.application
+            )
+
+            return DeploymentHealth(
+                errors = mutableListOf(),
+                configured = Configured(),
+                serverSpec = ServerSpec(request = call.request),
+                connectors = connectors
+            )
+        }
+    }
 
     /**
      * Contains the deployment settings.
