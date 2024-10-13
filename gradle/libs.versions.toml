@@ -180,6 +180,6 @@ typesafe-config = { module = "com.typesafe:config", version.ref = "typesafe-conf
 # https://github.com/mockito/mockito-kotlin
 # https://github.com/mockk/mockk/releases
 # https://github.com/mockito/mockito-kotlin/releases
-test-kotlin-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+test-kotlin-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit5", version.ref = "kotlin" }
 test-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 test-mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin" }
