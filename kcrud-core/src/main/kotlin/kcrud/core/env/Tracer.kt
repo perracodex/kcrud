@@ -86,10 +86,9 @@ public class Tracer(private val logger: Logger) {
          * @return Tracer instance with a logger named after the class.
          */
         public inline operator fun <reified T : Any> invoke(): Tracer {
-            val loggerName: String = if (LOG_FULL_PACKAGE) {
-                T::class.qualifiedName ?: T::class.simpleName ?: "UnknownClass"
-            } else {
-                T::class.simpleName ?: "UnknownClass"
+            val loggerName: String = when {
+                LOG_FULL_PACKAGE -> T::class.qualifiedName ?: T::class.simpleName ?: "UnknownClass"
+                else -> T::class.simpleName ?: "UnknownClass"
             }
             return Tracer(logger = KtorSimpleLogger(name = loggerName))
         }
@@ -102,10 +101,9 @@ public class Tracer(private val logger: Logger) {
          * @return Tracer instance named after the function and its declaring class (if available).
          */
         public operator fun <T> invoke(ref: KFunction<T>): Tracer {
-            val loggerName = if (LOG_FULL_PACKAGE) {
-                "${ref.javaMethod?.declaringClass?.name ?: "Unknown"}.${ref.name}"
-            } else {
-                ref.name
+            val loggerName: String = when {
+                LOG_FULL_PACKAGE -> "${ref.javaMethod?.declaringClass?.name ?: "Unknown"}.${ref.name}"
+                else -> ref.name
             }
             return Tracer(logger = KtorSimpleLogger(name = loggerName))
         }
