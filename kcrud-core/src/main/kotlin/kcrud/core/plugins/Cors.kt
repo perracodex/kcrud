@@ -36,6 +36,7 @@ public fun Application.configureCors() {
 
         // Specify allowed HTTP headers for CORS requests.
         allowHeader(header = HttpHeaders.Authorization)
+        allowHeader(header = HttpHeaders.AuthenticationInfo)
         allowHeader(header = HttpHeaders.ContentType)
 
         // Enable inclusion of credentials in CORS requests.
