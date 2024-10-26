@@ -15,6 +15,7 @@ import kcrud.access.context.SessionContextFactory
 import kcrud.access.token.annotation.TokenAPI
 import kcrud.core.context.clearContext
 import kcrud.core.context.setContext
+import kcrud.core.env.Tracer
 import kcrud.core.settings.AppSettings
 
 /**
@@ -63,7 +64,10 @@ public fun Application.configureJwtAuthentication() {
                 return@validate null
             }
 
-            challenge { _, _ ->
+            challenge { defaultScheme, realm ->
+                Tracer(ref = Application::configureJwtAuthentication).error(
+                    "JWT authentication failed. Default scheme: $defaultScheme, realm: $realm"
+                )
                 call.clearContext()
                 call.respond(status = HttpStatusCode.Unauthorized, message = "Token is not valid or has expired.")
             }
