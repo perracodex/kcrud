@@ -90,7 +90,8 @@ internal object TokenService {
      */
     private fun getTokenFromHeader(headers: Headers): String {
         val authHeader: String? = headers.entries().find { header ->
-            header.key.equals(other = HttpHeaders.Authorization, ignoreCase = true)
+            header.key.equals(other = HttpHeaders.Authorization, ignoreCase = true) ||
+                    header.key.equals(other = HttpHeaders.AuthenticationInfo, ignoreCase = true)
         }?.value?.get(index = 0)
 
         require(!authHeader.isNullOrBlank() && authHeader.startsWith(prefix = AuthScheme.Bearer, ignoreCase = true)) {

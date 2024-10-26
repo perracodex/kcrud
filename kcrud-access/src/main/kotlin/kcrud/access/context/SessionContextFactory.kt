@@ -7,6 +7,7 @@ package kcrud.access.context
 import com.auth0.jwt.JWT
 import com.auth0.jwt.exceptions.JWTDecodeException
 import com.auth0.jwt.interfaces.DecodedJWT
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
@@ -46,11 +47,15 @@ internal object SessionContextFactory : KoinComponent {
     /**
      * Creates a [SessionContext] instance from a JWT [JWTCredential].
      *
+     * @param headers The [Headers] containing the request headers.
      * @param jwtCredential The [JWTCredential] containing actor-related claims.
      * @return A [SessionContext] instance if actor details and validations pass; null otherwise.
      */
     @TokenAPI
-    suspend fun from(jwtCredential: JWTCredential): SessionContext? {
+    suspend fun from(
+        headers: Headers,
+        jwtCredential: JWTCredential
+    ): SessionContext? {
         // Check if the JWT audience claim matches the configured audience.
         // This ensures the token is intended for the application.
         if (!jwtCredential.payload.audience.contains(AppSettings.security.jwtAuth.audience)) {
@@ -73,6 +78,25 @@ internal object SessionContextFactory : KoinComponent {
         if (payload.isNullOrBlank()) {
             tracer.error("Missing JWT payload.")
             return null
+        }
+
+        // Validate the JWT token.
+        TokenService.getState(headers = headers).let { tokenState ->
+            when (tokenState) {
+                is TokenService.TokenState.Valid -> {
+                    tracer.info("JWT token is valid.")
+                }
+
+                is TokenService.TokenState.Expired -> {
+                    tracer.error("JWT token has expired.")
+                    return null
+                }
+
+                is TokenService.TokenState.Invalid -> {
+                    tracer.error("Invalid JWT token: ${tokenState.reason}")
+                    return null
+                }
+            }
         }
 
         // Return a fully constructed SessionContext for the reconstructed payload.

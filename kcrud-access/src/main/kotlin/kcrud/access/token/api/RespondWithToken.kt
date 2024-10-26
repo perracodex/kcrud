@@ -55,6 +55,10 @@ internal suspend fun ApplicationCall.respondWithToken() {
     }.getOrThrow()
 
     if (result.isSuccess) {
-        this.respond(status = HttpStatusCode.OK, message = result.getOrNull()!!)
+        this.respondText(
+            text = result.getOrNull()!!,
+            status = HttpStatusCode.OK,
+            contentType = ContentType.Text.Plain
+        )
     }
 }

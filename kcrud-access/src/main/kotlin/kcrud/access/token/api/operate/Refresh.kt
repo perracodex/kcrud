@@ -37,7 +37,11 @@ internal fun Route.refreshTokenRoute() {
             when (result) {
                 is TokenService.TokenState.Valid -> {
                     // Token is still valid; return the same token to the client.
-                    call.respond(status = HttpStatusCode.OK, message = result.token)
+                    call.respondText(
+                        text = result.token,
+                        status = HttpStatusCode.OK,
+                        contentType = ContentType.Text.Plain
+                    )
                 }
 
                 is TokenService.TokenState.Expired -> {

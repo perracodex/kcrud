@@ -52,7 +52,10 @@ public fun Application.configureJwtAuthentication() {
             // The JWT library automatically verifies the token's signature before this block.
             // This ensures that the token was not tampered with and was signed with the correct secret key.
             validate { credential ->
-                SessionContextFactory.from(jwtCredential = credential)?.let { sessionContext ->
+                SessionContextFactory.from(
+                    headers = this.request.headers,
+                    jwtCredential = credential
+                )?.let { sessionContext ->
                     return@validate this.setContext(sessionContext = sessionContext)
                 }
 
