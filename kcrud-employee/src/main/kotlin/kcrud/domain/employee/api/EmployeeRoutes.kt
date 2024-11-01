@@ -22,7 +22,7 @@ import kcrud.domain.employee.api.operate.updateEmployeeByIdRoute
  */
 @RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Employee Routes API.")
 @Retention(AnnotationRetention.BINARY)
-internal annotation class EmployeeRouteAPI
+internal annotation class EmployeeRouteApi
 
 /**
  * Employee related endpoints.
@@ -31,7 +31,7 @@ internal annotation class EmployeeRouteAPI
  * - [Application Structure](https://ktor.io/docs/server-application-structure.html) for examples
  * of how to organize routes in diverse ways.
  */
-@OptIn(EmployeeRouteAPI::class)
+@OptIn(EmployeeRouteApi::class)
 public fun Route.employeeRoutes() {
     withRbac(scope = RbacScope.EMPLOYEE_RECORDS, accessLevel = RbacAccessLevel.FULL) {
         createEmployeeRoute()

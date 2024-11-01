@@ -12,7 +12,7 @@ import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import kcrud.access.context.SessionContextFactory
-import kcrud.access.token.annotation.TokenAPI
+import kcrud.access.token.annotation.TokenApi
 import kcrud.core.context.clearContext
 import kcrud.core.context.setContext
 import kcrud.core.env.Tracer
@@ -32,7 +32,7 @@ import kcrud.core.settings.AppSettings
  * #### References
  * - [Ktor JWT Authentication Documentation](https://ktor.io/docs/server-jwt.html)
  */
-@OptIn(TokenAPI::class)
+@OptIn(TokenApi::class)
 public fun Application.configureJwtAuthentication() {
 
     authentication {

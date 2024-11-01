@@ -7,10 +7,10 @@ package kcrud.server.demo.api.dashboard
 import io.ktor.http.*
 import io.ktor.server.html.*
 import io.ktor.server.routing.*
-import kcrud.server.demo.DemoAPI
+import kcrud.server.demo.DemoApi
 import kcrud.server.demo.DemoView
 
-@DemoAPI
+@DemoApi
 internal fun Route.renderViewRoute() {
     /**
      * Display the demo view.

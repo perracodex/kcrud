@@ -10,7 +10,7 @@ import kcrud.core.env.Telemetry
 import kcrud.core.env.Tracer
 import kcrud.core.scheduler.audit.AuditService
 import kcrud.core.scheduler.model.audit.AuditLogRequest
-import kcrud.core.scheduler.service.annotation.SchedulerAPI
+import kcrud.core.scheduler.service.annotation.SchedulerApi
 import kcrud.core.scheduler.service.task.TaskOutcome
 import kcrud.core.utils.DateTimeUtils.toKotlinLocalDateTime
 import kotlinx.coroutines.runBlocking
@@ -23,7 +23,7 @@ import org.quartz.JobListener
  * In addition to logging task execution events, it also stores audit logs.
  * Micro-metrics are also exposed for external monitoring.
  */
-@SchedulerAPI
+@SchedulerApi
 internal class TaskListener : JobListener {
     private val tracer = Tracer<TaskListener>()
 

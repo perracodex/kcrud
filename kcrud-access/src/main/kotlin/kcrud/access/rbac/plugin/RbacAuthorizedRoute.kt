@@ -5,7 +5,7 @@
 package kcrud.access.rbac.plugin
 
 import io.ktor.server.routing.*
-import kcrud.access.rbac.plugin.annotation.RbacAPI
+import kcrud.access.rbac.plugin.annotation.RbacApi
 import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.core.database.schema.admin.rbac.types.RbacScope
 
@@ -18,7 +18,7 @@ import kcrud.core.database.schema.admin.rbac.types.RbacScope
  * @param build The lambda function defining the route's handling logic that must adhere to the RBAC constraints.
  * @return The created Route object configured with RBAC constraints.
  */
-@RbacAPI
+@RbacApi
 internal fun Route.rbacAuthorizedRoute(
     scope: RbacScope,
     accessLevel: RbacAccessLevel,

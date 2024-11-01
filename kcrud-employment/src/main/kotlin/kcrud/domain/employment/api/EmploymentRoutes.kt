@@ -20,7 +20,7 @@ import kcrud.domain.employment.api.operate.updateEmploymentByIdRoute
  */
 @RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Employment Routes API.")
 @Retention(AnnotationRetention.BINARY)
-internal annotation class EmploymentRouteAPI
+internal annotation class EmploymentRouteApi
 
 /**
  * Employment endpoints.
@@ -32,7 +32,7 @@ internal annotation class EmploymentRouteAPI
  * - [Application Structure](https://ktor.io/docs/server-application-structure.html) for examples
  * of how to organize routes in diverse ways.
  */
-@OptIn(EmploymentRouteAPI::class)
+@OptIn(EmploymentRouteApi::class)
 public fun Route.employmentRoutes() {
 
     withRbac(scope = RbacScope.EMPLOYMENT_RECORDS, accessLevel = RbacAccessLevel.VIEW) {

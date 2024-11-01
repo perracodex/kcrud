@@ -9,4 +9,4 @@ package kcrud.core.env.health.annotation
  */
 @RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Health Check API.")
 @Retention(AnnotationRetention.BINARY)
-internal annotation class HealthCheckAPI
+internal annotation class HealthCheckApi

@@ -8,14 +8,14 @@ import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import kcrud.core.scheduler.api.SchedulerRouteAPI
+import kcrud.core.scheduler.api.SchedulerRouteApi
 import kcrud.core.scheduler.audit.AuditService
 import kcrud.core.scheduler.model.audit.AuditLog
 
 /**
  * Returns the audit log for a specific task.
  */
-@SchedulerRouteAPI
+@SchedulerRouteApi
 internal fun Route.schedulerAuditByTaskRoute() {
     /**
      * Returns the audit log for a specific task.

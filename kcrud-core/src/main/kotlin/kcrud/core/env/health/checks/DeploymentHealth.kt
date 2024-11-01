@@ -7,7 +7,7 @@ package kcrud.core.env.health.checks
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import kcrud.core.env.EnvironmentType
-import kcrud.core.env.health.annotation.HealthCheckAPI
+import kcrud.core.env.health.annotation.HealthCheckApi
 import kcrud.core.env.health.checks.DeploymentHealth.Configured
 import kcrud.core.env.health.checks.DeploymentHealth.ServerSpec
 import kcrud.core.settings.AppSettings
@@ -22,7 +22,7 @@ import kotlinx.serialization.Serializable
  * @property serverSpec The [ServerSpec] configuration of the server.
  * @property connectors The connectors used by the application.
  */
-@HealthCheckAPI
+@HealthCheckApi
 @Serializable
 public data class DeploymentHealth private constructor(
     val errors: MutableList<String>,

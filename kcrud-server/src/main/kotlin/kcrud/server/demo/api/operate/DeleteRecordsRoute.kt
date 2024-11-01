@@ -9,11 +9,11 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.core.context.getContext
 import kcrud.domain.employee.service.EmployeeService
-import kcrud.server.demo.DemoAPI
+import kcrud.server.demo.DemoApi
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 
-@DemoAPI
+@DemoApi
 internal fun Route.deleteRecordsRoute() {
     /**
      * Delete all demo records.

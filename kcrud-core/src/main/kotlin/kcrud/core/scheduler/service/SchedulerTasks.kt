@@ -12,7 +12,7 @@ import kcrud.core.scheduler.model.audit.AuditLog
 import kcrud.core.scheduler.model.task.TaskSchedule
 import kcrud.core.scheduler.model.task.TaskStateChange
 import kcrud.core.scheduler.service.SchedulerTasks.Companion.create
-import kcrud.core.scheduler.service.annotation.SchedulerAPI
+import kcrud.core.scheduler.service.annotation.SchedulerApi
 import kcrud.core.scheduler.service.task.TaskState
 import kcrud.core.security.snowflake.SnowflakeFactory
 import kcrud.core.utils.DateTimeUtils.toKotlinLocalDateTime
@@ -29,9 +29,9 @@ import kotlin.uuid.Uuid
  *
  * Instances should be created using the [create] method in the companion object.
  * The constructor is private to prevent instantiation from outside modules and ensure
- * that only components annotated with [SchedulerAPI] can create instances.
+ * that only components annotated with [SchedulerApi] can create instances.
  */
-@OptIn(SchedulerAPI::class)
+@OptIn(SchedulerApi::class)
 internal class SchedulerTasks private constructor(private val scheduler: Scheduler) {
     private val tracer = Tracer<SchedulerService>()
 
@@ -238,7 +238,7 @@ internal class SchedulerTasks private constructor(private val scheduler: Schedul
          * @param scheduler The [Scheduler] instance to be used.
          * @return A new instance of [SchedulerTasks].
          */
-        @SchedulerAPI
+        @SchedulerApi
         internal fun create(scheduler: Scheduler): SchedulerTasks {
             return SchedulerTasks(scheduler = scheduler)
         }

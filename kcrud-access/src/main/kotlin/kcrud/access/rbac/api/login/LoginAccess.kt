@@ -7,7 +7,7 @@ package kcrud.access.rbac.api.login
 import io.ktor.http.*
 import io.ktor.server.html.*
 import io.ktor.server.routing.*
-import kcrud.access.rbac.plugin.annotation.RbacAPI
+import kcrud.access.rbac.plugin.annotation.RbacApi
 import kcrud.access.rbac.view.RbacLoginView
 import kcrud.core.context.SessionContext
 import kcrud.core.context.clearContext
@@ -17,7 +17,7 @@ import kcrud.core.context.clearContext
  * is directly redirected to the dashboard. Otherwise, any existing session cookies are
  * cleared and the login page is presented.
  */
-@RbacAPI
+@RbacApi
 internal fun Route.rbacLoginAccessRoute() {
     /**
      * Opens the RBAC login page. If a valid [SessionContext] is present,

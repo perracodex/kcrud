@@ -7,7 +7,7 @@ package kcrud.core.scheduler.audit
 import kcrud.core.env.Tracer
 import kcrud.core.scheduler.model.audit.AuditLog
 import kcrud.core.scheduler.model.audit.AuditLogRequest
-import kcrud.core.scheduler.service.annotation.SchedulerAPI
+import kcrud.core.scheduler.service.annotation.SchedulerApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlin.uuid.Uuid
@@ -15,7 +15,7 @@ import kotlin.uuid.Uuid
 /**
  * Service to manage the persistence and retrieval of the scheduler audit logs.
  */
-@OptIn(SchedulerAPI::class)
+@OptIn(SchedulerApi::class)
 internal object AuditService {
     private val tracer = Tracer<AuditService>()
 

@@ -10,7 +10,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import kcrud.access.rbac.plugin.annotation.RbacAPI
+import kcrud.access.rbac.plugin.annotation.RbacApi
 import kcrud.access.rbac.service.RbacDashboardManager
 import kcrud.access.rbac.view.RbacDashboardView
 import kcrud.access.rbac.view.RbacLoginView
@@ -24,7 +24,7 @@ import kotlin.uuid.Uuid
  * Processes updates to RBAC settings based on actor submissions from the dashboard form.
  * Validates the [SessionContext] and authorizes modifications, redirecting to the login screen if unauthorized.
  */
-@RbacAPI
+@RbacApi
 internal fun Route.rbacDashboardUpdateRoute() {
     /**
      * Processes updates to RBAC settings based on actor submissions from the dashboard form.

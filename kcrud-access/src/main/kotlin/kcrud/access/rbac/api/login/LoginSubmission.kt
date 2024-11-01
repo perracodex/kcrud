@@ -7,7 +7,7 @@ package kcrud.access.rbac.api.login
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.access.rbac.plugin.annotation.RbacAPI
+import kcrud.access.rbac.plugin.annotation.RbacApi
 import kcrud.access.rbac.view.RbacDashboardView
 import kcrud.access.rbac.view.RbacLoginView
 
@@ -16,7 +16,7 @@ import kcrud.access.rbac.view.RbacLoginView
  * upon successful authentication, redirects the actor to the dashboard.
  * Unsuccessful attempts are handled by the authentication setup.
  */
-@RbacAPI
+@RbacApi
 internal fun Route.rbacLoginSubmissionRoute() {
     authenticate(RbacLoginView.RBAC_LOGIN_PATH) {
         /**

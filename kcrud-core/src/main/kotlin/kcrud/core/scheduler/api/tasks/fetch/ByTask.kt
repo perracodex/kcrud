@@ -8,7 +8,7 @@ import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.core.persistence.utils.toUuidOrNull
-import kcrud.core.scheduler.api.SchedulerRouteAPI
+import kcrud.core.scheduler.api.SchedulerRouteApi
 import kcrud.core.scheduler.model.task.TaskSchedule
 import kcrud.core.scheduler.service.SchedulerService
 import kotlin.uuid.Uuid
@@ -16,7 +16,7 @@ import kotlin.uuid.Uuid
 /**
  * Gets all scheduler tasks.
  */
-@SchedulerRouteAPI
+@SchedulerRouteApi
 internal fun Route.getSchedulerTasksRoute() {
     /**
      * Gets all scheduler tasks.

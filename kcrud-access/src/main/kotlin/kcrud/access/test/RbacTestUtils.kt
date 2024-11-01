@@ -12,7 +12,7 @@ import kcrud.access.rbac.model.role.RbacRole
 import kcrud.access.rbac.model.role.RbacRoleRequest
 import kcrud.access.rbac.model.scope.RbacScopeRuleRequest
 import kcrud.access.rbac.service.RbacService
-import kcrud.access.token.annotation.TokenAPI
+import kcrud.access.token.annotation.TokenApi
 import kcrud.access.token.service.TokenService
 import kcrud.core.context.SessionContext
 import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
@@ -31,7 +31,7 @@ public object RbacTestUtils {
      *
      * @return The authentication token.
      */
-    @OptIn(TokenAPI::class)
+    @OptIn(TokenApi::class)
     public suspend fun newAuthenticationToken(): String {
         val actorService: ActorService = getKoin().get()
         val username: String = DefaultActorFactory.RoleName.ADMIN.name.lowercase()
@@ -55,7 +55,7 @@ public object RbacTestUtils {
      * @param testIteration The test iteration.
      * @return The authentication token.
      */
-    @OptIn(TokenAPI::class)
+    @OptIn(TokenApi::class)
     public suspend fun newAuthenticationToken(accessLevel: RbacAccessLevel, testIteration: Int): String {
         val actor: Actor = createActor(accessLevel = accessLevel, iteration = testIteration)
 

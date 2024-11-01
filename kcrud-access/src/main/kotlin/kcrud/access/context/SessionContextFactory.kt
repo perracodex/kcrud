@@ -18,7 +18,7 @@ import kcrud.access.plugins.configureBasicAuthentication
 import kcrud.access.plugins.configureJwtAuthentication
 import kcrud.access.plugins.configureOAuthAuthentication
 import kcrud.access.rbac.service.RbacService
-import kcrud.access.token.annotation.TokenAPI
+import kcrud.access.token.annotation.TokenApi
 import kcrud.access.token.service.TokenService
 import kcrud.core.context.SessionContext
 import kcrud.core.env.Tracer
@@ -51,7 +51,7 @@ internal object SessionContextFactory : KoinComponent {
      * @param jwtCredential The [JWTCredential] containing actor-related claims.
      * @return A [SessionContext] instance if actor details and validations pass; null otherwise.
      */
-    @TokenAPI
+    @TokenApi
     suspend fun from(
         headers: Headers,
         jwtCredential: JWTCredential

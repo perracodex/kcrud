@@ -8,13 +8,13 @@ import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import kcrud.core.scheduler.api.SchedulerRouteAPI
+import kcrud.core.scheduler.api.SchedulerRouteApi
 import kcrud.core.scheduler.service.SchedulerService
 
 /**
  * Resends a concrete scheduler task.
  */
-@SchedulerRouteAPI
+@SchedulerRouteApi
 internal fun Route.resendSchedulerTaskRoute() {
     /**
      * Resends a concrete scheduler task.

@@ -6,7 +6,7 @@ package kcrud.core.env.health
 
 import io.ktor.server.application.*
 import kcrud.core.database.service.DatabaseService
-import kcrud.core.env.health.annotation.HealthCheckAPI
+import kcrud.core.env.health.annotation.HealthCheckApi
 import kcrud.core.env.health.checks.*
 import kcrud.core.utils.RouteInfo
 import kcrud.core.utils.collectRoutes
@@ -25,7 +25,7 @@ import kotlinx.serialization.Serializable
  * @property database The [DatabaseHealth] check.
  * @property endpoints The list of endpoints registered the application.
  */
-@OptIn(HealthCheckAPI::class)
+@OptIn(HealthCheckApi::class)
 @Serializable
 public data class HealthCheck internal constructor(
     val health: MutableList<String>,

@@ -10,14 +10,14 @@ import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import kcrud.core.context.getContext
 import kcrud.core.persistence.utils.toUuid
-import kcrud.domain.employment.api.EmploymentRouteAPI
+import kcrud.domain.employment.api.EmploymentRouteApi
 import kcrud.domain.employment.model.Employment
 import kcrud.domain.employment.service.EmploymentService
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 import kotlin.uuid.Uuid
 
-@EmploymentRouteAPI
+@EmploymentRouteApi
 internal fun Route.findEmploymentByEmployeeIdRoute() {
     /**
      * Find all employments for an employee ID.

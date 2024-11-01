@@ -9,7 +9,7 @@ import kcrud.core.env.Tracer
 import kcrud.core.scheduler.listener.TaskListener
 import kcrud.core.scheduler.listener.TriggerListener
 import kcrud.core.scheduler.model.task.TaskStateChange
-import kcrud.core.scheduler.service.annotation.SchedulerAPI
+import kcrud.core.scheduler.service.annotation.SchedulerApi
 import kcrud.core.scheduler.service.task.TaskFactory
 import kcrud.core.scheduler.service.task.TaskState
 import org.quartz.Scheduler
@@ -26,7 +26,7 @@ import java.util.*
  * - [Quartz Scheduler Documentation](https://github.com/quartz-scheduler/quartz/blob/main/docs/index.adoc)
  * - [Quartz Scheduler Configuration](https://www.quartz-scheduler.org/documentation/2.4.0-SNAPSHOT/configuration.html)
  */
-@OptIn(SchedulerAPI::class)
+@OptIn(SchedulerApi::class)
 internal object SchedulerService {
     private val tracer = Tracer<SchedulerService>()
 

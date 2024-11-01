@@ -6,7 +6,7 @@ package kcrud.access.rbac.service
 
 import kcrud.access.rbac.model.role.RbacRole
 import kcrud.access.rbac.model.scope.RbacScopeRuleRequest
-import kcrud.access.rbac.plugin.annotation.RbacAPI
+import kcrud.access.rbac.plugin.annotation.RbacApi
 import kcrud.access.rbac.view.RbacDashboardView
 import kcrud.core.context.SessionContext
 import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
@@ -21,7 +21,7 @@ import kotlin.uuid.Uuid
  * including permission checks, role-specific access level determination,
  * and processing of administrative updates.
  */
-@RbacAPI
+@RbacApi
 internal object RbacDashboardManager : KoinComponent {
 
     /**

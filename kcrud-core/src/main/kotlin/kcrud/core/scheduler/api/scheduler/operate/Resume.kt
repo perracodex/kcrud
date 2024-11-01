@@ -7,14 +7,14 @@ package kcrud.core.scheduler.api.scheduler.operate
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.core.scheduler.api.SchedulerRouteAPI
+import kcrud.core.scheduler.api.SchedulerRouteApi
 import kcrud.core.scheduler.model.task.TaskStateChange
 import kcrud.core.scheduler.service.SchedulerService
 
 /**
  * Resume all the scheduler tasks.
  */
-@SchedulerRouteAPI
+@SchedulerRouteApi
 internal fun Route.resumeSchedulerRoute() {
     /**
      * Resume all the scheduler tasks.

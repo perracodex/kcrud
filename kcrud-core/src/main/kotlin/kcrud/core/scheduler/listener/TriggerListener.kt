@@ -5,7 +5,7 @@
 package kcrud.core.scheduler.listener
 
 import kcrud.core.env.Tracer
-import kcrud.core.scheduler.service.annotation.SchedulerAPI
+import kcrud.core.scheduler.service.annotation.SchedulerApi
 import org.quartz.JobExecutionContext
 import org.quartz.Trigger
 import org.quartz.Trigger.CompletedExecutionInstruction
@@ -15,7 +15,7 @@ import org.quartz.TriggerListener
  * The interface to be implemented by classes that want to be informed
  * when a task schedule trigger fires.
  */
-@SchedulerAPI
+@SchedulerApi
 internal class TriggerListener : TriggerListener {
     private val tracer = Tracer<kcrud.core.scheduler.listener.TriggerListener>()
 

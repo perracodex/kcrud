@@ -4,7 +4,7 @@
 
 package kcrud.core.env.health.checks
 
-import kcrud.core.env.health.annotation.HealthCheckAPI
+import kcrud.core.env.health.annotation.HealthCheckApi
 import kcrud.core.scheduler.service.SchedulerService
 import kotlinx.serialization.Serializable
 
@@ -16,7 +16,7 @@ import kotlinx.serialization.Serializable
  * @property isPaused Whether the scheduler is paused.
  * @property totalTasks The total number of tasks in the scheduler.
  */
-@HealthCheckAPI
+@HealthCheckApi
 @Serializable
 public class SchedulerHealth private constructor(
     public val errors: MutableList<String>,

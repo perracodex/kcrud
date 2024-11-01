@@ -11,7 +11,7 @@ import com.auth0.jwt.exceptions.TokenExpiredException
 import com.auth0.jwt.interfaces.DecodedJWT
 import io.ktor.http.*
 import io.ktor.http.auth.*
-import kcrud.access.token.annotation.TokenAPI
+import kcrud.access.token.annotation.TokenApi
 import kcrud.core.context.SessionContext
 import kcrud.core.env.Tracer
 import kcrud.core.settings.AppSettings
@@ -25,7 +25,7 @@ import kotlin.time.Duration.Companion.seconds
  * This class contains the logic for verifying JWT tokens using HMAC256 algorithm.
  * If the token is invalid or any exception occurs, an UnauthorizedException will be thrown.
  */
-@TokenAPI
+@TokenApi
 internal object TokenService {
     private val tracer = Tracer<TokenService>()
 

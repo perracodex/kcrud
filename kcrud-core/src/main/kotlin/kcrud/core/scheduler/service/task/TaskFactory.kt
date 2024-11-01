@@ -5,7 +5,7 @@
 package kcrud.core.scheduler.service.task
 
 import kcrud.core.scheduler.service.SchedulerService
-import kcrud.core.scheduler.service.annotation.SchedulerAPI
+import kcrud.core.scheduler.service.annotation.SchedulerApi
 import kcrud.core.settings.AppSettings
 import org.quartz.Job
 import org.quartz.Scheduler
@@ -18,7 +18,7 @@ import kotlin.reflect.full.createInstance
  * Custom [JobFactory] implementation that create new task instances.
  * Can be used to inject dependencies into the task instances or bundle additional data.
  */
-@SchedulerAPI
+@SchedulerApi
 internal class TaskFactory : JobFactory {
 
     override fun newJob(bundle: TriggerFiredBundle, scheduler: Scheduler): Job {

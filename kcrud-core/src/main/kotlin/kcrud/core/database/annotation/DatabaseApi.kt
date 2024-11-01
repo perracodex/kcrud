@@ -9,4 +9,4 @@ package kcrud.core.database.annotation
  */
 @RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Database API.")
 @Retention(AnnotationRetention.BINARY)
-internal annotation class DatabaseAPI
+internal annotation class DatabaseApi

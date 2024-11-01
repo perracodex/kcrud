@@ -12,12 +12,12 @@ import kcrud.core.context.SessionContext
 import kcrud.core.context.getContext
 import kcrud.domain.employee.service.EmployeeService
 import kcrud.domain.employment.service.EmploymentService
-import kcrud.server.demo.DemoAPI
+import kcrud.server.demo.DemoApi
 import kcrud.server.demo.DemoUtils
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 
-@DemoAPI
+@DemoApi
 internal fun Route.createRecordsRoute() {
     val maxAllowedBatch = 100_000
 

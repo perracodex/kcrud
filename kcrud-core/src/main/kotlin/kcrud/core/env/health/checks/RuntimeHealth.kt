@@ -6,7 +6,7 @@ package kcrud.core.env.health.checks
 
 import io.ktor.server.application.*
 import kcrud.core.env.EnvironmentType
-import kcrud.core.env.health.annotation.HealthCheckAPI
+import kcrud.core.env.health.annotation.HealthCheckApi
 import kcrud.core.settings.AppSettings
 import kcrud.core.utils.DateTimeUtils.current
 import kotlinx.datetime.Instant
@@ -23,7 +23,7 @@ import kotlinx.serialization.Serializable
  * @property utc The current UTC timestamp.
  * @property local The current local timestamp.
  */
-@HealthCheckAPI
+@HealthCheckApi
 @Serializable
 public data class RuntimeHealth(
     val errors: MutableList<String>,

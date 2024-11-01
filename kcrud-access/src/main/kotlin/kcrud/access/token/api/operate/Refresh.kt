@@ -7,7 +7,7 @@ package kcrud.access.token.api.operate
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.access.token.annotation.TokenAPI
+import kcrud.access.token.annotation.TokenApi
 import kcrud.access.token.api.respondWithToken
 import kcrud.access.token.service.TokenService
 
@@ -21,7 +21,7 @@ import kcrud.access.token.service.TokenService
  * - [Ktor JWT Authentication](https://ktor.io/docs/server-jwt.html)
  * - [Basic Authentication](https://ktor.io/docs/server-basic-auth.html)
  */
-@TokenAPI
+@TokenApi
 internal fun Route.refreshTokenRoute() {
     /**
      * Refreshes an existing token; requires Basic Authentication credentials.

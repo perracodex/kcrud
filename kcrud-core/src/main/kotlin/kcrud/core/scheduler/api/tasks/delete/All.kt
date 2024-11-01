@@ -7,13 +7,13 @@ package kcrud.core.scheduler.api.tasks.delete
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.core.scheduler.api.SchedulerRouteAPI
+import kcrud.core.scheduler.api.SchedulerRouteApi
 import kcrud.core.scheduler.service.SchedulerService
 
 /**
  * Deletes all the scheduler tasks.
  */
-@SchedulerRouteAPI
+@SchedulerRouteApi
 internal fun Route.deleteAllSchedulerTasksRoute() {
     /**
      * Deletes all scheduler tasks.

@@ -4,7 +4,7 @@
 
 package kcrud.core.scheduler.service.task
 
-import kcrud.core.scheduler.service.annotation.SchedulerAPI
+import kcrud.core.scheduler.service.annotation.SchedulerApi
 import kotlinx.serialization.Serializable
 import org.quartz.JobKey
 
@@ -26,7 +26,7 @@ public data class TaskKey(
          * @param jobKey The Quartz [JobKey].
          * @return The [TaskKey] instance.
          */
-        @SchedulerAPI
+        @SchedulerApi
         fun fromJobKey(jobKey: JobKey): TaskKey {
             return TaskKey(name = jobKey.name, group = jobKey.group)
         }

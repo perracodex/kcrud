@@ -8,14 +8,14 @@ import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import kcrud.core.scheduler.api.SchedulerRouteAPI
+import kcrud.core.scheduler.api.SchedulerRouteApi
 import kcrud.core.scheduler.model.task.TaskStateChange
 import kcrud.core.scheduler.service.SchedulerService
 
 /**
  * Pause a concrete scheduler task.
  */
-@SchedulerRouteAPI
+@SchedulerRouteApi
 internal fun Route.pauseSchedulerTaskRoute() {
     /**
      * Pause a concrete scheduler task.

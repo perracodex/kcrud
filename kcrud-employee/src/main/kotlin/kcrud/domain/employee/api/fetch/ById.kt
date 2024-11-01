@@ -11,7 +11,7 @@ import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import kcrud.core.context.getContext
 import kcrud.core.persistence.utils.toUuid
-import kcrud.domain.employee.api.EmployeeRouteAPI
+import kcrud.domain.employee.api.EmployeeRouteApi
 import kcrud.domain.employee.errors.EmployeeError
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.service.EmployeeService
@@ -19,7 +19,7 @@ import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 import kotlin.uuid.Uuid
 
-@EmployeeRouteAPI
+@EmployeeRouteApi
 internal fun Route.findEmployeeByIdRoute() {
     /**
      * Find an employee by ID.

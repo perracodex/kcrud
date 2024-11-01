@@ -7,11 +7,11 @@ package kcrud.core.database.service
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
-import kcrud.core.database.annotation.DatabaseAPI
+import kcrud.core.database.annotation.DatabaseApi
 import kcrud.core.database.utils.IsolationLevel
 import kcrud.core.settings.catalog.sections.DatabaseSettings
 
-@DatabaseAPI
+@DatabaseApi
 internal object DatabasePooling {
 
     /**

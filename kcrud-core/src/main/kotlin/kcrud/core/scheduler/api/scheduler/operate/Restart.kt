@@ -7,13 +7,13 @@ package kcrud.core.scheduler.api.scheduler.operate
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.core.scheduler.api.SchedulerRouteAPI
+import kcrud.core.scheduler.api.SchedulerRouteApi
 import kcrud.core.scheduler.service.SchedulerService
 
 /**
  * Restart the task scheduler.
  */
-@SchedulerRouteAPI
+@SchedulerRouteApi
 internal fun Route.restartSchedulerRoute() {
     /**
      * Restart the task scheduler.

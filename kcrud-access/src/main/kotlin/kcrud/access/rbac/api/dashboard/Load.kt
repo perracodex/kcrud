@@ -8,7 +8,7 @@ import io.ktor.http.*
 import io.ktor.server.html.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.access.rbac.plugin.annotation.RbacAPI
+import kcrud.access.rbac.plugin.annotation.RbacApi
 import kcrud.access.rbac.service.RbacDashboardManager
 import kcrud.access.rbac.view.RbacDashboardView
 import kcrud.access.rbac.view.RbacLoginView
@@ -22,7 +22,7 @@ import kcrud.core.persistence.utils.toUuidOrNull
  * on the actor's permissions and role selections.
  * Redirects to the login screen if the [SessionContext] is invalid.
  */
-@RbacAPI
+@RbacApi
 internal fun Route.rbacDashboardLoadRoute() {
     /**
      * Opens the RBAC dashboard. Redirects to the login screen if the [SessionContext] is invalid.

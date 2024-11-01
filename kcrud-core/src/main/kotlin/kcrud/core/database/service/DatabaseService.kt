@@ -6,10 +6,10 @@ package kcrud.core.database.service
 
 import com.zaxxer.hikari.HikariDataSource
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
-import kcrud.core.database.annotation.DatabaseAPI
+import kcrud.core.database.annotation.DatabaseApi
 import kcrud.core.database.utils.IsolationLevel
 import kcrud.core.env.Tracer
-import kcrud.core.env.health.annotation.HealthCheckAPI
+import kcrud.core.env.health.annotation.HealthCheckApi
 import kcrud.core.env.health.checks.DatabaseHealth
 import kcrud.core.settings.AppSettings
 import kcrud.core.settings.catalog.sections.DatabaseSettings
@@ -32,7 +32,7 @@ import java.nio.file.Paths
  * #### References
  * [Exposed](https://github.com/JetBrains/Exposed/wiki)
  */
-@OptIn(DatabaseAPI::class)
+@OptIn(DatabaseApi::class)
 internal object DatabaseService {
     private val tracer = Tracer<DatabaseService>()
 
@@ -241,7 +241,7 @@ internal object DatabaseService {
     /**
      * Retrieves HikariCP health metrics.
      */
-    @OptIn(HealthCheckAPI::class)
+    @OptIn(HealthCheckApi::class)
     fun getHealthCheck(): DatabaseHealth {
         val databaseTest: Result<DatabaseHealth.ConnectionTest> = DatabaseHealth.ConnectionTest.build(database = database)
 

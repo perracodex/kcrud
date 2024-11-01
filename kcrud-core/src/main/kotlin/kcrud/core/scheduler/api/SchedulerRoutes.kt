@@ -26,12 +26,12 @@ import kcrud.core.scheduler.api.view.schedulerDashboardRoute
  */
 @RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Scheduler Routes API.")
 @Retention(AnnotationRetention.BINARY)
-internal annotation class SchedulerRouteAPI
+internal annotation class SchedulerRouteApi
 
 /**
  * Route administers all scheduled tasks, allowing to list and delete them.
  */
-@OptIn(SchedulerRouteAPI::class)
+@OptIn(SchedulerRouteApi::class)
 public fun Route.schedulerRoutes() {
 
     // Sets up the routing to serve resources as static content for the scheduler.

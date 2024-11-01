@@ -5,7 +5,7 @@
 package kcrud.core.scheduler.service.task
 
 import kcrud.core.scheduler.service.SchedulerService
-import kcrud.core.scheduler.service.annotation.SchedulerAPI
+import kcrud.core.scheduler.service.annotation.SchedulerApi
 import kcrud.core.scheduler.service.schedule.Schedule
 import kcrud.core.scheduler.service.schedule.TaskStartAt
 import kcrud.core.security.snowflake.SnowflakeFactory
@@ -24,7 +24,7 @@ import kotlin.uuid.Uuid
  * @property startAt Specifies when the task should start. Defaults to immediate execution.
  * @property parameters Optional parameters to be passed to the task class.
  */
-@OptIn(SchedulerAPI::class)
+@OptIn(SchedulerApi::class)
 public class TaskDispatch(
     private val taskId: Uuid,
     private val consumerClass: Class<out TaskConsumer>,

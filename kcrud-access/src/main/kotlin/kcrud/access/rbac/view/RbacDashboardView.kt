@@ -5,7 +5,7 @@
 package kcrud.access.rbac.view
 
 import kcrud.access.rbac.model.role.RbacRole
-import kcrud.access.rbac.plugin.annotation.RbacAPI
+import kcrud.access.rbac.plugin.annotation.RbacApi
 import kcrud.access.rbac.service.RbacDashboardManager
 import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.core.database.schema.admin.rbac.types.RbacScope
@@ -13,7 +13,7 @@ import kotlinx.html.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
-@RbacAPI
+@RbacApi
 internal object RbacDashboardView {
     const val RBAC_DASHBOARD_PATH: String = "/rbac/dashboard"
     const val ROLE_KEY: String = "role"

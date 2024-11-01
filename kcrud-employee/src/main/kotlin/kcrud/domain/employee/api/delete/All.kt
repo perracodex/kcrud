@@ -8,12 +8,12 @@ import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.core.context.getContext
-import kcrud.domain.employee.api.EmployeeRouteAPI
+import kcrud.domain.employee.api.EmployeeRouteApi
 import kcrud.domain.employee.service.EmployeeService
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 
-@EmployeeRouteAPI
+@EmployeeRouteApi
 internal fun Route.deleteAllEmployeesRoute() {
     /**
      * Delete all employees.

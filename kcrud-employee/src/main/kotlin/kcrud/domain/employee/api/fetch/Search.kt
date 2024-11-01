@@ -11,13 +11,13 @@ import io.ktor.server.util.*
 import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.getPageable
 import kcrud.core.context.getContext
-import kcrud.domain.employee.api.EmployeeRouteAPI
+import kcrud.domain.employee.api.EmployeeRouteApi
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.service.EmployeeService
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 
-@EmployeeRouteAPI
+@EmployeeRouteApi
 internal fun Route.searchEmployeeRoute() {
     /**
      * Search for employees given a search term. Can be partial.

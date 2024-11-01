@@ -5,7 +5,7 @@
 package kcrud.core.scheduler.service.task
 
 import kcrud.core.scheduler.model.task.TaskStateChange
-import kcrud.core.scheduler.service.annotation.SchedulerAPI
+import kcrud.core.scheduler.service.annotation.SchedulerApi
 import org.quartz.JobDetail
 import org.quartz.JobKey
 import org.quartz.Scheduler
@@ -16,7 +16,7 @@ import org.quartz.impl.matchers.GroupMatcher
 /**
  * Utility class for managing the task state in the scheduler.
  */
-@SchedulerAPI
+@SchedulerApi
 internal object TaskState {
 
     /**

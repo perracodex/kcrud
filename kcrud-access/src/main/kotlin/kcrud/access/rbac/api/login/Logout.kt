@@ -6,7 +6,7 @@ package kcrud.access.rbac.api.login
 
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.access.rbac.plugin.annotation.RbacAPI
+import kcrud.access.rbac.plugin.annotation.RbacApi
 import kcrud.access.rbac.view.RbacLoginView
 import kcrud.core.context.clearContext
 
@@ -14,7 +14,7 @@ import kcrud.core.context.clearContext
  * Manages the session termination and redirection to the login page.
  * Clears the current session and redirects the actor to ensure a clean logout process.
  */
-@RbacAPI
+@RbacApi
 internal fun Route.rbacLogoutRoute() {
     /**
      * Clears the session and redirects to the login page.

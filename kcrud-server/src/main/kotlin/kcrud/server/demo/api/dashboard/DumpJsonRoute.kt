@@ -12,11 +12,11 @@ import io.perracodex.exposed.pagination.getPageable
 import kcrud.core.context.getContext
 import kcrud.domain.employment.model.Employment
 import kcrud.domain.employment.service.EmploymentService
-import kcrud.server.demo.DemoAPI
+import kcrud.server.demo.DemoApi
 import org.koin.core.parameter.parametersOf
 import org.koin.ktor.plugin.scope
 
-@DemoAPI
+@DemoApi
 internal fun Route.dumpJsonRoute() {
     /**
      * Return all demo records as JSON.

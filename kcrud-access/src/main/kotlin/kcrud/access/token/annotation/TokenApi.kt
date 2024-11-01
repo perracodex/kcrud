@@ -9,4 +9,4 @@ package kcrud.access.token.annotation
  */
 @RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Token API.")
 @Retention(AnnotationRetention.BINARY)
-internal annotation class TokenAPI
+internal annotation class TokenApi

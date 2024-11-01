@@ -12,7 +12,7 @@ import kcrud.access.rbac.api.dashboard.rbacDashboardUpdateRoute
 import kcrud.access.rbac.api.login.rbacLoginAccessRoute
 import kcrud.access.rbac.api.login.rbacLoginSubmissionRoute
 import kcrud.access.rbac.api.login.rbacLogoutRoute
-import kcrud.access.rbac.plugin.annotation.RbacAPI
+import kcrud.access.rbac.plugin.annotation.RbacApi
 import kcrud.access.rbac.plugin.withRbac
 import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
 import kcrud.core.database.schema.admin.rbac.types.RbacScope
@@ -23,7 +23,7 @@ import kcrud.core.plugins.RateLimitScope
  *
  * These include the login and logout routes, as well as the dashboard routes.
  */
-@OptIn(RbacAPI::class)
+@OptIn(RbacApi::class)
 public fun Route.rbacRoutes() {
 
     // Configures the server to serve CSS files located in the 'rbac' resources folder,

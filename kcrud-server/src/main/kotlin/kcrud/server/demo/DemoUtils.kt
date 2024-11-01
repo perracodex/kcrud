@@ -23,7 +23,7 @@ import kotlin.random.Random
 /**
  * Utility class for demo-related operations.
  */
-@DemoAPI
+@DemoApi
 internal object DemoUtils {
 
     /**

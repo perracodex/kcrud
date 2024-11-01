@@ -10,7 +10,7 @@ import io.ktor.server.response.*
 import io.ktor.server.sessions.*
 import kcrud.access.actor.service.DefaultActorFactory
 import kcrud.access.context.SessionContextFactory
-import kcrud.access.rbac.plugin.annotation.RbacAPI
+import kcrud.access.rbac.plugin.annotation.RbacApi
 import kcrud.access.rbac.view.RbacLoginView
 import kcrud.core.context.clearContext
 import kcrud.core.context.setContext
@@ -25,7 +25,7 @@ import kcrud.core.context.setContext
  * #### References
  * - [Basic Authentication Documentation](https://ktor.io/docs/server-basic-auth.html)
  */
-@OptIn(RbacAPI::class)
+@OptIn(RbacApi::class)
 public fun Application.configureRbac() {
 
     // Refresh the default actors.
