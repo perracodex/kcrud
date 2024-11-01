@@ -21,11 +21,11 @@ A [Ktor](https://ktor.io/) REST server.
 * [HTML DSL](https://ktor.io/docs/server-html-dsl.html) example.
 * [H2](https://github.com/h2database/h2database) embedded database, both in-memory and file-based.
 * [HOCON](kcrud-core/src/main/resources/config) configuration example, including [parsing](kcrud-core/src/main/kotlin/kcrud/core/settings) for strongly typed settings.
-* [Swagger-UI](https://ktor.io/docs/server-swagger-ui.html#configure-swagger), [Redoc](https://swagger.io/blog/api-development/redoc-openapi-powered-documentation/), and [OpenAPI](https://ktor.io/docs/openapi.html) integration.
+* [OpenAPI](./kcrud-core/src/main/kotlin/kcrud/core/plugins/ApiSchema.kt) integration, including Swagger-UI and Redoc.
 * [Routing](./kcrud-server/src/main/kotlin/kcrud/server/plugins/Routes.kt) organization examples.
 * [Call Logging](https://ktor.io/docs/server-call-logging.html) and [Call ID](https://ktor.io/docs/server-call-id.html) examples for events traceability.
 * [Snowflake](kcrud-core/src/main/kotlin/kcrud/core/security/snowflake) unique IDs for logging purposes, suitable for distributed systems.
-* [Micrometer Metrics](kcrud-core/src/main/kotlin/kcrud/core/plugins/MicrometerMetrics.kt) with Prometheus integration. Configuration steps for Prometheus and Grafana are [included](.wiki/10.micrometer-metrics).
+* [Micrometer Metrics](kcrud-core/src/main/kotlin/kcrud/core/plugins/MicrometerMetrics.kt) with Prometheus integration. Configuration steps for Prometheus and Grafana are [included](.wiki/10.micrometer-metrics.md).
 * [Flyway](https://github.com/flyway/flyway) database migration example.
 * [Contextual Transactions](kcrud-core/src/main/kotlin/kcrud/core/database/utils/Transaction.kt), allowing to execute concrete transactions per database connection and/or schema.
 * [Custom exceptions](kcrud-core/src/main/kotlin/kcrud/core/errors) including composite error responses.
