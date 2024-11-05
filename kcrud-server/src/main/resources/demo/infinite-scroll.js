@@ -209,7 +209,8 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     function updatePageDetails(pageDetails) {
         const detailsDiv = document.querySelector('.page-details');
-        const loadedPages = pageDetails.totalElements === 0 ? 0 : (pageDetails.pageIndex + 1); // Adjust because of zero-based indexing.
+        const loadedPages = pageDetails.totalElements === 0
+            ? 0 : (pageDetails.pageIndex + 1); // Adjust because of zero-based indexing.
 
         detailsDiv.innerHTML =
             `Loaded Pages: ${loadedPages}, ` +
