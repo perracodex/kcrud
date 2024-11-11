@@ -124,3 +124,6 @@ tasks.named("buildFatJar") {
 tasks.named("startShadowScripts") {
     dependsOn(copyKeystoreTask)
 }
+tasks.named("startScripts") {
+    dependsOn(copyKeystoreTask)
+}
