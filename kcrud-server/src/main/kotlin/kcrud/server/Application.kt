@@ -17,6 +17,10 @@ import kcrud.server.utils.ApplicationsUtils
  * Application main entry point.
  * Launches the Ktor server using Netty as the application engine.
  *
+ * ### Hot Reload
+ * - Command: `./gradlew -t build -x test -i`
+ * - [Auto-Reload](https://ktor.io/docs/server-auto-reload.html)
+ *
  * #### References
  * - [Choosing an engine](https://ktor.io/docs/server-engines.html)
  * - [Configure an engine](https://ktor.io/docs/server-engines.html#configure-engine)
@@ -31,7 +35,7 @@ public fun main(args: Array<String>) {
 /**
  * Application configuration module, responsible for setting up the server with various plugins.
  *
- * #### Important
+ * #### Attention
  * The order of execution is vital, as certain configurations depend on the initialization
  * of previous plugins. Incorrect ordering can lead to runtime errors or configuration issues.
  *
