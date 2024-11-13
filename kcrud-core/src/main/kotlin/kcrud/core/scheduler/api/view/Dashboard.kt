@@ -27,7 +27,7 @@ internal fun Route.schedulerDashboardRoute() {
         val content = ThymeleafContent(template = "scheduler/dashboard", model = mapOf("data" to tasks))
         call.respond(message = content)
     } api {
-        tags = setOf("Scheduler - Maintenance")
+        tags = setOf("Scheduler Admin")
         summary = "Get the scheduler dashboard."
         description = "Get the scheduler dashboard, listing all scheduled tasks."
         operationId = "getSchedulerDashboard"

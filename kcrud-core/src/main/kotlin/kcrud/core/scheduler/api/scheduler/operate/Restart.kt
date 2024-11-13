@@ -23,7 +23,7 @@ internal fun Route.restartSchedulerRoute() {
         val state: SchedulerService.TaskSchedulerState = SchedulerService.restart(interrupt = interrupt)
         call.respond(status = HttpStatusCode.OK, message = state.name)
     } api {
-        tags = setOf("Scheduler - Maintenance")
+        tags = setOf("Scheduler Admin")
         summary = "Restart the task scheduler."
         description = "Restart the task scheduler."
         operationId = "restartScheduler"

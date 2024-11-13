@@ -21,7 +21,7 @@ internal fun Route.resumeSchedulerRoute() {
         val state: TaskStateChange = SchedulerService.resume()
         call.respond(status = HttpStatusCode.OK, message = state)
     } api {
-        tags = setOf("Scheduler - Maintenance")
+        tags = setOf("Scheduler Admin")
         summary = "Resume all scheduler tasks."
         description = "Resume all the scheduler tasks."
         operationId = "resumeScheduler"

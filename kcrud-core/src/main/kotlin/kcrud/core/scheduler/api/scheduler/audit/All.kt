@@ -21,7 +21,7 @@ internal fun Route.schedulerAllAuditRoute() {
         val audit: List<AuditLog> = AuditService.findAll()
         call.respond(status = HttpStatusCode.OK, message = audit)
     } api {
-        tags = setOf("Scheduler - Maintenance")
+        tags = setOf("Scheduler Admin")
         summary = "Get all scheduler audit logs."
         description = "Get all existing audit logs for the scheduler."
         operationId = "getAllSchedulerAuditLogs"

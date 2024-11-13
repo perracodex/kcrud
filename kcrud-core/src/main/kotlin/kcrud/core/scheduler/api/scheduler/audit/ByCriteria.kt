@@ -30,7 +30,7 @@ internal fun Route.schedulerAuditByTaskRoute() {
             call.respond(status = HttpStatusCode.OK, message = audit)
         }
     } api {
-        tags = setOf("Scheduler - Maintenance")
+        tags = setOf("Scheduler Admin")
         summary = "Get audit logs for a specific task."
         description = "Get all existing audit logs for a specific task."
         operationId = "getAuditLogsByTask"

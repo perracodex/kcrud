@@ -20,7 +20,7 @@ internal fun Route.schedulerStateRoute() {
         val state: SchedulerService.TaskSchedulerState = SchedulerService.state()
         call.respond(status = HttpStatusCode.OK, message = state.name)
     } api {
-        tags = setOf("Scheduler - Maintenance")
+        tags = setOf("Scheduler Admin")
         summary = "Get the state of the task scheduler."
         description = "Get the state of the task scheduler."
         operationId = "getSchedulerState"

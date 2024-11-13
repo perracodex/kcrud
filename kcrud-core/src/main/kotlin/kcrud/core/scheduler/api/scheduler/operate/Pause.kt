@@ -21,7 +21,7 @@ internal fun Route.pauseSchedulerRoute() {
         val state: TaskStateChange = SchedulerService.pause()
         call.respond(status = HttpStatusCode.OK, message = state)
     } api {
-        tags = setOf("Scheduler - Maintenance")
+        tags = setOf("Scheduler Admin")
         summary = "Pause all scheduler tasks."
         description = "Pause all the scheduler tasks."
         operationId = "pauseScheduler"
