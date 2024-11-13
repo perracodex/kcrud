@@ -173,29 +173,32 @@ internal object DatabaseService {
      * @param settings The target [DatabaseSettings] to be used for the migration.
      */
     private fun runMigrations(settings: DatabaseSettings) {
-        Flyway.configure().dataSource(
+        val flyway: Flyway = Flyway.configure().dataSource(
             settings.jdbcUrl,
             settings.username,
             settings.password
-        ).load().apply {
-            info().pending().let { pending ->
-                if (pending.isEmpty()) {
-                    tracer.info("No migrations to apply.")
-                } else {
-                    val migrations: String = pending.joinToString(separator = "\n") { migration ->
-                        "Version: ${migration.version}. " +
-                                "Description: ${migration.description}. " +
-                                "Type: ${migration.type}. " +
-                                "State: ${migration.state}. " +
-                                "Script: ${migration.script}"
-                    }
+        ).load()
 
-                    tracer.info("Migrations being applied:\n$migrations")
+        // Repair the schema history to fix any inconsistencies.
+        flyway.repair()
+
+        flyway.info().pending().let { pending ->
+            if (pending.isEmpty()) {
+                tracer.info("No migrations to apply.")
+            } else {
+                val migrations: String = pending.joinToString(separator = "\n") { migration ->
+                    "Version: ${migration.version}. " +
+                            "Description: ${migration.description}. " +
+                            "Type: ${migration.type}. " +
+                            "State: ${migration.state}. " +
+                            "Script: ${migration.script}"
                 }
-            }
 
-            migrate()
+                tracer.info("Migrations being applied:\n$migrations")
+            }
         }
+
+        flyway.migrate()
     }
 
     /**
