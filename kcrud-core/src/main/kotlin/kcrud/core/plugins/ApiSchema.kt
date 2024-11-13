@@ -11,6 +11,9 @@ import kcrud.core.settings.AppSettings
 
 /**
  * Configures OpenAPI, Swagger-UI and Redoc.
+ *
+ * #### References
+ * - [Kopapi Documentation](https://github.com/perracodex/kopapi)
  */
 public fun Application.configureApiSchema() {
 

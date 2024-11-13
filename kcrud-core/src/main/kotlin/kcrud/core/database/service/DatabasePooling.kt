@@ -17,9 +17,6 @@ internal object DatabasePooling {
     /**
      * Create a HikariDataSource to enable database connection pooling.
      *
-     * #### References
-     * - [Database Pooling](https://ktor.io/docs/db-connection-pooling-caching.html#connection-pooling)
-     *
      * @param settings The [DatabaseSettings] settings to be used for the database connection pooling.
      * @param isolationLevel The isolation level to use for the database transactions.
      * @param telemetryRegistry Optional metrics registry for telemetry monitoring.
