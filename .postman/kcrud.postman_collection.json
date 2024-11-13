@@ -63,13 +63,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees",
+									"raw": "http://localhost:8080/api/v1/employees",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
+										"api",
 										"v1",
 										"employees"
 									]
@@ -129,13 +130,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees",
+									"raw": "http://localhost:8080/api/v1/employees",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
+										"api",
 										"v1",
 										"employees"
 									]
@@ -197,13 +199,14 @@
 									"raw": "{\r\n    \"firstName\": \"AnyName2\",\r\n    \"lastName\": \"AnySurname2\",\r\n    \"workEmail\": \"AnyName.AnySurname2@work.com\",\r\n    \"dob\": \"1888-01-01\",\r\n    \"maritalStatus\": \"MARRIED\",\r\n    \"honorific\": \"MISS\",\r\n    \"contact\": {\r\n        \"email\": \"AnyName.AnySurname@public.com\",\r\n        \"phone\": \"+34-665-021024\"\r\n    }\r\n}"
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/b3c82003-6830-4437-afd4-903f3eb032f3",
+									"raw": "http://localhost:8080/api/v1/employees/b3c82003-6830-4437-afd4-903f3eb032f3",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
+										"api",
 										"v1",
 										"employees",
 										"b3c82003-6830-4437-afd4-903f3eb032f3"
@@ -264,13 +267,14 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/39ccfa2f-a02d-45cf-bbcd-8bc84bbbb0ff",
+									"raw": "http://localhost:8080/api/v1/employees/39ccfa2f-a02d-45cf-bbcd-8bc84bbbb0ff",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
+										"api",
 										"v1",
 										"employees",
 										"39ccfa2f-a02d-45cf-bbcd-8bc84bbbb0ff"
@@ -303,7 +307,8 @@
 											"});\r",
 											""
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
@@ -330,13 +335,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees",
+									"raw": "http://localhost:8080/api/v1/employees",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
+										"api",
 										"v1",
 										"employees"
 									]
@@ -368,7 +374,8 @@
 											"});\r",
 											""
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
@@ -395,13 +402,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees?page=0&size=24",
+									"raw": "http://localhost:8080/api/v1/employees?page=0&size=24",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
+										"api",
 										"v1",
 										"employees"
 									],
@@ -443,7 +451,8 @@
 											"});\r",
 											""
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
@@ -470,13 +479,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees?sort=firstName,asc",
+									"raw": "http://localhost:8080/api/v1/employees?sort=firstName,asc",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
+										"api",
 										"v1",
 										"employees"
 									],
@@ -514,7 +524,8 @@
 											"});\r",
 											""
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
@@ -541,13 +552,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees?page=0&size=10&sort=lastName,asc&&sort=maritalStatus,asc",
+									"raw": "http://localhost:8080/api/v1/employees?page=0&size=10&sort=lastName,asc&&sort=maritalStatus,asc",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
+										"api",
 										"v1",
 										"employees"
 									],
@@ -635,13 +647,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/search?term=AnySurname12",
+									"raw": "http://localhost:8080/api/v1/employees/search?term=AnySurname12",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
+										"api",
 										"v1",
 										"employees",
 										"search"
@@ -709,13 +722,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/search?term=AnySurname12&page=0&size=24",
+									"raw": "http://localhost:8080/api/v1/employees/search?term=AnySurname12&page=0&size=24",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
+										"api",
 										"v1",
 										"employees",
 										"search"
@@ -790,13 +804,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/filter?page=0&size=24",
+									"raw": "http://localhost:8080/api/v1/employees/filter?page=0&size=24",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
+										"api",
 										"v1",
 										"employees",
 										"filter"
@@ -867,13 +882,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/filter?page=0&size=10&sort=lastName,asc&&sort=maritalStatus,asc",
+									"raw": "http://localhost:8080/api/v1/employees/filter?page=0&size=10&sort=lastName,asc&&sort=maritalStatus,asc",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
+										"api",
 										"v1",
 										"employees",
 										"filter"
@@ -933,7 +949,8 @@
 											"});\r",
 											""
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
@@ -948,13 +965,14 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8080/v1/employees",
+									"raw": "http://localhost:8080/api/v1/employees",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
+										"api",
 										"v1",
 										"employees"
 									]
@@ -991,7 +1009,8 @@
 											"});\r",
 											""
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
@@ -1018,13 +1037,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees",
+									"raw": "http://localhost:8080/api/v1/employees",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
+										"api",
 										"v1",
 										"employees"
 									]
@@ -1094,13 +1114,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/8a4587c1-4d23-417c-a888-63e72bc7f0f3/employments",
+									"raw": "http://localhost:8080/api/v1/employees/8a4587c1-4d23-417c-a888-63e72bc7f0f3/employments",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
+										"api",
 										"v1",
 										"employees",
 										"8a4587c1-4d23-417c-a888-63e72bc7f0f3",
@@ -1139,7 +1160,8 @@
 											"});\r",
 											""
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
@@ -1167,13 +1189,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/0e373eda-6143-4652-bf8d-4f1b57aac9e7/employments/6d3e4a14-a8ea-4935-ac28-39c0be291c12",
+									"raw": "http://localhost:8080/api/v1/employees/0e373eda-6143-4652-bf8d-4f1b57aac9e7/employments/6d3e4a14-a8ea-4935-ac28-39c0be291c12",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
+										"api",
 										"v1",
 										"employees",
 										"0e373eda-6143-4652-bf8d-4f1b57aac9e7",
@@ -1237,13 +1260,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/14fab3dd-05be-4e84-b7ae-dd243f5a5891/employments",
+									"raw": "http://localhost:8080/api/v1/employees/14fab3dd-05be-4e84-b7ae-dd243f5a5891/employments",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
+										"api",
 										"v1",
 										"employees",
 										"14fab3dd-05be-4e84-b7ae-dd243f5a5891",
@@ -1282,7 +1306,8 @@
 											"});\r",
 											""
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
@@ -1309,13 +1334,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/5d22daa6-68a7-4775-a535-784ff1adc931/employments/ecfab1ce-4d2c-4ae2-aa18-ffe92d818c4b",
+									"raw": "http://localhost:8080/api/v1/employees/5d22daa6-68a7-4775-a535-784ff1adc931/employments/ecfab1ce-4d2c-4ae2-aa18-ffe92d818c4b",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
+										"api",
 										"v1",
 										"employees",
 										"5d22daa6-68a7-4775-a535-784ff1adc931",
@@ -1350,7 +1376,8 @@
 											"});\r",
 											""
 										],
-										"type": "text/javascript"
+										"type": "text/javascript",
+										"packages": {}
 									}
 								}
 							],
@@ -1377,13 +1404,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/v1/employees/cd6b65cd-152d-4923-ae41-a857f96cffef/employments",
+									"raw": "http://localhost:8080/api/v1/employees/cd6b65cd-152d-4923-ae41-a857f96cffef/employments",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
+										"api",
 										"v1",
 										"employees",
 										"cd6b65cd-152d-4923-ae41-a857f96cffef",

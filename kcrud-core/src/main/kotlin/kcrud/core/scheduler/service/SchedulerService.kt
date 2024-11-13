@@ -9,6 +9,7 @@ import kcrud.core.env.Tracer
 import kcrud.core.scheduler.listener.TaskListener
 import kcrud.core.scheduler.listener.TriggerListener
 import kcrud.core.scheduler.model.task.TaskStateChange
+import kcrud.core.scheduler.service.SchedulerService.pause
 import kcrud.core.scheduler.service.annotation.SchedulerApi
 import kcrud.core.scheduler.service.task.TaskFactory
 import kcrud.core.scheduler.service.task.TaskState
@@ -41,9 +42,6 @@ internal object SchedulerService {
         /** The scheduler is stopped. */
         STOPPED
     }
-
-    /** The key used to store the application settings in the task data map. */
-    const val APP_SETTINGS_KEY: String = "APP_SETTINGS"
 
     /** Scheduler instance used to manage tasks. */
     private lateinit var scheduler: Scheduler
@@ -78,6 +76,7 @@ internal object SchedulerService {
         }
 
         tracer.info("Starting task scheduler.")
+        Thread.currentThread().contextClassLoader = this::class.java.classLoader
         scheduler.listenerManager.addJobListener(TaskListener())
         scheduler.listenerManager.addTriggerListener(TriggerListener())
         scheduler.start()
@@ -157,6 +156,7 @@ internal object SchedulerService {
         // Add a shutdown hook to stop the scheduler when the application is stopped.
         application.monitor.subscribe(ApplicationStopping) {
             stop(interrupt = false)
+            SchedulerAsyncScope.close()
         }
     }
 

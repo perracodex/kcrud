@@ -3,13 +3,13 @@
  */
 
 function openFullAudit() {
-    window.open('/scheduler/audit', '_blank');
+    window.open('/admin/scheduler/audit', '_blank');
 }
 
 function openTaskAudit(button) {
     const itemName = encodeURIComponent(button.getAttribute('data-name'));
     const itemGroup = encodeURIComponent(button.getAttribute('data-group'));
-    window.open(`/scheduler/audit/${itemName}/${itemGroup}`, '_blank');
+    window.open(`/admin/scheduler/audit/${itemName}/${itemGroup}`, '_blank');
 }
 
 function refreshPage() {
@@ -17,7 +17,7 @@ function refreshPage() {
 }
 
 function deleteAll() {
-    fetch(`/scheduler/task`, {method: 'DELETE'})
+    fetch(`/admin/scheduler/task`, {method: 'DELETE'})
         .then(response => {
             if (response.ok) {
                 console.log('All tasks deleted successfully');
@@ -34,7 +34,7 @@ function deleteTask(button) {
     const itemName = encodeURIComponent(button.getAttribute('data-name'));
     const itemGroup = encodeURIComponent(button.getAttribute('data-group'));
 
-    fetch(`/scheduler/task/${itemName}/${itemGroup}`, {method: 'DELETE'})
+    fetch(`/admin/scheduler/task/${itemName}/${itemGroup}`, {method: 'DELETE'})
         .then(response => {
             if (response.ok) {
                 console.log('Task deleted successfully');
@@ -73,7 +73,7 @@ function toggleTaskPauseResume(button) {
     const state = button.getAttribute('data-state');
     const action = state === 'PAUSED' ? 'resume' : 'pause';
 
-    fetch(`/scheduler/task/${itemName}/${itemGroup}/${action}`, {method: 'POST'})
+    fetch(`/admin/scheduler/task/${itemName}/${itemGroup}/${action}`, {method: 'POST'})
         .then(response => {
             if (response.ok) {
                 console.log('Task paused/resumed successfully');
@@ -90,7 +90,7 @@ function resendTask(button) {
     const itemName = encodeURIComponent(button.getAttribute('data-name'));
     const itemGroup = encodeURIComponent(button.getAttribute('data-group'));
 
-    fetch(`/scheduler/task/${itemName}/${itemGroup}/resend`, {method: 'POST'})
+    fetch(`/admin/scheduler/task/${itemName}/${itemGroup}/resend`, {method: 'POST'})
         .then(response => {
             if (response.ok) {
                 console.log('Task resent successfully');

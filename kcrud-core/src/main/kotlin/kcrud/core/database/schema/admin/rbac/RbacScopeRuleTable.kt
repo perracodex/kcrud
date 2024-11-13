@@ -7,13 +7,11 @@ package kcrud.core.database.schema.admin.rbac
 import kcrud.core.database.columns.autoGenerate
 import kcrud.core.database.columns.enumerationById
 import kcrud.core.database.columns.kotlinUuid
-import kcrud.core.database.columns.references
-import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.core.database.schema.admin.rbac.types.RbacScope
+import kcrud.core.database.schema.admin.rbac.type.RbacAccessLevel
+import kcrud.core.database.schema.admin.rbac.type.RbacScope
 import kcrud.core.database.schema.base.TimestampedTable
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ReferenceOption
-import org.jetbrains.exposed.sql.Table
 import kotlin.uuid.Uuid
 
 /**
@@ -64,7 +62,7 @@ public object RbacScopeRuleTable : TimestampedTable(name = "rbac_scope_rule") {
     /**
      * The table's primary key.
      */
-    override val primaryKey: Table.PrimaryKey = PrimaryKey(
+    override val primaryKey: PrimaryKey = PrimaryKey(
         firstColumn = id,
         name = "pk_scope_rule_id"
     )

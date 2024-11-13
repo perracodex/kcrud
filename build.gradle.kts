@@ -35,7 +35,7 @@ application {
     // https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-debug/
     // https://github.com/Kotlin/kotlinx.coroutines/blob/master/docs/topics/debugging.md
     // Defined in 'gradle.properties' file.
-    val enhanceCoroutinesDebugging: Boolean = project.findProperty("enhanceCoroutinesDebugging")?.toString()?.toBoolean() ?: false
+    val enhanceCoroutinesDebugging: Boolean = project.findProperty("enhanceCoroutinesDebugging")?.toString().toBoolean()
     if (enhanceCoroutinesDebugging) {
         applicationDefaultJvmArgs = listOf("-Dkotlinx.coroutines.debug=on")
     }
@@ -79,7 +79,7 @@ subprojects {
     }
 
     // Defined in 'gradle.properties' file.
-    val disableOptimizations: Boolean = project.findProperty("disableOptimizations")?.toString()?.toBoolean() ?: false
+    val disableOptimizations: Boolean = project.findProperty("disableOptimizations")?.toString().toBoolean()
 
     // Targets 'KotlinCompile' tasks in each subproject to apply task-specific compiler options.
     tasks.withType<KotlinCompile>().configureEach {

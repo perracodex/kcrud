@@ -4,7 +4,7 @@
 
 package kcrud.access.rbac.model.field
 
-import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
+import kcrud.core.database.schema.admin.rbac.type.RbacAccessLevel
 import kotlinx.serialization.Serializable
 
 /**

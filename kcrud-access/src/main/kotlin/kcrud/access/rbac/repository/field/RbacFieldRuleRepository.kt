@@ -27,7 +27,7 @@ internal class RbacFieldRuleRepository : IRbacFieldRuleRepository {
                 RbacFieldRuleTable.scopeRuleId eq scopeRuleId
             }
 
-            requestList?.takeIf { it.isNotEmpty() }?.let { requestList ->
+            requestList?.ifEmpty { null }?.let { requestList ->
                 RbacFieldRuleTable.batchInsert(requestList) { scopeRule ->
                     this.toStatement(scopeRuleId = scopeRuleId, request = scopeRule)
                 }.size

@@ -10,8 +10,8 @@ import kcrud.access.rbac.model.role.RbacRole
 import kcrud.access.rbac.model.role.RbacRoleRequest
 import kcrud.access.rbac.model.scope.RbacScopeRuleRequest
 import kcrud.access.rbac.service.RbacService
-import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.core.database.schema.admin.rbac.types.RbacScope
+import kcrud.core.database.schema.admin.rbac.type.RbacAccessLevel
+import kcrud.core.database.schema.admin.rbac.type.RbacScope
 import kcrud.core.env.Tracer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

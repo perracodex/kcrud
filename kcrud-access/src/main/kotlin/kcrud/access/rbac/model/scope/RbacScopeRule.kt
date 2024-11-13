@@ -7,8 +7,8 @@ package kcrud.access.rbac.model.scope
 import kcrud.access.rbac.model.field.RbacFieldRule
 import kcrud.access.rbac.model.role.RbacRole
 import kcrud.core.database.schema.admin.rbac.RbacScopeRuleTable
-import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.core.database.schema.admin.rbac.types.RbacScope
+import kcrud.core.database.schema.admin.rbac.type.RbacAccessLevel
+import kcrud.core.database.schema.admin.rbac.type.RbacScope
 import kcrud.core.persistence.model.Meta
 import kcrud.core.plugins.Uuid
 import kotlinx.serialization.Serializable
@@ -51,7 +51,7 @@ public data class RbacScopeRule(
                 roleId = row[RbacScopeRuleTable.roleId],
                 scope = row[RbacScopeRuleTable.scope],
                 accessLevel = row[RbacScopeRuleTable.accessLevel],
-                fieldRules = fieldRules?.takeIf { it.isNotEmpty() },
+                fieldRules = fieldRules?.ifEmpty { null },
                 meta = Meta.from(row = row, table = RbacScopeRuleTable)
             )
         }

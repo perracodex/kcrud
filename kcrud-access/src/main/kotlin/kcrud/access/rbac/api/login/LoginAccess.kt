@@ -4,6 +4,7 @@
 
 package kcrud.access.rbac.api.login
 
+import io.github.perracodex.kopapi.dsl.operation.api
 import io.ktor.http.*
 import io.ktor.server.html.*
 import io.ktor.server.routing.*
@@ -19,15 +20,18 @@ import kcrud.core.context.clearContext
  */
 @RbacApi
 internal fun Route.rbacLoginAccessRoute() {
-    /**
-     * Opens the RBAC login page. If a valid [SessionContext] is present,
-     * it gets cleared and the actor is redirected to the login screen.
-     * @OpenAPITag RBAC
-     */
-    get("rbac/login") {
+    get("/rbac/login") {
         call.clearContext()
         call.respondHtml(status = HttpStatusCode.OK) {
             RbacLoginView.build(html = this)
+        }
+    } api {
+        tags = setOf("RBAC")
+        summary = "Access the RBAC login page."
+        description = "Access the RBAC login page to authenticate and login."
+        operationId = "rbacLoginAccess"
+        response<String>(status = HttpStatusCode.OK) {
+            description = "The RBAC login page."
         }
     }
 }

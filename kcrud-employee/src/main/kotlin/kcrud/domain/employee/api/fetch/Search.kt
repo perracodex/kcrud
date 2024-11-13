@@ -4,6 +4,8 @@
 
 package kcrud.domain.employee.api.fetch
 
+import io.github.perracodex.kopapi.dsl.operation.api
+import io.github.perracodex.kopapi.dsl.parameter.queryParameter
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -19,14 +21,24 @@ import org.koin.ktor.plugin.scope
 
 @EmployeeRouteApi
 internal fun Route.searchEmployeeRoute() {
-    /**
-     * Search for employees given a search term. Can be partial.
-     * @OpenAPITag Employee
-     */
-    get("v1/employees/search/{term?}") {
+    get("/api/v1/employees/search/{term?}") {
         val term: String = call.request.queryParameters.getOrFail(name = "term")
         val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(call.getContext()) }
         val employees: Page<Employee> = service.search(term = term, pageable = call.getPageable())
         call.respond(status = HttpStatusCode.OK, message = employees)
+    } api {
+        tags = setOf("Employee")
+        summary = "Search for employees."
+        description = "Search for employees based on the given search term."
+        operationId = "searchEmployees"
+        queryParameter<String>(name = "term") {
+            description = "The search term to use."
+        }
+        response<Page<Employee>>(status = HttpStatusCode.OK) {
+            description = "Employees found."
+        }
+        bearerSecurity(name = "Authentication") {
+            description = "Access to employee data."
+        }
     }
 }

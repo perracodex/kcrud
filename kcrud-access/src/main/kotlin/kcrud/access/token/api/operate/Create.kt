@@ -4,6 +4,8 @@
 
 package kcrud.access.token.api.operate
 
+import io.github.perracodex.kopapi.dsl.operation.api
+import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.routing.*
@@ -26,10 +28,27 @@ internal fun Route.createTokenRoute() {
         authenticate(AppSettings.security.basicAuth.providerName, optional = !AppSettings.security.isEnabled) {
             /**
              * Creates a new token; requires Basic Authentication credentials.
-             * @OpenAPITag Token
              */
-            post("auth/token/create") {
+            post("/auth/token/create") {
                 call.respondWithToken()
+            } api {
+                tags = setOf("Token")
+                summary = "Create a new JWT token."
+                description = "Generates a new JWT token using Basic Authentication."
+                operationId = "createToken"
+                basicSecurity(name = "TokenCreation") {
+                    description = "Generates a new JWT token using Basic Authentication."
+                }
+                response<String>(status = HttpStatusCode.OK) {
+                    description = "The generated JWT token."
+                    contentType = setOf(ContentType.Text.Plain)
+                }
+                response(status = HttpStatusCode.Unauthorized) {
+                    description = "No valid credentials provided."
+                }
+                response(status = HttpStatusCode.InternalServerError) {
+                    description = "Failed to generate token."
+                }
             }
         }
     }

@@ -8,9 +8,9 @@ import io.mockk.mockk
 import kcrud.access.actor.di.ActorDomainInjection
 import kcrud.access.rbac.di.RbacDomainInjection
 import kcrud.core.context.SessionContext
-import kcrud.core.database.schema.employee.types.Honorific
-import kcrud.core.database.schema.employee.types.MaritalStatus
-import kcrud.core.errors.validators.base.ValidationException
+import kcrud.core.database.schema.employee.type.Honorific
+import kcrud.core.database.schema.employee.type.MaritalStatus
+import kcrud.core.error.validator.base.ValidationException
 import kcrud.core.test.TestUtils
 import kcrud.domain.contact.model.ContactRequest
 import kcrud.domain.contact.repository.IContactRepository

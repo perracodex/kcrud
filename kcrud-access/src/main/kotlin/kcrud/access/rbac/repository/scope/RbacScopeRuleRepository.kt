@@ -7,7 +7,7 @@ package kcrud.access.rbac.repository.scope
 import kcrud.access.rbac.model.scope.RbacScopeRuleRequest
 import kcrud.access.rbac.repository.field.IRbacFieldRuleRepository
 import kcrud.core.database.schema.admin.rbac.RbacScopeRuleTable
-import kcrud.core.database.schema.admin.rbac.types.RbacScope
+import kcrud.core.database.schema.admin.rbac.type.RbacScope
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.batchInsert

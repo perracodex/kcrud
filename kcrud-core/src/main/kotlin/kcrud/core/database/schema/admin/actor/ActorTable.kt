@@ -6,15 +6,13 @@ package kcrud.core.database.schema.admin.actor
 
 import kcrud.core.database.columns.autoGenerate
 import kcrud.core.database.columns.kotlinUuid
-import kcrud.core.database.columns.references
 import kcrud.core.database.schema.admin.rbac.RbacRoleTable
 import kcrud.core.database.schema.base.TimestampedTable
-import kcrud.core.security.utils.EncryptionUtils
+import kcrud.core.security.util.EncryptionUtils
 import org.jetbrains.exposed.crypt.Encryptor
 import org.jetbrains.exposed.crypt.encryptedVarchar
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ReferenceOption
-import org.jetbrains.exposed.sql.Table
 import kotlin.uuid.Uuid
 
 /**
@@ -72,7 +70,7 @@ public object ActorTable : TimestampedTable(name = "actor") {
     /**
      * The table's primary key.
      */
-    override val primaryKey: Table.PrimaryKey = PrimaryKey(
+    override val primaryKey: PrimaryKey = PrimaryKey(
         firstColumn = id,
         name = "pk_actor_id"
     )

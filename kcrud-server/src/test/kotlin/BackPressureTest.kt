@@ -67,7 +67,7 @@ class BackPressureTest : KoinComponent {
                                     value = EmployeeTestUtils.newEmployeeRequest()
                                 )
 
-                                val writeResponse: HttpResponse = client.post("/v1/employees") {
+                                val writeResponse: HttpResponse = client.post(urlString = "/api/v1/employees") {
                                     header(key = HttpHeaders.Authorization, value = "Bearer $authToken")
                                     contentType(type = ContentType.Application.Json)
                                     setBody(body = employeeRequestJson)
@@ -84,14 +84,14 @@ class BackPressureTest : KoinComponent {
                                     // If no employees are written yet then using random employeeId for read operations.
                                     // Does not matter if it does not exist.
                                     val employeeId = "9965adab-21ac-4339-8cc0-8a44c2287c95"
-                                    val readResponse: HttpResponse = client.get("/v1/employees/$employeeId") {
+                                    val readResponse: HttpResponse = client.get(urlString = "/api/v1/employees/$employeeId") {
                                         header(key = HttpHeaders.Authorization, value = "Bearer $authToken")
                                     }
                                     assertEquals(expected = HttpStatusCode.NotFound, actual = readResponse.status)
                                 } else {
                                     val randomIndex = (0 until writtenEmployeeIds.size).random()
                                     val employeeId = writtenEmployeeIds.elementAt(index = randomIndex)
-                                    val readResponse: HttpResponse = client.get("/v1/employees/$employeeId") {
+                                    val readResponse: HttpResponse = client.get(urlString = "/api/v1/employees/$employeeId") {
                                         header(key = HttpHeaders.Authorization, value = "Bearer $authToken")
                                     }
                                     assertEquals(expected = HttpStatusCode.OK, actual = readResponse.status)
@@ -141,7 +141,7 @@ class BackPressureTest : KoinComponent {
         // of concurrent requests to the server.
         val totalCalls = 10000
         testSuspend {
-            val writeResponse: HttpResponse = client.post("/v1/employees") {
+            val writeResponse: HttpResponse = client.post(urlString = "/api/v1/employees") {
                 header(key = HttpHeaders.Authorization, value = "Bearer $authToken")
                 contentType(type = ContentType.Application.Json)
                 setBody(body = employeeRequestJson)
@@ -154,7 +154,7 @@ class BackPressureTest : KoinComponent {
 
             val jobs: List<Deferred<Unit>> = List(size = totalCalls) {
                 async {
-                    val readResponse: HttpResponse = client.get("/v1/employees/$writeEmployeeId") {
+                    val readResponse: HttpResponse = client.get(urlString = "/api/v1/employees/$writeEmployeeId") {
                         header(key = HttpHeaders.Authorization, value = "Bearer $authToken")
                     }
                     assertEquals(expected = HttpStatusCode.OK, actual = readResponse.status)
@@ -192,7 +192,7 @@ class BackPressureTest : KoinComponent {
         testSuspend {
             val jobs: List<Deferred<Unit>> = List(size = totalCalls) {
                 async {
-                    val response: HttpResponse = client.post("/v1/employees") {
+                    val response: HttpResponse = client.post(urlString = "/api/v1/employees") {
                         header(key = HttpHeaders.Authorization, value = "Bearer $authToken")
                         contentType(type = ContentType.Application.Json)
                         setBody(body = employeeRequestJson)
@@ -230,7 +230,7 @@ class BackPressureTest : KoinComponent {
                         // Prepare a unique employee request for write operations.
                         val employeeRequest: EmployeeRequest = EmployeeTestUtils.newEmployeeRequest()
                         val employeeRequestJson = Json.encodeToString<EmployeeRequest>(value = employeeRequest)
-                        val writeResponse: HttpResponse = client.post("/v1/employees") {
+                        val writeResponse: HttpResponse = client.post(urlString = "/api/v1/employees") {
                             header(key = HttpHeaders.Authorization, value = "Bearer $authToken")
                             contentType(type = ContentType.Application.Json)
                             setBody(body = employeeRequestJson)
@@ -252,14 +252,14 @@ class BackPressureTest : KoinComponent {
                             // If no employees are written yet then using random employeeId for read operations.
                             // Does not matter if it does not exist.
                             val employeeId = "9965adab-21ac-4339-8cc0-8a44c2287c95"
-                            val readResponse: HttpResponse = client.get("/v1/employees/$employeeId") {
+                            val readResponse: HttpResponse = client.get(urlString = "/api/v1/employees/$employeeId") {
                                 header(key = HttpHeaders.Authorization, value = "Bearer $authToken")
                             }
                             assertEquals(expected = HttpStatusCode.NotFound, actual = readResponse.status)
                         } else {
                             val randomIndex = (0 until writtenEmployeeIds.size).random()
                             val employeeId = writtenEmployeeIds.elementAt(index = randomIndex)
-                            val readResponse: HttpResponse = client.get("/v1/employees/$employeeId") {
+                            val readResponse: HttpResponse = client.get(urlString = "/api/v1/employees/$employeeId") {
                                 header(key = HttpHeaders.Authorization, value = "Bearer $authToken")
                             }
                             assertEquals(expected = HttpStatusCode.OK, actual = readResponse.status)

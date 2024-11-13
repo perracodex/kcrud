@@ -6,15 +6,13 @@ package kcrud.core.database.schema.contact
 
 import kcrud.core.database.columns.autoGenerate
 import kcrud.core.database.columns.kotlinUuid
-import kcrud.core.database.columns.references
 import kcrud.core.database.columns.validVarchar
 import kcrud.core.database.schema.base.TimestampedTable
 import kcrud.core.database.schema.employee.EmployeeTable
-import kcrud.core.errors.validators.EmailValidator
-import kcrud.core.errors.validators.PhoneValidator
+import kcrud.core.error.validator.EmailValidator
+import kcrud.core.error.validator.PhoneValidator
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ReferenceOption
-import org.jetbrains.exposed.sql.Table
 import kotlin.uuid.Uuid
 
 /**
@@ -68,7 +66,7 @@ public object ContactTable : TimestampedTable(name = "contact") {
     /**
      * The table's primary key.
      */
-    override val primaryKey: Table.PrimaryKey = PrimaryKey(
+    override val primaryKey: PrimaryKey = PrimaryKey(
         firstColumn = id,
         name = "pk_contact_id"
     )

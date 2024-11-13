@@ -6,7 +6,7 @@ package kcrud.core.scheduler.service
 
 import it.burning.cron.CronExpressionDescriptor
 import kcrud.core.env.Tracer
-import kcrud.core.events.SEEService
+import kcrud.core.event.SseService
 import kcrud.core.scheduler.audit.AuditService
 import kcrud.core.scheduler.model.audit.AuditLog
 import kcrud.core.scheduler.model.task.TaskSchedule
@@ -15,7 +15,7 @@ import kcrud.core.scheduler.service.SchedulerTasks.Companion.create
 import kcrud.core.scheduler.service.annotation.SchedulerApi
 import kcrud.core.scheduler.service.task.TaskState
 import kcrud.core.security.snowflake.SnowflakeFactory
-import kcrud.core.utils.DateTimeUtils.toKotlinLocalDateTime
+import kcrud.core.util.DateTimeUtils.toKotlinLocalDateTime
 import org.quartz.*
 import org.quartz.impl.matchers.GroupMatcher
 import java.util.*
@@ -111,7 +111,7 @@ internal class SchedulerTasks private constructor(private val scheduler: Schedul
      * @param group The group of the task to re-trigger.
      * @throws IllegalArgumentException If the task is not found.
      */
-    suspend fun resend(name: String, group: String) {
+    fun resend(name: String, group: String) {
         val jobKey: JobKey = JobKey.jobKey(name, group)
 
         // Triggers require a unique identity.
@@ -131,9 +131,7 @@ internal class SchedulerTasks private constructor(private val scheduler: Schedul
         // Schedule the new trigger with the existing job.
         scheduler.scheduleJob(newTrigger)
 
-        SEEService.push(
-            "Task resent. Name: $name | Group: $group"
-        )
+        SseService.push("Task resent. Name: $name | Group: $group")
 
         tracer.debug("Trigger for task ${jobKey.name} has been scheduled.")
     }

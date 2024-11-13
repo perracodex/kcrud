@@ -25,4 +25,4 @@ CREATE TABLE IF NOT EXISTS scheduler_audit (
 
 CREATE TRIGGER IF NOT EXISTS tg_scheduler_audit__updated_at
     BEFORE UPDATE ON scheduler_audit
-    FOR EACH ROW CALL 'kcrud.core.database.utils.UpdateTimestampTrigger';
+    FOR EACH ROW CALL 'kcrud.core.database.util.UpdateTimestampTrigger';

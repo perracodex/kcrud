@@ -7,7 +7,7 @@ package kcrud.access.actor.repository
 import kcrud.access.actor.model.Actor
 import kcrud.access.actor.model.ActorCredentials
 import kcrud.access.actor.model.ActorRequest
-import kcrud.access.errors.RbacError
+import kcrud.access.error.RbacError
 import kcrud.access.rbac.repository.role.IRbacRoleRepository
 import kcrud.core.database.schema.admin.actor.ActorTable
 import org.jetbrains.exposed.sql.insert

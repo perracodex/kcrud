@@ -9,7 +9,7 @@ import io.perracodex.exposed.pagination.Pageable
 import io.perracodex.exposed.pagination.paginate
 import kcrud.core.context.SessionContext
 import kcrud.core.database.schema.contact.ContactTable
-import kcrud.core.database.utils.transaction
+import kcrud.core.database.util.transaction
 import kcrud.domain.contact.model.Contact
 import kcrud.domain.contact.model.ContactRequest
 import kcrud.domain.employee.model.EmployeeRequest

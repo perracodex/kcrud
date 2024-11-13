@@ -7,18 +7,16 @@ package kcrud.core.database.schema.employment
 import kcrud.core.database.columns.autoGenerate
 import kcrud.core.database.columns.enumerationById
 import kcrud.core.database.columns.kotlinUuid
-import kcrud.core.database.columns.references
 import kcrud.core.database.schema.base.PeriodTable
 import kcrud.core.database.schema.employee.EmployeeTable
-import kcrud.core.database.schema.employment.types.EmploymentStatus
-import kcrud.core.database.schema.employment.types.WorkModality
-import kcrud.core.security.utils.EncryptionUtils
+import kcrud.core.database.schema.employment.type.EmploymentStatus
+import kcrud.core.database.schema.employment.type.WorkModality
+import kcrud.core.security.util.EncryptionUtils
 import kotlinx.datetime.LocalDate
 import org.jetbrains.exposed.crypt.Encryptor
 import org.jetbrains.exposed.crypt.encryptedVarchar
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ReferenceOption
-import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.kotlin.datetime.date
 import kotlin.uuid.Uuid
 
@@ -94,7 +92,7 @@ public object EmploymentTable : PeriodTable(name = "employment") {
     /**
      * The table's primary key.
      */
-    override val primaryKey: Table.PrimaryKey = PrimaryKey(
+    override val primaryKey: PrimaryKey = PrimaryKey(
         firstColumn = id,
         name = "pk_employment_id"
     )

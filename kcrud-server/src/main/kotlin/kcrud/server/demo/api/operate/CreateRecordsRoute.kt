@@ -4,6 +4,8 @@
 
 package kcrud.server.demo.api.operate
 
+import io.github.perracodex.kopapi.dsl.operation.api
+import io.github.perracodex.kopapi.dsl.parameter.queryParameter
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -21,11 +23,7 @@ import org.koin.ktor.plugin.scope
 internal fun Route.createRecordsRoute() {
     val maxAllowedBatch = 100_000
 
-    /**
-     * Create a batch of demo records.
-     * @OpenAPITag Demo
-     */
-    post("demo") {
+    post("/demo") {
         val count: Int = call.request.queryParameters.getOrFail<Int>(name = "count")
 
         if (count in 1..maxAllowedBatch) {
@@ -44,6 +42,23 @@ internal fun Route.createRecordsRoute() {
                 status = HttpStatusCode.BadRequest,
                 message = "Invalid count. Must be between 1 and $maxAllowedBatch."
             )
+        }
+    } api {
+        tags = setOf("Demo")
+        summary = "Create a batch of demo records."
+        description = "Create a batch of demo records in the system."
+        operationId = "createRecords"
+        queryParameter<Int>(name = "count") {
+            description = "Number of records to create."
+        }
+        response<String>(status = HttpStatusCode.OK) {
+            description = "Message indicating the number of employees created."
+        }
+        response(status = HttpStatusCode.BadRequest) {
+            description = "Invalid count. Must be between 1 and $maxAllowedBatch."
+        }
+        basicSecurity(name = "Demo Authentication") {
+            description = "Access to demo data."
         }
     }
 }

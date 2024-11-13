@@ -7,8 +7,8 @@ package kcrud.access.rbac.view
 import kcrud.access.rbac.model.role.RbacRole
 import kcrud.access.rbac.plugin.annotation.RbacApi
 import kcrud.access.rbac.service.RbacDashboardManager
-import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.core.database.schema.admin.rbac.types.RbacScope
+import kcrud.core.database.schema.admin.rbac.type.RbacAccessLevel
+import kcrud.core.database.schema.admin.rbac.type.RbacScope
 import kotlinx.html.*
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json

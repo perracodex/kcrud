@@ -4,6 +4,7 @@
 
 package kcrud.server.demo.api.dashboard
 
+import io.github.perracodex.kopapi.dsl.operation.api
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -18,13 +19,20 @@ import org.koin.ktor.plugin.scope
 
 @DemoApi
 internal fun Route.dumpJsonRoute() {
-    /**
-     * Return all demo records as JSON.
-     * @OpenAPITag Demo
-     */
-    get("demo/json") {
+    get("/demo/json") {
         val service: EmploymentService = call.scope.get<EmploymentService> { parametersOf(call.getContext()) }
         val page: Page<Employment> = service.findAll(pageable = call.getPageable())
         call.respond(status = HttpStatusCode.OK, message = page)
+    } api {
+        tags = setOf("Demo")
+        summary = "Dump all demo records as JSON."
+        description = "Dump all demo records as JSON."
+        operationId = "dumpJson"
+        response<Page<Employment>>(status = HttpStatusCode.OK) {
+            description = "Page of demo records."
+        }
+        basicSecurity(name = "Demo Authentication") {
+            description = "Access to demo data."
+        }
     }
 }

@@ -9,8 +9,8 @@ import kcrud.access.rbac.model.scope.RbacScopeRuleRequest
 import kcrud.access.rbac.plugin.annotation.RbacApi
 import kcrud.access.rbac.view.RbacDashboardView
 import kcrud.core.context.SessionContext
-import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.core.database.schema.admin.rbac.types.RbacScope
+import kcrud.core.database.schema.admin.rbac.type.RbacAccessLevel
+import kcrud.core.database.schema.admin.rbac.type.RbacScope
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

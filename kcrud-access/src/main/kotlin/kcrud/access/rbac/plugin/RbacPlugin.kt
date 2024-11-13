@@ -15,8 +15,8 @@ import kcrud.access.rbac.service.RbacService
 import kcrud.core.context.SessionContext
 import kcrud.core.context.getContextOrNull
 import kcrud.core.context.setContext
-import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.core.database.schema.admin.rbac.types.RbacScope
+import kcrud.core.database.schema.admin.rbac.type.RbacAccessLevel
+import kcrud.core.database.schema.admin.rbac.type.RbacScope
 import org.koin.ktor.ext.inject
 
 /**

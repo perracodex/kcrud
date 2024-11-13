@@ -8,8 +8,8 @@ import io.ktor.server.application.*
 import io.ktor.server.sessions.*
 import io.ktor.util.*
 import kcrud.core.context.SessionContext.Companion.SESSION_NAME
-import kcrud.core.errors.UnauthorizedException
-import kcrud.core.persistence.utils.toUuid
+import kcrud.core.error.UnauthorizedException
+import kcrud.core.persistence.util.toUuid
 import kcrud.core.plugins.Uuid
 import kcrud.core.settings.AppSettings
 

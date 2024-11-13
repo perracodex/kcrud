@@ -4,6 +4,8 @@
 
 package kcrud.server.plugins
 
+import io.github.perracodex.kopapi.dsl.operation.api
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.plugins.ratelimit.*
@@ -13,7 +15,7 @@ import kcrud.access.rbac.api.rbacRoutes
 import kcrud.access.token.api.accessTokenRoutes
 import kcrud.core.context.getContextOrNull
 import kcrud.core.env.health.healthCheckRoute
-import kcrud.core.events.sseRoute
+import kcrud.core.event.sseRoute
 import kcrud.core.plugins.RateLimitScope
 import kcrud.core.scheduler.api.schedulerRoutes
 import kcrud.core.security.snowflake.snowflakeRoute
@@ -64,6 +66,14 @@ internal fun Application.configureRoutes() {
             call.getContextOrNull()?.let {
                 call.respondText(text = "Hello World. Welcome ${it.username}!")
             } ?: call.respondText(text = "Hello World.")
+        } api {
+            tags = setOf("Root")
+            summary = "Root endpoint."
+            description = "The root endpoint of the server."
+            operationId = "root"
+            response<String>(status = HttpStatusCode.OK) {
+                description = "Root endpoint response."
+            }
         }
     }
 }

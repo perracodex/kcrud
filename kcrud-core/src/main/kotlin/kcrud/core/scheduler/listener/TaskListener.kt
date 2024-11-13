@@ -10,10 +10,10 @@ import kcrud.core.env.Telemetry
 import kcrud.core.env.Tracer
 import kcrud.core.scheduler.audit.AuditService
 import kcrud.core.scheduler.model.audit.AuditLogRequest
+import kcrud.core.scheduler.service.SchedulerAsyncScope
 import kcrud.core.scheduler.service.annotation.SchedulerApi
 import kcrud.core.scheduler.service.task.TaskOutcome
-import kcrud.core.utils.DateTimeUtils.toKotlinLocalDateTime
-import kotlinx.coroutines.runBlocking
+import kcrud.core.util.DateTimeUtils.toKotlinLocalDateTime
 import org.quartz.JobExecutionContext
 import org.quartz.JobExecutionException
 import org.quartz.JobListener
@@ -100,12 +100,7 @@ internal class TaskListener : JobListener {
             log = jobException?.message,
             detail = context.jobDetail.jobDataMap.toMap().toString()
         ).also { request ->
-            // Use `runBlocking` here to ensure that the coroutine for creating
-            // the audit log completes synchronously within this Quartz callback method,
-            // which is necessary because Quartz, being a Java-based library,
-            // does not support suspending functions and requires that the execution
-            // context completes before exiting the job.
-            runBlocking {
+            SchedulerAsyncScope.enqueue {
                 AuditService.create(request = request)
             }
         }

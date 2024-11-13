@@ -10,7 +10,7 @@ import kcrud.core.database.schema.employee.EmployeeTable
 import kcrud.core.database.service.DatabaseService
 import kcrud.core.persistence.model.Period
 import kcrud.core.settings.AppSettings
-import kcrud.core.utils.DateTimeUtils.current
+import kcrud.core.util.DateTimeUtils.current
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import org.koin.core.context.GlobalContext

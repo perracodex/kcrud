@@ -4,6 +4,7 @@
 
 package kcrud.core.plugins
 
+import io.github.perracodex.kopapi.dsl.operation.api
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -49,8 +50,21 @@ public fun Application.configureMicroMeterMetrics() {
 
     routing {
         authenticate(AppSettings.security.basicAuth.providerName, optional = !AppSettings.security.isEnabled) {
-            get("/metrics") {
-                call.respond(status = HttpStatusCode.OK, message = Telemetry.scrape())
+            get("/admin/metrics") {
+                call.respondText(
+                    status = HttpStatusCode.OK,
+                    contentType = ContentType.Text.Plain,
+                    text = Telemetry.scrape(),
+                )
+            } api {
+                tags = setOf("System")
+                summary = "Metrics endpoint."
+                description = "Provides metrics for monitoring the application."
+                operationId = "metrics"
+                response<String>(status = HttpStatusCode.OK) {
+                    description = "The metrics data."
+                    contentType = setOf(ContentType.Text.Plain)
+                }
             }
         }
     }

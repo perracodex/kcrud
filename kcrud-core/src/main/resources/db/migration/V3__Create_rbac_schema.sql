@@ -25,7 +25,7 @@ ALTER TABLE rbac_role
 
 CREATE TRIGGER IF NOT EXISTS tg_rbac_role__updated_at
     BEFORE UPDATE ON rbac_role
-    FOR EACH ROW CALL 'kcrud.core.database.utils.UpdateTimestampTrigger';
+    FOR EACH ROW CALL 'kcrud.core.database.util.UpdateTimestampTrigger';
 
 -------------------------------------------------------------------------------------
 
@@ -52,7 +52,7 @@ ALTER TABLE rbac_scope_rule
 
 CREATE TRIGGER IF NOT EXISTS tg_rbac_scope_rule__updated_at
     BEFORE UPDATE ON rbac_scope_rule
-    FOR EACH ROW CALL 'kcrud.core.database.utils.UpdateTimestampTrigger';
+    FOR EACH ROW CALL 'kcrud.core.database.util.UpdateTimestampTrigger';
 
 -------------------------------------------------------------------------------------
 
@@ -79,4 +79,4 @@ ALTER TABLE rbac_field_rule
 
 CREATE TRIGGER IF NOT EXISTS tg_rbac_field_rule__updated_at
     BEFORE UPDATE ON rbac_field_rule
-    FOR EACH ROW CALL 'kcrud.core.database.utils.UpdateTimestampTrigger';
+    FOR EACH ROW CALL 'kcrud.core.database.util.UpdateTimestampTrigger';

@@ -9,8 +9,8 @@ import kcrud.core.scheduler.service.annotation.SchedulerApi
 import kcrud.core.scheduler.service.schedule.Schedule
 import kcrud.core.scheduler.service.schedule.TaskStartAt
 import kcrud.core.security.snowflake.SnowflakeFactory
-import kcrud.core.utils.DateTimeUtils.toJavaDate
-import kcrud.core.utils.DateTimeUtils.toJavaInstant
+import kcrud.core.util.DateTimeUtils.toJavaDate
+import kcrud.core.util.DateTimeUtils.toJavaInstant
 import org.quartz.*
 import java.util.*
 import kotlin.uuid.Uuid

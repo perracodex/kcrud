@@ -10,6 +10,8 @@ dependencies {
     implementation(project(":kcrud-core"))
     implementation(project(":kcrud-access"))
 
+    implementation(libs.kopapi)
+
     implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.serialization)
 

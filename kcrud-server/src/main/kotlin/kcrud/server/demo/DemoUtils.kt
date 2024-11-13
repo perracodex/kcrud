@@ -4,8 +4,8 @@
 
 package kcrud.server.demo
 
-import kcrud.core.database.schema.employment.types.EmploymentStatus
-import kcrud.core.database.schema.employment.types.WorkModality
+import kcrud.core.database.schema.employment.type.EmploymentStatus
+import kcrud.core.database.schema.employment.type.WorkModality
 import kcrud.core.persistence.model.Period
 import kcrud.core.test.TestUtils
 import kcrud.domain.employee.model.Employee

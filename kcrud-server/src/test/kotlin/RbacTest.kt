@@ -11,7 +11,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kcrud.access.test.RbacTestUtils
 import kcrud.core.context.SessionContext
-import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
+import kcrud.core.database.schema.admin.rbac.type.RbacAccessLevel
 import kcrud.core.test.TestUtils
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest

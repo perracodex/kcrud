@@ -4,6 +4,8 @@
 
 package kcrud.access.token.api.operate
 
+import io.github.perracodex.kopapi.dsl.operation.api
+import io.github.perracodex.kopapi.dsl.parameter.headerParameter
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -28,9 +30,8 @@ internal fun Route.refreshTokenRoute() {
      * No Basic Authentication is required here, but an existing token's validity will be checked.
      * For example, in Postman set the endpoint and in the Headers add an Authorization key
      * with a 'Bearer' holding a previous valid token.
-     * @OpenAPITag Token
      */
-    post("auth/token/refresh") {
+    post("/auth/token/refresh") {
         val headers: Headers = call.request.headers
 
         TokenService.getState(headers = headers).let { result ->
@@ -55,5 +56,24 @@ internal fun Route.refreshTokenRoute() {
                 }
             }
         }
+    } api {
+        tags = setOf("Token")
+        summary = "Refresh an existing JWT token."
+        description = "Allows a client to refresh their existing JWT token."
+        operationId = "refreshToken"
+        headerParameter<String>(name = HttpHeaders.AuthenticationInfo) {
+            description = "The JWT token to be refreshed."
+        }
+        response<String>(status = HttpStatusCode.OK) {
+            description = "The refreshed JWT token."
+            contentType = setOf(ContentType.Text.Plain)
+        }
+        response(status = HttpStatusCode.Unauthorized) {
+            description = "Invalid token."
+        }
+        response(status = HttpStatusCode.InternalServerError) {
+            description = "Failed to refresh token."
+        }
+        noSecurity()
     }
 }

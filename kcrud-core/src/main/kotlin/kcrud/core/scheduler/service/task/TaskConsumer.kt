@@ -4,8 +4,6 @@
 
 package kcrud.core.scheduler.service.task
 
-import kcrud.core.scheduler.service.SchedulerService
-import kcrud.core.settings.AppSettings
 import org.quartz.Job
 import org.quartz.JobDataMap
 import org.quartz.JobExecutionContext
@@ -26,14 +24,6 @@ public abstract class TaskConsumer : Job {
      */
     override fun execute(context: JobExecutionContext) {
         val jobDataMap: JobDataMap? = context.mergedJobDataMap
-
-        // Deserialize and reload AppSettings from the context to ensure this task
-        // uses the current configuration, since it runs in a separate classloader.
-        // This step is crucial as each classloader has its isolated instance of AppSettings.
-        val appSettings: String? = jobDataMap?.get(SchedulerService.APP_SETTINGS_KEY) as String?
-        appSettings?.let {
-            AppSettings.deserialize(string = it)
-        }
 
         // Convert the bundled data into a map of properties.
         val properties: Map<String, Any> = jobDataMap?.toMap()

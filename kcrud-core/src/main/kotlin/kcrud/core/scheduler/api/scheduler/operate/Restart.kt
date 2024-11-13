@@ -4,6 +4,9 @@
 
 package kcrud.core.scheduler.api.scheduler.operate
 
+import io.github.perracodex.kopapi.dsl.operation.api
+import io.github.perracodex.kopapi.dsl.parameter.queryParameter
+import io.github.perracodex.kopapi.type.DefaultValue
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -15,13 +18,22 @@ import kcrud.core.scheduler.service.SchedulerService
  */
 @SchedulerRouteApi
 internal fun Route.restartSchedulerRoute() {
-    /**
-     * Restart the task scheduler.
-     * @OpenAPITag Scheduler - Maintenance
-     */
-    post("scheduler/restart") {
-        val interrupt: Boolean = call.parameters["interrupt"]?.toBoolean() ?: false
+    post("/admin/scheduler/restart/{interrupt?}") {
+        val interrupt: Boolean = call.queryParameters["interrupt"].toBoolean()
         val state: SchedulerService.TaskSchedulerState = SchedulerService.restart(interrupt = interrupt)
         call.respond(status = HttpStatusCode.OK, message = state.name)
+    } api {
+        tags = setOf("Scheduler - Maintenance")
+        summary = "Restart the task scheduler."
+        description = "Restart the task scheduler."
+        operationId = "restartScheduler"
+        queryParameter<Boolean>(name = "interrupt") {
+            description = "Whether to interrupt the current tasks."
+            required = false
+            defaultValue = DefaultValue.ofBoolean(value = false)
+        }
+        response<String>(status = HttpStatusCode.OK) {
+            description = "The state of the scheduler."
+        }
     }
 }

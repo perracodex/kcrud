@@ -8,7 +8,6 @@ import kcrud.core.database.columns.autoGenerate
 import kcrud.core.database.columns.kotlinUuid
 import kcrud.core.database.schema.base.TimestampedTable
 import org.jetbrains.exposed.sql.Column
-import org.jetbrains.exposed.sql.Table
 import kotlin.uuid.Uuid
 
 /**
@@ -54,7 +53,7 @@ public object RbacRoleTable : TimestampedTable(name = "rbac_role") {
     /**
      * The table's primary key.
      */
-    override val primaryKey: Table.PrimaryKey = PrimaryKey(
+    override val primaryKey: PrimaryKey = PrimaryKey(
         firstColumn = id,
         name = "pk_role_id"
     )

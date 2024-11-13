@@ -4,9 +4,9 @@
 
 package kcrud.domain.employment.service
 
-import kcrud.core.errors.AppException
-import kcrud.core.errors.CompositeAppException
-import kcrud.domain.employment.errors.EmploymentError
+import kcrud.core.error.AppException
+import kcrud.core.error.CompositeAppException
+import kcrud.domain.employment.error.EmploymentError
 import kcrud.domain.employment.model.EmploymentRequest
 import kotlin.uuid.Uuid
 

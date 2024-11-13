@@ -22,7 +22,7 @@ import kcrud.access.token.annotation.TokenApi
 import kcrud.access.token.service.TokenService
 import kcrud.core.context.SessionContext
 import kcrud.core.env.Tracer
-import kcrud.core.persistence.utils.toUuid
+import kcrud.core.persistence.util.toUuid
 import kcrud.core.plugins.Uuid
 import kcrud.core.settings.AppSettings
 import org.koin.core.component.KoinComponent

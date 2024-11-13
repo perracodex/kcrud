@@ -6,8 +6,8 @@ package kcrud.domain.employee.api
 
 import io.ktor.server.routing.*
 import kcrud.access.rbac.plugin.withRbac
-import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.core.database.schema.admin.rbac.types.RbacScope
+import kcrud.core.database.schema.admin.rbac.type.RbacAccessLevel
+import kcrud.core.database.schema.admin.rbac.type.RbacScope
 import kcrud.domain.employee.api.delete.deleteAllEmployeesRoute
 import kcrud.domain.employee.api.delete.deleteEmployeeByIdRoute
 import kcrud.domain.employee.api.fetch.filterEmployeeRoute

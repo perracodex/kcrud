@@ -8,9 +8,9 @@ import io.ktor.server.application.*
 import io.ktor.server.sessions.*
 import kcrud.core.context.SessionContext
 import kcrud.core.plugins.Uuid
-import kcrud.core.security.utils.EncryptionUtils.toByteKey
+import kcrud.core.security.util.EncryptionUtils.toByteKey
 import kcrud.core.settings.AppSettings
-import kcrud.core.settings.catalog.sections.security.nodes.EncryptionSettings
+import kcrud.core.settings.catalog.section.security.nodes.EncryptionSettings
 
 /**
  * Configure the [Sessions] plugin.

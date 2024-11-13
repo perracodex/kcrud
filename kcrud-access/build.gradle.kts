@@ -9,6 +9,8 @@ dependencies {
 
     implementation(project(":kcrud-core"))
 
+    implementation(libs.kopapi)
+
     implementation(libs.kotlinx.serialization)
 
     implementation(libs.ktor.server.auth)

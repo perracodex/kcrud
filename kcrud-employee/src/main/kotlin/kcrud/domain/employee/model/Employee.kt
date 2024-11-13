@@ -7,11 +7,11 @@ package kcrud.domain.employee.model
 import io.perracodex.exposed.pagination.IModelTransform
 import kcrud.core.database.schema.contact.ContactTable
 import kcrud.core.database.schema.employee.EmployeeTable
-import kcrud.core.database.schema.employee.types.Honorific
-import kcrud.core.database.schema.employee.types.MaritalStatus
+import kcrud.core.database.schema.employee.type.Honorific
+import kcrud.core.database.schema.employee.type.MaritalStatus
 import kcrud.core.persistence.model.Meta
 import kcrud.core.plugins.Uuid
-import kcrud.core.utils.DateTimeUtils.age
+import kcrud.core.util.DateTimeUtils.age
 import kcrud.domain.contact.model.Contact
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable

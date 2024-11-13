@@ -5,8 +5,8 @@
 package kcrud.access.rbac.model.scope
 
 import kcrud.access.rbac.model.field.RbacFieldRuleRequest
-import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.core.database.schema.admin.rbac.types.RbacScope
+import kcrud.core.database.schema.admin.rbac.type.RbacAccessLevel
+import kcrud.core.database.schema.admin.rbac.type.RbacScope
 import kotlinx.serialization.Serializable
 
 /**

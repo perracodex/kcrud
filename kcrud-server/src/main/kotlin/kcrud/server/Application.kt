@@ -11,7 +11,7 @@ import kcrud.core.plugins.*
 import kcrud.core.settings.AppSettings
 import kcrud.server.plugins.configureKoin
 import kcrud.server.plugins.configureRoutes
-import kcrud.server.utils.ApplicationsUtils
+import kcrud.server.util.ApplicationsUtils
 
 /**
  * Application main entry point.
@@ -58,6 +58,8 @@ internal fun Application.kcrudModule() {
     configureHeaders()
 
     configureHttp()
+
+    configureSse()
 
     configureCallLogging()
 

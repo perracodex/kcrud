@@ -4,15 +4,18 @@
 
 package kcrud.domain.employee.api.operate
 
+import io.github.perracodex.kopapi.dsl.operation.api
+import io.github.perracodex.kopapi.dsl.parameter.pathParameter
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
 import kcrud.core.context.getContext
-import kcrud.core.persistence.utils.toUuid
+import kcrud.core.error.AppException
+import kcrud.core.persistence.util.toUuid
 import kcrud.domain.employee.api.EmployeeRouteApi
-import kcrud.domain.employee.errors.EmployeeError
+import kcrud.domain.employee.error.EmployeeError
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.service.EmployeeService
@@ -22,11 +25,7 @@ import kotlin.uuid.Uuid
 
 @EmployeeRouteApi
 internal fun Route.updateEmployeeByIdRoute() {
-    /**
-     * Update an employee by ID.
-     * @OpenAPITag Employee
-     */
-    put("v1/employees/{employee_id}") {
+    put("/api/v1/employees/{employee_id}") {
         val employeeId: Uuid = call.parameters.getOrFail(name = "employee_id").toUuid()
         val request: EmployeeRequest = call.receive<EmployeeRequest>()
 
@@ -40,6 +39,26 @@ internal fun Route.updateEmployeeByIdRoute() {
             throw EmployeeError.EmployeeNotFound(employeeId = employeeId)
         } else {
             call.respond(status = HttpStatusCode.OK, message = updatedEmployee)
+        }
+    } api {
+        tags = setOf("Employee")
+        summary = "Update an employee by ID."
+        description = "Update an employee's details by their unique ID."
+        operationId = "updateEmployeeById"
+        pathParameter<Uuid>(name = "employee_id") {
+            description = "The unique identifier of the employee."
+        }
+        requestBody<EmployeeRequest> {
+            description = "The employee details to update."
+        }
+        response<Employee>(status = HttpStatusCode.OK) {
+            description = "Employee updated."
+        }
+        response<AppException.Response>(status = HttpStatusCode.NotFound) {
+            description = "Employee not found."
+        }
+        bearerSecurity(name = "Authentication") {
+            description = "Access to employee data."
         }
     }
 }

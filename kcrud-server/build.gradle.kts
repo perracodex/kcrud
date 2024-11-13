@@ -18,6 +18,8 @@ dependencies {
     implementation(libs.exposed.core)
     implementation(libs.exposed.pagination)
 
+    implementation(libs.kopapi)
+
     implementation(libs.ktor.server.auth)
     implementation(libs.ktor.server.auth.jwt)
     implementation(libs.ktor.server.content.negotiation)

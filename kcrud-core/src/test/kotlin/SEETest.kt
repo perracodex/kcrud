@@ -3,49 +3,43 @@
  */
 
 import io.ktor.test.dispatcher.*
-import kcrud.core.events.SEEService
-import kotlinx.coroutines.*
-import java.io.StringWriter
-import java.io.Writer
+import kcrud.core.event.SseService
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.launch
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class SEETest {
+class SseTest {
 
     @Test
-    fun testPushAndWriteEvent(): Unit = testSuspend {
-        // The list size must not exceed the Replay constant in the SEEService.
-        // as this is the number of events that will be replayed to new subscribers.
+    fun testPushAndCollectEvents(): Unit = testSuspend {
+        // List of messages to push, simulating various events
         val messages: List<String> = List(size = 100) { "Test Event $it" }
 
-        // Launch a coroutine to write events to the writer.
-        val writer: Writer = StringWriter()
-        val writeJob: Job = launch(Dispatchers.IO) {
-            try {
-                SEEService.write(writer = writer)
-            } catch (e: Exception) {
-                println("Exception in write coroutine: ${e.message}")
-            }
+        // Launch a coroutine to collect events from the flow.
+        val collectedMessages: MutableList<String> = mutableListOf()
+        val collectJob: Job = launch {
+            SseService.eventFlow.toList(collectedMessages)
         }
 
         // Push multiple events.
         messages.forEach { message ->
-            SEEService.push(message = message)
+            SseService.push(message)
         }
 
-        // Give some time for the events to be processed and written.
-        withContext(Dispatchers.IO) {
-            delay(timeMillis = 2000L)
-        }
+        // Give time for the events to be collected.
+        delay(timeMillis = 500)
 
-        // Stop the writing coroutine.
-        writeJob.cancel()
+        // Cancel the collecting coroutine since all events are collected.
+        collectJob.cancelAndJoin()
 
-        // Verify the written content.
-        val expectedOutput: String = messages.joinToString(separator = "\n\n", postfix = "\n\n") { "data: $it" }
+        // Verify the collected events match the messages that were pushed.
         assertEquals(
-            expected = expectedOutput,
-            actual = writer.toString()
+            expected = messages,
+            actual = collectedMessages
         )
     }
 }

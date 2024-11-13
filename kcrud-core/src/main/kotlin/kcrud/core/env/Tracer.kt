@@ -74,6 +74,27 @@ public class Tracer(private val logger: Logger) {
         }
     }
 
+    /**
+     * Logs a message with the specified severity level.
+     *
+     * #### Usage
+     *
+     * - Class-based logging:
+     * ```
+     * class SomeClass {
+     *      private val tracer = Tracer<SomeClass>()
+     *
+     *      fun someFunction() {
+     *          tracer.info("Logging message.")
+     *      }
+     * }
+     * ```
+     *
+     * - Top-level and extension functions:
+     * ```
+     * Tracer(ref = ::someTopLevelFunction).info("Logging message.")
+     * ```
+     */
     public companion object {
         /** Toggle for full package name or simple name. */
         public const val LOG_FULL_PACKAGE: Boolean = true
@@ -81,6 +102,17 @@ public class Tracer(private val logger: Logger) {
         /**
          * Creates a new [Tracer] instance for a given class.
          * Intended for classes where the class context is applicable.
+         *
+         * #### Usage
+         * ```
+         * class SomeClass {
+         *      private val tracer = Tracer<SomeClass>()
+         *
+         *      fun someFunction() {
+         *          tracer.info("Logging message.")
+         *      }
+         * }
+         * ```
          *
          * @param T The class for which the logger is being created.
          * @return Tracer instance with a logger named after the class.
@@ -96,6 +128,11 @@ public class Tracer(private val logger: Logger) {
         /**
          * Creates a new [Tracer] instance intended for top-level and extension functions
          * where class context is not applicable.
+         *
+         * #### Usage
+         * ```
+         * Tracer(ref = ::someTopLevelFunction).info("Logging message.")
+         * ```
          *
          * @param ref The source reference to the top-level or extension function.
          * @return Tracer instance named after the function and its declaring class (if available).

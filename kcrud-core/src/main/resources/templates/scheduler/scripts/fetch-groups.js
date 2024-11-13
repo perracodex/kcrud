@@ -3,7 +3,7 @@
  */
 
 function fetchGroups() {
-    fetch('/scheduler/task/group', {
+    fetch('/admin/scheduler/task/group', {
         method: 'GET',
         headers: {
             'Cache-Control': 'no-cache, no-store, must-revalidate',

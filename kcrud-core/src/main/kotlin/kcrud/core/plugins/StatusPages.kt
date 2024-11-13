@@ -11,7 +11,7 @@ import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
 import io.perracodex.exposed.pagination.PaginationError
 import kcrud.core.env.Tracer
-import kcrud.core.errors.*
+import kcrud.core.error.*
 import kcrud.core.settings.AppSettings
 import org.jetbrains.exposed.exceptions.ExposedSQLException
 

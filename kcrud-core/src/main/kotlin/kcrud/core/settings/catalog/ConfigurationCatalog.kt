@@ -5,8 +5,8 @@
 package kcrud.core.settings.catalog
 
 import io.github.perracodex.ktor.config.IConfigCatalog
-import kcrud.core.settings.catalog.sections.*
-import kcrud.core.settings.catalog.sections.security.SecuritySettings
+import kcrud.core.settings.catalog.section.*
+import kcrud.core.settings.catalog.section.security.SecuritySettings
 import kotlinx.serialization.Serializable
 
 /**

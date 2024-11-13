@@ -6,8 +6,8 @@ package kcrud.domain.employment.model
 
 import io.perracodex.exposed.pagination.IModelTransform
 import kcrud.core.database.schema.employment.EmploymentTable
-import kcrud.core.database.schema.employment.types.EmploymentStatus
-import kcrud.core.database.schema.employment.types.WorkModality
+import kcrud.core.database.schema.employment.type.EmploymentStatus
+import kcrud.core.database.schema.employment.type.WorkModality
 import kcrud.core.persistence.model.Meta
 import kcrud.core.persistence.model.Period
 import kcrud.core.plugins.Uuid

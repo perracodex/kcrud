@@ -12,13 +12,13 @@ import kcrud.core.scheduler.api.scheduler.operate.pauseSchedulerRoute
 import kcrud.core.scheduler.api.scheduler.operate.restartSchedulerRoute
 import kcrud.core.scheduler.api.scheduler.operate.resumeSchedulerRoute
 import kcrud.core.scheduler.api.scheduler.operate.schedulerStateRoute
-import kcrud.core.scheduler.api.tasks.delete.deleteAllSchedulerTasksRoute
-import kcrud.core.scheduler.api.tasks.delete.deleteSchedulerTaskRoute
-import kcrud.core.scheduler.api.tasks.fetch.getSchedulerTaskGroupsRoute
-import kcrud.core.scheduler.api.tasks.fetch.getSchedulerTasksRoute
-import kcrud.core.scheduler.api.tasks.operate.pauseSchedulerTaskRoute
-import kcrud.core.scheduler.api.tasks.operate.resendSchedulerTaskRoute
-import kcrud.core.scheduler.api.tasks.operate.resumeSchedulerTaskRoute
+import kcrud.core.scheduler.api.task.delete.deleteAllSchedulerTasksRoute
+import kcrud.core.scheduler.api.task.delete.deleteSchedulerTaskRoute
+import kcrud.core.scheduler.api.task.fetch.getSchedulerTaskGroupsRoute
+import kcrud.core.scheduler.api.task.fetch.getSchedulerTasksRoute
+import kcrud.core.scheduler.api.task.operate.pauseSchedulerTaskRoute
+import kcrud.core.scheduler.api.task.operate.resendSchedulerTaskRoute
+import kcrud.core.scheduler.api.task.operate.resumeSchedulerTaskRoute
 import kcrud.core.scheduler.api.view.schedulerDashboardRoute
 
 /**

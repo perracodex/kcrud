@@ -4,8 +4,8 @@
 
 package kcrud.domain.employee.test
 
-import kcrud.core.database.schema.employee.types.Honorific
-import kcrud.core.database.schema.employee.types.MaritalStatus
+import kcrud.core.database.schema.employee.type.Honorific
+import kcrud.core.database.schema.employee.type.MaritalStatus
 import kcrud.core.security.snowflake.SnowflakeFactory
 import kcrud.core.test.TestUtils
 import kcrud.domain.contact.model.ContactRequest

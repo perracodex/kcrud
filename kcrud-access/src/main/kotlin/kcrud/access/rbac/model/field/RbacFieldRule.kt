@@ -5,8 +5,8 @@
 package kcrud.access.rbac.model.field
 
 import kcrud.core.database.schema.admin.rbac.RbacFieldRuleTable
-import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.core.database.schema.admin.rbac.types.RbacScope
+import kcrud.core.database.schema.admin.rbac.type.RbacAccessLevel
+import kcrud.core.database.schema.admin.rbac.type.RbacScope
 import kcrud.core.persistence.model.Meta
 import kcrud.core.plugins.Uuid
 import kotlinx.serialization.Serializable

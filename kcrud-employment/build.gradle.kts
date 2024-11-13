@@ -11,6 +11,8 @@ dependencies {
     implementation(project(":kcrud-access"))
     implementation(project(":kcrud-employee"))
 
+    implementation(libs.kopapi)
+
     implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.serialization)
 

@@ -4,6 +4,7 @@
 
 package kcrud.domain.employee.api.fetch
 
+import io.github.perracodex.kopapi.dsl.operation.api
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -20,14 +21,24 @@ import org.koin.ktor.plugin.scope
 
 @EmployeeRouteApi
 internal fun Route.filterEmployeeRoute() {
-    /**
-     * Filter out employees given a filter set.
-     * @OpenAPITag Employee
-     */
-    post("v1/employees/filter") {
+    post("/api/v1/employees/filter") {
         val request: EmployeeFilterSet = call.receive<EmployeeFilterSet>()
         val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(call.getContext()) }
         val employees: Page<Employee> = service.filter(filterSet = request, pageable = call.getPageable())
         call.respond(status = HttpStatusCode.OK, message = employees)
+    } api {
+        tags = setOf("Employee")
+        summary = "Filter employees."
+        description = "Filter employees based on the given filter set."
+        operationId = "filterEmployees"
+        requestBody<EmployeeFilterSet> {
+            description = "The filter set to apply."
+        }
+        response<Page<Employee>>(status = HttpStatusCode.OK) {
+            description = "Employees found."
+        }
+        bearerSecurity(name = "Authentication") {
+            description = "Access to employee data."
+        }
     }
 }

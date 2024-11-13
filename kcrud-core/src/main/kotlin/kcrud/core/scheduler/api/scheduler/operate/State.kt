@@ -4,6 +4,7 @@
 
 package kcrud.core.scheduler.api.scheduler.operate
 
+import io.github.perracodex.kopapi.dsl.operation.api
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -15,13 +16,17 @@ import kcrud.core.scheduler.service.SchedulerService
  */
 @SchedulerRouteApi
 internal fun Route.schedulerStateRoute() {
-    /**
-     * Returns the state of the task scheduler.
-     * @OpenAPITag Scheduler - Maintenance
-     */
-    get("scheduler/state") {
+    get("/admin/scheduler/state") {
         val state: SchedulerService.TaskSchedulerState = SchedulerService.state()
         call.respond(status = HttpStatusCode.OK, message = state.name)
+    } api {
+        tags = setOf("Scheduler - Maintenance")
+        summary = "Get the state of the task scheduler."
+        description = "Get the state of the task scheduler."
+        operationId = "getSchedulerState"
+        response<String>(status = HttpStatusCode.OK) {
+            description = "The state of the scheduler."
+        }
     }
 }
 

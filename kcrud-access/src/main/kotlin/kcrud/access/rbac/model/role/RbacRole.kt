@@ -61,7 +61,7 @@ public data class RbacRole(
                         .filter { it.getOrNull(RbacFieldRuleTable.id) != null }
                         .distinctBy { it[RbacFieldRuleTable.id] }
                         .map { RbacFieldRule.from(row = it) }
-                        .takeIf { it.isNotEmpty() }
+                        .ifEmpty { null }
 
                     RbacScopeRule.from(row = scopeRuleRow, fieldRules = fieldRules)
                 }

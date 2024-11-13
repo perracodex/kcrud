@@ -9,10 +9,11 @@ import io.github.perracodex.ktor.config.ConfigurationParser
 import io.github.perracodex.ktor.config.IConfigCatalogSection
 import io.ktor.server.config.*
 import kcrud.core.env.Tracer
+import kcrud.core.settings.AppSettings.configuration
 import kcrud.core.settings.AppSettings.load
 import kcrud.core.settings.catalog.ConfigurationCatalog
-import kcrud.core.settings.catalog.sections.*
-import kcrud.core.settings.catalog.sections.security.SecuritySettings
+import kcrud.core.settings.catalog.section.*
+import kcrud.core.settings.catalog.section.security.SecuritySettings
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json

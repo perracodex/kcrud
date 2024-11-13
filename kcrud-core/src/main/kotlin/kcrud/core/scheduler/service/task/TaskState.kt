@@ -37,14 +37,14 @@ internal object TaskState {
         // A task is considered affected if it was not already in the target
         // state and has changed to the target state.
         val totalAffected: Int = afterStates.count { (key, state) ->
-            state == targetState && beforeStates[key]?.let { it != state } ?: true
+            (state == targetState) && (beforeStates[key] != state)
         }
 
         // Count the total number of tasks that remained in the target state both
         // before and after the action. This includes tasks that were already in
         // the target state and were unaffected by the action.
         val alreadyInState: Int = afterStates.count { (key, state) ->
-            state == targetState && beforeStates[key]?.let { it == state } ?: false
+            (state == targetState) && (beforeStates[key] == state)
         }
 
         return TaskStateChange(

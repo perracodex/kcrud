@@ -10,7 +10,7 @@ import io.perracodex.exposed.pagination.paginate
 import kcrud.core.context.SessionContext
 import kcrud.core.database.schema.contact.ContactTable
 import kcrud.core.database.schema.employee.EmployeeTable
-import kcrud.core.database.utils.transaction
+import kcrud.core.database.util.transaction
 import kcrud.domain.contact.repository.IContactRepository
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeFilterSet

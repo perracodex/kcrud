@@ -4,6 +4,7 @@
 
 package kcrud.access.rbac.api.dashboard
 
+import io.github.perracodex.kopapi.dsl.operation.api
 import io.ktor.http.*
 import io.ktor.server.html.*
 import io.ktor.server.request.*
@@ -17,7 +18,7 @@ import kcrud.access.rbac.view.RbacLoginView
 import kcrud.core.context.SessionContext
 import kcrud.core.context.clearContext
 import kcrud.core.context.getContext
-import kcrud.core.persistence.utils.toUuid
+import kcrud.core.persistence.util.toUuid
 import kotlin.uuid.Uuid
 
 /**
@@ -26,11 +27,7 @@ import kotlin.uuid.Uuid
  */
 @RbacApi
 internal fun Route.rbacDashboardUpdateRoute() {
-    /**
-     * Processes updates to RBAC settings based on actor submissions from the dashboard form.
-     * @OpenAPITag RBAC
-     */
-    post("rbac/dashboard") {
+    post("/rbac/dashboard") {
         // Retrieve SessionContext or redirect to the login screen if it's missing.
         val sessionContext: SessionContext = call.getContext()
         if (!RbacDashboardManager.hasPermission(sessionContext = sessionContext)) {
@@ -66,6 +63,17 @@ internal fun Route.rbacDashboardUpdateRoute() {
                     respondRedirect(url = RbacLoginView.RBAC_LOGIN_PATH)
                 }
             }
+        }
+    } api {
+        tags = setOf("RBAC")
+        summary = "Update RBAC settings."
+        description = "Update RBAC settings based on actor submissions from the dashboard form."
+        operationId = "rbacDashboardUpdate"
+        response<String>(status = HttpStatusCode.OK) {
+            description = "The updated RBAC dashboard."
+        }
+        response<String>(status = HttpStatusCode.Found) {
+            description = "Redirect to the RBAC login page."
         }
     }
 }

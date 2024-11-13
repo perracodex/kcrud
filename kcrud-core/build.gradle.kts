@@ -9,11 +9,9 @@ dependencies {
 
     implementation(libs.database.h2)
 
-    implementation(libs.api.schema.swagger)
-    implementation(libs.api.schema.swagger.generators)
-    implementation(libs.api.schema.openapi)
-
     implementation(libs.cron.descriptor)
+
+    implementation(libs.kopapi)
 
     implementation(libs.kotlinx.atomicfu)
     implementation(libs.kotlinx.datetime)
@@ -37,6 +35,7 @@ dependencies {
     implementation(libs.ktor.server.http.redirect)
     implementation(libs.ktor.server.hsts)
     implementation(libs.ktor.server.rateLimit)
+    implementation(libs.ktor.server.sse)
     implementation(libs.ktor.server.statusPages)
     implementation(libs.ktor.server.tests)
     implementation(libs.ktor.server.thymeleaf)

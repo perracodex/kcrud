@@ -6,16 +6,17 @@ package kcrud.access.rbac.plugin
 
 import io.ktor.server.routing.*
 import kcrud.access.rbac.plugin.annotation.RbacApi
-import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.core.database.schema.admin.rbac.types.RbacScope
+import kcrud.core.database.schema.admin.rbac.type.RbacAccessLevel
+import kcrud.core.database.schema.admin.rbac.type.RbacScope
 
 /**
  * Creates an RBAC-authorized route within the Ktor routing structure. This function is a key part
  * of enforcing Role-Based Access Control (RBAC) on specific routes.
  *
+ * @receiver Lambda function defining the route's handling logic that must adhere to the RBAC constraints.
+ *
  * @param scope The RBAC scope associated with the route, defining the scope of access control.
  * @param accessLevel The RBAC access level required for accessing the route, defining the degree of access control.
- * @param build The lambda function defining the route's handling logic that must adhere to the RBAC constraints.
  * @return The created Route object configured with RBAC constraints.
  */
 @RbacApi

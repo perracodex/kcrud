@@ -4,6 +4,7 @@
 
 package kcrud.domain.employee.api.fetch
 
+import io.github.perracodex.kopapi.dsl.operation.api
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -18,13 +19,20 @@ import org.koin.ktor.plugin.scope
 
 @EmployeeRouteApi
 internal fun Route.findAllEmployeesRoute() {
-    /**
-     * Find all employees.
-     * @OpenAPITag Employee
-     */
-    get("v1/employees") {
+    get("/api/v1/employees") {
         val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(call.getContext()) }
         val employees: Page<Employee> = service.findAll(pageable = call.getPageable())
         call.respond(status = HttpStatusCode.OK, message = employees)
+    } api {
+        tags = setOf("Employee")
+        summary = "Find all employees."
+        description = "Retrieve all employees in the system."
+        operationId = "findAllEmployees"
+        response<Page<Employee>>(status = HttpStatusCode.OK) {
+            description = "Employees found."
+        }
+        bearerSecurity(name = "Authentication") {
+            description = "Access to employee data."
+        }
     }
 }

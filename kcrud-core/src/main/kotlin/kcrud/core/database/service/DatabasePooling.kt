@@ -8,8 +8,8 @@ import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
 import kcrud.core.database.annotation.DatabaseApi
-import kcrud.core.database.utils.IsolationLevel
-import kcrud.core.settings.catalog.sections.DatabaseSettings
+import kcrud.core.database.util.IsolationLevel
+import kcrud.core.settings.catalog.section.DatabaseSettings
 
 @DatabaseApi
 internal object DatabasePooling {

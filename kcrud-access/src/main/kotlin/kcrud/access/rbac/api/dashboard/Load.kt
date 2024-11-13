@@ -4,6 +4,7 @@
 
 package kcrud.access.rbac.api.dashboard
 
+import io.github.perracodex.kopapi.dsl.operation.api
 import io.ktor.http.*
 import io.ktor.server.html.*
 import io.ktor.server.response.*
@@ -15,7 +16,7 @@ import kcrud.access.rbac.view.RbacLoginView
 import kcrud.core.context.SessionContext
 import kcrud.core.context.clearContext
 import kcrud.core.context.getContext
-import kcrud.core.persistence.utils.toUuidOrNull
+import kcrud.core.persistence.util.toUuidOrNull
 
 /**
  * Retrieves the current [SessionContext] and renders the RBAC dashboard based
@@ -24,11 +25,7 @@ import kcrud.core.persistence.utils.toUuidOrNull
  */
 @RbacApi
 internal fun Route.rbacDashboardLoadRoute() {
-    /**
-     * Opens the RBAC dashboard. Redirects to the login screen if the [SessionContext] is invalid.
-     * @OpenAPITag RBAC
-     */
-    get("rbac/dashboard") {
+    get("/rbac/dashboard") {
         // Attempt to retrieve the SessionContext for RBAC dashboard access. Redirect to the login screen if null.
         val sessionContext: SessionContext = call.getContext()
         if (!RbacDashboardManager.hasPermission(sessionContext = sessionContext)) {
@@ -50,6 +47,17 @@ internal fun Route.rbacDashboardLoadRoute() {
                     dashboardContext = dashboardContext
                 )
             }
+        }
+    } api {
+        tags = setOf("RBAC")
+        summary = "Load the RBAC dashboard."
+        description = "Load the RBAC dashboard to view and manage role-based access control settings."
+        operationId = "rbacDashboardLoad"
+        response<String>(status = HttpStatusCode.OK) {
+            description = "The RBAC dashboard."
+        }
+        response<String>(status = HttpStatusCode.Found) {
+            description = "Redirect to the RBAC login page."
         }
     }
 }

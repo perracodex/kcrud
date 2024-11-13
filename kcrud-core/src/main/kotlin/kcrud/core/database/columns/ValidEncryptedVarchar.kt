@@ -4,8 +4,8 @@
 
 package kcrud.core.database.columns
 
-import kcrud.core.errors.validators.base.IValidator
-import kcrud.core.errors.validators.base.ValidationException
+import kcrud.core.error.validator.base.IValidator
+import kcrud.core.error.validator.base.ValidationException
 import org.jetbrains.exposed.crypt.EncryptedVarCharColumnType
 import org.jetbrains.exposed.crypt.Encryptor
 import org.jetbrains.exposed.sql.Column

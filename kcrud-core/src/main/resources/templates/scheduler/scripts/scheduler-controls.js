@@ -7,7 +7,7 @@ function updateSchedulerPauseResumeButton() {
 }
 
 function checkSchedulerState(callback) {
-    fetch('/scheduler/state', {
+    fetch('/admin/scheduler/state', {
         method: 'GET',
         headers: {
             'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -59,7 +59,7 @@ function toggleScheduler() {
 }
 
 function pauseScheduler(callback) {
-    fetch('/scheduler/pause', {method: 'POST'})
+    fetch('/admin/scheduler/pause', {method: 'POST'})
         .then(response => {
             if (!response.ok) {
                 throw new Error('Failed to pause scheduler');
@@ -73,7 +73,7 @@ function pauseScheduler(callback) {
 }
 
 function resumeScheduler(callback) {
-    fetch('/scheduler/resume', {method: 'POST'})
+    fetch('/admin/scheduler/resume', {method: 'POST'})
         .then(response => {
             if (!response.ok) {
                 throw new Error('Failed to resume scheduler');

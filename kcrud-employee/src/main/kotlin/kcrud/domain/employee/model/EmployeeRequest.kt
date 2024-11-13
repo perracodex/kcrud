@@ -4,11 +4,11 @@
 
 package kcrud.domain.employee.model
 
-import kcrud.core.database.schema.employee.types.Honorific
-import kcrud.core.database.schema.employee.types.MaritalStatus
-import kcrud.core.persistence.serializers.NoBlankString
+import kcrud.core.database.schema.employee.type.Honorific
+import kcrud.core.database.schema.employee.type.MaritalStatus
+import kcrud.core.persistence.serializer.NoBlankString
 import kcrud.domain.contact.model.ContactRequest
-import kcrud.domain.employee.errors.EmployeeError
+import kcrud.domain.employee.error.EmployeeError
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 

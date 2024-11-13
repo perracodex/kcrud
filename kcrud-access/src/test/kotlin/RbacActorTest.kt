@@ -13,8 +13,8 @@ import kcrud.access.rbac.model.role.RbacRole
 import kcrud.access.rbac.model.role.RbacRoleRequest
 import kcrud.access.rbac.model.scope.RbacScopeRuleRequest
 import kcrud.access.rbac.service.RbacService
-import kcrud.core.database.schema.admin.rbac.types.RbacAccessLevel
-import kcrud.core.database.schema.admin.rbac.types.RbacScope
+import kcrud.core.database.schema.admin.rbac.type.RbacAccessLevel
+import kcrud.core.database.schema.admin.rbac.type.RbacScope
 import kcrud.core.test.TestUtils
 import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.koin.core.component.KoinComponent

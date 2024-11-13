@@ -26,7 +26,7 @@ import kotlin.uuid.Uuid
  */
 internal class ActorService(
     private val actorRepository: IActorRepository,
-    private val roleRepository: IRbacRoleRepository
+    @Suppress("unused") private val roleRepository: IRbacRoleRepository
 ) : KoinComponent {
     private val tracer = Tracer<ActorService>()
 
@@ -107,7 +107,6 @@ internal class ActorService(
      * @param actorId The id of the [Actor] to lock/unlock.
      * @param isLocked Whether the [Actor] should be locked or unlocked.
      */
-    @Suppress("unused")
     suspend fun setLockedState(actorId: Uuid, isLocked: Boolean): Unit = withContext(Dispatchers.IO) {
         tracer.debug("Setting lock state for actor with ID: $actorId")
         actorRepository.setLockedState(actorId = actorId, isLocked = isLocked)

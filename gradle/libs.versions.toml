@@ -8,10 +8,11 @@ database-h2 = "2.3.232"                 # https://github.com/h2database/h2databa
 dokka = "1.9.20"                        # https://github.com/Kotlin/dokka/releases
 exposed = "0.56.0"                      # https://github.com/JetBrains/Exposed/releases
 exposed-pagination = "1.0.2"            # https://github.com/perracodex/exposed-pagination/releases
-flyway = "10.20.1"                      # https://github.com/flyway/flyway/releases
+flyway = "10.21.0"                      # https://github.com/flyway/flyway/releases
 google-phonenumber = "8.13.49"          # https://github.com/google/libphonenumber/releases
 hikariCP = "6.1.0"                      # https://github.com/brettwooldridge/HikariCP/tags
 koin = "4.0.0"                          # https://github.com/InsertKoinIO/koin/releases
+kopapi = "1.0.0"                        # https://github.com/perracodex/kopapi/releases
 kotlin = "2.0.21"                       # https://github.com/JetBrains/kotlin/releases
 kotlinx-atomicfu = "0.26.0"             # https://github.com/Kotlin/kotlinx-atomicfu/releases
 kotlinx-datetime = "0.6.1"              # https://github.com/Kotlin/kotlinx-datetime/releases
@@ -19,11 +20,10 @@ kotlinx-serialization = "1.7.3"         # https://github.com/Kotlin/kotlinx.seri
 ktor = "3.0.1"                          # https://ktor.io/docs/releases.html#release-details
 ktor-config = "1.0.1"                   # https://github.com/perracodex/ktor-config/releases
 logback = "1.5.12"                      # https://github.com/qos-ch/logback/tags
-micrometer-prometheus = "1.13.6"        # https://github.com/micrometer-metrics/micrometer/releases
+micrometer-prometheus = "1.14.0"        # https://github.com/micrometer-metrics/micrometer/releases
 mockk = "1.13.13"                       # https://github.com/mockk/mockk/releases
 mockito-kotlin = "5.4.0"                # https://github.com/mockito/mockito-kotlin/releases
-quartz-scheduler = "2.4.0-rc2"          # https://github.com/quartz-scheduler/quartz/releases
-swagger-generators = "1.0.53"           # https://github.com/swagger-api/swagger-codegen-generators/releases
+quartz-scheduler = "2.5.0"              # https://github.com/quartz-scheduler/quartz/releases
 typesafe-config = "1.4.3"               # https://github.com/lightbend/config/releases
 
 
@@ -36,16 +36,6 @@ ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 
 
 [libraries]
-
-# OpenAPI / SwaggerUI.
-# https://ktor.io/docs/server-swagger-ui.html#configure-swagger
-# https://ktor.io/docs/server-openapi.html#configure-swagger
-# https://github.com/swagger-api/swagger-ui
-# https://github.com/swagger-api/swagger-codegen-generators
-# https://github.com/swagger-api/swagger-codegen-generators/releases
-api-schema-openapi = { module = "io.ktor:ktor-server-openapi", version.ref = "ktor" }
-api-schema-swagger = { module = "io.ktor:ktor-server-swagger", version.ref = "ktor" }
-api-schema-swagger-generators = { module = "io.swagger.codegen.v3:swagger-codegen-generators", version.ref = "swagger-generators" }
 
 # Cron Descriptor.
 # https://github.com/voidburn/cron-expression-descriptor
@@ -97,6 +87,11 @@ koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "koin" }
 koin-logger-slf4j = { module = "io.insert-koin:koin-logger-slf4j", version.ref = "koin" }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 
+# Kopapi.
+# https://github.com/perracodex/kopapi
+# https://github.com/perracodex/kopapi/releases
+kopapi = { module = "io.github.perracodex:kopapi", version.ref = "kopapi" }
+
 # AtomicFU.
 # https://github.com/Kotlin/kotlinx-atomicfu
 # https://github.com/Kotlin/kotlinx-atomicfu/releases
@@ -145,6 +140,7 @@ ktor-server-http-redirect = { module = "io.ktor:ktor-server-http-redirect", vers
 ktor-server-hsts = { module = "io.ktor:ktor-server-hsts", version.ref = "ktor" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor" }
 ktor-server-rateLimit = { module = "io.ktor:ktor-server-rate-limit", version.ref = "ktor" }
+ktor-server-sse = { module = "io.ktor:ktor-server-sse", version.ref = "ktor" }
 ktor-server-statusPages = { module = "io.ktor:ktor-server-status-pages", version.ref = "ktor" }
 ktor-server-sessions = { module = "io.ktor:ktor-server-sessions", version.ref = "ktor" }
 ktor-server-tests = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }

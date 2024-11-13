@@ -7,12 +7,12 @@ package kcrud.core.database.service
 import com.zaxxer.hikari.HikariDataSource
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
 import kcrud.core.database.annotation.DatabaseApi
-import kcrud.core.database.utils.IsolationLevel
+import kcrud.core.database.util.IsolationLevel
 import kcrud.core.env.Tracer
 import kcrud.core.env.health.annotation.HealthCheckApi
-import kcrud.core.env.health.checks.DatabaseHealth
+import kcrud.core.env.health.check.DatabaseHealth
 import kcrud.core.settings.AppSettings
-import kcrud.core.settings.catalog.sections.DatabaseSettings
+import kcrud.core.settings.catalog.section.DatabaseSettings
 import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.DatabaseConfig
@@ -36,27 +36,26 @@ import java.nio.file.Paths
 internal object DatabaseService {
     private val tracer = Tracer<DatabaseService>()
 
-    private var _database: Database? = null
-
     /** The database instance held by the service. */
-    val database: Database
-        get() = _database ?: error("Database not initialized.")
+    lateinit var database: Database
+        private set
 
     private var hikariDataSource: HikariDataSource? = null
 
     /**
      * Initializes the database connection based on the provided mode and database type.
      *
+     * @receiver [SchemaBuilder] Optional lambda to setup the database schema.
+     *
      * @param settings The [DatabaseSettings] to be used to configure the database.
      * @param isolationLevel The isolation level to use for the database transactions.
      * @param telemetryRegistry Optional metrics registry for telemetry monitoring.
-     * @param schemaSetup Optional lambda to setup the database schema.
      */
     fun init(
         settings: DatabaseSettings,
         isolationLevel: IsolationLevel = IsolationLevel.TRANSACTION_REPEATABLE_READ,
         telemetryRegistry: PrometheusMeterRegistry? = null,
-        schemaSetup: (SchemaBuilder.() -> Unit) = {}
+        schemaSetup: SchemaBuilder.() -> Unit = {}
     ) {
         buildDatabase(settings = settings)
 
@@ -86,7 +85,7 @@ internal object DatabaseService {
             )
         }
 
-        _database = databaseInstance
+        database = databaseInstance
 
         tracer.info("Database ready.")
     }
@@ -209,8 +208,8 @@ internal object DatabaseService {
                 exec(stmt = "SELECT 1;")
                 return@transaction true
             }
-        }.getOrElse { e ->
-            tracer.error(message = "Database is not alive.", cause = e)
+        }.getOrElse { error ->
+            tracer.error(message = "Database is not alive.", cause = error)
             return@getOrElse false
         }
     }
@@ -243,38 +242,50 @@ internal object DatabaseService {
      */
     @OptIn(HealthCheckApi::class)
     fun getHealthCheck(): DatabaseHealth {
-        val databaseTest: Result<DatabaseHealth.ConnectionTest> = DatabaseHealth.ConnectionTest.build(database = database)
+        return runCatching {
+            val databaseTest: Result<DatabaseHealth.ConnectionTest> = DatabaseHealth.ConnectionTest.build(database = database)
 
-        val isAlive: Boolean = ping()
-        val connectionTest: DatabaseHealth.ConnectionTest? = databaseTest.getOrNull()
-        val datasource: DatabaseHealth.Datasource? = DatabaseHealth.Datasource.build(datasource = hikariDataSource)
-        val tables: List<String> = dumpTables()
+            val isAlive: Boolean = ping()
+            val connectionTest: DatabaseHealth.ConnectionTest? = databaseTest.getOrNull()
+            val datasource: DatabaseHealth.Datasource? = DatabaseHealth.Datasource.build(datasource = hikariDataSource)
+            val tables: List<String> = dumpTables()
 
-        val databaseHealth = DatabaseHealth(
-            isAlive = isAlive,
-            connectionTest = connectionTest,
-            datasource = datasource,
-            tables = tables
-        )
+            val databaseHealth = DatabaseHealth(
+                isAlive = isAlive,
+                connectionTest = connectionTest,
+                datasource = datasource,
+                tables = tables
+            )
 
-        if (databaseTest.isFailure) {
-            databaseHealth.errors.add(databaseTest.exceptionOrNull()?.message ?: "Database connection test failed.")
+            if (databaseTest.isFailure) {
+                databaseHealth.errors.add(databaseTest.exceptionOrNull()?.message ?: "Database connection test failed.")
+            }
+
+            databaseHealth
+        }.getOrElse { error ->
+            tracer.error(message = "Failed to retrieve database health check.", cause = error)
+            DatabaseHealth(
+                isAlive = false,
+                connectionTest = null,
+                datasource = null,
+                tables = emptyList(),
+            ).apply {
+                errors.add("Failed to retrieve database health check. ${error.message}")
+            }
         }
-
-        return databaseHealth
     }
 
     /**
      * Returns a list of all tables in the database.
      */
     private fun dumpTables(): List<String> {
-        try {
-            return transaction(db = database) {
+        return runCatching {
+            transaction(db = database) {
                 currentDialect.allTablesNames()
             }
-        } catch (e: Exception) {
-            tracer.error(message = "Failed to dump tables.", cause = e)
-            return emptyList()
+        }.getOrElse { error ->
+            tracer.error(message = "Failed to dump tables.", cause = error)
+            emptyList()
         }
     }
 
@@ -284,7 +295,7 @@ internal object DatabaseService {
      * Setting up the schema is optional, as it can be created also by migrations.
      */
     class SchemaBuilder {
-        private val tables = mutableListOf<Table>()
+        private val tables: MutableList<Table> = mutableListOf()
 
         /**
          * Adds a table to the schema. If the table already exists, it will be ignored.

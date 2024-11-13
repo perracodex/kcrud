@@ -7,7 +7,7 @@ package kcrud.core.plugins
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.*
-import kcrud.core.persistence.serializers.UuidSerializer
+import kcrud.core.persistence.serializer.UuidSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlin.uuid.Uuid

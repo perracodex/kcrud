@@ -13,7 +13,7 @@ import kcrud.access.token.service.TokenService
 import kcrud.core.context.SessionContext
 import kcrud.core.context.getContext
 import kcrud.core.env.Tracer
-import kcrud.core.errors.UnauthorizedException
+import kcrud.core.error.UnauthorizedException
 
 /**
  * Application call extension function for responding with a JWT token.
@@ -33,7 +33,7 @@ internal suspend fun ApplicationCall.respondWithToken() {
         }
     }
 
-    result.onFailure { e ->
+    val token: String = result.onFailure { e ->
         Tracer(ref = ApplicationCall::respondWithToken)
             .error(message = "Failed to generate token.", cause = e)
 
@@ -56,7 +56,7 @@ internal suspend fun ApplicationCall.respondWithToken() {
 
     if (result.isSuccess) {
         this.respondText(
-            text = result.getOrNull()!!,
+            text = token,
             status = HttpStatusCode.OK,
             contentType = ContentType.Text.Plain
         )
