@@ -87,3 +87,20 @@ button {
 .icon-button:hover {
     color: #6d747c;
 }
+
+.clear-events {
+    background-color: #ff7f7f;
+    color: #ffffff;
+    width: 150px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    height: 40px;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.clear-events:hover {
+    background-color: #e06666;
+}

@@ -55,7 +55,7 @@ internal object RbacDashboardManager : KoinComponent {
 
         // Retrieve all RBAC roles.
         val rbacRoles: List<RbacRole> = rbacService.findAllRoles()
-        val sessionRoleName: String = rbacService.findRoleById(roleId = sessionContext.roleId)?.roleName ?: ""
+        val sessionRoleName: String = rbacService.findRoleById(roleId = sessionContext.roleId)?.roleName.orEmpty()
 
         // Select the current role based on the role ID or default to the first role if none specified.
         val targetRole: RbacRole = roleId?.let { id ->
@@ -97,7 +97,7 @@ internal object RbacDashboardManager : KoinComponent {
         val rbacRoles: List<RbacRole> = rbacService.findAllRoles()
         val targetRole: RbacRole = rbacRoles.first { it.id == roleId }
         val isViewOnly: Boolean = (sessionRolePermissionLevel == RbacAccessLevel.VIEW) or (targetRole.isSuper)
-        val sessionRoleName: String = rbacService.findRoleById(roleId = sessionContext.roleId)?.roleName ?: ""
+        val sessionRoleName: String = rbacService.findRoleById(roleId = sessionContext.roleId)?.roleName.orEmpty()
 
         // Return the updated roles and current role ID.
         return UpdateResult.Success(

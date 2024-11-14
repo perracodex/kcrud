@@ -45,7 +45,7 @@ public fun Application.configureStatusPages() {
         exception<PaginationError> { call: ApplicationCall, cause: PaginationError ->
             call.respond(
                 status = HttpStatusCode.BadRequest,
-                message = "${cause.errorCode} | ${cause.message} | ${cause.reason ?: ""}"
+                message = "${cause.errorCode} | ${cause.message} | ${cause.reason.orEmpty()}"
             )
         }
 

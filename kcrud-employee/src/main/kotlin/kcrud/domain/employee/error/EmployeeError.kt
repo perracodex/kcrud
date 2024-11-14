@@ -82,7 +82,7 @@ internal sealed class EmployeeError(
         description = "Work email '$workEmail' in use by employee: $usedByEmployeeId${
             affectedEmployeeId?.let {
                 ". Attempted reassignment to employee ID: $affectedEmployeeId"
-            } ?: ""
+            }.orEmpty()
         }",
         field = field,
         reason = reason,
@@ -115,7 +115,7 @@ internal sealed class EmployeeError(
         description = "Invalid email: '$email'.${
             employeeId?.let {
                 " Employee Id: $employeeId"
-            } ?: ""
+            }.orEmpty()
         }",
         field = field,
         reason = reason,
@@ -148,7 +148,7 @@ internal sealed class EmployeeError(
         description = "Invalid phone number: '$phone'.${
             employeeId?.let {
                 " Employee Id: $employeeId"
-            } ?: ""
+            }.orEmpty()
         }",
         field = field,
         reason = reason,

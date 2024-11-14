@@ -113,7 +113,7 @@ internal sealed class EmploymentError(
                 "Employee Id: $employeeId.${
                     employmentId?.let {
                         " Employment Id: $employmentId."
-                    } ?: ""
+                    }.orEmpty()
                 }",
         field = field,
         reason = reason,
@@ -152,7 +152,7 @@ internal sealed class EmploymentError(
                 "Employee Id: $employeeId.${
                     employmentId?.let {
                         " Employment Id: $employmentId."
-                    } ?: ""
+                    }.orEmpty()
                 }",
         field = field,
         reason = reason,

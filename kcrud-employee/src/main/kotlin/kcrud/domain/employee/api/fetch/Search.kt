@@ -21,7 +21,7 @@ import org.koin.ktor.plugin.scope
 
 @EmployeeRouteApi
 internal fun Route.searchEmployeeRoute() {
-    get("/api/v1/employees/search/{term?}") {
+    get("/api/v1/employees/search") {
         val term: String = call.request.queryParameters.getOrFail(name = "term")
         val service: EmployeeService = call.scope.get<EmployeeService> { parametersOf(call.getContext()) }
         val employees: Page<Employee> = service.search(term = term, pageable = call.getPageable())

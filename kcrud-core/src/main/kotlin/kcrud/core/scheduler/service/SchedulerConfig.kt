@@ -6,7 +6,6 @@ package kcrud.core.scheduler.service
 
 import kcrud.core.scheduler.service.annotation.SchedulerApi
 import kcrud.core.settings.AppSettings
-import java.io.InputStream
 import java.util.*
 
 /**
@@ -20,6 +19,7 @@ internal object SchedulerConfig {
 
     /**
      * Returns the configuration properties for the task scheduler.
+     * This method modifies the loaded properties to include runtime database settings.
      */
     fun get(): Properties {
         // Load the configuration properties from the quartz.properties file.
@@ -30,8 +30,8 @@ internal object SchedulerConfig {
         schema.apply {
             this["org.quartz.dataSource.$dataSourceName.driver"] = AppSettings.database.jdbcDriver
             this["org.quartz.dataSource.$dataSourceName.URL"] = AppSettings.database.jdbcUrl
-            this["org.quartz.dataSource.$dataSourceName.user"] = AppSettings.database.username ?: ""
-            this["org.quartz.dataSource.$dataSourceName.password"] = AppSettings.database.password ?: ""
+            this["org.quartz.dataSource.$dataSourceName.user"] = AppSettings.database.username.orEmpty()
+            this["org.quartz.dataSource.$dataSourceName.password"] = AppSettings.database.password.orEmpty()
             this["org.quartz.dataSource.$dataSourceName.maxConnections"] = AppSettings.database.connectionPoolSize
         }
 
@@ -43,8 +43,9 @@ internal object SchedulerConfig {
      */
     private fun loadConfigurationFile(): Properties {
         val properties = Properties()
-        val inputStream: InputStream? = Thread.currentThread().contextClassLoader.getResourceAsStream(PROPERTIES_FILE)
-        inputStream?.use { properties.load(it) }
+        Thread.currentThread().contextClassLoader.getResourceAsStream(PROPERTIES_FILE)?.use { stream ->
+            properties.load(stream)
+        }
         return properties
     }
 }

@@ -6,6 +6,7 @@ package kcrud.core.event
 
 import kcrud.core.env.Tracer
 import kcrud.core.scheduler.service.SchedulerAsyncScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 
@@ -54,5 +55,29 @@ public object SseService {
         }.onFailure { error ->
             tracer.error(message = "Failed to emit message to event flow.", cause = error)
         }
+    }
+
+    /**
+     * Resets the event flow, clearing all replayed events.
+     * This allows starting fresh with no past events available to new subscribers.
+     */
+    @OptIn(ExperimentalCoroutinesApi::class)
+    public fun reset() {
+        runCatching {
+            // Reinitialize _eventFlow to clear all replayed events
+            _eventFlow.resetReplayCache()
+        }.onFailure { error ->
+            tracer.error(message = "Failed to reset event flow.", cause = error)
+        }
+    }
+
+    /**
+     * Retrieves all currently replayed events from the event flow.
+     * This provides a snapshot of the replay cache containing recent events.
+     *
+     * @return A list of all events currently stored in the replay cache.
+     */
+    public fun getAllEvents(): List<String> {
+        return _eventFlow.replayCache
     }
 }

@@ -26,6 +26,7 @@
         <button class="refresh" onclick="refreshPage()">Refresh Tasks</button>
         <button class="pause-resume" id="toggleScheduler" onclick="toggleScheduler()">Pause Scheduler</button>
         <button class="audit" id="openFullAudit" onclick="openFullAudit()">Audit</button>
+        <button class="clear-events" onclick="clearEvents()">Clear Events</button>
     </div>
     <button class="delete" onclick="deleteAll()">Delete All</button>
 </div>
@@ -45,8 +46,8 @@
     <div th:each="item : ${data}" class="table-container expandable" th:attr="data-id=${item.name}">
         <div class="table-row"
              th:classappend="${item.state == 'PAUSED' ? 'row-paused' :
-                 (item.outcome == 'ERROR' ? 'row-error' :
-                 (!item.nextFireTime ? 'row-no-fire-time' : ''))}">
+                     (item.outcome == 'ERROR' ? 'row-error' :
+                     (!item.nextFireTime ? 'row-no-fire-time' : ''))}">
             <span class="expand-trigger">+</span>
             <span th:text="${item.name}" th:title="${item.snowflakeData}">Task Name</span>
             <span th:text="${item.group}">Task Group</span>
@@ -55,12 +56,12 @@
             <span th:text="${item.state}">State</span>
             <span th:attr="data-log=${item.log}"
                   th:style="${item.outcome == 'ERROR' ? 'color: #EA3939FF;' : ''}">
-                <span th:text="${item.outcome}"></span>
-                <span th:if="${item.outcome == 'ERROR'}"
-                      onclick="openLog(this)"
-                      style="cursor: pointer;"
-                      th:attr="data-log=${item.log}">👁️</span>
-            </span>
+                    <span th:text="${item.outcome}"></span>
+                    <span th:if="${item.outcome == 'ERROR'}"
+                          onclick="openLog(this)"
+                          style="cursor: pointer;"
+                          th:attr="data-log=${item.log}">👁️</span>
+                </span>
             <span th:text="${item.schedule}" th:title="${item.scheduleInfo}">>Schedule</span>
             <span th:text="${item.runs}">runs</span>
             <div>
@@ -101,7 +102,10 @@
         </div>
     </div>
 </div>
+
+<!-- Holds the real-time event logs -->
 <div class="events-box" id="events"></div>
+
 <script src="/templates/scheduler/scripts/scheduler-state.js"></script>
 <script src="/templates/scheduler/scripts/initialize-page.js"></script>
 <script src="/templates/scheduler/scripts/fetch-groups.js"></script>
@@ -109,5 +113,6 @@
 <script src="/templates/scheduler/scripts/event-source.js"></script>
 <script src="/templates/scheduler/scripts/scheduler-controls.js"></script>
 <script src="/templates/scheduler/scripts/task-actions.js"></script>
+<script src="/templates/scheduler/scripts/clear-events.js"></script>
 </body>
 </html>

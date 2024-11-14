@@ -74,6 +74,7 @@ public fun Application.configureApiSchema() {
         tags {
             add(name = "RBAC", description = "Role-Based Access Control")
             add(name = "Token", description = "JWT Token Management")
+            add(name = "Events", description = "System Events")
             add(name = "System", description = "System Management")
             add(name = "Scheduler", description = "Scheduler Management")
             add(name = "Scheduler Admin", description = "Scheduler Maintenance")

@@ -5,6 +5,7 @@
 package kcrud.core.scheduler.service
 
 import kcrud.core.env.Tracer
+import kcrud.core.scheduler.service.SchedulerAsyncScope.isParallel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ClosedSendChannelException
@@ -12,9 +13,8 @@ import kotlinx.coroutines.channels.ClosedSendChannelException
 /**
  * An object that manages asynchronous actions for the scheduler using coroutines.
  *
- * This object provides a mechanism to enqueue suspending actions that are executed sequentially.
- * It maintains a [CoroutineScope] and a [Channel] of suspending actions.
- * Actions enqueued are processed one at a time in the order they are received.
+ * This object provides a mechanism to enqueue suspending actions that can be executed
+ * either in parallel (default) or sequentially, depending on the configuration.
  *
  * #### Attention
  * All actions enqueued before shutdown are guaranteed to be executed.
@@ -24,24 +24,26 @@ public object SchedulerAsyncScope {
     private val tracer = Tracer<SchedulerAsyncScope>()
 
     /**
+     * Configuration for parallel or sequential task processing.
+     * By default, tasks are executed in parallel.
+     */
+    @Volatile
+    public var isParallel: Boolean = true
+
+    /**
      * The coroutine scope used for launching the action processing coroutine.
      */
     private val scope: CoroutineScope = CoroutineScope(context = SupervisorJob() + Dispatchers.Default)
 
     /**
-     * The channel that holds the suspending actions to be executed.
-     *
-     * This channel has an unlimited capacity, allowing it to buffer any number of actions.
-     * Actions are suspending functions of type `suspend () -> Unit`.
+     * The channel that holds the suspending actions to be executed sequentially if needed.
      */
     private val taskChannel: Channel<suspend () -> Unit> = Channel(capacity = Channel.UNLIMITED)
 
     /**
-     * A deferred that completes when the processing coroutine finishes.
-     *
-     * Used to await the completion of all pending actions during shutdown.
+     * Job that handles sequential task processing, started only if `isParallel` is false.
      */
-    private val processingJob: Job = scope.launch {
+    private val sequentialJob: Job = scope.launch {
         for (action in taskChannel) {
             try {
                 action() // Executes each action sequentially.
@@ -54,20 +56,30 @@ public object SchedulerAsyncScope {
     /**
      * Enqueues an action to be executed by the scheduler coroutine.
      *
-     * The action is a suspending function that will be executed sequentially in the order
-     * it was enqueued. If the channel is closed, this method will throw an exception.
+     * The action will be executed either in parallel (default) or sequentially based on
+     * the value of [isParallel].
      *
      * @param action The suspending action to enqueue.
      * @throws Exception if the action cannot be enqueued because the channel is closed.
      */
     public fun enqueue(action: suspend () -> Unit) {
-        scope.launch {
-            try {
-                // Using `send` to suspend if the channel is full or closed,
-                // ensuring actions are not discarded.
-                taskChannel.send(action)
-            } catch (e: ClosedSendChannelException) {
-                tracer.error(message = "Async action channel is closed.", cause = e)
+        if (isParallel) {
+            // Parallel execution: Launch each action as a separate coroutine.
+            scope.launch {
+                try {
+                    action()
+                } catch (e: Throwable) {
+                    tracer.error(message = "Error executing async action.", cause = e)
+                }
+            }
+        } else {
+            // Sequential execution: Send the action to the task channel.
+            scope.launch {
+                try {
+                    taskChannel.send(action)
+                } catch (e: ClosedSendChannelException) {
+                    tracer.error(message = "Async action channel is closed.", cause = e)
+                }
             }
         }
     }
@@ -81,9 +93,11 @@ public object SchedulerAsyncScope {
      * @return A [Job] that can be awaited to ensure all pending actions are completed.
      */
     internal fun close(): Job {
-        // Closes the channel, no new actions can be enqueued.
-        taskChannel.close()
-        // Return the processing job to allow awaiting its completion.
-        return processingJob
+        if (!isParallel) {
+            // Closes the channel if using sequential mode.
+            taskChannel.close()
+        }
+        // Cancel the scope to stop all running coroutines.
+        return sequentialJob
     }
 }

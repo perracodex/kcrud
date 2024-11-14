@@ -3,7 +3,7 @@
  */
 
 function setupEventSource() {
-    const eventsSource = new EventSource("/events");
+    const eventsSource = new EventSource("/admin/events?clientId=123");
 
     eventsSource.onmessage = function (event) {
         const eventsContainer = document.getElementById("events");

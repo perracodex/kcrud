@@ -44,8 +44,8 @@ public abstract class AppException(
      * @return The detailed message string.
      */
     public fun messageDetail(): String {
-        val formattedReason: String = reason?.let { "| $it" } ?: ""
-        val formattedCause: String = cause?.let { "| ${it.message}" } ?: ""
+        val formattedReason: String = reason?.let { "| $it" }.orEmpty()
+        val formattedCause: String = cause?.let { "| ${it.message}" }.orEmpty()
         return "Status: ${statusCode.value} | $errorCode | $context | $description $formattedReason $formattedCause"
     }
 
@@ -101,7 +101,7 @@ public abstract class AppException(
          * @return The concatenated error message.
          */
         fun buildMessage(description: String, reason: String?): String {
-            return (reason?.let { "$it : " } ?: "") + description
+            return (reason?.let { "$it : " }.orEmpty()) + description
         }
     }
 }
