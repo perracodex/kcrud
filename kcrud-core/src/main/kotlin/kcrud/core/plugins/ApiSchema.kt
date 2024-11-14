@@ -23,6 +23,7 @@ public fun Application.configureApiSchema() {
 
     install(plugin = Kopapi) {
         enabled = true
+        onDemand = false
 
         apiDocs {
             openApiUrl = AppSettings.apiSchema.openApiEndpoint
