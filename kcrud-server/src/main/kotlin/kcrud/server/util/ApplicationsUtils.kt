@@ -34,17 +34,6 @@ internal object ApplicationsUtils {
                 NetworkUtils.logEndpoints(reason = "RBAC", endpoints = listOf("rbac/login"))
             }
 
-            if (AppSettings.apiSchema.environments.contains(AppSettings.runtime.environment)) {
-                NetworkUtils.logEndpoints(
-                    reason = "Swagger, Redoc, OpenApi",
-                    endpoints = listOf(
-                        AppSettings.apiSchema.swaggerEndpoint,
-                        AppSettings.apiSchema.redocEndpoint,
-                        AppSettings.apiSchema.openApiEndpoint,
-                    )
-                )
-            }
-
             // Log the server readiness.
             tracer.withSeverity("Development Mode Enabled: ${application.developmentMode}.")
             tracer.info("Server configured. Environment: ${AppSettings.runtime.environment}.")
