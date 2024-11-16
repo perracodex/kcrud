@@ -4,7 +4,7 @@
 
 package kcrud.core.database.schema.employment.type
 
-import kcrud.core.database.columns.IEnumWithId
+import kcrud.core.database.column.IEnumWithId
 
 /**
  * The possible employment statuses.

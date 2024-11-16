@@ -4,7 +4,7 @@
 
 package kcrud.core.database.schema.admin.rbac.type
 
-import kcrud.core.database.columns.IEnumWithId
+import kcrud.core.database.column.IEnumWithId
 
 /**
  * Enum representing the access level to a scope.

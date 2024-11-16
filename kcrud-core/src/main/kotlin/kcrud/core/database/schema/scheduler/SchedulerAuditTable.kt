@@ -4,8 +4,8 @@
 
 package kcrud.core.database.schema.scheduler
 
-import kcrud.core.database.columns.autoGenerate
-import kcrud.core.database.columns.kotlinUuid
+import kcrud.core.database.column.autoGenerate
+import kcrud.core.database.column.kotlinUuid
 import kcrud.core.database.schema.base.TimestampedTable
 import kcrud.core.scheduler.service.task.TaskOutcome
 import kotlinx.datetime.LocalDateTime

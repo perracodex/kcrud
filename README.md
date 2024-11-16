@@ -30,7 +30,7 @@ A [Ktor](https://ktor.io/) REST server.
 * [Contextual Transactions](kcrud-core/src/main/kotlin/kcrud/core/database/util/Transaction.kt), allowing to execute concrete transactions per database connection and/or schema.
 * [Custom exceptions](kcrud-core/src/main/kotlin/kcrud/core/error) including composite error responses.
 * [Custom serializers](kcrud-core/src/main/kotlin/kcrud/core/persistence/serializer) examples.
-* [Custom validators](kcrud-core/src/main/kotlin/kcrud/core/error/validator) and [custom table column](kcrud-core/src/main/kotlin/kcrud/core/database/columns) constraints.
+* [Custom validators](kcrud-core/src/main/kotlin/kcrud/core/error/validator) and [custom table column](kcrud-core/src/main/kotlin/kcrud/core/database/column) constraints.
 * [Fat Jar building](.wiki/03.fat-jar) and execution example.
 * [Docker containerization](.wiki/04.docker) example.
 

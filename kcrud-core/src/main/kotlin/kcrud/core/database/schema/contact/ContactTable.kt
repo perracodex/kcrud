@@ -4,9 +4,9 @@
 
 package kcrud.core.database.schema.contact
 
-import kcrud.core.database.columns.autoGenerate
-import kcrud.core.database.columns.kotlinUuid
-import kcrud.core.database.columns.validVarchar
+import kcrud.core.database.column.autoGenerate
+import kcrud.core.database.column.kotlinUuid
+import kcrud.core.database.column.validVarchar
 import kcrud.core.database.schema.base.TimestampedTable
 import kcrud.core.database.schema.employee.EmployeeTable
 import kcrud.core.error.validator.EmailValidator

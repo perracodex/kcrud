@@ -4,7 +4,7 @@
 
 package kcrud.core.database.schema.employee.type
 
-import kcrud.core.database.columns.IEnumWithId
+import kcrud.core.database.column.IEnumWithId
 
 /**
  * List of marital statuses that can be used for an employee.

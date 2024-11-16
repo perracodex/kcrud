@@ -4,9 +4,9 @@
 
 package kcrud.core.database.schema.employment
 
-import kcrud.core.database.columns.autoGenerate
-import kcrud.core.database.columns.enumerationById
-import kcrud.core.database.columns.kotlinUuid
+import kcrud.core.database.column.autoGenerate
+import kcrud.core.database.column.enumerationById
+import kcrud.core.database.column.kotlinUuid
 import kcrud.core.database.schema.base.PeriodTable
 import kcrud.core.database.schema.employee.EmployeeTable
 import kcrud.core.database.schema.employment.type.EmploymentStatus
