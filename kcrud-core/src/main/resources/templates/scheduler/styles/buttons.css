@@ -25,6 +25,22 @@ button {
     height: 40px;
 }
 
+.row-pause-icon-hidden {
+    display: none;
+}
+
+.row-resume-icon-hidden {
+    display: none;
+}
+
+.row-pause-icon {
+    font-size: 0.55em;
+}
+
+.row-resume-icon {
+    font-size: 1.1em;
+}
+
 .refresh {
     background-color: #58af53;
     color: #ffffff;

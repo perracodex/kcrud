@@ -46,43 +46,110 @@ internal class SchedulerTasks private constructor(private val scheduler: Schedul
     /**
      * Pauses a concrete task currently scheduled in the scheduler.
      *
-     * @param name The name of the task to pause.
-     * @param group The group of the task to pause.
+     * @param groupId The group of the task to pause.
+     * @param taskId The name of the task to pause, or null to pause all tasks in the group.
      * @return [TaskStateChange] containing details of the operation.
      */
-    fun pause(name: String, group: String): TaskStateChange {
+    fun pause(groupId: String, taskId: String?): TaskStateChange {
+        if (taskId.isNullOrBlank()) {
+            return pause(groupId = groupId)
+        }
+
+        tracer.debug("Pausing task.Group: $groupId. Task: $taskId.")
         return TaskState.change(scheduler = scheduler, targetState = Trigger.TriggerState.PAUSED) {
-            val jobKey: JobKey = JobKey.jobKey(name, group)
-            scheduler.pauseJob(JobKey.jobKey(name, group))
+            val jobKey: JobKey = JobKey.jobKey(taskId, groupId)
+            scheduler.pauseJob(JobKey.jobKey(taskId, groupId))
             TaskState.getTriggerState(scheduler = scheduler, jobKey = jobKey).name
+        }
+    }
+
+    /**
+     * Pauses all tasks within the specified group in the scheduler.
+     *
+     * @param groupId The group ID of the tasks to be paused.
+     * @return [TaskStateChange] containing details of the operation.
+     */
+    fun pause(groupId: String): TaskStateChange {
+        tracer.debug("Pausing all tasks in group: $groupId.")
+        val jobKeys: Set<JobKey?>? = scheduler.getJobKeys(GroupMatcher.jobGroupEquals(groupId))
+        return TaskState.change(scheduler = scheduler, targetState = Trigger.TriggerState.PAUSED) {
+            scheduler.pauseJobs(GroupMatcher.jobGroupEquals(groupId))
+            // Return the most restrictive state among paused tasks.
+            jobKeys?.filterNotNull()
+                ?.map { TaskState.getTriggerState(scheduler = scheduler, jobKey = it) }
+                ?.minByOrNull { it.ordinal }?.name ?: ""
         }
     }
 
     /**
      * Resumes a concrete task currently scheduled in the scheduler.
      *
-     * @param name The name of the task to resume.
-     * @param group The group of the task to resume.
+     * @param groupId The group of the task to resume.
+     * @param taskId The name of the task to resume, or null to resume all tasks in the group.
      * @return [TaskStateChange] containing details of the operation.
      */
-    fun resume(name: String, group: String): TaskStateChange {
+    fun resume(groupId: String, taskId: String?): TaskStateChange {
+        if (taskId.isNullOrBlank()) {
+            return resume(groupId = groupId)
+        }
+
+        tracer.debug("Resuming task.Group: $groupId. Task: $taskId.")
         return TaskState.change(scheduler = scheduler, targetState = Trigger.TriggerState.NORMAL) {
-            val jobKey: JobKey = JobKey.jobKey(name, group)
+            val jobKey: JobKey = JobKey.jobKey(taskId, groupId)
             scheduler.resumeJob(jobKey)
             TaskState.getTriggerState(scheduler = scheduler, jobKey = jobKey).name
         }
     }
 
     /**
+     * Resumes all tasks within the specified group in the scheduler.
+     *
+     * @param groupId The group ID of the tasks to be resumed.
+     * @return [TaskStateChange] containing details of the operation.
+     */
+    fun resume(groupId: String): TaskStateChange {
+        tracer.debug("Resuming all tasks in group: $groupId.")
+        val jobKeys: Set<JobKey?>? = scheduler.getJobKeys(GroupMatcher.jobGroupEquals(groupId))
+        return TaskState.change(scheduler = scheduler, targetState = Trigger.TriggerState.NORMAL) {
+            scheduler.resumeJobs(GroupMatcher.jobGroupEquals(groupId))
+            // Return the most restrictive state among resumed tasks.
+            jobKeys?.filterNotNull()
+                ?.map { TaskState.getTriggerState(scheduler = scheduler, jobKey = it) }
+                ?.minByOrNull { it.ordinal }?.name ?: ""
+        }
+    }
+
+    /**
      * Deletes a task from the scheduler.
      *
-     * @param name The name of the task to be deleted.
-     * @param group The group of the task to be deleted.
+     * @param groupId The group of the task to be deleted.
+     * @param taskId The id of the task to be deleted.
      * @return The number of tasks deleted.
      */
-    fun delete(name: String, group: String): Int {
-        tracer.debug("Deleting task. Name: $name. Group: $group.")
-        return if (scheduler.deleteJob(JobKey.jobKey(name, group))) 1 else 0
+    fun delete(groupId: String, taskId: String): Int {
+        tracer.debug("Deleting task.Group: $groupId. Task: $taskId. ")
+        return if (scheduler.deleteJob(JobKey.jobKey(taskId, groupId))) 1 else 0
+    }
+
+    /**
+     * Deletes all tasks within the specified group from the scheduler.
+     *
+     * @param groupId The group ID of the tasks to be deleted.
+     * @return The number of tasks deleted.
+     */
+    fun delete(groupId: String): Int {
+        tracer.debug("Deleting all tasks in group: $groupId.")
+        val jobKeys: Set<JobKey?>? = scheduler.getJobKeys(GroupMatcher.jobGroupEquals(groupId))
+        var deletedCount = 0
+
+        jobKeys?.forEach { jobKey ->
+            if (scheduler.deleteJob(jobKey)) {
+                deletedCount++
+            }
+        }
+
+        tracer.debug("Deleted $deletedCount tasks from group: $groupId.")
+        return deletedCount
     }
 
     /**
@@ -107,18 +174,18 @@ internal class SchedulerTasks private constructor(private val scheduler: Schedul
     /**
      * Re-trigger an existing durable job.
      *
-     * @param name The name of the task to re-trigger.
-     * @param group The group of the task to re-trigger.
+     * @param groupId The group of the task to re-trigger.
+     * @param taskId The name of the task to re-trigger.
      * @throws IllegalArgumentException If the task is not found.
      */
-    fun resend(name: String, group: String) {
-        val jobKey: JobKey = JobKey.jobKey(name, group)
+    fun resend(groupId: String, taskId: String) {
+        val jobKey: JobKey = JobKey.jobKey(taskId, groupId)
 
         // Triggers require a unique identity.
-        val identity = "$name-trigger-resend-${Uuid.random()}"
+        val identity = "$taskId-trigger-resend-${Uuid.random()}"
 
         val triggerBuilder: TriggerBuilder<SimpleTrigger> = TriggerBuilder.newTrigger()
-            .withIdentity(identity, group)
+            .withIdentity(identity, groupId)
             .forJob(jobKey) // Associate with the existing durable job.
             .startNow()
             .withSchedule(
@@ -131,9 +198,24 @@ internal class SchedulerTasks private constructor(private val scheduler: Schedul
         // Schedule the new trigger with the existing job.
         scheduler.scheduleJob(newTrigger)
 
-        SseService.push("Task resent. Name: $name | Group: $group")
-
+        SseService.push(message = "Task resent. Group: $groupId | Task: $taskId")
         tracer.debug("Trigger for task ${jobKey.name} has been scheduled.")
+    }
+
+    /**
+     * Re-triggers all tasks within the specified group in the scheduler.
+     *
+     * @param groupId The group ID of the tasks to re-trigger.
+     */
+    fun resend(groupId: String) {
+        tracer.debug("Resending all tasks in group: $groupId.")
+        val jobKeys: Set<JobKey?>? = scheduler.getJobKeys(GroupMatcher.jobGroupEquals(groupId))
+        jobKeys?.forEach { jobKey ->
+            jobKey?.let {
+                resend(groupId = groupId, taskId = jobKey.name)
+            }
+        }
+        SseService.push(message = "All tasks in group '$groupId' have been resent.")
     }
 
     /**
@@ -142,9 +224,10 @@ internal class SchedulerTasks private constructor(private val scheduler: Schedul
      * @param groupId Optional group ID to filter the tasks by.
      * @param executing True if only actively executing tasks should be returned; false to return all tasks.
      * @param groupId The group ID of the tasks to return. Null to return all tasks.
+     * @param sortByFireTime True if the tasks should be sorted by nextFireTime; false to return them in the order they were scheduled.
      * @return A list of [TaskSchedule] objects representing the scheduled tasks.
      */
-    suspend fun all(groupId: Uuid? = null, executing: Boolean = false): List<TaskSchedule> {
+    suspend fun all(groupId: Uuid? = null, executing: Boolean = false, sortByFireTime: Boolean = false): List<TaskSchedule> {
         var taskList: List<TaskSchedule> = if (executing) {
             scheduler.currentlyExecutingJobs.map { task -> toTaskSchedule(taskDetail = task.jobDetail) }
         } else {
@@ -154,12 +237,16 @@ internal class SchedulerTasks private constructor(private val scheduler: Schedul
         }
 
         groupId?.let {
-            taskList = taskList.filter { it.group == groupId.toString() }
+            taskList = taskList.filter { it.groupId == groupId.toString() }
         }
 
         // Sort the task list by nextFireTime.
         // Tasks without a nextFireTime will be placed at the end of the list.
-        return taskList.sortedBy { it.nextFireTime }
+        return if (sortByFireTime) {
+            taskList.sortedBy { it.nextFireTime }
+        } else {
+            taskList
+        }
     }
 
     /**
@@ -179,11 +266,11 @@ internal class SchedulerTasks private constructor(private val scheduler: Schedul
         )
 
         // Resolve the last execution outcome.
-        val mostRecentAudit: AuditLog? = AuditService.mostRecent(taskName = jobKey.name, taskGroup = jobKey.group)
+        val mostRecentAudit: AuditLog? = AuditService.mostRecent(groupId = jobKey.group, taskId = jobKey.name)
         val outcome: String? = mostRecentAudit?.outcome?.name
 
         // Get how many times the task has been executed.
-        val runs: Int = AuditService.count(taskName = jobKey.name, taskGroup = jobKey.group)
+        val runs: Int = AuditService.count(groupId = jobKey.group, taskId = jobKey.name)
 
         // Resolve the schedule metrics.
         val (schedule: String?, scheduleInfo: String?) = triggers.firstOrNull()?.let { trigger ->
@@ -202,6 +289,7 @@ internal class SchedulerTasks private constructor(private val scheduler: Schedul
             }
         } ?: (null to null)
 
+
         // Resolve the concrete parameters of the task.
         val dataMap: List<String> = taskDetail.jobDataMap
             .entries.map { (key, value) -> "$key: $value" }
@@ -214,9 +302,9 @@ internal class SchedulerTasks private constructor(private val scheduler: Schedul
         val snowflakeData: String = SnowflakeFactory.parse(id = jobKey.name).toString()
 
         return TaskSchedule(
-            name = jobKey.name,
+            groupId = jobKey.group,
+            taskId = jobKey.name,
             snowflakeData = snowflakeData,
-            group = jobKey.group,
             consumer = taskDetail.jobClass.simpleName,
             nextFireTime = nextFireTime?.toKotlinLocalDateTime(),
             state = mostRestrictiveState.name,

@@ -21,7 +21,7 @@ import kotlin.uuid.Uuid
 @SchedulerRouteApi
 internal fun Route.getSchedulerTasksRoute() {
     get("/admin/scheduler/task") {
-        val groupId: Uuid? = call.queryParameters["group"]?.toUuidOrNull()
+        val groupId: Uuid? = call.queryParameters["groupId"]?.toUuidOrNull()
         val tasks: List<TaskSchedule> = SchedulerService.tasks.all(groupId = groupId)
         call.respond(status = HttpStatusCode.OK, message = tasks)
     } api {
@@ -29,7 +29,7 @@ internal fun Route.getSchedulerTasksRoute() {
         summary = "Get all scheduler tasks."
         description = "Get all the scheduler tasks."
         operationId = "getSchedulerTasks"
-        queryParameter<Uuid>(name = "group") {
+        queryParameter<Uuid>(name = "groupId") {
             description = "The group ID of the tasks."
         }
         response<List<TaskSchedule>>(status = HttpStatusCode.OK) {

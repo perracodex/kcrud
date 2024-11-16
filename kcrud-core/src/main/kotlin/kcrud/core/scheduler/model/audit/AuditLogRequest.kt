@@ -11,8 +11,8 @@ import kotlinx.datetime.LocalDateTime
 /**
  * Represents a log request to be stored in the database.
  *
- * @property taskName The name of the task.
- * @property taskGroup The group of the task.
+ * @property groupId The group of the task.
+ * @property taskId The unique identifier of the task.
  * @property fireTime The actual time the trigger fired.
  * @property runTime The amount of time the job ran for, in milliseconds.
  * @property outcome The log [TaskOutcome] status.
@@ -21,8 +21,8 @@ import kotlinx.datetime.LocalDateTime
  */
 @SchedulerApi
 public data class AuditLogRequest(
-    val taskName: String,
-    val taskGroup: String,
+    val groupId: String,
+    val taskId: String,
     val fireTime: LocalDateTime,
     val runTime: Long,
     val outcome: TaskOutcome,

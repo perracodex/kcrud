@@ -27,7 +27,7 @@ class SseTest {
 
         // Push multiple events.
         messages.forEach { message ->
-            SseService.push(message)
+            SseService.push(message = message)
         }
 
         // Give time for the events to be collected.

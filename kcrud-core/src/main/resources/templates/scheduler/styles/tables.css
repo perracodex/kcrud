@@ -5,7 +5,7 @@
 .table-header,
 .table-row {
     display: grid;
-    grid-template-columns: 0.1fr 1fr 1.5fr 1fr 0.9fr 0.6fr 0.65fr 1.6fr 0.35fr 0.65fr;
+    grid-template-columns: 0.1fr 1.5fr 1fr 1fr 0.9fr 0.6fr 0.65fr 1.6fr 0.35fr 0.65fr;
     font-size: 0.85em;
     align-items: center;
 }
@@ -72,3 +72,8 @@
 .table-row span[data-log] {
     color: #76c7c0;
 }
+
+.logViewer {
+    cursor: pointer;
+}
+

@@ -92,8 +92,8 @@ internal class TaskListener : JobListener {
         // Create audit log for task execution.
 
         AuditLogRequest(
-            taskName = context.jobDetail.key.name,
-            taskGroup = context.jobDetail.key.group,
+            groupId = context.jobDetail.key.group,
+            taskId = context.jobDetail.key.name,
             fireTime = context.fireTime.toKotlinLocalDateTime(),
             runTime = context.jobRunTime,
             outcome = outcome,

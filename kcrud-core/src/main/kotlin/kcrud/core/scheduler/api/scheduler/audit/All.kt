@@ -8,6 +8,8 @@ import io.github.perracodex.kopapi.dsl.operation.api
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.perracodex.exposed.pagination.Page
+import io.perracodex.exposed.pagination.getPageable
 import kcrud.core.scheduler.api.SchedulerRouteApi
 import kcrud.core.scheduler.audit.AuditService
 import kcrud.core.scheduler.model.audit.AuditLog
@@ -18,15 +20,15 @@ import kcrud.core.scheduler.model.audit.AuditLog
 @SchedulerRouteApi
 internal fun Route.schedulerAllAuditRoute() {
     get("/admin/scheduler/audit") {
-        val audit: List<AuditLog> = AuditService.findAll()
+        val audit: Page<AuditLog> = AuditService.findAll(pageable = call.getPageable())
         call.respond(status = HttpStatusCode.OK, message = audit)
     } api {
         tags = setOf("Scheduler Admin")
         summary = "Get all scheduler audit logs."
         description = "Get all existing audit logs for the scheduler."
         operationId = "getAllSchedulerAuditLogs"
-        response<List<AuditLog>>(status = HttpStatusCode.OK) {
-            description = "All scheduler audit logs."
+        response<Page<AuditLog>>(status = HttpStatusCode.OK) {
+            description = "Existing scheduler audit logs."
         }
     }
 }

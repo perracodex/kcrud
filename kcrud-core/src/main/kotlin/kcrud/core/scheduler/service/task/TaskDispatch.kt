@@ -8,7 +8,6 @@ import kcrud.core.scheduler.service.SchedulerService
 import kcrud.core.scheduler.service.annotation.SchedulerApi
 import kcrud.core.scheduler.service.schedule.Schedule
 import kcrud.core.scheduler.service.schedule.TaskStartAt
-import kcrud.core.security.snowflake.SnowflakeFactory
 import kcrud.core.util.DateTimeUtils.toJavaDate
 import kcrud.core.util.DateTimeUtils.toJavaInstant
 import org.quartz.*
@@ -19,15 +18,17 @@ import kotlin.uuid.Uuid
  * Class to create and send a scheduling request for a task.
  * It supports both simple intervals and cron-based scheduling.
  *
- * @property taskId The ID of the task to be scheduled.
+ * @property groupId The Group ID of the task to be scheduled.
+ * @property taskId The unique ID of the task to be scheduled.
  * @property consumerClass The class of the task consumer to be scheduled.
  * @property startAt Specifies when the task should start. Defaults to immediate execution.
  * @property parameters Optional parameters to be passed to the task class.
  */
 @OptIn(SchedulerApi::class)
 public class TaskDispatch(
-    private val taskId: Uuid,
-    private val consumerClass: Class<out TaskConsumer>,
+    private val groupId: Uuid,
+    private val taskId: String,
+    private val consumerClass: Class<out TaskConsumer<*>>,
     private var startAt: TaskStartAt = TaskStartAt.Immediate,
     private var parameters: Map<String, Any?> = emptyMap()
 ) {
@@ -119,10 +120,8 @@ public class TaskDispatch(
      * Build the job details and trigger builder for the task.
      */
     private fun buildJob(): BasicJob {
-        val taskName: String = SnowflakeFactory.nextId()
-        val groupName: String = taskId.toString()
-
-        val jobKey: JobKey = JobKey.jobKey(taskName, groupName)
+        val groupName: String = groupId.toString()
+        val jobKey: JobKey = JobKey.jobKey(taskId, groupName)
         val jobDataMap = JobDataMap(parameters)
 
         val jobDetail: JobDetail = JobBuilder
@@ -134,7 +133,7 @@ public class TaskDispatch(
 
         // Set the trigger name and start time based on task start configuration.
         val triggerBuilder: TriggerBuilder<Trigger> = TriggerBuilder.newTrigger()
-            .withIdentity("${taskName}-trigger", groupName)
+            .withIdentity("${taskId}-trigger", groupName)
             .apply {
                 when (val startDateTime: TaskStartAt = startAt) {
                     is TaskStartAt.Immediate -> startNow()

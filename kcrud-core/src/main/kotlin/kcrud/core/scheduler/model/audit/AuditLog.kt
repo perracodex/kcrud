@@ -4,7 +4,8 @@
 
 package kcrud.core.scheduler.model.audit
 
-import kcrud.core.database.schema.scheduler.SchedulerAuditTable
+import io.perracodex.exposed.pagination.IModelTransform
+import kcrud.core.database.schema.SchedulerAuditTable
 import kcrud.core.persistence.model.Meta
 import kcrud.core.plugins.Uuid
 import kcrud.core.scheduler.service.task.TaskOutcome
@@ -16,8 +17,8 @@ import org.jetbrains.exposed.sql.ResultRow
  * Represents a concrete scheduler audit log.
  *
  * @property id The unique identifier of the audit log.
- * @property taskName The name of the task.
- * @property taskGroup The group of the task.
+ * @property groupId The group of the task.
+ * @property taskId The unique identifier of the task.
  * @property fireTime The actual time the trigger fired.
  * @property runTime The amount of time the task ran for, in milliseconds.
  * @property outcome The log [TaskOutcome] status.
@@ -28,8 +29,8 @@ import org.jetbrains.exposed.sql.ResultRow
 @Serializable
 public data class AuditLog(
     val id: Uuid,
-    val taskName: String,
-    val taskGroup: String,
+    val groupId: String,
+    val taskId: String,
     val fireTime: LocalDateTime,
     val runTime: Long,
     val outcome: TaskOutcome,
@@ -37,18 +38,18 @@ public data class AuditLog(
     val detail: String?,
     val meta: Meta
 ) {
-    internal companion object {
+    internal companion object : IModelTransform<AuditLog> {
         /**
          * Maps a [ResultRow] to a [AuditLog] instance.
          *
          * @param row The [ResultRow] to map.
          * @return The mapped [AuditLog] instance.
          */
-        fun from(row: ResultRow): AuditLog {
+        override fun from(row: ResultRow): AuditLog {
             return AuditLog(
                 id = row[SchedulerAuditTable.id],
-                taskName = row[SchedulerAuditTable.taskName],
-                taskGroup = row[SchedulerAuditTable.taskGroup],
+                groupId = row[SchedulerAuditTable.groupId],
+                taskId = row[SchedulerAuditTable.taskId],
                 fireTime = row[SchedulerAuditTable.fireTime],
                 runTime = row[SchedulerAuditTable.runTime],
                 outcome = row[SchedulerAuditTable.outcome],

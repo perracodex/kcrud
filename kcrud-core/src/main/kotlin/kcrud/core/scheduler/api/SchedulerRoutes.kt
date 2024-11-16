@@ -13,8 +13,9 @@ import kcrud.core.scheduler.api.scheduler.operate.restartSchedulerRoute
 import kcrud.core.scheduler.api.scheduler.operate.resumeSchedulerRoute
 import kcrud.core.scheduler.api.scheduler.operate.schedulerStateRoute
 import kcrud.core.scheduler.api.task.delete.deleteAllSchedulerTasksRoute
+import kcrud.core.scheduler.api.task.delete.deleteSchedulerGroupRoute
 import kcrud.core.scheduler.api.task.delete.deleteSchedulerTaskRoute
-import kcrud.core.scheduler.api.task.fetch.getSchedulerTaskGroupsRoute
+import kcrud.core.scheduler.api.task.fetch.getSchedulerAllGroupsRoute
 import kcrud.core.scheduler.api.task.fetch.getSchedulerTasksRoute
 import kcrud.core.scheduler.api.task.operate.pauseSchedulerTaskRoute
 import kcrud.core.scheduler.api.task.operate.resendSchedulerTaskRoute
@@ -48,8 +49,9 @@ public fun Route.schedulerRoutes() {
 
     // Task related routes.
     getSchedulerTasksRoute()
-    getSchedulerTaskGroupsRoute()
+    getSchedulerAllGroupsRoute()
     deleteSchedulerTaskRoute()
+    deleteSchedulerGroupRoute()
     deleteAllSchedulerTasksRoute()
     pauseSchedulerTaskRoute()
     resumeSchedulerTaskRoute()

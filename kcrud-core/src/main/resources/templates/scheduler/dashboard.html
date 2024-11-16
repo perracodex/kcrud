@@ -1,6 +1,6 @@
 <!--
   ~ Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
-  -->
+-->
 
 <!DOCTYPE html>
 <!--suppress ThymeleafVariablesResolveInspection -->
@@ -21,6 +21,7 @@
     <option value="all">All Groups</option>
 </select>
 </div>
+
 <div class="buttons-container">
     <div class="left-buttons">
         <button class="refresh" onclick="refreshPage()">Refresh Tasks</button>
@@ -30,10 +31,11 @@
     </div>
     <button class="delete" onclick="deleteAll()">Delete All</button>
 </div>
+
 <div class="table-header">
     <span></span>
-    <span>Name</span>
     <span>Group</span>
+    <span>ID</span>
     <span>Consumer</span>
     <span>Next Fire Time</span>
     <span>State</span>
@@ -42,65 +44,10 @@
     <span>Runs</span>
     <span>Action</span>
 </div>
+
+<!-- Task Table Content -->
 <div class="table-content">
-    <div th:each="item : ${data}" class="table-container expandable" th:attr="data-id=${item.name}">
-        <div class="table-row"
-             th:classappend="${item.state == 'PAUSED' ? 'row-paused' :
-                     (item.outcome == 'ERROR' ? 'row-error' :
-                     (!item.nextFireTime ? 'row-no-fire-time' : ''))}">
-            <span class="expand-trigger">+</span>
-            <span th:text="${item.name}" th:title="${item.snowflakeData}">Task Name</span>
-            <span th:text="${item.group}">Task Group</span>
-            <span th:text="${item.consumer}">Consumer</span>
-            <span th:text="${item.nextFireTime}">Next Fire Time</span>
-            <span th:text="${item.state}">State</span>
-            <span th:attr="data-log=${item.log}"
-                  th:style="${item.outcome == 'ERROR' ? 'color: #EA3939FF;' : ''}">
-                    <span th:text="${item.outcome}"></span>
-                    <span th:if="${item.outcome == 'ERROR'}"
-                          onclick="openLog(this)"
-                          style="cursor: pointer;"
-                          th:attr="data-log=${item.log}">👁️</span>
-                </span>
-            <span th:text="${item.schedule}" th:title="${item.scheduleInfo}">>Schedule</span>
-            <span th:text="${item.runs}">runs</span>
-            <div>
-                <button class="icon-button"
-                        th:attr="data-name=${item.name}, data-group=${item.group}"
-                        onclick="deleteTask(this)"
-                        title="Delete">
-                    <span class="delete-icon">&#x1F5D9;</span>
-                </button>
-                <button class="icon-button"
-                        th:attr="data-name=${item.name}, data-group=${item.group}"
-                        onclick="openTaskAudit(this)"
-                        title="Audit">
-                    <span>&#x1F5D2;&#xFE0F;</span>
-                </button>
-                <div th:if="${item.state} != 'COMPLETE' and ${item.state} != 'NONE'">
-                    <button class="icon-button"
-                            th:attr="data-name=${item.name}, data-group=${item.group}, data-state=${item.state}"
-                            onclick="toggleTaskPauseResume(this)"
-                            th:title="${item.state} == 'PAUSED' ? 'Resume' : 'Pause'">
-                        <span style="font-size: 1.1em" th:if="${item.state} == 'PAUSED'">&#x23F5;</span>
-                        <span style="font-size: 0.55em" th:if="${item.state} != 'PAUSED'">&#9616;&nbsp;&#9612;</span>
-                    </button>
-                </div>
-                <button class="icon-button resend-button"
-                        th:if="${!item.nextFireTime}"
-                        th:attr="data-name=${item.name}, data-group=${item.group}"
-                        onclick="resendTask(this)"
-                        title="Resend">
-                    <span>&#x21BA;</span>
-                </button>
-            </div>
-        </div>
-        <div class="table-sub-row">
-            <ul>
-                <li th:each="entry : ${item.dataMap}" th:text="${entry}">Data Map Entry</li>
-            </ul>
-        </div>
-    </div>
+    <!-- Task rows will be dynamically inserted here by JavaScript -->
 </div>
 
 <!-- Holds the real-time event logs -->
@@ -108,11 +55,12 @@
 
 <script src="/templates/scheduler/scripts/scheduler-state.js"></script>
 <script src="/templates/scheduler/scripts/initialize-page.js"></script>
+<script src="/templates/scheduler/scripts/task-actions.js"></script>
 <script src="/templates/scheduler/scripts/fetch-groups.js"></script>
 <script src="/templates/scheduler/scripts/table-expand-collapse.js"></script>
 <script src="/templates/scheduler/scripts/event-source.js"></script>
 <script src="/templates/scheduler/scripts/scheduler-controls.js"></script>
-<script src="/templates/scheduler/scripts/task-actions.js"></script>
 <script src="/templates/scheduler/scripts/clear-events.js"></script>
+
 </body>
 </html>

@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.core.database.schema.scheduler
+package kcrud.core.database.schema
 
 import kcrud.core.database.column.autoGenerate
 import kcrud.core.database.column.kotlinUuid
@@ -25,18 +25,18 @@ internal object SchedulerAuditTable : TimestampedTable(name = "scheduler_audit")
     ).autoGenerate()
 
     /**
-     * The name of the task that was executed.
+     * The group to which the task belongs.
      */
-    val taskName: Column<String> = varchar(
-        name = "task_name",
+    val groupId: Column<String> = varchar(
+        name = "group_id",
         length = 200
     )
 
     /**
-     * The group to which the task belongs.
+     * The unique ID of the task that was executed.
      */
-    val taskGroup: Column<String> = varchar(
-        name = "task_group",
+    val taskId: Column<String> = varchar(
+        name = "task_id",
         length = 200
     )
 
@@ -77,6 +77,9 @@ internal object SchedulerAuditTable : TimestampedTable(name = "scheduler_audit")
         name = "detail",
     ).nullable()
 
+    /**
+     * The primary key of the table.
+     */
     override val primaryKey: PrimaryKey = PrimaryKey(
         firstColumn = id,
         name = "pk_audit_id"

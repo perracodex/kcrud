@@ -68,6 +68,39 @@ public object DateTimeUtils {
     }
 
     /**
+     * Formats a LocalDateTime to a consistent ISO 8601 string with configurable fractional second precision.
+     *
+     * Fractional seconds are displayed to nanosecond precision (9 digits),
+     * which represents the full precision of the LocalDateTime.
+     *
+     * @param timeDelimiter The delimiter to use between the date and time components. Defaults to "T".
+     * @param precision The number of digits for fractional seconds (0 to 9). Defaults to 9 (nanoseconds).
+     *                  Values outside this range are coerced to 0 or 9.
+     * @return A string representation of the LocalDateTime in ISO 8601 format with the specified fractional precision.
+     */
+    public fun LocalDateTime.formatted(timeDelimiter: String = "T", precision: Int = 9): String {
+        val year: String = "%04d".format(this.year)
+        val month: String = "%02d".format(this.monthNumber)
+        val day: String = "%02d".format(this.dayOfMonth)
+        val hour: String = "%02d".format(this.hour)
+        val minute: String = "%02d".format(this.minute)
+        val second: String = "%02d".format(this.second)
+
+        // If no fractional seconds are needed, return the basic timestamp.
+        val adjustedPrecision: Int = precision.coerceIn(minimumValue = 0, maximumValue = 9)
+        if (adjustedPrecision == 0) {
+            return "$year-$month-$day$timeDelimiter$hour:$minute:$second"
+        }
+
+        // Extract the desired number of digits for fractional seconds.
+        val nanosecond: String = "%09d".format(this.nanosecond)
+        val fractionalPrecision: String = nanosecond.substring(startIndex = 0, endIndex = adjustedPrecision)
+
+        // Assemble the final formatted string
+        return "$year-$month-$day$timeDelimiter$hour:$minute:$second.$fractionalPrecision"
+    }
+
+    /**
      * Returns the system's default timezone.
      *
      * Equivalent to [TimeZone.currentSystemDefault].

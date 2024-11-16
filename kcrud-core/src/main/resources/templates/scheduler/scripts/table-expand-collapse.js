@@ -6,7 +6,7 @@ function setupTableExpandCollapse() {
     const pageIdentifier = window.location.pathname;
 
     document.querySelectorAll('.table-container').forEach(container => {
-        const key = `${pageIdentifier}_${container.getAttribute('data-id')}`;
+        const key = `${pageIdentifier}_${container.getAttribute('data-task-id')}`;
         const isExpandedInitially = getCookie(key) === 'true';
         const subRow = container.querySelector('.table-sub-row');
 

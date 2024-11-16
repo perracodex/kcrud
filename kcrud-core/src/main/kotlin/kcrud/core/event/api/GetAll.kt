@@ -16,7 +16,7 @@ import kcrud.core.event.SseService
  */
 @SseRouteApi
 internal fun Route.sseGetAllRoute() {
-    get("/admin/events") {
+    get("/admin/events/all") {
         val events: List<String> = SseService.getAllEvents()
         call.respond(status = HttpStatusCode.OK, message = events)
     } api {
