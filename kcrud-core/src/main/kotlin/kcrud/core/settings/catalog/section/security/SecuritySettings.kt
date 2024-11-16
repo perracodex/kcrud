@@ -5,12 +5,12 @@
 package kcrud.core.settings.catalog.section.security
 
 import io.github.perracodex.ktor.config.IConfigCatalogSection
-import kcrud.core.settings.catalog.section.security.nodes.ConstraintsSettings
-import kcrud.core.settings.catalog.section.security.nodes.EncryptionSettings
-import kcrud.core.settings.catalog.section.security.nodes.RbacSettings
-import kcrud.core.settings.catalog.section.security.nodes.auth.BasicAuthSettings
-import kcrud.core.settings.catalog.section.security.nodes.auth.JwtAuthSettings
-import kcrud.core.settings.catalog.section.security.nodes.auth.OAuthSettings
+import kcrud.core.settings.catalog.section.security.node.ConstraintsSettings
+import kcrud.core.settings.catalog.section.security.node.EncryptionSettings
+import kcrud.core.settings.catalog.section.security.node.RbacSettings
+import kcrud.core.settings.catalog.section.security.node.auth.BasicAuthSettings
+import kcrud.core.settings.catalog.section.security.node.auth.JwtAuthSettings
+import kcrud.core.settings.catalog.section.security.node.auth.OAuthSettings
 import kotlinx.serialization.Serializable
 
 /**

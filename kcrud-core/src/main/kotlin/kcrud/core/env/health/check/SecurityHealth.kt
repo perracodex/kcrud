@@ -6,7 +6,7 @@ package kcrud.core.env.health.check
 
 import kcrud.core.env.health.annotation.HealthCheckApi
 import kcrud.core.settings.AppSettings
-import kcrud.core.settings.catalog.section.security.nodes.ConstraintsSettings.LimitSpec
+import kcrud.core.settings.catalog.section.security.node.ConstraintsSettings.LimitSpec
 import kotlinx.serialization.Serializable
 
 /**

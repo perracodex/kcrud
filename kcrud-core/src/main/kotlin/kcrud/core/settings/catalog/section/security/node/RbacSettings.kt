@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.core.settings.catalog.section.security.nodes
+package kcrud.core.settings.catalog.section.security.node
 
 import io.github.perracodex.ktor.config.IConfigCatalogSection
 import kotlinx.serialization.Serializable

@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.core.settings.catalog.section.security.nodes.auth
+package kcrud.core.settings.catalog.section.security.node.auth
 
 import io.github.perracodex.ktor.config.IConfigCatalogSection
 import kcrud.core.settings.catalog.section.security.SecuritySettings
