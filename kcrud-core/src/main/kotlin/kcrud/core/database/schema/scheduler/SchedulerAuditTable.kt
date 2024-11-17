@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.core.database.schema
+package kcrud.core.database.schema.scheduler
 
 import kcrud.core.database.column.autoGenerate
 import kcrud.core.database.column.kotlinUuid

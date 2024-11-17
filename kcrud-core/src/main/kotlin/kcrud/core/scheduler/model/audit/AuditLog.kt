@@ -5,7 +5,7 @@
 package kcrud.core.scheduler.model.audit
 
 import io.perracodex.exposed.pagination.IModelTransform
-import kcrud.core.database.schema.SchedulerAuditTable
+import kcrud.core.database.schema.scheduler.SchedulerAuditTable
 import kcrud.core.persistence.model.Meta
 import kcrud.core.plugins.Uuid
 import kcrud.core.scheduler.service.task.TaskOutcome

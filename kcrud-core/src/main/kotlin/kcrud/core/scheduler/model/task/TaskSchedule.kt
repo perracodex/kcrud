@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
  * Represents the details of a scheduled task.
  *
  * @property groupId The group of the task.
- * @property taskId The Id of the task.
+ * @property taskId The ID of the task.
  * @property snowflakeData The snowflake details of the task.
  * @property consumer The consumer that will execute the task.
  * @property nextFireTime The next time the task is scheduled to be executed. Or null if it is not scheduled.

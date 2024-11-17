@@ -6,7 +6,6 @@ package kcrud.core.plugins
 
 import io.ktor.server.application.*
 import kcrud.core.database.plugin.DbPlugin
-import kcrud.core.database.schema.SchedulerAuditTable
 import kcrud.core.database.schema.admin.actor.ActorTable
 import kcrud.core.database.schema.admin.rbac.RbacFieldRuleTable
 import kcrud.core.database.schema.admin.rbac.RbacRoleTable
@@ -14,6 +13,7 @@ import kcrud.core.database.schema.admin.rbac.RbacScopeRuleTable
 import kcrud.core.database.schema.contact.ContactTable
 import kcrud.core.database.schema.employee.EmployeeTable
 import kcrud.core.database.schema.employment.EmploymentTable
+import kcrud.core.database.schema.scheduler.SchedulerAuditTable
 import kcrud.core.env.Telemetry
 
 /**

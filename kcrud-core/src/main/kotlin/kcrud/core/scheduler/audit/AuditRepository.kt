@@ -7,7 +7,7 @@ package kcrud.core.scheduler.audit
 import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.Pageable
 import io.perracodex.exposed.pagination.paginate
-import kcrud.core.database.schema.SchedulerAuditTable
+import kcrud.core.database.schema.scheduler.SchedulerAuditTable
 import kcrud.core.scheduler.model.audit.AuditLog
 import kcrud.core.scheduler.model.audit.AuditLogRequest
 import kcrud.core.scheduler.service.annotation.SchedulerApi
