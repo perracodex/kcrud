@@ -26,7 +26,7 @@ public fun Route.snowflakeRoute() {
             tags = setOf("System")
             summary = "Snowflake parser."
             description = "Reads back the components of a snowflake ID."
-            operationId = "snowflakeParser"
+            operationId = "parseSnowflake"
             pathParameter<String>(name = "id") {
                 description = "The snowflake ID to parse."
             }
@@ -34,7 +34,7 @@ public fun Route.snowflakeRoute() {
                 description = "The parsed snowflake data."
             }
             basicSecurity(name = "System") {
-                description = "Access to health check."
+                description = "Access to system information."
             }
         }
     }
