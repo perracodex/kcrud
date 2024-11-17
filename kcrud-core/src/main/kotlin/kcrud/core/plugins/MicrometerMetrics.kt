@@ -65,6 +65,9 @@ public fun Application.configureMicroMeterMetrics() {
                     description = "The metrics data."
                     contentType = setOf(ContentType.Text.Plain)
                 }
+                basicSecurity(name = "System") {
+                    description = "Access to system information."
+                }
             }
         }
     }
