@@ -17,16 +17,26 @@ function refreshPage() {
 }
 
 function deleteAll() {
-    fetch(`/admin/scheduler`, {method: 'DELETE'})
-        .then(response => {
-            if (response.ok) {
-                console.log('All tasks deleted successfully');
-                window.location.reload();
-            } else {
-                console.error('Failed to delete all tasks');
-                alert("Failed to delete all tasks.");
-            }
-        }).catch(error => console.error('Error:', error));
+    if (confirm("Are you sure you want to delete all tasks? This action cannot be undone.")) {
+        fetch(`/admin/scheduler`, {method: 'DELETE'})
+            .then(response => {
+                if (response.ok) {
+                    // Reset to 'all' group and update the URL accordingly.
+                    const groupSelect = document.getElementById('groupSelect');
+                    groupSelect.value = '';
+                    window.history.pushState({groupId: ''}, '', '?groupId='); // Update URL.
+                    fetchGroups()
+                    fetchTasks('');
+
+                    console.log('All tasks deleted successfully');
+                } else {
+                    console.error('Failed to delete all tasks');
+                    alert("Failed to delete all tasks.");
+                }
+            }).catch(error => console.error('Error:', error));
+    } else {
+        console.log('Delete operation cancelled by the user.');
+    }
 }
 
 function deleteTask(button) {
@@ -41,7 +51,7 @@ function deleteTask(button) {
                 taskRow.remove();  // Remove the task row from the DOM.
 
                 // Check if we are filtering by a specific group (not "all").
-                if (currentGroup !== 'all') {
+                if (currentGroup !== '') {
                     const remainingTasks = document.querySelectorAll(
                         `.table-container[data-group-id="${decodeURIComponent(groupId)}"]`
                     );
@@ -57,16 +67,16 @@ function deleteTask(button) {
                         }
 
                         // Reset to 'all' group and update the URL accordingly.
-                        groupSelect.value = 'all';
-                        window.history.pushState({groupId: 'all'}, '', '?groupId=all'); // Update URL.
-                        fetchTasks('all');
+                        groupSelect.value = '';
+                        window.history.pushState({groupId: ''}, '', '?groupId='); // Update URL.
+                        fetchTasks('');
                     } else {
                         // If tasks are still remaining for the selected group, refresh tasks for the current group.
                         fetchTasks(currentGroup);
                     }
                 } else {
                     // If we're already in "All Groups", just refresh the task list for "All Groups".
-                    fetchTasks('all');
+                    fetchTasks('');
                 }
 
             } else {

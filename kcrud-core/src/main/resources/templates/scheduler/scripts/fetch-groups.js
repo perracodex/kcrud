@@ -17,7 +17,7 @@ function fetchGroups() {
         .then(response => response.json())
         .then(groups => {
             populateGroupSelect(groups);
-            const defaultGroup = new URLSearchParams(window.location.search).get('groupId') || 'all';
+            const defaultGroup = new URLSearchParams(window.location.search).get('groupId') || '';
             document.getElementById('groupSelect').value = defaultGroup; // Ensure the correct group is selected.
             fetchTasks(defaultGroup);
         })
@@ -31,7 +31,7 @@ function populateGroupSelect(groups) {
     const groupSelect = document.getElementById('groupSelect');
     const currentGroup = new URLSearchParams(window.location.search).get('groupId');
 
-    groupSelect.innerHTML = '<option value="all">All Groups</option>';
+    groupSelect.innerHTML = '<option value="">All Groups</option>';
 
     groups.forEach(group => {
         const option = document.createElement('option');
@@ -40,7 +40,7 @@ function populateGroupSelect(groups) {
         groupSelect.appendChild(option);
     });
 
-    groupSelect.value = currentGroup || 'all';
+    groupSelect.value = currentGroup || '';
     groupSelect.addEventListener('change', handleGroupChange);
 }
 
@@ -53,7 +53,8 @@ function handleGroupChange() {
 
 // Fetch tasks based on the selected groupId
 function fetchTasks(groupId) {
-    fetch(`/admin/scheduler/task?groupId=${groupId}`, {
+    const url = groupId ? `/admin/scheduler/task?groupId=${groupId}` : '/admin/scheduler/task';
+    fetch(url, {
         method: 'GET',
         headers: {
             'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -76,8 +77,8 @@ function updateTaskList(tasks) {
     tasks.forEach(task => {
         const row = document.createElement('div');
         row.classList.add('table-container', 'expandable');
-        row.setAttribute('data-task-id', task.taskId);
         row.setAttribute('data-group-id', task.groupId);
+        row.setAttribute('data-task-id', task.taskId);
 
         const rowDiv = document.createElement('div');
         rowDiv.classList.add('table-row');
