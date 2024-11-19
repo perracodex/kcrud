@@ -15,6 +15,7 @@ rootProject.name = "Kcrud"
 
 include("kcrud-core")
 include("kcrud-access")
+include("kcrud-scheduler")
 include("kcrud-employee")
 include("kcrud-employment")
 include("kcrud-server")

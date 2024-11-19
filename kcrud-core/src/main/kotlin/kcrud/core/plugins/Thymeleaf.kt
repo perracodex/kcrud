@@ -19,7 +19,7 @@ public fun Application.configureThymeleaf() {
     install(plugin = Thymeleaf) {
         setTemplateResolver(
             ClassLoaderTemplateResolver().apply {
-                prefix = "templates/"
+                prefix = "/"
                 suffix = ".html"
                 characterEncoding = "utf-8"
             }

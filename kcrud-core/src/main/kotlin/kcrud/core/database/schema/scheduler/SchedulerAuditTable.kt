@@ -7,7 +7,7 @@ package kcrud.core.database.schema.scheduler
 import kcrud.core.database.column.autoGenerate
 import kcrud.core.database.column.kotlinUuid
 import kcrud.core.database.schema.base.TimestampedTable
-import kcrud.core.scheduler.service.task.TaskOutcome
+import kcrud.core.database.schema.scheduler.type.TaskOutcome
 import kotlinx.datetime.LocalDateTime
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.kotlin.datetime.datetime
@@ -16,48 +16,62 @@ import kotlin.uuid.Uuid
 /**
  * Database table definition for scheduler audit logs.
  */
-internal object SchedulerAuditTable : TimestampedTable(name = "scheduler_audit") {
+public object SchedulerAuditTable : TimestampedTable(name = "scheduler_audit") {
     /**
      * The unique identifier of the audit log.
      */
-    val id: Column<Uuid> = kotlinUuid(
+    public val id: Column<Uuid> = kotlinUuid(
         name = "audit_id"
     ).autoGenerate()
 
     /**
      * The group to which the task belongs.
      */
-    val groupId: Column<String> = varchar(
-        name = "group_id",
-        length = 200
+    public val groupId: Column<Uuid> = kotlinUuid(
+        name = "group_id"
     )
 
     /**
      * The unique ID of the task that was executed.
      */
-    val taskId: Column<String> = varchar(
+    public val taskId: Column<String> = varchar(
         name = "task_id",
         length = 200
     )
 
     /**
+     * The description of the task that was executed
+     */
+    public val description: Column<String> = text(
+        name = "description",
+    )
+
+    /**
+     * A unique snowflake ID to identify the cluster node that executed the task.
+     */
+    public val snowflakeId: Column<String> = varchar(
+        name = "snowflake_id",
+        length = 13
+    )
+
+    /**
      * The time the task was scheduled to run.
      */
-    val fireTime: Column<LocalDateTime> = datetime(
+    public val fireTime: Column<LocalDateTime> = datetime(
         name = "fire_time"
     )
 
     /**
      * The duration the task took to run.
      */
-    val runTime: Column<Long> = long(
+    public val runTime: Column<Long> = long(
         name = "run_time"
     )
 
     /**
      * The execution result [TaskOutcome].
      */
-    val outcome: Column<TaskOutcome> = enumerationByName(
+    public val outcome: Column<TaskOutcome> = enumerationByName(
         name = "outcome",
         length = 64,
         klass = TaskOutcome::class
@@ -66,14 +80,14 @@ internal object SchedulerAuditTable : TimestampedTable(name = "scheduler_audit")
     /**
      * The audit log information.
      */
-    val log: Column<String?> = text(
+    public val log: Column<String?> = text(
         name = "log",
     ).nullable()
 
     /**
      * The detail that provides more information about the audit log.
      */
-    val detail: Column<String?> = text(
+    public val detail: Column<String?> = text(
         name = "detail",
     ).nullable()
 

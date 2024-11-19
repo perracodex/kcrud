@@ -9,8 +9,6 @@ dependencies {
 
     implementation(libs.database.h2)
 
-    implementation(libs.cron.descriptor)
-
     implementation(libs.kopapi)
 
     implementation(libs.kotlinx.atomicfu)
@@ -62,8 +60,6 @@ dependencies {
 
     implementation(libs.micrometer.metrics)
     implementation(libs.micrometer.metrics.prometheus)
-
-    implementation(libs.quartz.scheduler)
 
     implementation(libs.shared.commons.codec)
 

@@ -5,7 +5,6 @@
 package kcrud.core.event
 
 import kcrud.core.env.Tracer
-import kcrud.core.scheduler.service.SchedulerAsyncScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -49,7 +48,7 @@ public object SseService {
      */
     public fun push(message: String) {
         runCatching {
-            SchedulerAsyncScope.enqueue {
+            AsyncScope.enqueue {
                 _eventFlow.emit(value = message)
             }
         }.onFailure { error ->

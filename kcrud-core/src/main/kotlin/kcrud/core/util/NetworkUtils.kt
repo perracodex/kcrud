@@ -138,7 +138,7 @@ public object NetworkUtils {
      * @param application [Application] providing context for accessing the engine connectors.
      * @return A map where each key represents a connector type and the value is a list of its configuration details.
      */
-    internal suspend fun getConnectors(application: Application): MutableMap<String, List<String>> {
+    public suspend fun getConnectors(application: Application): MutableMap<String, List<String>> {
         val connectors: MutableMap<String, List<String>> = mutableMapOf()
 
         application.engine.resolvedConnectors().forEach { connection ->

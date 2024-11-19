@@ -9,8 +9,10 @@
 
 CREATE TABLE IF NOT EXISTS scheduler_audit (
     audit_id UUID,
-    group_id VARCHAR(200) NOT NULL,
+    group_id UUID,
     task_id VARCHAR(200) NOT NULL,
+    description TEXT NOT NULL,
+    snowflake_id VARCHAR(13) NOT NULL,
     fire_time TIMESTAMP WITH TIME ZONE NOT NULL,
     run_time LONG NOT NULL,
     outcome VARCHAR(64) NOT NULL,

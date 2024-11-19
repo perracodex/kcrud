@@ -9,6 +9,7 @@ import io.ktor.server.netty.*
 import kcrud.access.plugins.*
 import kcrud.core.plugins.*
 import kcrud.core.settings.AppSettings
+import kcrud.scheduler.plugin.configureTaskScheduler
 import kcrud.server.plugins.configureKoin
 import kcrud.server.plugins.configureRoutes
 import kcrud.server.util.ApplicationsUtils

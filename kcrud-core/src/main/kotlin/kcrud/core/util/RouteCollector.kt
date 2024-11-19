@@ -6,7 +6,6 @@ package kcrud.core.util
 
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
-import kcrud.core.env.health.annotation.HealthCheckApi
 import kotlinx.serialization.Serializable
 
 /**
@@ -23,8 +22,7 @@ public data class RouteInfo(val path: String, val method: String)
  *
  * @return A list of all found routes.
  */
-@HealthCheckApi
-internal fun Application.collectRoutes(): List<RouteInfo> {
+public fun Application.collectRoutes(): List<RouteInfo> {
     val routes: MutableList<RouteInfo> = mutableListOf()
 
     // Helper function to recursively traverse and collect routes.

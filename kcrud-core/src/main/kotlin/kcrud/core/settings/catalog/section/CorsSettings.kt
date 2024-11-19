@@ -47,7 +47,7 @@ public data class CorsSettings(
      * Returns true if the allowed hosts list is empty
      * or any of the hosts is/or starts with a wildcard.
      */
-    internal fun allowAllHosts(): Boolean {
+    public fun allowAllHosts(): Boolean {
         return allowedHosts.isEmpty() or
                 (allowedHosts.any { it.startsWith(prefix = "*") })
     }

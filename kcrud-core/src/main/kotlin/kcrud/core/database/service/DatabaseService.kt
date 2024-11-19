@@ -9,8 +9,6 @@ import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
 import kcrud.core.database.annotation.DatabaseApi
 import kcrud.core.database.util.IsolationLevel
 import kcrud.core.env.Tracer
-import kcrud.core.env.health.annotation.HealthCheckApi
-import kcrud.core.env.health.check.DatabaseHealth
 import kcrud.core.settings.AppSettings
 import kcrud.core.settings.catalog.section.DatabaseSettings
 import org.flywaydb.core.Flyway
@@ -33,11 +31,11 @@ import java.nio.file.Paths
  * [Exposed](https://github.com/JetBrains/Exposed/wiki)
  */
 @OptIn(DatabaseApi::class)
-internal object DatabaseService {
+public object DatabaseService {
     private val tracer = Tracer<DatabaseService>()
 
     /** The database instance held by the service. */
-    lateinit var database: Database
+    internal lateinit var database: Database
         private set
 
     private var hikariDataSource: HikariDataSource? = null
@@ -51,7 +49,7 @@ internal object DatabaseService {
      * @param isolationLevel The isolation level to use for the database transactions.
      * @param telemetryRegistry Optional metrics registry for telemetry monitoring.
      */
-    fun init(
+    internal fun init(
         settings: DatabaseSettings,
         isolationLevel: IsolationLevel = IsolationLevel.TRANSACTION_REPEATABLE_READ,
         telemetryRegistry: PrometheusMeterRegistry? = null,
@@ -236,15 +234,14 @@ internal object DatabaseService {
      * Closes the database connection.
      * Primarily used for testing purposes.
      */
-    fun close() {
+    internal fun close() {
         hikariDataSource?.close()
     }
 
     /**
      * Retrieves HikariCP health metrics.
      */
-    @OptIn(HealthCheckApi::class)
-    fun getHealthCheck(): DatabaseHealth {
+    public fun getHealthCheck(): DatabaseHealth {
         return runCatching {
             val databaseTest: Result<DatabaseHealth.ConnectionTest> = DatabaseHealth.ConnectionTest.build(database = database)
 
@@ -297,7 +294,7 @@ internal object DatabaseService {
      *
      * Setting up the schema is optional, as it can be created also by migrations.
      */
-    class SchemaBuilder {
+    internal class SchemaBuilder {
         private val tables: MutableList<Table> = mutableListOf()
 
         /**
@@ -309,7 +306,7 @@ internal object DatabaseService {
             tables.add(table)
         }
 
-        internal fun createTables() {
+        fun createTables() {
             if (tables.isNotEmpty()) {
                 SchemaUtils.create(tables = tables.toTypedArray())
             }
