@@ -39,6 +39,9 @@ internal class TaskRetryHandler(
         val retryPolicy = RetryPolicy(maxRetries = maxRetries, backoffStrategy = backoffStrategy)
 
         if (retryCount >= retryPolicy.maxRetries) {
+            // Reset retry count as max retries have been reached.
+            jobDataMap[RetryPolicy.COUNT_KEY] = 0
+
             // No more retries allowed.
             SseService.push(
                 message = "${LocalDateTime.current().formatted(timeDelimiter = " | ", precision = 6)} " +
@@ -62,6 +65,9 @@ internal class TaskRetryHandler(
 
             // Decide whether to schedule a retry.
             if (nextScheduledTimeMs != null && nextScheduledTimeMs <= retryTimeMs) {
+                // Reset retry count as max retries have been reached.
+                jobDataMap[RetryPolicy.COUNT_KEY] = 0
+
                 // The next scheduled execution occurs before the retry, skip retry.
                 SseService.push(
                     message = "${LocalDateTime.current().formatted(timeDelimiter = " | ", precision = 6)} " +
