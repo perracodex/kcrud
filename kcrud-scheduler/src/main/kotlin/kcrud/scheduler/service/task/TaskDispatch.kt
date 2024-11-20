@@ -7,6 +7,8 @@ package kcrud.scheduler.service.task
 import kcrud.core.util.DateTimeUtils.toJavaDate
 import kcrud.core.util.DateTimeUtils.toJavaInstant
 import kcrud.scheduler.service.SchedulerService
+import kcrud.scheduler.service.policy.BackoffStrategy
+import kcrud.scheduler.service.policy.RetryPolicy
 import kcrud.scheduler.service.schedule.Schedule
 import kcrud.scheduler.service.schedule.TaskStartAt
 import org.quartz.*
@@ -22,13 +24,15 @@ import kotlin.uuid.Uuid
  * @property consumerClass The class of the task consumer to be scheduled.
  * @property startAt Specifies when the task should start. Defaults to immediate execution.
  * @property parameters Optional parameters to be passed to the task class.
+ * @property retryPolicy The retry policy for the task.
  */
 public class TaskDispatch(
     private val groupId: Uuid,
     private val taskId: String,
     private val consumerClass: Class<out TaskConsumer<*>>,
     private var startAt: TaskStartAt = TaskStartAt.Immediate,
-    private var parameters: Map<String, Any?> = emptyMap()
+    private var parameters: Map<String, Any?> = emptyMap(),
+    private val retryPolicy: RetryPolicy? = null
 ) {
     /**
      * Schedule the task to be executed immediately or at a specified [startAt] time.
@@ -120,7 +124,24 @@ public class TaskDispatch(
     private fun buildJob(): BasicJob {
         val groupName: String = groupId.toString()
         val jobKey: JobKey = JobKey.jobKey(taskId, groupName)
-        val jobDataMap = JobDataMap(parameters)
+        val jobDataMap: JobDataMap = JobDataMap(parameters).apply {
+            retryPolicy?.let { policy ->
+                put(RetryPolicy.MAX_RETRIES_KEY, policy.maxRetries)
+                put(RetryPolicy.COUNT_KEY, 0)
+                when (val strategy: BackoffStrategy = policy.backoffStrategy) {
+                    is BackoffStrategy.Fixed -> {
+                        put(RetryPolicy.BACKOFF_TYPE_KEY, BackoffStrategy.FIXED_KEY)
+                        put(RetryPolicy.DELAY_MS_KEY, strategy.delay.inWholeMilliseconds)
+                    }
+
+                    is BackoffStrategy.Exponential -> {
+                        put(RetryPolicy.BACKOFF_TYPE_KEY, BackoffStrategy.EXPONENTIAL_KEY)
+                        put(RetryPolicy.INITIAL_DELAY_MS_KEY, strategy.initialDelay.inWholeMilliseconds)
+                        put(RetryPolicy.MULTIPLIER_KEY, strategy.multiplier)
+                    }
+                }
+            }
+        }
 
         val jobDetail: JobDetail = JobBuilder
             .newJob(consumerClass)

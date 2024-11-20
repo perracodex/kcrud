@@ -7,7 +7,8 @@ package kcrud.scheduler.service.task
 import kcrud.core.event.SseService
 import kcrud.core.util.DateTimeUtils.current
 import kcrud.core.util.DateTimeUtils.formatted
-import kcrud.scheduler.service.schedule.TaskStartAt
+import kcrud.scheduler.service.policy.RetryPolicy
+import kcrud.scheduler.service.policy.TaskRetryHandler
 import kcrud.scheduler.service.task.TaskConsumer.Payload
 import kotlinx.datetime.LocalDateTime
 import org.quartz.Job
@@ -24,9 +25,6 @@ import kotlin.uuid.Uuid
  */
 public abstract class TaskConsumer<P : Payload> : Job {
 
-    /** The re-schedule time for the task. */
-    private var rescheduleAt: TaskStartAt? = null
-
     /**
      * Initiates the task execution.
      *
@@ -40,18 +38,18 @@ public abstract class TaskConsumer<P : Payload> : Job {
             .filterKeys { it is String }
             .mapKeys { it.key as String }
 
+        val retryCount: Int = jobDataMap[RetryPolicy.COUNT_KEY] as? Int ?: 0
+
         try {
             start(properties = properties)
-        } finally {
-            // Re-schedule the job if requested to do so.
-            rescheduleAt?.let { startAt ->
-                TaskReScheduler(
-                    scheduler = context.scheduler,
-                    jobDetail = context.jobDetail,
-                    startAt = startAt
-                ).reschedule()
-                rescheduleAt = null
-            }
+        } catch (error: Exception) {
+            TaskRetryHandler(
+                scheduler = context.scheduler,
+                jobDetail = context.jobDetail,
+                jobDataMap = jobDataMap,
+                retryCount = retryCount,
+                error = error
+            ).handleRetry()
         }
     }
 
@@ -84,16 +82,6 @@ public abstract class TaskConsumer<P : Payload> : Job {
                         "| Task Id: ${payload.taskId} "
             )
         }
-    }
-
-    /**
-     * Set the re-schedule of the task for a future time, for example, in case of a failure.
-     *
-     * #### Attention
-     * This affects only one-time tasks. Recurring tasks are left unaffected to prevent multiple triggers.
-     */
-    protected fun reschedule(startAt: TaskStartAt) {
-        rescheduleAt = startAt
     }
 
     /**
