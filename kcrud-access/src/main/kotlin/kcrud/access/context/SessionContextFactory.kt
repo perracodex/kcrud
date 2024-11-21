@@ -45,6 +45,31 @@ internal object SessionContextFactory : KoinComponent {
     private val tracer: Tracer = Tracer<SessionContextFactory>()
 
     /**
+     * Extracts the SessionContext from the token without verifying it.
+     *
+     * @param jwtToken The JWT token to extract the SessionContext from.
+     * @return A [SessionContext] instance if the token is valid; null otherwise.
+     */
+    @TokenApi
+    suspend fun from(jwtToken: String): SessionContext? {
+        return try {
+            val decodedToken: DecodedJWT = JWT.decode(jwtToken)
+            val payload: String? = decodedToken.getClaim(TokenService.SESSION_JWT_CLAIM_KEY)?.asString()
+
+            if (payload.isNullOrBlank()) {
+                tracer.error("Missing JWT payload.")
+                null
+            } else {
+                val actorId: Uuid = payload.toUuid()
+                return fromActor(actorId = actorId)
+            }
+        } catch (e: JWTDecodeException) {
+            tracer.error("Invalid JWT token. ${e.message}")
+            null
+        }
+    }
+
+    /**
      * Creates a [SessionContext] instance from a JWT [JWTCredential].
      *
      * @param headers The [Headers] containing the request headers.

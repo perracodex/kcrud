@@ -8,9 +8,12 @@ import io.github.perracodex.kopapi.dsl.operation.api
 import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.plugins.ratelimit.*
+import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.access.token.annotation.TokenApi
-import kcrud.access.token.api.respondWithToken
+import kcrud.access.token.service.TokenService
+import kcrud.core.context.SessionContext
+import kcrud.core.context.getContext
 import kcrud.core.plugins.RateLimitScope
 import kcrud.core.settings.AppSettings
 
@@ -27,7 +30,15 @@ internal fun Route.createTokenRoute() {
     rateLimit(configuration = RateLimitName(name = RateLimitScope.NEW_AUTH_TOKEN.key)) {
         authenticate(AppSettings.security.basicAuth.providerName, optional = !AppSettings.security.isEnabled) {
             post("/auth/token/create") {
-                call.respondWithToken()
+                val sessionContext: SessionContext = call.getContext()
+
+                TokenService.createToken(sessionContext = sessionContext).let { response ->
+                    call.respondText(
+                        text = response.message,
+                        status = response.statusCode,
+                        contentType = ContentType.Text.Plain
+                    )
+                }
             } api {
                 tags = setOf("Token")
                 summary = "Create a new JWT token."

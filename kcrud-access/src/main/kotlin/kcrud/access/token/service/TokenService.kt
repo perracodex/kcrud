@@ -11,6 +11,7 @@ import com.auth0.jwt.exceptions.TokenExpiredException
 import com.auth0.jwt.interfaces.DecodedJWT
 import io.ktor.http.*
 import io.ktor.http.auth.*
+import kcrud.access.context.SessionContextFactory
 import kcrud.access.token.annotation.TokenApi
 import kcrud.core.context.SessionContext
 import kcrud.core.env.Tracer
@@ -35,6 +36,17 @@ internal object TokenService {
     const val SESSION_JWT_CLAIM_KEY: String = "session_context"
 
     /**
+     * Represents a standard response containing an HTTP status code and a message.
+     *
+     * @property statusCode The HTTP status code.
+     * @property message The response message.
+     */
+    data class Response(
+        val statusCode: HttpStatusCode,
+        val message: String
+    )
+
+    /**
      * The token evaluation result, containing the state and the token if it is valid.
      */
     sealed class TokenState {
@@ -56,6 +68,59 @@ internal object TokenService {
          * @property reason The reason why the token is invalid.
          */
         data class Invalid(val reason: String) : TokenState()
+    }
+
+    /**
+     * Generates a new token based on the provided session context.
+     *
+     * @param sessionContext The session context of the authenticated user.
+     * @return A [Response] representing the HTTP response to be sent.
+     */
+    fun createToken(sessionContext: SessionContext): Response {
+        return try {
+            val token: String = generate(sessionContext = sessionContext)
+            Response(statusCode = HttpStatusCode.OK, message = token)
+        } catch (e: Exception) {
+            tracer.error(message = "Error creating token.", cause = e)
+            Response(statusCode = HttpStatusCode.InternalServerError, message = "Failed to create token.")
+        }
+    }
+
+    /**
+     * Refreshes the token based on the provided headers and session context.
+     *
+     * @param headers The HTTP headers containing the token.
+     * @return A [Response] representing the HTTP response to be sent.
+     */
+    suspend fun refreshToken(headers: Headers): Response {
+        return try {
+            when (val tokenState: TokenState = getState(headers = headers)) {
+                is TokenState.Valid -> {
+                    // Token is still valid; return the same token.
+                    Response(statusCode = HttpStatusCode.OK, message = tokenState.token)
+                }
+
+                is TokenState.Expired -> {
+                    // Token has expired; generate a new token.
+                    val token: String = getTokenFromHeader(headers = headers)
+                    val sessionContext: SessionContext? = SessionContextFactory.from(jwtToken = token)
+                    if (sessionContext == null) {
+                        tracer.error("Failed to extract session context from expired token.")
+                        return Response(HttpStatusCode.Unauthorized, "Failed to refresh token.")
+                    }
+                    val newToken: String = generate(sessionContext = sessionContext)
+                    Response(statusCode = HttpStatusCode.OK, message = newToken)
+                }
+
+                is TokenState.Invalid -> {
+                    // Token is invalid; respond with Unauthorized status.
+                    Response(statusCode = HttpStatusCode.Unauthorized, message = "Invalid token.")
+                }
+            }
+        } catch (e: Exception) {
+            tracer.error("Error refreshing token.", e)
+            Response(HttpStatusCode.InternalServerError, "Failed to refresh token.")
+        }
     }
 
     /**

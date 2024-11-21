@@ -10,7 +10,6 @@ import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kcrud.access.token.annotation.TokenApi
-import kcrud.access.token.api.respondWithToken
 import kcrud.access.token.service.TokenService
 
 /**
@@ -28,27 +27,12 @@ internal fun Route.refreshTokenRoute() {
     post("/auth/token/refresh") {
         val headers: Headers = call.request.headers
 
-        TokenService.getState(headers = headers).let { result ->
-            when (result) {
-                is TokenService.TokenState.Valid -> {
-                    // Token is still valid; return the same token to the client.
-                    call.respondText(
-                        text = result.token,
-                        status = HttpStatusCode.OK,
-                        contentType = ContentType.Text.Plain
-                    )
-                }
-
-                is TokenService.TokenState.Expired -> {
-                    // Token has expired; generate a new token and respond with it.
-                    call.respondWithToken()
-                }
-
-                is TokenService.TokenState.Invalid -> {
-                    // Token is invalid; respond with an Unauthorized status.
-                    call.respond(status = HttpStatusCode.Unauthorized, message = "Invalid token.")
-                }
-            }
+        TokenService.refreshToken(headers = headers).let { response ->
+            call.respondText(
+                text = response.message,
+                status = response.statusCode,
+                contentType = ContentType.Text.Plain
+            )
         }
     } api {
         tags = setOf("Token")
@@ -57,6 +41,10 @@ internal fun Route.refreshTokenRoute() {
         operationId = "refreshToken"
         headerParameter<String>(name = HttpHeaders.AuthenticationInfo) {
             description = "The JWT token to be refreshed."
+
+            example {
+                value = "Bearer SOME_JWT_TOKEN"
+            }
         }
         response<String>(status = HttpStatusCode.OK) {
             description = "The refreshed JWT token."
