@@ -42,7 +42,7 @@ import org.koin.core.component.inject
  * @see [configureOAuthAuthentication]
  */
 internal object SessionContextFactory : KoinComponent {
-    private val tracer = Tracer<SessionContextFactory>()
+    private val tracer: Tracer = Tracer<SessionContextFactory>()
 
     /**
      * Creates a [SessionContext] instance from a JWT [JWTCredential].

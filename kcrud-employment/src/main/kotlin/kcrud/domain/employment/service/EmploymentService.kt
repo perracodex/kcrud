@@ -22,7 +22,7 @@ public class EmploymentService internal constructor(
     @Suppress("unused") private val sessionContext: SessionContext,
     private val employmentRepository: IEmploymentRepository
 ) {
-    private val tracer = Tracer<EmploymentService>()
+    private val tracer: Tracer = Tracer<EmploymentService>()
 
     /**
      * Retrieves all employments.

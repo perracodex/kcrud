@@ -25,7 +25,7 @@ import org.koin.core.component.inject
  * These are created only if no Actors at all are found in the database.
  */
 internal object DefaultActorFactory : KoinComponent {
-    private val tracer = Tracer<DefaultActorFactory>()
+    private val tracer: Tracer = Tracer<DefaultActorFactory>()
 
     /**
      * The default role names.

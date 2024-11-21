@@ -32,7 +32,7 @@ import java.nio.file.Paths
  */
 @OptIn(DatabaseApi::class)
 public object DatabaseService {
-    private val tracer = Tracer<DatabaseService>()
+    private val tracer: Tracer = Tracer<DatabaseService>()
 
     /** The database instance held by the service. */
     internal lateinit var database: Database

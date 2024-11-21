@@ -82,7 +82,7 @@ public class Tracer(private val logger: Logger) {
      * - Class-based logging:
      * ```
      * class SomeClass {
-     *      private val tracer = Tracer<SomeClass>()
+     *      private val tracer: Tracer = Tracer<SomeClass>()
      *
      *      fun someFunction() {
      *          tracer.info("Logging message.")
@@ -106,7 +106,7 @@ public class Tracer(private val logger: Logger) {
          * #### Usage
          * ```
          * class SomeClass {
-         *      private val tracer = Tracer<SomeClass>()
+         *      private val tracer: Tracer = Tracer<SomeClass>()
          *
          *      fun someFunction() {
          *          tracer.info("Logging message.")

@@ -15,7 +15,7 @@ import org.quartz.TriggerListener
  * when a task schedule trigger fires.
  */
 internal class TriggerListener : TriggerListener {
-    private val tracer = Tracer<TriggerListener>()
+    private val tracer: Tracer = Tracer<TriggerListener>()
 
     /**
      * Get the name of the [TriggerListener].

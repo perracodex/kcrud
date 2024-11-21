@@ -27,7 +27,7 @@ import kotlin.time.Duration.Companion.seconds
  */
 @TokenApi
 internal object TokenService {
-    private val tracer = Tracer<TokenService>()
+    private val tracer: Tracer = Tracer<TokenService>()
 
     /**
      * Identifies the key under which the session data is stored within JWT payload claims.

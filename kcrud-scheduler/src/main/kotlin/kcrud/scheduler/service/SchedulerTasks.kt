@@ -32,7 +32,7 @@ import kotlin.uuid.Uuid
  * Instances should be created using the [create] method in the companion object.
  */
 internal class SchedulerTasks private constructor(val scheduler: Scheduler) {
-    private val tracer = Tracer<SchedulerService>()
+    private val tracer: Tracer = Tracer<SchedulerService>()
 
     /**
      * Schedules a new task with the given trigger.

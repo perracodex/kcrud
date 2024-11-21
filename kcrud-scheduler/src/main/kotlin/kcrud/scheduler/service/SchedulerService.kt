@@ -28,7 +28,7 @@ import java.util.*
  * - [Quartz Scheduler Configuration](https://www.quartz-scheduler.org/documentation/2.4.0-SNAPSHOT/configuration.html)
  */
 public object SchedulerService {
-    private val tracer = Tracer<SchedulerService>()
+    private val tracer: Tracer = Tracer<SchedulerService>()
 
     /** The possible states of the task scheduler. */
     internal enum class TaskSchedulerState {

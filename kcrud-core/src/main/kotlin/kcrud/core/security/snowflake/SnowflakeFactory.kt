@@ -23,7 +23,7 @@ import kotlin.time.Duration.Companion.nanoseconds
  * - [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)
  */
 public object SnowflakeFactory {
-    private val tracer = Tracer<SnowflakeFactory>()
+    private val tracer: Tracer = Tracer<SnowflakeFactory>()
 
     /**
      * The base used for converting the generated ID to a compact alphanumeric string.

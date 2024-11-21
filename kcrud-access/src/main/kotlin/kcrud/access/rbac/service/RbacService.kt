@@ -34,7 +34,7 @@ internal class RbacService(
     private val roleRepository: IRbacRoleRepository,
     private val scopeRuleRepository: IRbacScopeRuleRepository
 ) {
-    private val tracer = Tracer<RbacService>()
+    private val tracer: Tracer = Tracer<RbacService>()
 
     /**
      * Cache holding Actor IDs paired with their respective [Actor],

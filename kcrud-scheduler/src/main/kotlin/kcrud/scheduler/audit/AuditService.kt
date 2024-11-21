@@ -17,7 +17,7 @@ import kotlin.uuid.Uuid
  * Service to manage the persistence and retrieval of the scheduler audit logs.
  */
 internal object AuditService {
-    private val tracer = Tracer<AuditService>()
+    private val tracer: Tracer = Tracer<AuditService>()
 
     /**
      * Creates a new audit entry.

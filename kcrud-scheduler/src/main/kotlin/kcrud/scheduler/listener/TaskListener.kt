@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit
  * Micro-metrics are also exposed for external monitoring.
  */
 internal class TaskListener : JobListener {
-    private val tracer = Tracer<TaskListener>()
+    private val tracer: Tracer = Tracer<TaskListener>()
 
     private val taskExecutedMetric: Counter = Telemetry.registerCounter(
         name = "scheduler_task_total",

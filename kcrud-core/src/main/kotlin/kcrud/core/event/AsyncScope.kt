@@ -21,7 +21,7 @@ import kotlinx.coroutines.channels.ClosedSendChannelException
  * During shutdown, the application will wait for all pending actions to complete.
  */
 public object AsyncScope {
-    private val tracer = Tracer<AsyncScope>()
+    private val tracer: Tracer = Tracer<AsyncScope>()
 
     /**
      * Configuration for parallel or sequential task processing.

@@ -14,7 +14,7 @@ import kcrud.core.settings.AppSettings
  * Utility object for network-related functionalities.
  */
 public object NetworkUtils {
-    private val tracer = Tracer<NetworkUtils>()
+    private val tracer: Tracer = Tracer<NetworkUtils>()
 
     private const val DEFAULT_PORT: Int = 8080
     private const val LISTEN_ALL_INTERFACES: String = "0.0.0.0"

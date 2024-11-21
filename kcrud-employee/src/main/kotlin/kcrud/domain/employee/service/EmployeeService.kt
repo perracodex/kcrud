@@ -23,7 +23,7 @@ public class EmployeeService internal constructor(
     @Suppress("unused") private val sessionContext: SessionContext,
     private val employeeRepository: IEmployeeRepository
 ) {
-    private val tracer = Tracer<EmployeeService>()
+    private val tracer: Tracer = Tracer<EmployeeService>()
 
     /**
      * Retrieves an employee by its ID.

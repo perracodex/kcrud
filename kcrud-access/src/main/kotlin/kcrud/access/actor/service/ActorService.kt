@@ -28,7 +28,7 @@ internal class ActorService(
     private val actorRepository: IActorRepository,
     @Suppress("unused") private val roleRepository: IRbacRoleRepository
 ) : KoinComponent {
-    private val tracer = Tracer<ActorService>()
+    private val tracer: Tracer = Tracer<ActorService>()
 
     /**
      * Finds the [Actor] for the given id.

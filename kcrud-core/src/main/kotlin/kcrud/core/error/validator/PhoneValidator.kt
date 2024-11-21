@@ -17,7 +17,7 @@ import kcrud.core.error.validator.base.ValidationException
  * @see [ValidationException]
  */
 public object PhoneValidator : IValidator<String> {
-    private val tracer = Tracer<PhoneValidator>()
+    private val tracer: Tracer = Tracer<PhoneValidator>()
 
     /** The maximum length of a phone number. */
     public const val MAX_PHONE_LENGTH: Int = 15

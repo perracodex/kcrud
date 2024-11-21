@@ -14,7 +14,7 @@ import kcrud.core.util.NetworkUtils
  * Utility functions for the application server.
  */
 internal object ApplicationsUtils {
-    private val tracer = Tracer<ApplicationsUtils>()
+    private val tracer: Tracer = Tracer<ApplicationsUtils>()
 
     /**
      * Watches the server for readiness and logs the server's endpoints to the console.
