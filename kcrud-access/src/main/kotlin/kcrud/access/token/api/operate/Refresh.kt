@@ -25,12 +25,6 @@ import kcrud.access.token.service.TokenService
  */
 @TokenApi
 internal fun Route.refreshTokenRoute() {
-    /**
-     * Refreshes an existing token; requires Basic Authentication credentials.
-     * No Basic Authentication is required here, but an existing token's validity will be checked.
-     * For example, in Postman set the endpoint and in the Headers add an Authorization key
-     * with a 'Bearer' holding a previous valid token.
-     */
     post("/auth/token/refresh") {
         val headers: Headers = call.request.headers
 
