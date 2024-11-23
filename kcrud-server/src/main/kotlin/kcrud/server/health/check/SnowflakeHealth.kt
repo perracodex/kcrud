@@ -4,9 +4,9 @@
 
 package kcrud.server.health.check
 
+import kcrud.core.env.HealthCheckApi
 import kcrud.core.security.snowflake.SnowflakeData
 import kcrud.core.security.snowflake.SnowflakeFactory
-import kcrud.server.health.annotation.HealthCheckApi
 import kotlinx.serialization.Serializable
 
 /**

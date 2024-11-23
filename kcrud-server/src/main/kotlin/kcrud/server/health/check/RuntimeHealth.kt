@@ -6,9 +6,9 @@ package kcrud.server.health.check
 
 import io.ktor.server.application.*
 import kcrud.core.env.EnvironmentType
+import kcrud.core.env.HealthCheckApi
 import kcrud.core.settings.AppSettings
 import kcrud.core.util.DateTimeUtils.current
-import kcrud.server.health.annotation.HealthCheckApi
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable

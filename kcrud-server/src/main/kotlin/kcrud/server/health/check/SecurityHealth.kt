@@ -4,9 +4,9 @@
 
 package kcrud.server.health.check
 
+import kcrud.core.env.HealthCheckApi
 import kcrud.core.settings.AppSettings
 import kcrud.core.settings.catalog.section.security.node.ConstraintsSettings.LimitSpec
-import kcrud.server.health.annotation.HealthCheckApi
 import kotlinx.serialization.Serializable
 
 /**

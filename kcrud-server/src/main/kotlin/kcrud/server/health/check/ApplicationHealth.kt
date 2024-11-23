@@ -5,8 +5,8 @@
 package kcrud.server.health.check
 
 import kcrud.core.env.EnvironmentType
+import kcrud.core.env.HealthCheckApi
 import kcrud.core.settings.AppSettings
-import kcrud.server.health.annotation.HealthCheckApi
 import kotlinx.serialization.Serializable
 
 /**

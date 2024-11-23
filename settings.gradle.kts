@@ -20,8 +20,8 @@ include("kcrud-employee")
 include("kcrud-employment")
 include("kcrud-server")
 
-//includeBuild("../Kopapi") {
-//    dependencySubstitution {
-//        substitute(module("io.github.perracodex:kopapi")).using(project(":"))
-//    }
-//}
+includeBuild("../Kopapi") {
+    dependencySubstitution {
+        substitute(module("io.github.perracodex:kopapi")).using(project(":"))
+    }
+}
