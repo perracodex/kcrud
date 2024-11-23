@@ -48,6 +48,7 @@ public object DatabaseService {
      * @param settings The [DatabaseSettings] to be used to configure the database.
      * @param isolationLevel The isolation level to use for the database transactions.
      * @param telemetryRegistry Optional metrics registry for telemetry monitoring.
+     * @param schemaSetup Optional lambda to setup the database schema.
      */
     internal fun init(
         settings: DatabaseSettings,
