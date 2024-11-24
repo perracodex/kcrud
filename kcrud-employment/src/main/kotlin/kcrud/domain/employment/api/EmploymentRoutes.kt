@@ -16,13 +16,6 @@ import kcrud.domain.employment.api.operate.createEmploymentRoute
 import kcrud.domain.employment.api.operate.updateEmploymentByIdRoute
 
 /**
- * Annotation for controlled access to the Employment Routes API.
- */
-@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Employment Routes API.")
-@Retention(AnnotationRetention.BINARY)
-internal annotation class EmploymentRouteApi
-
-/**
  * Employment endpoints.
  *
  * These endpoints are segmented in multiple functions/files
@@ -48,3 +41,10 @@ public fun Route.employmentRoutes() {
         deleteEmploymentByIdRoute()
     }
 }
+
+/**
+ * Annotation for controlled access to the Employment Routes API.
+ */
+@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Employment Routes API.")
+@Retention(AnnotationRetention.BINARY)
+internal annotation class EmploymentRouteApi

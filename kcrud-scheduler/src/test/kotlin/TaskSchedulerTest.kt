@@ -20,7 +20,7 @@ import kotlin.test.Test
 import kotlin.test.assertTrue
 import kotlin.uuid.Uuid
 
-class SchedulerServiceTest {
+class TaskSchedulerTest {
 
     companion object {
         private val testResults = mutableListOf<String>()

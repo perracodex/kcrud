@@ -70,7 +70,8 @@ internal object DemoUtils {
         )
 
         // If active, then 80% chance of being active, otherwise onboarding.
-        val status = when (period.isActive) {
+        @Suppress("MagicNumber")
+        val status: EmploymentStatus = when (period.isActive) {
             true -> if (Random.nextInt(from = 0, until = 100) < 80) {
                 EmploymentStatus.ACTIVE
             } else {

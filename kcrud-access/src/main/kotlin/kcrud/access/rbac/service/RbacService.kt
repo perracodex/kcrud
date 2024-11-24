@@ -145,8 +145,9 @@ internal class RbacService(
         scope: RbacScope,
         accessLevel: RbacAccessLevel
     ): Boolean {
-        if (isCacheEmpty())
+        if (isCacheEmpty()) {
             return false
+        }
 
         return cache[sessionContext.actorId]?.let { actorRole ->
             !actorRole.isLocked && actorRole.role.scopeRules.any { scopeRule ->

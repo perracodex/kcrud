@@ -297,8 +297,11 @@ internal class SchedulerTasks private constructor(val scheduler: Scheduler) {
             when (trigger) {
                 is SimpleTrigger -> {
                     val repeatInterval: Duration = trigger.repeatInterval.toDuration(unit = DurationUnit.MILLISECONDS)
-                    if (repeatInterval.inWholeSeconds != 0L) "Every $repeatInterval" to null
-                    else null to null
+                    if (repeatInterval.inWholeSeconds != 0L) {
+                        "Every $repeatInterval" to null
+                    } else {
+                        null to null
+                    }
                 }
 
                 is CronTrigger -> {

@@ -76,4 +76,3 @@ public data class HealthCheck internal constructor(
         }
     }
 }
-

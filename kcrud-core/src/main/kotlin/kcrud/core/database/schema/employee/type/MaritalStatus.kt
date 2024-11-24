@@ -22,6 +22,5 @@ public enum class MaritalStatus(override val id: Int) : IEnumWithId {
     SINGLE(id = 102),
 
     /** Divorced marital status. */
-    DIVORCED(id = 103),
-
+    DIVORCED(id = 103)
 }

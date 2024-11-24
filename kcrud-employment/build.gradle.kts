@@ -6,10 +6,11 @@ group = "kcrud.employment"
 version = "1.0.0"
 
 dependencies {
-
     implementation(project(":kcrud-core"))
     implementation(project(":kcrud-access"))
     implementation(project(":kcrud-employee"))
+
+    detektPlugins(libs.detekt.formatting)
 
     implementation(libs.kopapi)
 

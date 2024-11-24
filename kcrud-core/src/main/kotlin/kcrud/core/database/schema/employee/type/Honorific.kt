@@ -28,5 +28,5 @@ public enum class Honorific(override val id: Int) : IEnumWithId {
     DR(id = 104),
 
     /** Honorific for Miss. */
-    MISS(id = 105);
+    MISS(id = 105)
 }

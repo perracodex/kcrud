@@ -18,7 +18,6 @@ import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
 import kotlin.test.*
 
-
 class TimestampTest : KoinComponent {
 
     @BeforeTest

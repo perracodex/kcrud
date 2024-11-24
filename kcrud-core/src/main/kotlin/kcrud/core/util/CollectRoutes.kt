@@ -9,15 +9,6 @@ import io.ktor.server.routing.*
 import kotlinx.serialization.Serializable
 
 /**
- * Holds information about a registered route.
- *
- * @property path The path of the route.
- * @property method The HTTP method of the route.
- */
-@Serializable
-public data class RouteInfo(val path: String, val method: String)
-
-/**
  * Extension function traverse and collect all routes.
  *
  * @return A list of all found routes.
@@ -46,6 +37,15 @@ public fun Application.collectRoutes(): List<RouteInfo> {
         )
     )
 }
+
+/**
+ * Holds information about a registered route.
+ *
+ * @property path The path of the route.
+ * @property method The HTTP method of the route.
+ */
+@Serializable
+public data class RouteInfo(val path: String, val method: String)
 
 /**
  * Constructs the full path of a route by aggregating path segments from the current route up to the root,

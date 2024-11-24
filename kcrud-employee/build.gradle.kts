@@ -6,9 +6,10 @@ group = "kcrud.employee"
 version = "1.0.0"
 
 dependencies {
-
     implementation(project(":kcrud-core"))
     implementation(project(":kcrud-access"))
+
+    detektPlugins(libs.detekt.formatting)
 
     implementation(libs.kopapi)
 

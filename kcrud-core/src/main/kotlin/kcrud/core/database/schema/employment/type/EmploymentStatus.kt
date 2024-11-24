@@ -22,5 +22,5 @@ public enum class EmploymentStatus(override val id: Int) : IEnumWithId {
     IDLE(id = 102),
 
     /** The employee employment has been terminated. */
-    TERMINATED(id = 103);
+    TERMINATED(id = 103)
 }

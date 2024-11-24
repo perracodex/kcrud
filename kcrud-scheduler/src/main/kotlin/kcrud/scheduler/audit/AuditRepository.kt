@@ -124,7 +124,7 @@ internal object AuditRepository {
             //        .selectAll()
             //        .where { SchedulerAuditTable.taskId eq taskId }
             //        .andWhere { SchedulerAuditTable.taskGroup eq taskGroup }
-            //}.forEach(::print)
+            // }.forEach(::print)
 
             SchedulerAuditTable
                 .selectAll()

@@ -136,4 +136,3 @@ class StressTest : KoinComponent {
         assertEquals(expected = totalElements, actual = employees.details.totalElements)
     }
 }
-

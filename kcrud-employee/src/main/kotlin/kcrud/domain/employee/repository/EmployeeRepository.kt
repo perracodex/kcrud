@@ -140,10 +140,10 @@ internal class EmployeeRepository(
                 otherColumn = ContactTable.employeeId
             ).selectAll().where {
                 // Search in first name.
-                (EmployeeTable.firstName.lowerCase() like "%${searchTerm}%")
+                (EmployeeTable.firstName.lowerCase() like "%$searchTerm%")
             }.orWhere {
                 // Search in last name.
-                (EmployeeTable.lastName.lowerCase() like "%${searchTerm}%")
+                (EmployeeTable.lastName.lowerCase() like "%$searchTerm%")
             }.orWhere {
                 // Search within the local part of work email (before '@').
                 EmployeeTable.workEmail.regexp(pattern = emailLocalSegmentPattern, caseSensitive = false)
@@ -181,8 +181,9 @@ internal class EmployeeRepository(
                     )
                 }
 
-                findById(employeeId = employeeId)
-                    ?: throw IllegalStateException("Failed to create Employee.")
+                val employee: Employee? = findById(employeeId = employeeId)
+                check(employee != null) { "Failed to create Employee." }
+                employee
             }
         }
     }

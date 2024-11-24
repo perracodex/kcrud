@@ -9,18 +9,6 @@ import org.jetbrains.exposed.sql.Table
 import kotlin.enums.EnumEntries
 
 /**
- * Interface for enums that require a stored ID for persistence
- * in the database, instead of the enum name or ordinal.
- *
- * @property id The integer ID of the enum item. Expected to be unique across all enum items.
- *
- * @see [enumerationById]
- */
-public interface IEnumWithId {
-    public val id: Int
-}
-
-/**
  * Creates a column in an Exposed Table to store enum values by their integer unique IDs,
  * simplifying the process of defining a column in an Exposed table that corresponds
  * to an enum type, where the enum values are stored in the database as integers.
@@ -58,4 +46,16 @@ internal fun <E> Table.enumerationById(name: String, entries: EnumEntries<E>): C
         },
         unwrap = { enum -> enum.id }
     )
+}
+
+/**
+ * Interface for enums that require a stored ID for persistence
+ * in the database, instead of the enum name or ordinal.
+ *
+ * @property id The integer ID of the enum item. Expected to be unique across all enum items.
+ *
+ * @see [enumerationById]
+ */
+public interface IEnumWithId {
+    public val id: Int
 }

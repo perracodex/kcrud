@@ -21,6 +21,7 @@ import org.koin.ktor.plugin.scope
 
 @DemoApi
 internal fun Route.createRecordsRoute() {
+    @Suppress("MagicNumber")
     val maxAllowedBatch = 100_000
 
     post("/demo") {

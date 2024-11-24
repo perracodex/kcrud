@@ -74,8 +74,9 @@ internal class EmploymentRepository(
                         request = request
                     )
                 }[EmploymentTable.id].let { employmentId ->
-                    findById(employeeId = employeeId, employmentId = employmentId)
-                        ?: throw IllegalStateException("Failed to create Employment.")
+                    val employment: Employment? = findById(employeeId = employeeId, employmentId = employmentId)
+                    check(employment != null) { "Failed to create employment for employee with ID: $employeeId" }
+                    employment
                 }
             }
         }

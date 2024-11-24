@@ -33,5 +33,5 @@ public enum class RbacScope(override val id: Int) : IEnumWithId {
     EMPLOYEE_CONTACT_RECORDS(id = 103),
 
     /** Employee employment records scope, allows access to the employee employment records. */
-    EMPLOYMENT_RECORDS(id = 104);
+    EMPLOYMENT_RECORDS(id = 104)
 }

@@ -6,8 +6,9 @@ group = "kcrud.scheduler"
 version = "1.0.0"
 
 dependencies {
-
     implementation(project(":kcrud-core"))
+
+    detektPlugins(libs.detekt.formatting)
 
     implementation(libs.cron.descriptor)
 

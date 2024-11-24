@@ -113,19 +113,19 @@ public data class DeploymentHealth private constructor(
 
         if (environment == EnvironmentType.PROD) {
             if (AppSettings.cors.allowAllHosts()) {
-                errors.add("$className. Allowing all hosts. '${environment}'.")
+                errors.add("$className. Allowing all hosts. '$environment'.")
             }
 
             if (!NetworkUtils.isSecureProtocol(protocol = configured.protocol)) {
                 errors.add(
-                    "$className. Configured insecure '${configured.protocol}' protocol. '${environment}'."
+                    "$className. Configured insecure '${configured.protocol}' protocol. '$environment'."
                 )
             }
 
             serverSpec.scheme?.let { scheme ->
                 if (!NetworkUtils.isSecureProtocol(protocol = scheme)) {
                     errors.add(
-                        "$className. Running with insecure '${scheme}' protocol. '${environment}'."
+                        "$className. Running with insecure '$scheme' protocol. '$environment'."
                     )
                 }
             }
@@ -133,7 +133,7 @@ public data class DeploymentHealth private constructor(
             if (configured.port == configured.sslPort) {
                 errors.add(
                     "$className. Secure and insecure ports are the same: ${configured.port}. " +
-                            "${environment}."
+                            "$environment."
                 )
             }
 
@@ -141,20 +141,24 @@ public data class DeploymentHealth private constructor(
                 if (!NetworkUtils.isSecurePort(port = configured.sslPort)) {
                     errors.add(
                         "$className. Configured SSL port is not secure or not set. " +
-                                "Port: ${configured.sslPort}. ${environment}."
+                                "Port: ${configured.sslPort}. $environment."
                     )
                 }
 
-                val runtimePorts: List<Int?> = listOf(serverSpec.serverPort, serverSpec.localPort, serverSpec.remotePort)
+                val runtimePorts: List<Int?> = listOf(
+                    serverSpec.serverPort,
+                    serverSpec.localPort,
+                    serverSpec.remotePort
+                )
                 if (!NetworkUtils.isSecurePort(ports = runtimePorts)) {
                     errors.add(
                         "$className. Runtime ports are not secure or not set. " +
-                                "Ports: $runtimePorts. ${environment}."
+                                "Ports: $runtimePorts. $environment."
                     )
                 }
             } else {
                 if (configured.port == 0) {
-                    errors.add("$className. Insecure port is not set. ${environment}.")
+                    errors.add("$className. Insecure port is not set. $environment.")
                 }
             }
         }

@@ -153,7 +153,7 @@ public class TaskDispatch(
 
         // Set the trigger name and start time based on task start configuration.
         val triggerBuilder: TriggerBuilder<Trigger> = TriggerBuilder.newTrigger()
-            .withIdentity("${taskId}-trigger", groupName)
+            .withIdentity("$taskId-trigger", groupName)
             .apply {
                 when (val startDateTime: TaskStartAt = startAt) {
                     is TaskStartAt.Immediate -> startNow()

@@ -5,6 +5,7 @@
 commons-codec = "1.17.1"                # https://github.com/apache/commons-codec/tags
 cron-descriptor = "1.2.10"              # https://github.com/voidburn/cron-expression-descriptor/releases
 database-h2 = "2.3.232"                 # https://github.com/h2database/h2database/releases
+detekt = "1.23.7"                       # https://github.com/detekt/detekt/releases
 dokka = "1.9.20"                        # https://github.com/Kotlin/dokka/releases
 exposed = "0.56.0"                      # https://github.com/JetBrains/Exposed/releases
 exposed-pagination = "1.0.2"            # https://github.com/perracodex/exposed-pagination/releases
@@ -29,6 +30,7 @@ typesafe-config = "1.4.3"               # https://github.com/lightbend/config/re
 
 [plugins]
 
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
@@ -46,6 +48,11 @@ cron-descriptor = { module = "it.burning:cron-expression-descriptor", version.re
 # https://github.com/h2database/h2database
 # https://github.com/h2database/h2database/releases
 database-h2 = { module = "com.h2database:h2", version.ref = "database-h2" }
+
+# Detekt.
+# https://github.com/detekt/detekt
+# https://github.com/detekt/detekt/releases
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 
 # Exposed ORM.
 # https://github.com/JetBrains/Exposed

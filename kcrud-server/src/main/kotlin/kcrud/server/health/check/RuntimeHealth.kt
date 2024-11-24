@@ -50,7 +50,7 @@ public data class RuntimeHealth(
         }
 
         if (environment == EnvironmentType.PROD && developmentModeEnabled) {
-            errors.add("$className. Development mode flag enabled in ${environment}.")
+            errors.add("$className. Development mode flag enabled in $environment.")
         }
     }
 }

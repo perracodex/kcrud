@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.kotlin.jvm) // Required for Kotlin JVM development.
     alias(libs.plugins.ktor) // Required for Ktor server development.
     alias(libs.plugins.kotlin.serialization) apply false // Required for Kotlin Serialization support.
+    alias(libs.plugins.detekt) // Required for static code analysis.
 }
 
 group = "kcrud"
@@ -41,6 +42,25 @@ application {
     }
 }
 
+detekt {
+    buildUponDefaultConfig = true // Use default rules as a base.
+    allRules = false // Do not enable all rules, including unstable ones.
+    config.setFrom("$rootDir/config/detekt/detekt.yml") // Shared Detekt config file.
+}
+
+dependencies {
+    detektPlugins(libs.detekt.formatting)
+}
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    inputs.file("$rootDir/config/detekt/detekt.yml")
+    reports {
+        html.required.set(true) // Enable HTML report for easier viewing.
+        xml.required.set(false) // Disable XML report (optional).
+        sarif.required.set(true) // Enable SARIF report for GitHub code scanning.
+    }
+}
+
 // Configuration block for all projects in this multi-project build.
 allprojects {
 
@@ -65,6 +85,7 @@ subprojects {
         plugin(rootProject.libs.plugins.dokka.get().pluginId)
         plugin(rootProject.libs.plugins.kotlin.jvm.get().pluginId)
         plugin(rootProject.libs.plugins.kotlin.serialization.get().pluginId)
+        plugin(rootProject.libs.plugins.detekt.get().pluginId)
     }
 
     // Configure the Kotlin JVM toolchain for all subprojects to use JDK version 17.
@@ -92,6 +113,22 @@ subprojects {
 
             freeCompilerArgs.add("-Xconsistent-data-class-copy-visibility")
             freeCompilerArgs.add("-opt-in=kotlin.uuid.ExperimentalUuidApi")
+        }
+    }
+
+    // Configure Detekt for static code analysis.
+    detekt {
+        buildUponDefaultConfig = true // Use default rules as a base
+        allRules = false // Do not enable all rules, including unstable ones
+        config.setFrom("$rootDir/config/detekt/detekt.yml") // Shared Detekt config file
+    }
+
+    // Configure Detekt task reports.
+    tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+        reports {
+            html.required.set(true) // Enable HTML report for easier viewing
+            xml.required.set(false) // Disable XML report (optional)
+            sarif.required.set(true) // Enable SARIF report for GitHub code scanning
         }
     }
 }

@@ -66,11 +66,13 @@ internal object DemoView {
 
                 // Page details.
                 div(classes = "page-details") {
-                    +("Loaded Pages: 0, " +
-                            "Loaded Records: 0, " +
-                            "Records per Page: 0, " +
-                            "Total Pages: 0, " +
-                            "Total Records: 0")
+                    +(
+                            "Loaded Pages: 0, " +
+                                    "Loaded Records: 0, " +
+                                    "Records per Page: 0, " +
+                                    "Total Pages: 0, " +
+                                    "Total Records: 0"
+                            )
                 }
 
                 // Static header.

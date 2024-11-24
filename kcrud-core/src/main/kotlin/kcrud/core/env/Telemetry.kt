@@ -53,8 +53,8 @@ public object Telemetry {
 
                 // Deny rbac endpoint that either starts with domain,
                 // or contains the domain modified by middlewares like a Rate Limiter.
-                return@deny (metricId.name == SERVER_REQUESTS_METRIC_ID_NAME)
-                        && (route?.startsWith(RBAC_ROUTE) == true || route?.contains(RBAC_ROUTE) == true)
+                return@deny (metricId.name == SERVER_REQUESTS_METRIC_ID_NAME) &&
+                        (route?.startsWith(RBAC_ROUTE) == true || route?.contains(RBAC_ROUTE) == true)
             }
         )
     }

@@ -19,5 +19,5 @@ public enum class WorkModality(override val id: Int) : IEnumWithId {
     REMOTE(id = 101),
 
     /** The employee works in a hybrid modality, so both on-site and remotely. */
-    HYBRID(id = 102);
+    HYBRID(id = 102)
 }

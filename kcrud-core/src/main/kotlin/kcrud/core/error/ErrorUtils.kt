@@ -10,7 +10,7 @@ package kcrud.core.error
 internal object ErrorUtils {
     /**
      * Builds a detailed error message by extracting unique messages from the chain of causes
-     * of the provided [cause], up to predefined number of initial error points that are most
+     * of the provided [cause], up to a predefined number of initial error points that are most
      * relevant for diagnostics.
      *
      * @param cause The initial [Throwable] from which to start extracting the messages.
@@ -21,17 +21,17 @@ internal object ErrorUtils {
         val uniqueMessages: LinkedHashSet<String> = linkedSetOf()
         // Maximum number of unique messages to collect.
         val maxMessages = 2
+        // Current throwable in the chain.
+        var currentCause: Throwable? = cause
 
         // Iterate through the exception chain and collect unique messages until we reach the limit.
-        generateSequence(cause) { it.cause }.forEach { currentCause ->
-            // Add message if it is unique and we haven't reached the collecting limit.
-            if (uniqueMessages.size < maxMessages) {
-                currentCause.message?.let { message ->
-                    if (!uniqueMessages.contains(message)) {
-                        uniqueMessages.add(message)
-                    }
-                }
+        while (uniqueMessages.size < maxMessages && currentCause != null) {
+            // Add message if it is unique.
+            currentCause.message?.let { message ->
+                uniqueMessages.add(message)
             }
+            // Move to the next cause in the chain.
+            currentCause = currentCause.cause
         }
 
         // Join the collected messages with "Caused by:" if more than one, otherwise return the single message.

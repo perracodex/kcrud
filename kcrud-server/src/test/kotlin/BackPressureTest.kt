@@ -244,8 +244,9 @@ class BackPressureTest : KoinComponent {
                         assertEquals(expected = HttpStatusCode.Created, actual = writeResponse.status)
                     }
                 } else {
-                    if (writtenEmployeeIds.isEmpty())
+                    if (writtenEmployeeIds.isEmpty()) {
                         delay(timeMillis = 10L)
+                    }
 
                     async {
                         if (writtenEmployeeIds.isEmpty()) {

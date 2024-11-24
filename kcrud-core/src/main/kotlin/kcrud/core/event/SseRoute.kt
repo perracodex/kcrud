@@ -10,13 +10,6 @@ import kcrud.core.event.api.sseClearRoute
 import kcrud.core.event.api.sseGetAllRoute
 
 /**
- * Annotation for controlled access to the SSE Routes API.
- */
-@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the SSE Routes API.")
-@Retention(AnnotationRetention.BINARY)
-internal annotation class SseRouteApi
-
-/**
  * Configures the Server-Sent Events (SSE) endpoint for the application.
  *
  * #### References
@@ -28,3 +21,10 @@ public fun Route.sseRoutes() {
     sseClearRoute()
     sseGetAllRoute()
 }
+
+/**
+ * Annotation for controlled access to the SSE Routes API.
+ */
+@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the SSE Routes API.")
+@Retention(AnnotationRetention.BINARY)
+internal annotation class SseRouteApi

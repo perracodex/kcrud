@@ -18,13 +18,6 @@ import kcrud.domain.employee.api.operate.createEmployeeRoute
 import kcrud.domain.employee.api.operate.updateEmployeeByIdRoute
 
 /**
- * Annotation for controlled access to the Employee Routes API.
- */
-@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Employee Routes API.")
-@Retention(AnnotationRetention.BINARY)
-internal annotation class EmployeeRouteApi
-
-/**
  * Employee related endpoints.
  *
  * #### References
@@ -48,3 +41,10 @@ public fun Route.employeeRoutes() {
         searchEmployeeRoute()
     }
 }
+
+/**
+ * Annotation for controlled access to the Employee Routes API.
+ */
+@RequiresOptIn(level = RequiresOptIn.Level.ERROR, message = "Only to be used within the Employee Routes API.")
+@Retention(AnnotationRetention.BINARY)
+internal annotation class EmployeeRouteApi

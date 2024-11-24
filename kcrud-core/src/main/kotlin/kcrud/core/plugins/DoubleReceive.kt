@@ -27,6 +27,7 @@ import kcrud.core.settings.AppSettings
  * #### References
  * - [DoubleReceive](https://ktor.io/docs/server-double-receive.html).
  */
+@Suppress("MagicNumber")
 public fun Application.configureDoubleReceive() {
     if (!AppSettings.runtime.doubleReceiveEnvironments.contains(AppSettings.runtime.environment)) {
         return

@@ -24,6 +24,7 @@ import kcrud.core.settings.AppSettings
  * - [Ktor HTTPS Redirect Plugin](https://ktor.io/docs/server-https-redirect.html)
  * - [Ktor HSTS (HTTP Strict Transport Security) Plugin](https://ktor.io/docs/server-hsts.html)
  */
+@Suppress("MagicNumber")
 public fun Application.configureSecureConnection() {
 
     if (!AppSettings.security.useSecureConnection) {
