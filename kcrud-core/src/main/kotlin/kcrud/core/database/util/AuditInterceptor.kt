@@ -20,6 +20,6 @@ internal class AuditInterceptor(private val sessionContext: SessionContext) : St
         transaction: Transaction,
         context: StatementContext
     ) {
-        // Perform auditing actions here.
+        // Perform auditing actions.
     }
 }
