@@ -42,25 +42,6 @@ application {
     }
 }
 
-detekt {
-    buildUponDefaultConfig = true // Use default rules as a base.
-    allRules = false // Do not enable all rules, including unstable ones.
-    config.setFrom("$rootDir/config/detekt/detekt.yml") // Shared Detekt config file.
-}
-
-dependencies {
-    detektPlugins(libs.detekt.formatting)
-}
-
-tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
-    inputs.file("$rootDir/config/detekt/detekt.yml")
-    reports {
-        html.required.set(true) // Enable HTML report for easier viewing.
-        xml.required.set(false) // Disable XML report (optional).
-        sarif.required.set(true) // Enable SARIF report for GitHub code scanning.
-    }
-}
-
 // Configuration block for all projects in this multi-project build.
 allprojects {
 
@@ -118,17 +99,17 @@ subprojects {
 
     // Configure Detekt for static code analysis.
     detekt {
-        buildUponDefaultConfig = true // Use default rules as a base
-        allRules = false // Do not enable all rules, including unstable ones
-        config.setFrom("$rootDir/config/detekt/detekt.yml") // Shared Detekt config file
+        buildUponDefaultConfig = true
+        allRules = false
+        config.setFrom("$rootDir/config/detekt/detekt.yml")
     }
 
     // Configure Detekt task reports.
     tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
         reports {
-            html.required.set(true) // Enable HTML report for easier viewing
-            xml.required.set(false) // Disable XML report (optional)
-            sarif.required.set(true) // Enable SARIF report for GitHub code scanning
+            html.required.set(true)
+            xml.required.set(false)
+            sarif.required.set(true)
         }
     }
 }
