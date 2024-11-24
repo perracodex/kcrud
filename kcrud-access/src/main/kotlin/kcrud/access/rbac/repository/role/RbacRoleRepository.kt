@@ -93,7 +93,7 @@ internal class RbacRoleRepository(
             }
 
             val rbacRole: RbacRole? = findById(roleId = roleId)
-            check(rbacRole != null) { "New record not found." }
+            checkNotNull(rbacRole) { "New record not found." }
             rbacRole
         }
     }

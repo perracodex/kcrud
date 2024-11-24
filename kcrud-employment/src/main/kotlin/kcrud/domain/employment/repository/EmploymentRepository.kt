@@ -75,7 +75,7 @@ internal class EmploymentRepository(
                     )
                 }[EmploymentTable.id].let { employmentId ->
                     val employment: Employment? = findById(employeeId = employeeId, employmentId = employmentId)
-                    check(employment != null) { "Failed to create employment for employee with ID: $employeeId" }
+                    checkNotNull(employment) { "Failed to create employment for employee with ID: $employeeId" }
                     employment
                 }
             }

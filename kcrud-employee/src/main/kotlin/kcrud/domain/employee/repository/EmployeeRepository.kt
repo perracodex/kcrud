@@ -182,7 +182,7 @@ internal class EmployeeRepository(
                 }
 
                 val employee: Employee? = findById(employeeId = employeeId)
-                check(employee != null) { "Failed to create Employee." }
+                checkNotNull(employee) { "Failed to create Employee." }
                 employee
             }
         }
