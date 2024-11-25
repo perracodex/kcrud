@@ -7,6 +7,7 @@ package kcrud.core.event
 import kcrud.core.env.Tracer
 import kcrud.core.event.AsyncScope.isParallel
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ClosedSendChannelException
 
@@ -23,6 +24,9 @@ import kotlinx.coroutines.channels.ClosedSendChannelException
 public object AsyncScope {
     private val tracer: Tracer = Tracer<AsyncScope>()
 
+    /** The default capacity of the task channel. */
+    private const val DEFAULT_CAPACITY: Int = 128
+
     /**
      * Configuration for parallel or sequential task processing.
      * By default, tasks are executed in parallel.
@@ -38,7 +42,10 @@ public object AsyncScope {
     /**
      * The channel that holds the suspending actions to be executed sequentially if needed.
      */
-    private val taskChannel: Channel<suspend () -> Unit> = Channel(capacity = Channel.UNLIMITED)
+    private val taskChannel: Channel<suspend () -> Unit> = Channel(
+        capacity = DEFAULT_CAPACITY,
+        onBufferOverflow = BufferOverflow.DROP_OLDEST
+    )
 
     /**
      * Job that handles sequential task processing, started only if `isParallel` is false.
