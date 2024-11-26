@@ -4,7 +4,7 @@
 
 package kcrud.scheduler.model.audit
 
-import kcrud.core.database.schema.scheduler.type.TaskOutcome
+import kcrud.database.schema.scheduler.type.TaskOutcome
 import kotlinx.datetime.LocalDateTime
 import kotlin.uuid.Uuid
 

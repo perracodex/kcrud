@@ -10,6 +10,7 @@ import io.ktor.test.dispatcher.*
 import io.ktor.util.collections.*
 import kcrud.access.test.RbacTestUtils
 import kcrud.core.test.TestUtils
+import kcrud.database.test.DatabaseTestUtils
 import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.test.EmployeeTestUtils
 import kotlinx.coroutines.*
@@ -24,11 +25,12 @@ class BackPressureTest : KoinComponent {
     @BeforeTest
     fun setUp() {
         TestUtils.loadSettings()
-        TestUtils.setupDatabase()
+        DatabaseTestUtils.setupDatabase()
     }
 
     @AfterTest
     fun tearDown() {
+        DatabaseTestUtils.closeDatabase()
         TestUtils.tearDown()
     }
 

@@ -10,8 +10,8 @@ import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import kcrud.core.persistence.util.toUuid
 import kcrud.core.plugins.Uuid
+import kcrud.core.util.toUuid
 import kcrud.scheduler.service.SchedulerService
 
 /**

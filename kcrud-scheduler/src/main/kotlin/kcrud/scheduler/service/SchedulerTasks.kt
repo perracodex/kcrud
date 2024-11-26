@@ -7,9 +7,9 @@ package kcrud.scheduler.service
 import it.burning.cron.CronExpressionDescriptor
 import kcrud.core.env.Tracer
 import kcrud.core.event.SseService
-import kcrud.core.persistence.util.toUuid
 import kcrud.core.security.snowflake.SnowflakeFactory
 import kcrud.core.util.DateTimeUtils.toKotlinLocalDateTime
+import kcrud.core.util.toUuid
 import kcrud.scheduler.audit.AuditService
 import kcrud.scheduler.model.audit.AuditLog
 import kcrud.scheduler.model.task.TaskGroup

@@ -116,9 +116,11 @@ subprojects {
 
 dependencies {
     implementation(project(":kcrud-core"))
+    implementation(project(":kcrud-access"))
+    implementation(project(":kcrud-database"))
     implementation(project(":kcrud-scheduler"))
-    implementation(project(":kcrud-employee"))
-    implementation(project(":kcrud-employment"))
+    implementation(project(":kcrud-domain-employee"))
+    implementation(project(":kcrud-domain-employment"))
     implementation(project(":kcrud-server"))
 }
 

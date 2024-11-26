@@ -45,7 +45,7 @@ public object Telemetry {
      *
      * By default, excludes metrics collection for the "/rbac" endpoint and any sub-paths.
      */
-    internal val registry: PrometheusMeterRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT).apply {
+    public val registry: PrometheusMeterRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT).apply {
         config().meterFilter(
             MeterFilter.deny { metricId ->
                 // Append "/" to ensure proper matching at the end.

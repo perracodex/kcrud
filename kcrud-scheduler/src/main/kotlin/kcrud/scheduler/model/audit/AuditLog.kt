@@ -5,10 +5,10 @@
 package kcrud.scheduler.model.audit
 
 import io.perracodex.exposed.pagination.IModelTransform
-import kcrud.core.database.schema.scheduler.SchedulerAuditTable
-import kcrud.core.database.schema.scheduler.type.TaskOutcome
-import kcrud.core.persistence.model.Meta
 import kcrud.core.plugins.Uuid
+import kcrud.database.model.Meta
+import kcrud.database.schema.scheduler.SchedulerAuditTable
+import kcrud.database.schema.scheduler.type.TaskOutcome
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ResultRow

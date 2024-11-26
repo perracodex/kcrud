@@ -3,9 +3,10 @@
  */
 
 import io.ktor.test.dispatcher.*
-import kcrud.core.persistence.util.toUuid
 import kcrud.core.security.snowflake.SnowflakeFactory
 import kcrud.core.test.TestUtils
+import kcrud.core.util.toUuid
+import kcrud.database.test.DatabaseTestUtils
 import kcrud.scheduler.service.SchedulerService
 import kcrud.scheduler.service.schedule.Schedule
 import kcrud.scheduler.service.schedule.TaskStartAt
@@ -29,12 +30,13 @@ class TaskSchedulerTest {
     @BeforeTest
     fun setUp() {
         TestUtils.loadSettings()
-        TestUtils.setupDatabase()
+        DatabaseTestUtils.setupDatabase()
         SchedulerService.start()
     }
 
     @AfterTest
     fun tearDown() {
+        DatabaseTestUtils.closeDatabase()
         TestUtils.tearDown()
         SchedulerService.stop(interrupt = true)
     }

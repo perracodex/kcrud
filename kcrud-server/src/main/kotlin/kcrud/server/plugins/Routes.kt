@@ -11,8 +11,8 @@ import io.ktor.server.auth.*
 import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.access.rbac.api.rbacRoutes
-import kcrud.access.token.api.accessTokenRoutes
+import kcrud.access.domain.rbac.api.rbacRoutes
+import kcrud.access.domain.token.api.accessTokenRoutes
 import kcrud.core.context.getContextOrNull
 import kcrud.core.event.sseRoutes
 import kcrud.core.plugins.RateLimitScope

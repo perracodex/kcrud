@@ -12,7 +12,7 @@ import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import kcrud.access.context.SessionContextFactory
-import kcrud.access.token.annotation.TokenApi
+import kcrud.access.domain.token.annotation.TokenApi
 import kcrud.core.context.clearContext
 import kcrud.core.context.setContext
 import kcrud.core.env.Tracer

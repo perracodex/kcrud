@@ -4,8 +4,8 @@
 
 package kcrud.scheduler.service.task
 
-import kcrud.core.persistence.util.toUuid
 import kcrud.core.plugins.Uuid
+import kcrud.core.util.toUuid
 import kotlinx.serialization.Serializable
 import org.quartz.JobKey
 import org.quartz.Scheduler

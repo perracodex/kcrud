@@ -9,9 +9,9 @@ import io.ktor.server.sessions.*
 import io.ktor.util.*
 import kcrud.core.context.SessionContext.Companion.SESSION_NAME
 import kcrud.core.error.UnauthorizedException
-import kcrud.core.persistence.util.toUuid
 import kcrud.core.plugins.Uuid
 import kcrud.core.settings.AppSettings
+import kcrud.core.util.toUuid
 
 /**
  * Extension function to add the given [sessionContext] into the [ApplicationCall] attributes,

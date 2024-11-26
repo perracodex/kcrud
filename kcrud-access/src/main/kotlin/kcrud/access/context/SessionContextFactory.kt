@@ -12,19 +12,19 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.sessions.*
-import kcrud.access.actor.model.Actor
 import kcrud.access.credential.CredentialService
+import kcrud.access.domain.actor.model.Actor
+import kcrud.access.domain.rbac.service.RbacService
+import kcrud.access.domain.token.annotation.TokenApi
+import kcrud.access.domain.token.service.TokenService
 import kcrud.access.plugins.configureBasicAuthentication
 import kcrud.access.plugins.configureJwtAuthentication
 import kcrud.access.plugins.configureOAuthAuthentication
-import kcrud.access.rbac.service.RbacService
-import kcrud.access.token.annotation.TokenApi
-import kcrud.access.token.service.TokenService
 import kcrud.core.context.SessionContext
 import kcrud.core.env.Tracer
-import kcrud.core.persistence.util.toUuid
 import kcrud.core.plugins.Uuid
 import kcrud.core.settings.AppSettings
+import kcrud.core.util.toUuid
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

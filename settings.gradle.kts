@@ -14,14 +14,15 @@ plugins {
 rootProject.name = "Kcrud"
 
 include("kcrud-core")
+include("kcrud-database")
 include("kcrud-access")
 include("kcrud-scheduler")
-include("kcrud-employee")
-include("kcrud-employment")
+include("kcrud-domain-employee")
+include("kcrud-domain-employment")
 include("kcrud-server")
 
-//includeBuild("../Kopapi") {
+// includeBuild("../Kopapi") {
 //    dependencySubstitution {
 //        substitute(module("io.github.perracodex:kopapi")).using(project(":"))
 //    }
-//}
+// }

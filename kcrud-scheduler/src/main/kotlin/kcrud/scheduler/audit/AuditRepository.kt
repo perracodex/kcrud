@@ -7,8 +7,8 @@ package kcrud.scheduler.audit
 import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.Pageable
 import io.perracodex.exposed.pagination.paginate
-import kcrud.core.database.schema.scheduler.SchedulerAuditTable
-import kcrud.core.database.schema.scheduler.type.TaskOutcome
+import kcrud.database.schema.scheduler.SchedulerAuditTable
+import kcrud.database.schema.scheduler.type.TaskOutcome
 import kcrud.scheduler.model.audit.AuditLog
 import kcrud.scheduler.model.audit.AuditLogRequest
 import org.jetbrains.exposed.sql.SortOrder

@@ -4,10 +4,10 @@
 
 package kcrud.server.demo
 
-import kcrud.core.database.schema.employment.type.EmploymentStatus
-import kcrud.core.database.schema.employment.type.WorkModality
-import kcrud.core.persistence.model.Period
-import kcrud.core.test.TestUtils
+import kcrud.database.model.Period
+import kcrud.database.schema.employment.type.EmploymentStatus
+import kcrud.database.schema.employment.type.WorkModality
+import kcrud.database.test.DatabaseTestUtils
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.service.EmployeeService
@@ -63,7 +63,7 @@ internal object DemoUtils {
     }
 
     private fun newEmploymentRequest(employee: Employee): EmploymentRequest {
-        val period: Period = TestUtils.randomPeriod(threshold = employee.dob)
+        val period: Period = DatabaseTestUtils.randomPeriod(threshold = employee.dob)
         val probationEndDate: LocalDate = period.startDate.plus(
             value = Random.nextInt(from = 3, until = 6),
             unit = DateTimeUnit.MONTH

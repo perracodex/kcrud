@@ -4,19 +4,19 @@
 
 package kcrud.access.test
 
-import kcrud.access.actor.model.Actor
-import kcrud.access.actor.model.ActorRequest
-import kcrud.access.actor.service.ActorService
-import kcrud.access.actor.service.DefaultActorFactory
-import kcrud.access.rbac.model.role.RbacRole
-import kcrud.access.rbac.model.role.RbacRoleRequest
-import kcrud.access.rbac.model.scope.RbacScopeRuleRequest
-import kcrud.access.rbac.service.RbacService
-import kcrud.access.token.annotation.TokenApi
-import kcrud.access.token.service.TokenService
+import kcrud.access.domain.actor.model.Actor
+import kcrud.access.domain.actor.model.ActorRequest
+import kcrud.access.domain.actor.service.ActorService
+import kcrud.access.domain.actor.service.DefaultActorFactory
+import kcrud.access.domain.rbac.model.role.RbacRole
+import kcrud.access.domain.rbac.model.role.RbacRoleRequest
+import kcrud.access.domain.rbac.model.scope.RbacScopeRuleRequest
+import kcrud.access.domain.rbac.service.RbacService
+import kcrud.access.domain.token.annotation.TokenApi
+import kcrud.access.domain.token.service.TokenService
 import kcrud.core.context.SessionContext
-import kcrud.core.database.schema.admin.rbac.type.RbacAccessLevel
-import kcrud.core.database.schema.admin.rbac.type.RbacScope
+import kcrud.database.schema.admin.rbac.type.RbacAccessLevel
+import kcrud.database.schema.admin.rbac.type.RbacScope
 import org.koin.java.KoinJavaComponent.getKoin
 import kotlin.test.assertNotNull
 import kotlin.uuid.Uuid

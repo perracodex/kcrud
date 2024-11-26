@@ -3,19 +3,20 @@
  */
 
 import io.ktor.test.dispatcher.*
-import kcrud.access.actor.di.ActorDomainInjection
-import kcrud.access.actor.model.Actor
-import kcrud.access.actor.model.ActorCredentials
-import kcrud.access.actor.model.ActorRequest
-import kcrud.access.actor.service.ActorService
-import kcrud.access.rbac.di.RbacDomainInjection
-import kcrud.access.rbac.model.role.RbacRole
-import kcrud.access.rbac.model.role.RbacRoleRequest
-import kcrud.access.rbac.model.scope.RbacScopeRuleRequest
-import kcrud.access.rbac.service.RbacService
-import kcrud.core.database.schema.admin.rbac.type.RbacAccessLevel
-import kcrud.core.database.schema.admin.rbac.type.RbacScope
+import kcrud.access.domain.actor.di.ActorDomainInjection
+import kcrud.access.domain.actor.model.Actor
+import kcrud.access.domain.actor.model.ActorCredentials
+import kcrud.access.domain.actor.model.ActorRequest
+import kcrud.access.domain.actor.service.ActorService
+import kcrud.access.domain.rbac.di.RbacDomainInjection
+import kcrud.access.domain.rbac.model.role.RbacRole
+import kcrud.access.domain.rbac.model.role.RbacRoleRequest
+import kcrud.access.domain.rbac.model.scope.RbacScopeRuleRequest
+import kcrud.access.domain.rbac.service.RbacService
 import kcrud.core.test.TestUtils
+import kcrud.database.schema.admin.rbac.type.RbacAccessLevel
+import kcrud.database.schema.admin.rbac.type.RbacScope
+import kcrud.database.test.DatabaseTestUtils
 import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -32,7 +33,7 @@ class RbacActorTest : KoinComponent {
     @BeforeTest
     fun setUp() {
         TestUtils.loadSettings()
-        TestUtils.setupDatabase()
+        DatabaseTestUtils.setupDatabase()
         TestUtils.setupKoin(
             modules = listOf(
                 RbacDomainInjection.get(),
@@ -43,6 +44,7 @@ class RbacActorTest : KoinComponent {
 
     @AfterTest
     fun tearDown() {
+        DatabaseTestUtils.closeDatabase()
         TestUtils.tearDown()
     }
 

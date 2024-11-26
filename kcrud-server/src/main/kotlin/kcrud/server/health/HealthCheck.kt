@@ -5,11 +5,11 @@
 package kcrud.server.health
 
 import io.ktor.server.application.*
-import kcrud.core.database.service.DatabaseHealth
-import kcrud.core.database.service.DatabaseService
 import kcrud.core.env.HealthCheckApi
 import kcrud.core.util.RouteInfo
 import kcrud.core.util.collectRoutes
+import kcrud.database.service.DatabaseHealth
+import kcrud.database.service.DatabaseService
 import kcrud.server.health.check.*
 import kotlinx.serialization.Serializable
 

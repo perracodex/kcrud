@@ -11,8 +11,9 @@ import io.mockk.every
 import io.mockk.mockk
 import kcrud.access.test.RbacTestUtils
 import kcrud.core.context.SessionContext
-import kcrud.core.database.schema.admin.rbac.type.RbacAccessLevel
 import kcrud.core.test.TestUtils
+import kcrud.database.schema.admin.rbac.type.RbacAccessLevel
+import kcrud.database.test.DatabaseTestUtils
 import kcrud.domain.employee.model.Employee
 import kcrud.domain.employee.model.EmployeeRequest
 import kcrud.domain.employee.service.EmployeeService
@@ -29,11 +30,12 @@ class RbacTest : KoinComponent {
     @BeforeTest
     fun setUp() {
         TestUtils.loadSettings()
-        TestUtils.setupDatabase()
+        DatabaseTestUtils.setupDatabase()
     }
 
     @AfterTest
     fun tearDown() {
+        DatabaseTestUtils.closeDatabase()
         TestUtils.tearDown()
     }
 

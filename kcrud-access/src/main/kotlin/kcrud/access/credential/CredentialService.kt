@@ -5,8 +5,8 @@
 package kcrud.access.credential
 
 import io.ktor.server.auth.*
-import kcrud.access.actor.model.ActorCredentials
-import kcrud.access.actor.service.ActorService
+import kcrud.access.domain.actor.model.ActorCredentials
+import kcrud.access.domain.actor.service.ActorService
 import kcrud.core.env.Tracer
 import kcrud.core.security.hash.SecureHash
 import kcrud.core.security.hash.SecureSalt

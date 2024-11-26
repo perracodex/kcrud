@@ -2,8 +2,8 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-import kcrud.core.persistence.util.toUuid
-import kcrud.core.persistence.util.toUuidOrNull
+import kcrud.core.util.toUuid
+import kcrud.core.util.toUuidOrNull
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith

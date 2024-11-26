@@ -8,10 +8,10 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.sessions.*
-import kcrud.access.actor.service.DefaultActorFactory
 import kcrud.access.context.SessionContextFactory
-import kcrud.access.rbac.plugin.annotation.RbacApi
-import kcrud.access.rbac.view.RbacLoginView
+import kcrud.access.domain.actor.service.DefaultActorFactory
+import kcrud.access.domain.rbac.plugin.annotation.RbacApi
+import kcrud.access.domain.rbac.view.RbacLoginView
 import kcrud.core.context.clearContext
 import kcrud.core.context.setContext
 

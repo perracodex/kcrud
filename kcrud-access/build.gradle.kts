@@ -7,6 +7,7 @@ version = "1.0.0"
 
 dependencies {
     implementation(project(":kcrud-core"))
+    implementation(project(":kcrud-database"))
 
     detektPlugins(libs.detekt.formatting)
 

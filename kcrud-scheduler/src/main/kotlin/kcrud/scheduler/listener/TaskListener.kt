@@ -6,13 +6,13 @@ package kcrud.scheduler.listener
 
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.Timer
-import kcrud.core.database.schema.scheduler.type.TaskOutcome
 import kcrud.core.env.Telemetry
 import kcrud.core.env.Tracer
 import kcrud.core.event.AsyncScope
-import kcrud.core.persistence.util.toUuid
 import kcrud.core.security.snowflake.SnowflakeFactory
 import kcrud.core.util.DateTimeUtils.toKotlinLocalDateTime
+import kcrud.core.util.toUuid
+import kcrud.database.schema.scheduler.type.TaskOutcome
 import kcrud.scheduler.audit.AuditService
 import kcrud.scheduler.model.audit.AuditLogRequest
 import org.quartz.JobDetail

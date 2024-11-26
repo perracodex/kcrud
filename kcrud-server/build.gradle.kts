@@ -7,10 +7,11 @@ version = "1.0.0"
 
 dependencies {
     implementation(project(":kcrud-core"))
+    implementation(project(":kcrud-database"))
     implementation(project(":kcrud-access"))
     implementation(project(":kcrud-scheduler"))
-    implementation(project(":kcrud-employee"))
-    implementation(project(":kcrud-employment"))
+    implementation(project(":kcrud-domain-employee"))
+    implementation(project(":kcrud-domain-employment"))
 
     detektPlugins(libs.detekt.formatting)
 

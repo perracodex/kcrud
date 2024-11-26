@@ -11,8 +11,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.getPageable
-import kcrud.core.persistence.util.toUuidOrNull
 import kcrud.core.plugins.Uuid
+import kcrud.core.util.toUuidOrNull
 import kcrud.core.util.trimOrNull
 import kcrud.scheduler.audit.AuditService
 import kcrud.scheduler.model.audit.AuditLog

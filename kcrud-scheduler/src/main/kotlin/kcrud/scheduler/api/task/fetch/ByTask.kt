@@ -9,8 +9,8 @@ import io.github.perracodex.kopapi.dsl.parameter.queryParameter
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.core.persistence.util.toUuidOrNull
 import kcrud.core.plugins.Uuid
+import kcrud.core.util.toUuidOrNull
 import kcrud.scheduler.model.task.TaskSchedule
 import kcrud.scheduler.service.SchedulerService
 
