@@ -61,7 +61,7 @@ internal object SchedulerService {
         scheduler = schedulerFactory.scheduler
         scheduler.setJobFactory(TaskFactory())
 
-        tasks = SchedulerTasks.create(scheduler = scheduler)
+        tasks = SchedulerTasks(scheduler = scheduler)
 
         tracer.debug("Task scheduler configured.")
     }

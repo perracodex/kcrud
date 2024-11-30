@@ -15,7 +15,6 @@ import kcrud.scheduler.model.audit.AuditLog
 import kcrud.scheduler.model.task.TaskGroup
 import kcrud.scheduler.model.task.TaskSchedule
 import kcrud.scheduler.model.task.TaskStateChange
-import kcrud.scheduler.service.SchedulerTasks.Companion.create
 import kcrud.scheduler.task.TaskKey
 import kcrud.scheduler.task.TaskState
 import org.quartz.*
@@ -28,10 +27,8 @@ import kotlin.uuid.Uuid
 
 /**
  * Helper class to manage tasks in the scheduler.
- *
- * Instances should be created using the [create] method in the companion object.
  */
-internal class SchedulerTasks private constructor(val scheduler: Scheduler) {
+internal class SchedulerTasks(val scheduler: Scheduler) {
     private val tracer: Tracer = Tracer<SchedulerService>()
 
     /**
@@ -378,17 +375,5 @@ internal class SchedulerTasks private constructor(val scheduler: Scheduler) {
         // Retrieve all job keys for the matching group and convert to TaskKey
         return scheduler.getJobKeys(GroupMatcher.jobGroupEquals(matchingGroup))
             .map { TaskKey.fromJobKey(scheduler = scheduler, jobKey = it) }
-    }
-
-    companion object {
-        /**
-         * Creates a new instance of [SchedulerTasks] with the provided [scheduler].
-         *
-         * @param scheduler The [Scheduler] instance to be used.
-         * @return A new instance of [SchedulerTasks].
-         */
-        internal fun create(scheduler: Scheduler): SchedulerTasks {
-            return SchedulerTasks(scheduler = scheduler)
-        }
     }
 }
