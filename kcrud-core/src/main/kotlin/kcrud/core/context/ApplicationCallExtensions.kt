@@ -7,7 +7,6 @@ package kcrud.core.context
 import io.ktor.server.application.*
 import io.ktor.server.sessions.*
 import io.ktor.util.*
-import kcrud.core.context.SessionContext.Companion.SESSION_NAME
 import kcrud.core.error.UnauthorizedException
 import kcrud.core.plugins.Uuid
 import kcrud.core.settings.AppSettings
@@ -25,7 +24,7 @@ import kcrud.core.util.toUuid
  */
 public fun ApplicationCall.setContext(sessionContext: SessionContext): SessionContext {
     this.attributes.put(key = SessionContextUtils.sessionContextKey, value = sessionContext)
-    this.sessions.set(name = SESSION_NAME, value = sessionContext.actorId)
+    this.sessions.set(name = SessionContext.SESSION_NAME, value = sessionContext.actorId)
     return sessionContext
 }
 
@@ -74,7 +73,7 @@ public fun ApplicationCall.getContextOrNull(): SessionContext? {
  */
 public fun ApplicationCall.clearContext() {
     this.attributes.remove(key = SessionContextUtils.sessionContextKey)
-    this.sessions.clear(name = SESSION_NAME)
+    this.sessions.clear(name = SessionContext.SESSION_NAME)
 }
 
 /**
