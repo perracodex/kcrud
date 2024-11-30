@@ -6,7 +6,6 @@ package kcrud.database.service
 
 import com.zaxxer.hikari.HikariDataSource
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
-import kcrud.core.env.HealthCheckApi
 import kcrud.core.env.Tracer
 import kcrud.core.settings.AppSettings
 import kcrud.core.settings.catalog.section.DatabaseSettings
@@ -30,14 +29,16 @@ import java.nio.file.Paths
  * #### References
  * [Exposed](https://github.com/JetBrains/Exposed/wiki)
  */
-public object DatabaseService {
+internal object DatabaseService {
     private val tracer: Tracer = Tracer<DatabaseService>()
 
     /** The database instance held by the service. */
-    internal lateinit var database: Database
+    lateinit var database: Database
         private set
 
-    private var hikariDataSource: HikariDataSource? = null
+    /** The HikariCP DataSource instance held by the service. */
+    var hikariDataSource: HikariDataSource? = null
+        private set
 
     /**
      * Initializes the database connection based on the provided mode and database type.
@@ -49,7 +50,7 @@ public object DatabaseService {
      * @param telemetryRegistry Optional metrics registry for telemetry monitoring.
      * @param schemaSetup Optional lambda to setup the database schema.
      */
-    internal fun init(
+    fun init(
         settings: DatabaseSettings,
         isolationLevel: IsolationLevel = IsolationLevel.TRANSACTION_REPEATABLE_READ,
         telemetryRegistry: PrometheusMeterRegistry? = null,
@@ -205,7 +206,7 @@ public object DatabaseService {
     /**
      * Checks whether the database is alive.
      */
-    private fun ping(): Boolean {
+    fun ping(): Boolean {
         return runCatching {
             transaction(db = database) {
                 @Suppress("SqlDialectInspection", "SqlNoDataSourceInspection")
@@ -237,52 +238,14 @@ public object DatabaseService {
      * Closes the database connection.
      * Primarily used for testing purposes.
      */
-    internal fun close() {
+    fun close() {
         hikariDataSource?.close()
-    }
-
-    /**
-     * Retrieves HikariCP health metrics.
-     */
-    @HealthCheckApi
-    public fun getHealthCheck(): DatabaseHealth {
-        return runCatching {
-            val databaseTest: Result<DatabaseHealth.ConnectionTest> = DatabaseHealth.ConnectionTest.build(database = database)
-
-            val isAlive: Boolean = ping()
-            val connectionTest: DatabaseHealth.ConnectionTest? = databaseTest.getOrNull()
-            val datasource: DatabaseHealth.Datasource? = DatabaseHealth.Datasource.build(datasource = hikariDataSource)
-            val tables: List<String> = dumpTables()
-
-            val databaseHealth = DatabaseHealth(
-                isAlive = isAlive,
-                connectionTest = connectionTest,
-                datasource = datasource,
-                tables = tables
-            )
-
-            if (databaseTest.isFailure) {
-                databaseHealth.errors.add(databaseTest.exceptionOrNull()?.message ?: "Database connection test failed.")
-            }
-
-            databaseHealth
-        }.getOrElse { error ->
-            tracer.error(message = "Failed to retrieve database health check.", cause = error)
-            DatabaseHealth(
-                isAlive = false,
-                connectionTest = null,
-                datasource = null,
-                tables = emptyList(),
-            ).apply {
-                errors.add("Failed to retrieve database health check. ${error.message}")
-            }
-        }
     }
 
     /**
      * Returns a list of all tables in the database.
      */
-    private fun dumpTables(): List<String> {
+    fun dumpTables(): List<String> {
         return runCatching {
             transaction(db = database) {
                 currentDialect.allTablesNames()
@@ -298,7 +261,7 @@ public object DatabaseService {
      *
      * Setting up the schema is optional, as it can be created also by migrations.
      */
-    internal class SchemaBuilder {
+    class SchemaBuilder {
         private val tables: MutableList<Table> = mutableListOf()
 
         /**

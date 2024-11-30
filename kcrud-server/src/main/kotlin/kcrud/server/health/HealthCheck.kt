@@ -9,7 +9,6 @@ import kcrud.core.env.HealthCheckApi
 import kcrud.core.util.RouteInfo
 import kcrud.core.util.collectRoutes
 import kcrud.database.service.DatabaseHealth
-import kcrud.database.service.DatabaseService
 import kcrud.scheduler.service.SchedulerHealth
 import kcrud.server.health.check.*
 import kotlinx.serialization.Serializable
@@ -68,10 +67,10 @@ public data class HealthCheck internal constructor(
                 application = ApplicationHealth(),
                 deployment = DeploymentHealth.Companion.create(call = call),
                 runtime = RuntimeHealth(call = call),
-                scheduler = SchedulerHealth.Companion.create(),
+                scheduler = SchedulerHealth.create(),
                 security = SecurityHealth(),
                 snowflake = SnowflakeHealth(),
-                database = DatabaseService.getHealthCheck(),
+                database = DatabaseHealth.create(),
                 endpoints = call.application.collectRoutes(),
             )
         }
