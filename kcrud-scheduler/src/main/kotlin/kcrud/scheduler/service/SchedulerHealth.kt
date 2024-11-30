@@ -2,10 +2,9 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.server.health.check
+package kcrud.scheduler.service
 
 import kcrud.core.env.HealthCheckApi
-import kcrud.scheduler.service.SchedulerService
 import kotlinx.serialization.Serializable
 
 /**
@@ -30,12 +29,12 @@ public class SchedulerHealth private constructor(
         }
     }
 
-    internal companion object {
+    public companion object {
         /**
          * Creates a new [SchedulerHealth] instance.
          * We need to use a suspendable factory method as totalTasks is a suspend function.
          */
-        suspend fun create(): SchedulerHealth {
+        public suspend fun create(): SchedulerHealth {
             return SchedulerHealth(
                 errors = mutableListOf(),
                 isStarted = SchedulerService.isStarted(),

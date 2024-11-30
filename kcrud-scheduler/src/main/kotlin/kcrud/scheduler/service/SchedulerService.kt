@@ -27,7 +27,7 @@ import java.util.*
  * - [Quartz Scheduler Documentation](https://github.com/quartz-scheduler/quartz/blob/main/docs/index.adoc)
  * - [Quartz Scheduler Configuration](https://www.quartz-scheduler.org/documentation/2.4.0-SNAPSHOT/configuration.html)
  */
-public object SchedulerService {
+internal object SchedulerService {
     private val tracer: Tracer = Tracer<SchedulerService>()
 
     /** The possible states of the task scheduler. */
@@ -69,7 +69,7 @@ public object SchedulerService {
     /**
      * Starts the task scheduler.
      */
-    internal fun start() {
+    fun start() {
         if (!SchedulerService::scheduler.isInitialized || scheduler.isShutdown) {
             setup()
         }
@@ -87,7 +87,7 @@ public object SchedulerService {
      *
      * @param interrupt Whether the scheduler should interrupt all actively executing tasks.
      */
-    internal fun stop(interrupt: Boolean) {
+    fun stop(interrupt: Boolean) {
         tracer.info("Shutting down task scheduler.")
         if (SchedulerService::scheduler.isInitialized) {
             scheduler.shutdown(!interrupt)
@@ -103,7 +103,7 @@ public object SchedulerService {
      * @param interrupt Whether the scheduler should interrupt all actively executing tasks.
      * @return The current state of the task scheduler.
      */
-    internal fun restart(interrupt: Boolean): TaskSchedulerState {
+    fun restart(interrupt: Boolean): TaskSchedulerState {
         tracer.info("Restarting task scheduler.")
 
         stop(interrupt = interrupt)
@@ -120,7 +120,7 @@ public object SchedulerService {
     /**
      * Returns the current state of the task scheduler.
      */
-    internal fun state(): TaskSchedulerState {
+    fun state(): TaskSchedulerState {
         return when {
             !SchedulerService::scheduler.isInitialized || !scheduler.isStarted -> TaskSchedulerState.STOPPED
             isPaused() -> TaskSchedulerState.PAUSED
@@ -131,7 +131,7 @@ public object SchedulerService {
     /**
      * Returns whether the task scheduler is started.
      */
-    public fun isStarted(): Boolean {
+    fun isStarted(): Boolean {
         return SchedulerService::scheduler.isInitialized && scheduler.isStarted
     }
 
@@ -142,7 +142,7 @@ public object SchedulerService {
      *
      * @see [pause]
      */
-    public fun isPaused(): Boolean {
+    fun isPaused(): Boolean {
         return SchedulerService::scheduler.isInitialized && scheduler.pausedTriggerGroups.isNotEmpty()
     }
 
@@ -151,7 +151,7 @@ public object SchedulerService {
      *
      * @param application The server [Application] instance.
      */
-    internal fun configure(application: Application) {
+    fun configure(application: Application) {
         // Add a shutdown hook to stop the scheduler when the application is stopped.
         application.monitor.subscribe(ApplicationStopping) {
             stop(interrupt = false)
@@ -170,7 +170,7 @@ public object SchedulerService {
      *
      * @return [TaskStateChange] containing details of the operation.
      */
-    internal fun pause(): TaskStateChange {
+    fun pause(): TaskStateChange {
         return TaskState.change(scheduler = scheduler, targetState = TriggerState.PAUSED) {
             // Attempt to pause all triggers
             tracer.info("Attempting to pause all triggers...")
@@ -225,7 +225,7 @@ public object SchedulerService {
      *
      * @return [TaskStateChange] containing details of the operation.
      */
-    internal fun resume(): TaskStateChange {
+    fun resume(): TaskStateChange {
         return TaskState.change(scheduler = scheduler, targetState = TriggerState.NORMAL) {
             // Attempt to resume all triggers.
             tracer.info("Attempting to resume all triggers.")
@@ -259,7 +259,7 @@ public object SchedulerService {
     /**
      * Returns the total number of tasks currently scheduled in the scheduler.
      */
-    public suspend fun totalTasks(): Int {
+    suspend fun totalTasks(): Int {
         if (!SchedulerService::scheduler.isInitialized) {
             return 0
         }

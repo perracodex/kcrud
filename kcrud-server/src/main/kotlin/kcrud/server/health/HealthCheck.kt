@@ -10,6 +10,7 @@ import kcrud.core.util.RouteInfo
 import kcrud.core.util.collectRoutes
 import kcrud.database.service.DatabaseHealth
 import kcrud.database.service.DatabaseService
+import kcrud.scheduler.service.SchedulerHealth
 import kcrud.server.health.check.*
 import kotlinx.serialization.Serializable
 
@@ -20,7 +21,7 @@ import kotlinx.serialization.Serializable
  * @property application The [ApplicationHealth] check.
  * @property deployment The [DeploymentHealth] check.
  * @property runtime The [RuntimeHealth] check.
- * @property scheduler The [SchedulerHealth] check.
+ * @property scheduler The [kcrud.scheduler.service.SchedulerHealth] check.
  * @property security The [SecurityHealth] check.
  * @property snowflake The [kcrud.server.health.check.SnowflakeHealth] check.
  * @property database The [DatabaseHealth] check.
