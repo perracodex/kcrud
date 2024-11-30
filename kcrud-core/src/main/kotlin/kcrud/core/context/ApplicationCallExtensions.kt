@@ -50,12 +50,7 @@ public fun ApplicationCall.setContext(sessionContext: SessionContext): SessionCo
  * @see [getContextOrNull]
  */
 public fun ApplicationCall.getContext(): SessionContext {
-    return this.attributes.getOrNull(key = SessionContextUtils.SESSION_CONTEXT_KEY)
-        ?: if (AppSettings.security.isEnabled) {
-            throw UnauthorizedException("Session context not found.")
-        } else {
-            SessionContextUtils.emptySessionContext
-        }
+    return getContextOrNull() ?: throw UnauthorizedException("Session context not found.")
 }
 
 /**
@@ -71,7 +66,7 @@ public fun ApplicationCall.getContext(): SessionContext {
  */
 public fun ApplicationCall.getContextOrNull(): SessionContext? {
     return this.attributes.getOrNull(key = SessionContextUtils.SESSION_CONTEXT_KEY)
-        ?: if (AppSettings.security.isEnabled) null else SessionContextUtils.emptySessionContext
+        ?: SessionContextUtils.emptySessionContext.takeIf { AppSettings.security.isEnabled == false }
 }
 
 /**
