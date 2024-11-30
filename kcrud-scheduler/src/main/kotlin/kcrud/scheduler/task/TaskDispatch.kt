@@ -2,15 +2,15 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.scheduler.service.task
+package kcrud.scheduler.task
 
 import kcrud.core.util.DateTimeUtils.toJavaDate
 import kcrud.core.util.DateTimeUtils.toJavaInstant
+import kcrud.scheduler.policy.BackoffStrategy
+import kcrud.scheduler.policy.RetryPolicy
 import kcrud.scheduler.service.SchedulerService
-import kcrud.scheduler.service.policy.BackoffStrategy
-import kcrud.scheduler.service.policy.RetryPolicy
-import kcrud.scheduler.service.schedule.Schedule
-import kcrud.scheduler.service.schedule.TaskStartAt
+import kcrud.scheduler.task.schedule.Schedule
+import kcrud.scheduler.task.schedule.TaskStartAt
 import org.quartz.*
 import java.util.*
 import kotlin.uuid.Uuid

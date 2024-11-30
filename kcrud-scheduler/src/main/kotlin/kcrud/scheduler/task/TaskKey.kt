@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.scheduler.service.task
+package kcrud.scheduler.task
 
 import kcrud.core.plugins.Uuid
 import kcrud.core.util.toUuid

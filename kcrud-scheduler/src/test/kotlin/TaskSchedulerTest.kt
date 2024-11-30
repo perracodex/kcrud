@@ -8,11 +8,11 @@ import kcrud.core.test.TestUtils
 import kcrud.core.util.toUuid
 import kcrud.database.test.DatabaseTestUtils
 import kcrud.scheduler.service.SchedulerService
-import kcrud.scheduler.service.schedule.Schedule
-import kcrud.scheduler.service.schedule.TaskStartAt
-import kcrud.scheduler.service.task.TaskConsumer
-import kcrud.scheduler.service.task.TaskDispatch
-import kcrud.scheduler.service.task.TaskKey
+import kcrud.scheduler.task.TaskConsumer
+import kcrud.scheduler.task.TaskDispatch
+import kcrud.scheduler.task.TaskKey
+import kcrud.scheduler.task.schedule.Schedule
+import kcrud.scheduler.task.schedule.TaskStartAt
 import kotlinx.coroutines.delay
 import org.quartz.*
 import kotlin.test.AfterTest

@@ -11,8 +11,8 @@ import kcrud.scheduler.listener.TaskListener
 import kcrud.scheduler.listener.TriggerListener
 import kcrud.scheduler.model.task.TaskStateChange
 import kcrud.scheduler.service.SchedulerService.pause
-import kcrud.scheduler.service.task.TaskFactory
-import kcrud.scheduler.service.task.TaskState
+import kcrud.scheduler.task.TaskFactory
+import kcrud.scheduler.task.TaskState
 import org.quartz.Scheduler
 import org.quartz.SchedulerFactory
 import org.quartz.Trigger.TriggerState

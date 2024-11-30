@@ -16,8 +16,8 @@ import kcrud.scheduler.model.task.TaskGroup
 import kcrud.scheduler.model.task.TaskSchedule
 import kcrud.scheduler.model.task.TaskStateChange
 import kcrud.scheduler.service.SchedulerTasks.Companion.create
-import kcrud.scheduler.service.task.TaskKey
-import kcrud.scheduler.service.task.TaskState
+import kcrud.scheduler.task.TaskKey
+import kcrud.scheduler.task.TaskState
 import org.quartz.*
 import org.quartz.impl.matchers.GroupMatcher
 import java.util.*

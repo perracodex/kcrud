@@ -2,7 +2,7 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.scheduler.service.policy
+package kcrud.scheduler.policy
 
 /**
  * Data class representing the retry policy for a task.

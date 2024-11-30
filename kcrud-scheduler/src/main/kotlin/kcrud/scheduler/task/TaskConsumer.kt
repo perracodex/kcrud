@@ -2,14 +2,14 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-package kcrud.scheduler.service.task
+package kcrud.scheduler.task
 
 import kcrud.core.event.SseService
 import kcrud.core.util.DateTimeUtils.current
 import kcrud.core.util.DateTimeUtils.formatted
-import kcrud.scheduler.service.policy.RetryPolicy
-import kcrud.scheduler.service.policy.TaskRetryHandler
-import kcrud.scheduler.service.task.TaskConsumer.Payload
+import kcrud.scheduler.policy.RetryPolicy
+import kcrud.scheduler.policy.TaskRetryHandler
+import kcrud.scheduler.task.TaskConsumer.Payload
 import kotlinx.datetime.LocalDateTime
 import org.quartz.Job
 import org.quartz.JobDataMap
