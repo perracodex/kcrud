@@ -24,7 +24,7 @@ import kcrud.core.util.toUuid
  * @see [getContextOrNull]
  */
 public fun ApplicationCall.setContext(sessionContext: SessionContext): SessionContext {
-    this.attributes.put(key = SessionContextUtils.SESSION_CONTEXT_KEY, value = sessionContext)
+    this.attributes.put(key = SessionContextUtils.sessionContextKey, value = sessionContext)
     this.sessions.set(name = SESSION_NAME, value = sessionContext.actorId)
     return sessionContext
 }
@@ -65,7 +65,7 @@ public fun ApplicationCall.getContext(): SessionContext {
  * @see [getContext]
  */
 public fun ApplicationCall.getContextOrNull(): SessionContext? {
-    return this.attributes.getOrNull(key = SessionContextUtils.SESSION_CONTEXT_KEY)
+    return this.attributes.getOrNull(key = SessionContextUtils.sessionContextKey)
         ?: SessionContextUtils.emptySessionContext.takeIf { AppSettings.security.isEnabled == false }
 }
 
@@ -73,7 +73,7 @@ public fun ApplicationCall.getContextOrNull(): SessionContext? {
  * Extension function to clear the [SessionContext] from the [ApplicationCall] attributes and [Sessions].
  */
 public fun ApplicationCall.clearContext() {
-    this.attributes.remove(key = SessionContextUtils.SESSION_CONTEXT_KEY)
+    this.attributes.remove(key = SessionContextUtils.sessionContextKey)
     this.sessions.clear(name = SESSION_NAME)
 }
 
@@ -84,7 +84,7 @@ private object SessionContextUtils {
     /**
      * Attribute key for storing the [SessionContext] into the [ApplicationCall] attributes.
      */
-    val SESSION_CONTEXT_KEY: AttributeKey<SessionContext> = AttributeKey(name = "SessionContext")
+    val sessionContextKey: AttributeKey<SessionContext> = AttributeKey(name = "SESSION_CONTEXT")
 
     /**
      * A default empty [SessionContext] instance. when security is disabled.
