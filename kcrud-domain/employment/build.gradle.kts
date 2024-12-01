@@ -2,13 +2,14 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-group = "kcrud.employee"
+group = "kcrud.employment"
 version = "1.0.0"
 
 dependencies {
-    implementation(project(":kcrud-core"))
-    implementation(project(":kcrud-database"))
-    implementation(project(":kcrud-access"))
+    implementation(project(":kcrud-system:core"))
+    implementation(project(":kcrud-system:database"))
+    implementation(project(":kcrud-system:access"))
+    implementation(project(":kcrud-domain:employee"))
 
     detektPlugins(libs.detekt.formatting)
 
@@ -19,8 +20,6 @@ dependencies {
 
     implementation(libs.ktor.server.auth)
     implementation(libs.ktor.server.core)
-    implementation(libs.ktor.server.html.builder)
-    implementation(libs.ktor.server.tests)
 
     implementation(libs.ktor.config)
 
@@ -34,7 +33,7 @@ dependencies {
 
     implementation(libs.shared.commons.codec)
 
-    testImplementation(libs.test.kotlin.junit)
-    testImplementation(libs.test.mockk)
-    testImplementation(libs.test.mockito.kotlin)
+    implementation(libs.test.kotlin.junit)
+    implementation(libs.test.mockk)
+    implementation(libs.test.mockito.kotlin)
 }

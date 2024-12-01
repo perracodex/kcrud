@@ -6,7 +6,7 @@ group = "kcrud.database"
 version = "1.0.0"
 
 dependencies {
-    implementation(project(":kcrud-core"))
+    implementation(project(":kcrud-system:core"))
 
     detektPlugins(libs.detekt.formatting)
 

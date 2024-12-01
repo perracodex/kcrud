@@ -20,8 +20,8 @@ function fetchGroups() {
             document.getElementById('groupSelect').value = defaultGroup; // Ensure the correct group is selected.
             fetchTasks(defaultGroup);
         }).catch(error => {
-            console.error('Error fetching groups:', error);
-        });
+        console.error('Error fetching groups:', error);
+    });
 }
 
 // Populate the group select dropdown with the available groups

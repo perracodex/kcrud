@@ -13,12 +13,12 @@ plugins {
 
 rootProject.name = "Kcrud"
 
-include("kcrud-core")
-include("kcrud-database")
-include("kcrud-access")
-include("kcrud-scheduler")
-include("kcrud-domain-employee")
-include("kcrud-domain-employment")
+include("kcrud-system:core")
+include("kcrud-system:database")
+include("kcrud-system:access")
+include("kcrud-system:scheduler")
+include("kcrud-domain:employee")
+include("kcrud-domain:employment")
 include("kcrud-server")
 
 // includeBuild("../Kopapi") {

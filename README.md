@@ -6,31 +6,31 @@ A [Ktor](https://ktor.io/) REST server.
 
 * [Multi-project](.wiki/01.project-structure.md) setup.
 * [Exposed](https://github.com/JetBrains/Exposed) database framework.
-* [Database Connection Pooling](kcrud-database/src/main/kotlin/kcrud/database/service/DatabasePooling.kt) with [HikariCP ](https://github.com/brettwooldridge/HikariCP).
-* [Encryption](kcrud-database/src/main/kotlin/kcrud/database/schema/employment/EmploymentTable.kt) at field level example.
+* [Database Connection Pooling](kcrud-system/database/src/main/kotlin/kcrud/database/service/DatabasePooling.kt) with [HikariCP ](https://github.com/brettwooldridge/HikariCP).
+* [Encryption](kcrud-system/database/src/main/kotlin/kcrud/database/schema/employment/EmploymentTable.kt) at field level example.
 * [Koin](./kcrud-server/src/main/kotlin/kcrud/server/plugins/Koin.kt) dependency injection.
-* [Quartz Scheduler](kcrud-scheduler) integration. A popular and [flexible](https://github.com/quartz-scheduler/quartz/blob/main/docs/introduction.adoc) job scheduling library.
-* [In-memory hashed passwords](./kcrud-access/src/main/kotlin/kcrud/access/credential/CredentialService.kt) storage lookup, with enhanced security.
+* [Quartz Scheduler](kcrud-system/scheduler) integration. A popular and [flexible](https://github.com/quartz-scheduler/quartz/blob/main/docs/introduction.adoc) job scheduling library.
+* [In-memory hashed passwords](./kcrud-system/access/src/main/kotlin/kcrud/access/credential/CredentialService.kt) storage lookup, with enhanced security.
 * [Pagination](https://github.com/perracodex/exposed-pagination) and filtering examples.
 * [JSON serialization](https://ktor.io/docs/serialization.html) with [Kotlinx](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md).
-* [RBAC (Role Based Access Control)](./kcrud-access/src/main/kotlin/kcrud/access/domain/rbac) example, including a basic role [dashboard](./kcrud-access/src/main/kotlin/kcrud/access/domain/rbac/view).
-* [JWT-authentication](./kcrud-access/src/main/kotlin/kcrud/access/plugins/AuthJwt.kt) example.
-* [Basic-authentication](./kcrud-access/src/main/kotlin/kcrud/access/plugins/AuthBasic.kt) example.
-* [OAuth-authentication](./kcrud-access/src/main/kotlin/kcrud/access/plugins/AuthOAuth.kt) example.
-* [Connection Rate limit](kcrud-core/src/main/kotlin/kcrud/core/plugins/RateLimits.kt) examples.
+* [RBAC (Role Based Access Control)](./kcrud-system/access/src/main/kotlin/kcrud/access/domain/rbac) example, including a basic role [dashboard](./kcrud-system/access/src/main/kotlin/kcrud/access/domain/rbac/view).
+* [JWT-authentication](./kcrud-system/access/src/main/kotlin/kcrud/access/plugins/AuthJwt.kt) example.
+* [Basic-authentication](./kcrud-system/access/src/main/kotlin/kcrud/access/plugins/AuthBasic.kt) example.
+* [OAuth-authentication](./kcrud-system/access/src/main/kotlin/kcrud/access/plugins/AuthOAuth.kt) example.
+* [Connection Rate limit](kcrud-system/core/src/main/kotlin/kcrud/core/plugins/RateLimits.kt) examples.
 * [HTML DSL](https://ktor.io/docs/server-html-dsl.html) example.
 * [H2](https://github.com/h2database/h2database) embedded database, both in-memory and file-based.
-* [HOCON](kcrud-core/src/main/resources/config) configuration example, including [parsing](kcrud-core/src/main/kotlin/kcrud/core/settings) for strongly typed settings.
-* [OpenAPI](./kcrud-core/src/main/kotlin/kcrud/core/plugins/ApiSchema.kt) integration, including Swagger-UI and Redoc.
+* [HOCON](kcrud-system/core/src/main/resources/config) configuration example, including [parsing](kcrud-system/core/src/main/kotlin/kcrud/core/settings) for strongly typed settings.
+* [OpenAPI](./kcrud-system/core/src/main/kotlin/kcrud/core/plugins/ApiSchema.kt) integration, including Swagger-UI and Redoc.
 * [Routing](./kcrud-server/src/main/kotlin/kcrud/server/plugins/Routes.kt) organization examples.
 * [Call Logging](https://ktor.io/docs/server-call-logging.html) and [Call ID](https://ktor.io/docs/server-call-id.html) examples for events traceability.
-* [Snowflake](kcrud-core/src/main/kotlin/kcrud/core/security/snowflake) unique IDs for logging purposes, suitable for distributed systems.
-* [Micrometer Metrics](kcrud-core/src/main/kotlin/kcrud/core/plugins/MicrometerMetrics.kt) with Prometheus integration. Configuration steps for Prometheus and Grafana are [included](.wiki/10.micrometer-metrics.md).
+* [Snowflake](kcrud-system/core/src/main/kotlin/kcrud/core/security/snowflake) unique IDs for logging purposes, suitable for distributed systems.
+* [Micrometer Metrics](kcrud-system/core/src/main/kotlin/kcrud/core/plugins/MicrometerMetrics.kt) with Prometheus integration. Configuration steps for Prometheus and Grafana are [included](.wiki/10.micrometer-metrics.md).
 * [Flyway](https://github.com/flyway/flyway) database migration example.
-* [Contextual Transactions](kcrud-database/src/main/kotlin/kcrud/database/util/Transaction.kt), allowing to execute concrete transactions per database connection and/or schema.
-* [Custom exceptions](kcrud-core/src/main/kotlin/kcrud/core/error) including composite error responses.
-* [Custom serializers](kcrud-core/src/main/kotlin/kcrud/core/serializer) examples.
-* [Custom validators](kcrud-core/src/main/kotlin/kcrud/core/error/validator) and [custom table column](kcrud-database/src/main/kotlin/kcrud/database/column) constraints.
+* [Contextual Transactions](kcrud-system/database/src/main/kotlin/kcrud/database/util/Transaction.kt), allowing to execute concrete transactions per database connection and/or schema.
+* [Custom exceptions](kcrud-system/core/src/main/kotlin/kcrud/core/error) including composite error responses.
+* [Custom serializers](kcrud-system/core/src/main/kotlin/kcrud/core/serializer) examples.
+* [Custom validators](kcrud-system/core/src/main/kotlin/kcrud/core/error/validator) and [custom table column](kcrud-system/database/src/main/kotlin/kcrud/database/column) constraints.
 * [Fat Jar building](.wiki/03.fat-jar) and execution example.
 * [Docker containerization](.wiki/04.docker) example.
 
