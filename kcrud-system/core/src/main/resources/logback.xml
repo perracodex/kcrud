@@ -11,20 +11,18 @@
         <appender-ref ref="STDOUT"/>
     </root>
 
-    <!-- Specific Logger Configurations -->
+    <!-- Specific Configurations -->
     <logger name="Application" level="INFO"/>
     <logger name="kcrud" level="DEBUG"/>
+    <logger name="kcrud.core.event" level="WARNING" additivity="false"/>
 
-    <!-- Ktor Logger Names -->
-    <logger name="io.ktor.server.auth.Authentication" level="DEBUG"/>
-    <logger name="io.ktor.server.plugins.compression.Compression" level="DEBUG"/>
-    <logger name="io.ktor.server.plugins.contentnegotiation.ContentNegotiation" level="DEBUG"/>
-    <logger name="io.ktor.server.plugins.ratelimit.RateLimit" level="DEBUG"/>
-    <logger name="io.ktor.server.plugins.statuspages.StatusPages" level="DEBUG"/>
-    <logger name="io.ktor.server.routing.Routing" level="DEBUG"/>
-    <logger name="io.ktor.server.sessions.Sessions" level="DEBUG"/>
+    <!-- Ktor Configurations -->
+    <logger name="io.ktor.server.auth" level="DEBUG"/>
+    <logger name="io.ktor.server.plugins" level="DEBUG"/>
+    <logger name="io.ktor.server.routing" level="DEBUG"/>
+    <logger name="io.ktor.server.sessions" level="DEBUG"/>
 
-    <!-- Other Logger Configurations -->
+    <!-- Other Configurations -->
     <logger name="io.netty" level="WARN"/>
     <logger name="io.swagger" level="ERROR"/>
     <logger name="com.github.jknack" level="OFF"/>
