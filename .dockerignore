@@ -7,9 +7,7 @@
 !gradlew
 !gradlew.bat
 !keystore.p12
-!kcrud-access/**
-!kcrud-core/**
-!kcrud-employee/**
-!kcrud-employment/**
+!kcrud-domain/**
 !kcrud-server/**
+!kcrud-system/**
 !build/libs/**
