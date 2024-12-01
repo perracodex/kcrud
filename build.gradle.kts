@@ -114,16 +114,6 @@ subprojects {
     }
 }
 
-dependencies {
-    implementation(project(":kcrud-system:core"))
-    implementation(project(":kcrud-system:access"))
-    implementation(project(":kcrud-system:database"))
-    implementation(project(":kcrud-system:scheduler"))
-    implementation(project(":kcrud-domain:employee"))
-    implementation(project(":kcrud-domain:employment"))
-    implementation(project(":kcrud-server"))
-}
-
 /** Part of the fat JAR workflow: Task to copy the SSL keystore file for secure deployment. */
 val copyKeystoreTask: TaskProvider<Copy> by tasks.registering(Copy::class) {
     from("keystore.p12")
