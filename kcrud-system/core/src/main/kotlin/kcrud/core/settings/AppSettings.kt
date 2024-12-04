@@ -14,8 +14,6 @@ import kcrud.core.settings.catalog.ConfigurationCatalog
 import kcrud.core.settings.catalog.section.*
 import kcrud.core.settings.catalog.section.security.SecuritySettings
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import kotlin.system.measureTimeMillis
 
 /**
@@ -142,32 +140,5 @@ public object AppSettings {
         }
 
         tracer.info("Application settings loaded. Time taken: $timeTaken ms.")
-    }
-
-    /**
-     * Serializes the current settings configuration into a JSON string.
-     * This method is intended for use in scenarios where the application's settings need to be exported or logged.
-     * It is crucial that the [load] method has been successfully invoked at least once prior to using this method
-     * to ensure that the configuration data is fully initialized and consistent.
-     *
-     * @return The JSON string representation of the current settings.
-     */
-    public fun serialize(): String {
-        return Json.encodeToString<ConfigurationCatalog>(value = configuration)
-    }
-
-    /**
-     * Deserializes the provided JSON string into the application's current settings, effectively updating the
-     * configuration state. This method can be particularly useful for scenarios such as initializing [AppSettings]
-     * in a different class loader or environment where parsing the original configuration sources is not feasible.
-     *
-     * It is crucial that the JSON string provided is properly formatted and structurally compatible with the
-     * [ConfigurationCatalog]. Failure to adhere to the expected structure can result in parsing errors,
-     * potentially leading to an inconsistent or erroneous application configuration state.
-     *
-     * @param string The JSON string to deserialize, which must accurately represent the structure of [ConfigurationCatalog].
-     */
-    public fun deserialize(string: String) {
-        configuration = Json.decodeFromString<ConfigurationCatalog>(string = string)
     }
 }
