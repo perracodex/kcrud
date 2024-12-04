@@ -5,7 +5,6 @@
 package kcrud.core.settings.catalog.section.security.node.auth
 
 import kcrud.core.settings.catalog.section.security.SecuritySettings
-import kotlinx.serialization.Serializable
 
 /**
  * JWT authentication settings.
@@ -17,7 +16,6 @@ import kotlinx.serialization.Serializable
  * @property realm Security realm for the JWT authentication.
  * @property secretKey Secret key for signing the JWT.
  */
-@Serializable
 public data class JwtAuthSettings(
     val providerName: String,
     val tokenLifetimeSec: Long,

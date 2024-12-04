@@ -4,8 +4,6 @@
 
 package kcrud.core.settings.catalog.section.security.node.auth
 
-import kotlinx.serialization.Serializable
-
 /**
  * OAuth-authentication settings.
  *
@@ -17,7 +15,6 @@ import kotlinx.serialization.Serializable
  * @property clientSecret client secret parameter. Provided by OAuth server vendor.
  * @property defaultScopes List of OAuth scopes used by default. Provided by OAuth server vendor.
  */
-@Serializable
 public data class OAuthSettings(
     val providerName: String,
     val redirectCallbackUrl: String,

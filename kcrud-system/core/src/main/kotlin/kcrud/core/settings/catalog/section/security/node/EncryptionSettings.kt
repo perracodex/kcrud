@@ -5,7 +5,6 @@
 package kcrud.core.settings.catalog.section.security.node
 
 import kcrud.core.settings.catalog.section.security.SecuritySettings
-import kotlinx.serialization.Serializable
 
 /**
  * Encryption key settings.
@@ -13,7 +12,6 @@ import kotlinx.serialization.Serializable
  * @property atRest Settings related to encryption at rest.
  * @property atTransit Settings related to encryption in transit.
  */
-@Serializable
 public data class EncryptionSettings(
     val atRest: Spec,
     val atTransit: Spec
@@ -27,7 +25,6 @@ public data class EncryptionSettings(
      * @property key Secret key for encrypting/decrypting data.
      * @property sign Signature key to sign the encrypted data.
      */
-    @Serializable
     public data class Spec(
         val algorithm: String,
         val salt: String,

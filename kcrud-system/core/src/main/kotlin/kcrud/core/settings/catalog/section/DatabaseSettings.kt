@@ -5,7 +5,6 @@
 package kcrud.core.settings.catalog.section
 
 import kcrud.core.env.EnvironmentType
-import kotlinx.serialization.Serializable
 
 /**
  * Database related settings.
@@ -26,7 +25,6 @@ import kotlinx.serialization.Serializable
  * @property username Optional database username.
  * @property password Optional database password.
  */
-@Serializable
 public data class DatabaseSettings(
     val name: String,
     val path: String,

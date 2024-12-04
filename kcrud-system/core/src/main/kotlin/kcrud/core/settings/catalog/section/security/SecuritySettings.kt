@@ -10,7 +10,6 @@ import kcrud.core.settings.catalog.section.security.node.RbacSettings
 import kcrud.core.settings.catalog.section.security.node.auth.BasicAuthSettings
 import kcrud.core.settings.catalog.section.security.node.auth.JwtAuthSettings
 import kcrud.core.settings.catalog.section.security.node.auth.OAuthSettings
-import kotlinx.serialization.Serializable
 
 /**
  * Top level section for the Security related settings.
@@ -24,7 +23,6 @@ import kotlinx.serialization.Serializable
  * @property oAuth Settings related to OAuth authentication, such as the client id and secret.
  * @property rbac Settings related to RBAC authentication.
  */
-@Serializable
 public data class SecuritySettings(
     val isEnabled: Boolean,
     val useSecureConnection: Boolean,

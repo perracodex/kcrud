@@ -4,8 +4,6 @@
 
 package kcrud.core.settings.catalog.section
 
-import kotlinx.serialization.Serializable
-
 /**
  * Contains settings related to CORS.
  *
@@ -24,7 +22,6 @@ import kotlinx.serialization.Serializable
  *
  * @property allowedHosts The list of allowed hosts used in CORS.
  */
-@Serializable
 public data class CorsSettings(
     val allowedHosts: List<String>
 ) {
@@ -35,7 +32,6 @@ public data class CorsSettings(
      * @property schemes The allowed schemes in the host, such as "http" and/or "https".
      * @property subDomains The allowed subdomains, such as "api","admin", etc.
      */
-    @Serializable
     public data class HostConfig(
         val host: String,
         val schemes: List<String>,

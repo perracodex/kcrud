@@ -6,7 +6,6 @@ package kcrud.core.settings.catalog
 
 import kcrud.core.settings.catalog.section.*
 import kcrud.core.settings.catalog.section.security.SecuritySettings
-import kotlinx.serialization.Serializable
 
 /**
  * Represents the top-level configuration settings for the application.
@@ -25,7 +24,6 @@ import kotlinx.serialization.Serializable
  * @property runtime The runtime settings for the application.
  * @property security The security settings for the application.
  */
-@Serializable
 internal data class ConfigurationCatalog(
     val apiSchema: ApiSchemaSettings,
     val cors: CorsSettings,

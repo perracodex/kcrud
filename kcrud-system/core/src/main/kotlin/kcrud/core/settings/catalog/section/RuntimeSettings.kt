@@ -5,7 +5,6 @@
 package kcrud.core.settings.catalog.section
 
 import kcrud.core.env.EnvironmentType
-import kotlinx.serialization.Serializable
 
 /**
  * Contains settings related to server runtime.
@@ -15,7 +14,6 @@ import kotlinx.serialization.Serializable
  * @property doubleReceiveEnvironments The list of environments where the double receive plugin is enabled.
  * @property workingDir The working directory where files are stored.
  */
-@Serializable
 public data class RuntimeSettings(
     val machineId: Int,
     val environment: EnvironmentType,
