@@ -4,7 +4,6 @@
 
 package kcrud.core.settings.catalog.section.security.node.auth
 
-import io.github.perracodex.ktor.config.IConfigCatalogSection
 import kotlinx.serialization.Serializable
 
 /**
@@ -17,4 +16,4 @@ import kotlinx.serialization.Serializable
 public data class BasicAuthSettings(
     val providerName: String,
     val realm: String,
-) : IConfigCatalogSection
+)

@@ -51,7 +51,7 @@ internal class EmployeeRepository(
                 joinType = JoinType.LEFT,
                 onColumn = EmployeeTable.id,
                 otherColumn = ContactTable.employeeId
-            ).selectAll().paginate(pageable = pageable, transform = Employee)
+            ).selectAll().paginate(pageable = pageable, map = Employee)
         }
     }
 
@@ -120,7 +120,7 @@ internal class EmployeeRepository(
                         EmployeeTable.maritalStatus inList filterSet.maritalStatus
                     }
                 }
-            }.paginate(pageable = pageable, transform = Employee)
+            }.paginate(pageable = pageable, map = Employee)
         }
     }
 
@@ -164,7 +164,7 @@ internal class EmployeeRepository(
                 (ContactTable.email.lowerCase() like "%$searchTerm")
             }.paginate(
                 pageable = pageable,
-                transform = Employee
+                map = Employee
             )
         }
     }

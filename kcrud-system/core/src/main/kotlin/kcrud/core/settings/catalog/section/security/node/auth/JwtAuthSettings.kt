@@ -4,7 +4,6 @@
 
 package kcrud.core.settings.catalog.section.security.node.auth
 
-import io.github.perracodex.ktor.config.IConfigCatalogSection
 import kcrud.core.settings.catalog.section.security.SecuritySettings
 import kotlinx.serialization.Serializable
 
@@ -26,7 +25,7 @@ public data class JwtAuthSettings(
     val issuer: String,
     val realm: String,
     val secretKey: String
-) : IConfigCatalogSection {
+) {
     init {
         require(providerName.isNotBlank()) { "Missing JWT provider name." }
         require(tokenLifetimeSec > 0L) { "Invalid JWT token lifetime. Must be > 0." }

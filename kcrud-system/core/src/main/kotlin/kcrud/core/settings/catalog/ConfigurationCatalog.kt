@@ -4,7 +4,6 @@
 
 package kcrud.core.settings.catalog
 
-import io.github.perracodex.ktor.config.IConfigCatalog
 import kcrud.core.settings.catalog.section.*
 import kcrud.core.settings.catalog.section.security.SecuritySettings
 import kotlinx.serialization.Serializable
@@ -34,4 +33,4 @@ internal data class ConfigurationCatalog(
     val deployment: DeploymentSettings,
     val runtime: RuntimeSettings,
     val security: SecuritySettings
-) : IConfigCatalog
+)

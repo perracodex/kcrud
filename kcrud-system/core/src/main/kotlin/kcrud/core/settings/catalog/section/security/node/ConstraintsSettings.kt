@@ -4,7 +4,6 @@
 
 package kcrud.core.settings.catalog.section.security.node
 
-import io.github.perracodex.ktor.config.IConfigCatalogSection
 import kotlinx.serialization.Serializable
 
 /**
@@ -19,7 +18,7 @@ public data class ConstraintsSettings(
     val publicApi: LimitSpec,
     val privateApi: LimitSpec,
     val newToken: LimitSpec
-) : IConfigCatalogSection {
+) {
 
     /**
      * Rate limit specification.

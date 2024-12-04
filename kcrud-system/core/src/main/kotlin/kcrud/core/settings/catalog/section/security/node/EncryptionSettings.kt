@@ -4,7 +4,6 @@
 
 package kcrud.core.settings.catalog.section.security.node
 
-import io.github.perracodex.ktor.config.IConfigCatalogSection
 import kcrud.core.settings.catalog.section.security.SecuritySettings
 import kotlinx.serialization.Serializable
 
@@ -18,7 +17,7 @@ import kotlinx.serialization.Serializable
 public data class EncryptionSettings(
     val atRest: Spec,
     val atTransit: Spec
-) : IConfigCatalogSection {
+) {
 
     /**
      * Configuration settings for a specific encryption.
@@ -34,7 +33,7 @@ public data class EncryptionSettings(
         val salt: String,
         val key: String,
         val sign: String
-    ) : IConfigCatalogSection {
+    ) {
         init {
             require(algorithm.isNotBlank()) { "Missing encryption algorithm." }
             require(salt.isNotBlank()) { "Missing encryption salt." }

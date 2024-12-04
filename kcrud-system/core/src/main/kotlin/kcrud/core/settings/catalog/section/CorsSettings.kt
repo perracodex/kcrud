@@ -4,7 +4,6 @@
 
 package kcrud.core.settings.catalog.section
 
-import io.github.perracodex.ktor.config.IConfigCatalogSection
 import kotlinx.serialization.Serializable
 
 /**
@@ -28,7 +27,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 public data class CorsSettings(
     val allowedHosts: List<String>
-) : IConfigCatalogSection {
+) {
     /**
      * Represents a single host configuration.
      *

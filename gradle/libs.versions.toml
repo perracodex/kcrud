@@ -2,62 +2,81 @@
 
 [versions]
 
-commons-codec = "1.17.1"                # https://github.com/apache/commons-codec/tags
-cron-descriptor = "1.2.10"              # https://github.com/voidburn/cron-expression-descriptor/releases
-database-h2 = "2.3.232"                 # https://github.com/h2database/h2database/releases
-detekt = "1.23.7"                       # https://github.com/detekt/detekt/releases
-dokka = "1.9.20"                        # https://github.com/Kotlin/dokka/releases
-exposed = "0.56.0"                      # https://github.com/JetBrains/Exposed/releases
-exposed-pagination = "1.0.3"            # https://github.com/perracodex/exposed-pagination/releases
-flyway = "11.0.0"                       # https://github.com/flyway/flyway/releases
-google-phonenumber = "8.13.51"          # https://github.com/google/libphonenumber/releases
-hikariCP = "6.2.1"                      # https://github.com/brettwooldridge/HikariCP/tags
-koin = "4.0.0"                          # https://github.com/InsertKoinIO/koin/releases
-kopapi = "1.0.6"                        # https://github.com/perracodex/kopapi/releases
-kotlin = "2.1.0"                        # https://github.com/JetBrains/kotlin/releases
-kotlinx-atomicfu = "0.26.1"             # https://github.com/Kotlin/kotlinx-atomicfu/releases
-kotlinx-datetime = "0.6.1"              # https://github.com/Kotlin/kotlinx-datetime/releases
-kotlinx-serialization = "1.7.3"         # https://github.com/Kotlin/kotlinx.serialization/releases
-ktor = "3.0.1"                          # https://ktor.io/docs/releases.html#release-details
-ktor-config = "1.0.1"                   # https://github.com/perracodex/ktor-config/releases
-logback = "1.5.12"                      # https://github.com/qos-ch/logback/tags
-micrometer-prometheus = "1.14.1"        # https://github.com/micrometer-metrics/micrometer/releases
-mockk = "1.13.13"                       # https://github.com/mockk/mockk/releases
-mockito-kotlin = "5.4.0"                # https://github.com/mockito/mockito-kotlin/releases
-quartz-scheduler = "2.5.0"              # https://github.com/quartz-scheduler/quartz/releases
-typesafe-config = "1.4.3"               # https://github.com/lightbend/config/releases
+commons-codec = "1.17.1"
+cron-descriptor = "1.2.10"
+database-h2 = "2.3.232"
+detekt = "1.23.7"
+dokka = "1.9.20"
+exposed = "0.56.0"
+exposed-pagination = "1.0.4"
+flyway = "11.0.1"
+google-phonenumber = "8.13.51"
+hikariCP = "6.2.1"
+koin = "4.0.0"
+kopapi = "1.0.7"
+kotlin = "2.1.0"
+kotlinx-atomicfu = "0.26.1"
+kotlinx-datetime = "0.6.1"
+kotlinx-serialization = "1.7.3"
+ktor = "3.0.2"
+ktor-config = "1.0.2"
+logback = "1.5.12"
+micrometer-prometheus = "1.14.1"
+mockk = "1.13.13"
+mockito-kotlin = "5.4.0"
+quartz-scheduler = "2.5.0"
+typesafe-config = "1.4.3"
 
 
 [plugins]
 
+# Detekt.
+# https://github.com/detekt/detekt/releases
+# https://github.com/detekt/detekt
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+
+# Dokka.
+# https://github.com/Kotlin/dokka/releases
+# https://github.com/Kotlin/dokka
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+
+# Kotlin JVM.
+# https://github.com/Kotlin/dokka/releases
+# https://github.com/JetBrains/kotlinx
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+
+# Kotlin Serialization.
+# https://github.com/Kotlin/kotlinx.serialization/releases
+# https://github.com/Kotlin/kotlinx.serialization
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
+# Ktor.
+# https://github.com/ktorio/ktor/releases
+# https://github.com/ktorio/ktor
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 
 
 [libraries]
 
 # Cron Descriptor.
-# https://github.com/voidburn/cron-expression-descriptor
 # https://github.com/voidburn/cron-expression-descriptor/releases
+# https://github.com/voidburn/cron-expression-descriptor
 cron-descriptor = { module = "it.burning:cron-expression-descriptor", version.ref = "cron-descriptor" }
 
 # H2 database.
-# https://github.com/h2database/h2database
 # https://github.com/h2database/h2database/releases
+# https://github.com/h2database/h2database
 database-h2 = { module = "com.h2database:h2", version.ref = "database-h2" }
 
 # Detekt.
-# https://github.com/detekt/detekt
 # https://github.com/detekt/detekt/releases
+# https://github.com/detekt/detekt
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 
 # Exposed ORM.
-# https://github.com/JetBrains/Exposed
-# https://github.com/JetBrains/Exposed/blob/main/docs/ChangeLog.md
 # https://github.com/JetBrains/Exposed/releases
+# https://github.com/JetBrains/Exposed/blob/main/docs/ChangeLog.md
+# https://github.com/JetBrains/Exposed
 exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
 exposed-crypt = { module = "org.jetbrains.exposed:exposed-crypt", version.ref = "exposed" }
 exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
@@ -65,53 +84,53 @@ exposed-json = { module = "org.jetbrains.exposed:exposed-json", version.ref = "e
 exposed-kotlin-datetime = { module = "org.jetbrains.exposed:exposed-kotlin-datetime", version.ref = "exposed" }
 
 # Exposed Pagination.
-# https://github.com/perracodex/exposed-pagination
 # https://github.com/perracodex/exposed-pagination/releases
+# https://github.com/perracodex/exposed-pagination
 exposed-pagination = { module = "io.github.perracodex:exposed-pagination", version.ref = "exposed-pagination" }
 
 # Flyway (Database migration).
-# https://github.com/flyway/flyway
 # https://github.com/flyway/flyway/releases
+# https://github.com/flyway/flyway
 flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
 
 # Phone number validation.
-# https://github.com/google/libphonenumber
 # https://github.com/google/libphonenumber/releases
+# https://github.com/google/libphonenumber
 google-phonenumber = { module = "com.googlecode.libphonenumber:libphonenumber", version.ref = "google-phonenumber" }
 
 # HikariCP (Database connection pooling)
+# https://github.com/brettwooldridge/HikariCP/tags
 # https://ktor.io/docs/db-connection-pooling-caching.html
 # https://github.com/brettwooldridge/HikariCP
-# https://github.com/brettwooldridge/HikariCP/tags
 hikariCP = { module = "com.zaxxer:HikariCP", version.ref = "hikariCP" }
 
 # Koin.
+# https://github.com/InsertKoinIO/koin/releases
 # https://insert-koin.io/docs/quickstart/ktor
 # https://github.com/InsertKoinIO/koin
 # https://github.com/InsertKoinIO/koin-getting-started
-# https://github.com/JetBrains/kotlin/releases
 koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "koin" }
 koin-logger-slf4j = { module = "io.insert-koin:koin-logger-slf4j", version.ref = "koin" }
 koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 
 # Kopapi.
-# https://github.com/perracodex/kopapi
 # https://github.com/perracodex/kopapi/releases
+# https://github.com/perracodex/kopapi
 kopapi = { module = "io.github.perracodex:kopapi", version.ref = "kopapi" }
 
 # AtomicFU.
-# https://github.com/Kotlin/kotlinx-atomicfu
 # https://github.com/Kotlin/kotlinx-atomicfu/releases
+# https://github.com/Kotlin/kotlinx-atomicfu
 kotlinx-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinx-atomicfu" }
 
 # Serializable DateTime.
-# https://github.com/Kotlin/kotlinx-datetime
 # https://github.com/Kotlin/kotlinx-datetime/releases
+# https://github.com/Kotlin/kotlinx-datetime
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 
 # Serialization (part of the pLugin).
-# https://github.com/Kotlin/kotlinx.serialization
 # https://github.com/Kotlin/kotlinx.serialization/releases
+# https://github.com/Kotlin/kotlinx.serialization
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 
 # Serialization (Ktor).
@@ -120,14 +139,15 @@ kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 
 # Ktor Configurations Mapping.
-# https://github.com/perracodex/ktor-config
 # https://github.com/perracodex/ktor-config/releases
+# https://github.com/perracodex/ktor-config
 ktor-config = { module = "io.github.perracodex:ktor-config", version.ref = "ktor-config" }
 
 # Ktor.
+# https://github.com/ktorio/ktor/releases
+# https://ktor.io/docs/releases.html#release-details
 # https://api.ktor.io
 # https://github.com/ktorio/ktor
-# https://github.com/ktorio/ktor/releases
 ktor-server-auth = { module = "io.ktor:ktor-server-auth", version.ref = "ktor" }
 ktor-server-auth-jwt = { module = "io.ktor:ktor-server-auth-jwt", version.ref = "ktor" }
 ktor-server-autoHeadResponse = { module = "io.ktor:ktor-server-auto-head-response", version.ref = "ktor" }
@@ -154,35 +174,37 @@ ktor-server-tests = { module = "io.ktor:ktor-server-test-host", version.ref = "k
 ktor-server-thymeleaf = { module = "io.ktor:ktor-server-thymeleaf", version.ref = "ktor" }
 
 # Logging.
+# https://github.com/qos-ch/logback/tags
 # https://github.com/qos-ch/logback
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 
 # Micrometer Metrics.
-# https://ktor.io/docs/server-metrics-micrometer.html
 # https://github.com/micrometer-metrics/micrometer/releases
+# https://ktor.io/docs/server-metrics-micrometer.html
 micrometer-metrics = { module = "io.ktor:ktor-server-metrics-micrometer", version.ref = "ktor" }
 micrometer-metrics-prometheus = { module = "io.micrometer:micrometer-registry-prometheus", version.ref = "micrometer-prometheus" }
 
 # Quartz Scheduler.
-# https://github.com/quartz-scheduler/quartz
 # https://github.com/quartz-scheduler/quartz/releases
+# https://github.com/quartz-scheduler/quartz
 # https://github.com/quartz-scheduler/quartz/blob/main/docs/index.adoc
 # https://www.marcogomiero.com/posts/2022/ktor-jobs-quartz
 quartz-scheduler = { module = "org.quartz-scheduler:quartz", version.ref = "quartz-scheduler" }
 
 # Shared.
+# https://github.com/apache/commons-codec/tags
 shared-commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec" }
 
 # 'Conf' type safety.
-# https://github.com/lightbend/config
 # https://github.com/lightbend/config/releases
+# https://github.com/lightbend/config
 typesafe-config = { module = "com.typesafe:config", version.ref = "typesafe-config" }
 
 # Testing.
-# https://github.com/mockk/mockk
-# https://github.com/mockito/mockito-kotlin
 # https://github.com/mockk/mockk/releases
 # https://github.com/mockito/mockito-kotlin/releases
+# https://github.com/mockk/mockk
+# https://github.com/mockito/mockito-kotlin
 test-kotlin-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit5", version.ref = "kotlin" }
 test-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 test-mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin" }

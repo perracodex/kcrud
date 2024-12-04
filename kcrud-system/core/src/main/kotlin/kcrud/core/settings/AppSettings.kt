@@ -6,7 +6,6 @@ package kcrud.core.settings
 
 import io.github.perracodex.ktor.config.ConfigCatalogMap
 import io.github.perracodex.ktor.config.ConfigurationParser
-import io.github.perracodex.ktor.config.IConfigCatalogSection
 import io.ktor.server.config.*
 import kcrud.core.env.Tracer
 import kcrud.core.settings.AppSettings.configuration
@@ -121,7 +120,7 @@ public object AppSettings {
             // 1. keyPath: The hierarchical key-path in the configuration file from which to parse, (e.g., `"ktor.deployment"`).
             // 2. catalogProperty: The property name in the [IConfigCatalog] implementation.
             // 3. propertyClass: The catalogProperty class to instantiate.
-            val catalogMappings: List<ConfigCatalogMap<out IConfigCatalogSection>> = listOf(
+            val catalogMappings: List<ConfigCatalogMap> = listOf(
                 ConfigCatalogMap(keyPath = "apiSchema", catalogProperty = "apiSchema", propertyClass = ApiSchemaSettings::class),
                 ConfigCatalogMap(keyPath = "cors", catalogProperty = "cors", propertyClass = CorsSettings::class),
                 ConfigCatalogMap(keyPath = "database", catalogProperty = "database", propertyClass = DatabaseSettings::class),

@@ -4,7 +4,6 @@
 
 package kcrud.core.settings.catalog.section
 
-import io.github.perracodex.ktor.config.IConfigCatalogSection
 import kotlinx.serialization.Serializable
 
 /**
@@ -19,4 +18,4 @@ public data class DeploymentSettings(
     val port: Int,
     val sslPort: Int,
     val host: String,
-) : IConfigCatalogSection
+)

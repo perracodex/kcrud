@@ -4,7 +4,6 @@
 
 package kcrud.core.settings.catalog.section
 
-import io.github.perracodex.ktor.config.IConfigCatalogSection
 import kcrud.core.env.EnvironmentType
 import kotlinx.serialization.Serializable
 
@@ -44,4 +43,4 @@ public data class DatabaseSettings(
     val useMigrations: Boolean,
     val username: String? = null,
     val password: String? = null,
-) : IConfigCatalogSection
+)

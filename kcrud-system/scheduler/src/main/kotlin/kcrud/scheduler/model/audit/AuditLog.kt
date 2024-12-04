@@ -4,7 +4,7 @@
 
 package kcrud.scheduler.model.audit
 
-import io.perracodex.exposed.pagination.IModelTransform
+import io.perracodex.exposed.pagination.MapModel
 import kcrud.core.plugins.Uuid
 import kcrud.database.model.Meta
 import kcrud.database.schema.scheduler.SchedulerAuditTable
@@ -42,7 +42,7 @@ public data class AuditLog(
     val detail: String?,
     val meta: Meta
 ) {
-    internal companion object : IModelTransform<AuditLog> {
+    internal companion object : MapModel<AuditLog> {
         /**
          * Maps a [ResultRow] to a [AuditLog] instance.
          *

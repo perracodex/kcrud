@@ -4,7 +4,7 @@
 
 package kcrud.domain.employee.model
 
-import io.perracodex.exposed.pagination.IModelTransform
+import io.perracodex.exposed.pagination.MapModel
 import kcrud.core.plugins.Uuid
 import kcrud.core.util.DateTimeUtils.age
 import kcrud.database.model.Meta
@@ -46,7 +46,7 @@ public data class Employee(
     val contact: Contact?,
     val meta: Meta
 ) {
-    public companion object : IModelTransform<Employee> {
+    public companion object : MapModel<Employee> {
         public override fun from(row: ResultRow): Employee {
             val contact: Contact? = row.getOrNull(ContactTable.id)?.let {
                 Contact.from(row = row)

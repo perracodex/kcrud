@@ -54,7 +54,7 @@ internal object AuditRepository {
         return transaction {
             SchedulerAuditTable.selectAll()
                 .orderBy(SchedulerAuditTable.createdAt to SortOrder.DESC)
-                .paginate(pageable = pageable, transform = AuditLog)
+                .paginate(pageable = pageable, map = AuditLog)
         }
     }
 
@@ -83,7 +83,7 @@ internal object AuditRepository {
                     }
                 }
                 .orderBy(SchedulerAuditTable.createdAt to SortOrder.DESC)
-                .paginate(pageable = pageable, transform = AuditLog)
+                .paginate(pageable = pageable, map = AuditLog)
         }
     }
 

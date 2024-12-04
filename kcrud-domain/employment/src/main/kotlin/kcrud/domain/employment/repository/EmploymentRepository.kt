@@ -34,7 +34,7 @@ internal class EmploymentRepository(
                 .innerJoin(EmployeeTable)
                 .leftJoin(ContactTable)
                 .selectAll()
-                .paginate(pageable = pageable, transform = Employment)
+                .paginate(pageable = pageable, map = Employment)
         }
     }
 

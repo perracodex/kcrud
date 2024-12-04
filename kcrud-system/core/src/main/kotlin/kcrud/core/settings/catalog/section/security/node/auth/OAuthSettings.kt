@@ -4,7 +4,6 @@
 
 package kcrud.core.settings.catalog.section.security.node.auth
 
-import io.github.perracodex.ktor.config.IConfigCatalogSection
 import kotlinx.serialization.Serializable
 
 /**
@@ -27,7 +26,7 @@ public data class OAuthSettings(
     val clientId: String,
     val clientSecret: String,
     val defaultScopes: List<String>
-) : IConfigCatalogSection {
+) {
     init {
         require(providerName.isNotBlank()) { "Missing OAuth provider name." }
         require(redirectCallbackUrl.isNotBlank()) { "Missing OAuth redirect callback Url." }
