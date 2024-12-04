@@ -26,3 +26,15 @@ include("kcrud-server")
 //        substitute(module("io.github.perracodex:kopapi")).using(project(":"))
 //    }
 // }
+//
+// includeBuild("../ExposedPagination") {
+//    dependencySubstitution {
+//        substitute(module("io.github.perracodex:exposed-pagination")).using(project(":"))
+//    }
+// }
+//
+// includeBuild("../KtorConfig") {
+//    dependencySubstitution {
+//        substitute(module("io.github.perracodex:ktor-config")).using(project(":"))
+//    }
+// }
