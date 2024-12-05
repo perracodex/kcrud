@@ -3,7 +3,6 @@
  */
 
 import io.ktor.test.dispatcher.*
-import io.mockk.every
 import io.mockk.mockk
 import kcrud.access.domain.actor.di.ActorDomainInjection
 import kcrud.access.domain.rbac.di.RbacDomainInjection
@@ -66,8 +65,6 @@ class TransactionTest : KoinComponent {
     @Test
     fun testNestedTransaction(): Unit = testSuspend {
         val sessionContext: SessionContext = mockk<SessionContext>()
-        every { sessionContext.schema } returns null
-        every { sessionContext.db } returns null
 
         val contactRepository: IContactRepository by inject(
             parameters = { parametersOf(sessionContext) }
@@ -127,8 +124,6 @@ class TransactionTest : KoinComponent {
     @Test
     fun testNestedTransactionRollbackByError(): Unit = testSuspend {
         val sessionContext: SessionContext = mockk<SessionContext>()
-        every { sessionContext.schema } returns null
-        every { sessionContext.db } returns null
 
         val contactRepository: IContactRepository by inject(
             parameters = { parametersOf(sessionContext) }

@@ -4,7 +4,6 @@
 
 import io.ktor.test.dispatcher.*
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import io.perracodex.exposed.pagination.Page
 import kcrud.access.domain.actor.di.ActorDomainInjection
@@ -94,10 +93,7 @@ class EmployeeServiceTest : KoinComponent {
                 assert(value = mockEmployee.fullName.isNotBlank())
 
                 val sessionContext: SessionContext = mockk<SessionContext>()
-                every { sessionContext.schema } returns null
-                every { sessionContext.db } returns null
-
-                val mockEmployeeRepository = mockk<IEmployeeRepository>()
+                val mockEmployeeRepository: IEmployeeRepository = mockk<IEmployeeRepository>()
                 val employeeService = EmployeeService(
                     sessionContext = sessionContext,
                     employeeRepository = mockEmployeeRepository
@@ -120,8 +116,6 @@ class EmployeeServiceTest : KoinComponent {
 
         newSuspendedTransaction {
             val sessionContext: SessionContext = mockk<SessionContext>()
-            every { sessionContext.schema } returns null
-            every { sessionContext.db } returns null
 
             val employeeService: EmployeeService by inject(
                 parameters = { parametersOf(sessionContext) }

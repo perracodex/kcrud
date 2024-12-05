@@ -3,7 +3,6 @@
  */
 
 import io.ktor.test.dispatcher.*
-import io.mockk.every
 import io.mockk.mockk
 import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.Pageable
@@ -56,8 +55,6 @@ class PaginationTest : KoinComponent {
     fun testEmptyPagination(): Unit = testSuspend {
         newSuspendedTransaction {
             val sessionContext: SessionContext = mockk<SessionContext>()
-            every { sessionContext.schema } returns null
-            every { sessionContext.db } returns null
 
             val employeeService: EmployeeService by inject(
                 parameters = { parametersOf(sessionContext) }
@@ -120,8 +117,6 @@ class PaginationTest : KoinComponent {
     fun testEvenPagination(): Unit = testSuspend {
         newSuspendedTransaction {
             val sessionContext: SessionContext = mockk<SessionContext>()
-            every { sessionContext.schema } returns null
-            every { sessionContext.db } returns null
 
             val employeeService: EmployeeService by inject(
                 parameters = { parametersOf(sessionContext) }
@@ -256,8 +251,6 @@ class PaginationTest : KoinComponent {
     fun testOddPagination(): Unit = testSuspend {
         newSuspendedTransaction {
             val sessionContext: SessionContext = mockk<SessionContext>()
-            every { sessionContext.schema } returns null
-            every { sessionContext.db } returns null
 
             val employeeService: EmployeeService by inject(
                 parameters = { parametersOf(sessionContext) }
@@ -394,8 +387,6 @@ class PaginationTest : KoinComponent {
     fun testPaginationCount(): Unit = testSuspend {
         newSuspendedTransaction {
             val sessionContext: SessionContext = mockk<SessionContext>()
-            every { sessionContext.schema } returns null
-            every { sessionContext.db } returns null
 
             val employeeRepository: IEmployeeRepository by inject(
                 parameters = { parametersOf(sessionContext) }
@@ -437,8 +428,6 @@ class PaginationTest : KoinComponent {
     fun testRandomPagination(): Unit = testSuspend {
         newSuspendedTransaction {
             val sessionContext: SessionContext = mockk<SessionContext>()
-            every { sessionContext.schema } returns null
-            every { sessionContext.db } returns null
 
             val employeeService: EmployeeService by inject(
                 parameters = { parametersOf(sessionContext) }
@@ -518,8 +507,6 @@ class PaginationTest : KoinComponent {
     fun testRandomPaginationWithSorting(): Unit = testSuspend {
         newSuspendedTransaction {
             val sessionContext: SessionContext = mockk<SessionContext>()
-            every { sessionContext.schema } returns null
-            every { sessionContext.db } returns null
 
             val employeeService: EmployeeService by inject(
                 parameters = { parametersOf(sessionContext) }

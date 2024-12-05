@@ -2,7 +2,6 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 import io.ktor.test.dispatcher.*
-import io.mockk.every
 import io.mockk.mockk
 import io.perracodex.exposed.pagination.Page
 import kcrud.access.domain.actor.di.ActorDomainInjection
@@ -54,8 +53,6 @@ class StressTest : KoinComponent {
     @Test
     fun largeConcurrentSet(): Unit = testSuspend {
         val sessionContext: SessionContext = mockk<SessionContext>()
-        every { sessionContext.schema } returns null
-        every { sessionContext.db } returns null
 
         val employeeService: EmployeeService by inject(
             parameters = { parametersOf(sessionContext) }
@@ -101,8 +98,6 @@ class StressTest : KoinComponent {
     @Test
     fun largeEmployeeSet(): Unit = testSuspend {
         val sessionContext: SessionContext = mockk<SessionContext>()
-        every { sessionContext.schema } returns null
-        every { sessionContext.db } returns null
 
         val employeeService: EmployeeService by inject(
             parameters = { parametersOf(sessionContext) }

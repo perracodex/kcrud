@@ -7,7 +7,6 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import io.ktor.test.dispatcher.*
-import io.mockk.every
 import io.mockk.mockk
 import kcrud.access.test.RbacTestUtils
 import kcrud.core.context.SessionContext
@@ -187,8 +186,6 @@ class RbacTest : KoinComponent {
     private suspend fun createEmployee(): Employee {
         val employeeRequest: EmployeeRequest = EmployeeTestUtils.newEmployeeRequest()
         val sessionContext: SessionContext = mockk<SessionContext>()
-        every { sessionContext.schema } returns null
-        every { sessionContext.db } returns null
 
         val employeeService: EmployeeService by inject(
             parameters = { org.koin.core.parameter.parametersOf(sessionContext) }

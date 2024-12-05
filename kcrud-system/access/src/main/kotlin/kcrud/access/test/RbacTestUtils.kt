@@ -41,8 +41,7 @@ public object RbacTestUtils {
         val sessionContext = SessionContext(
             actorId = actor.id,
             username = actor.username,
-            roleId = actor.role.id,
-            schema = null,
+            roleId = actor.role.id
         )
 
         return TokenService.generate(sessionContext = sessionContext)
@@ -62,8 +61,7 @@ public object RbacTestUtils {
         val sessionContext = SessionContext(
             actorId = actor.id,
             username = actor.username,
-            roleId = actor.role.id,
-            schema = null
+            roleId = actor.role.id
         )
 
         return TokenService.generate(sessionContext = sessionContext)

@@ -93,8 +93,7 @@ private object SessionContextUtils {
         SessionContext(
             actorId = uuid,
             username = "no-actor",
-            roleId = uuid,
-            schema = null
+            roleId = uuid
         )
     }
 }

@@ -3,7 +3,6 @@
  */
 
 import io.ktor.test.dispatcher.*
-import io.mockk.every
 import io.mockk.mockk
 import kcrud.core.context.SessionContext
 import kcrud.core.test.TestUtils
@@ -37,8 +36,6 @@ class TimestampTest : KoinComponent {
     @Test
     fun testTimestamp(): Unit = testSuspend {
         val sessionContext: SessionContext = mockk<SessionContext>()
-        every { sessionContext.schema } returns null
-        every { sessionContext.db } returns null
 
         val employeeRepository: IEmployeeRepository by inject(
             parameters = { parametersOf(sessionContext) }
