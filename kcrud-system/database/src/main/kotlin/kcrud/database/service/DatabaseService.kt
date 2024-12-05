@@ -58,20 +58,23 @@ internal object DatabaseService {
     ) {
         buildDatabase(settings = settings)
 
-        // Establishes a database connection.
-        // If a connection pool size is specified, a HikariCP DataSource is configured to manage the pool
-        val databaseInstance: Database = if (settings.connectionPoolSize > 0) {
-            val dataSource: HikariDataSource = DatabasePooling.createDataSource(
+        // Creates a HikariCP DataSource if the connection pool size is set.
+        hikariDataSource = if (settings.connectionPoolSize > 0) {
+            DatabasePooling.createDataSource(
                 settings = settings,
                 isolationLevel = isolationLevel,
                 telemetryRegistry = telemetryRegistry
             )
-
-            hikariDataSource = dataSource
-            connectDatabase(settings = settings, isolationLevel = isolationLevel, datasource = dataSource)
         } else {
-            connectDatabase(settings = settings, isolationLevel = isolationLevel)
+            null
         }
+
+        // Establishes a database connection.
+        val databaseInstance: Database = connectDatabase(
+            settings = settings,
+            isolationLevel = isolationLevel,
+            datasource = hikariDataSource
+        )
 
         schemaSetup.let {
             tracer.info("Setting database schema.")
@@ -108,32 +111,22 @@ internal object DatabaseService {
             warnLongQueriesDuration = settings.warnLongQueriesDurationMs
         }
 
-        return datasource?.let {
-            Database.connect(
+        // If a configured DataSource is provided, use it to create the connection.
+        datasource?.let {
+            return Database.connect(
                 datasource = it,
                 databaseConfig = databaseConfig
             )
-        } ?: run {
-            val username: String? = settings.username
-            val password: String? = settings.password
-
-            if (username.isNullOrBlank()) {
-                Database.connect(
-                    url = settings.jdbcUrl,
-                    driver = settings.jdbcDriver,
-                    databaseConfig = databaseConfig
-                )
-            } else {
-                check(!password.isNullOrBlank()) { "Database password must be provided when username is set." }
-                Database.connect(
-                    url = settings.jdbcUrl,
-                    driver = settings.jdbcDriver,
-                    user = username,
-                    password = password,
-                    databaseConfig = databaseConfig
-                )
-            }
         }
+
+        // If no DataSource is provided, use the JDBC connection details to create the connection.
+        return Database.connect(
+            url = settings.jdbcUrl,
+            driver = settings.jdbcDriver,
+            user = settings.username.orEmpty(),
+            password = settings.password.orEmpty(),
+            databaseConfig = databaseConfig
+        )
     }
 
     /**

@@ -50,11 +50,8 @@ internal object DatabasePooling {
             isAutoCommit = false
 
             // Database credentials for authentication.
-            if (!settings.username.isNullOrBlank()) {
-                check(!settings.password.isNullOrBlank()) { "Database password must be provided when username is set." }
-                this.username = settings.username
-                this.password = settings.password
-            }
+            this.username = settings.username.orEmpty()
+            this.password = settings.password.orEmpty()
 
             // Integrates a telemetry registry for monitoring and metrics.
             telemetryRegistry?.let {
