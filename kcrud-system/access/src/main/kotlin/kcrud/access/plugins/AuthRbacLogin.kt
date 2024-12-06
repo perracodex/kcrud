@@ -14,6 +14,7 @@ import kcrud.access.domain.rbac.plugin.annotation.RbacApi
 import kcrud.access.domain.rbac.view.RbacLoginView
 import kcrud.core.context.clearContext
 import kcrud.core.context.setContext
+import kotlinx.coroutines.launch
 
 /**
  * Refreshes the default actors, and configures the RBAC form login authentication.
@@ -30,7 +31,9 @@ public fun Application.configureRbac() {
 
     // Refresh the default actors.
     this.monitor.subscribe(definition = ApplicationStarted) {
-        DefaultActorFactory.refresh()
+        this.launch {
+            DefaultActorFactory.refresh()
+        }
     }
 
     // Configure the RBAC form login authentication.

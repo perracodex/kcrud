@@ -13,10 +13,10 @@ import kcrud.access.domain.rbac.service.RbacService
 import kcrud.core.env.Tracer
 import kcrud.database.schema.admin.rbac.type.RbacAccessLevel
 import kcrud.database.schema.admin.rbac.type.RbacScope
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -46,23 +46,21 @@ internal object DefaultActorFactory : KoinComponent {
      * Refresh the Credentials and RBAC services on application start,
      * so the caches are up-to-date and ready to handle requests.
      */
-    fun refresh() {
+    suspend fun refresh(): Unit = withContext(Dispatchers.IO) {
         tracer.info("Refreshing actors.")
 
-        CoroutineScope(Dispatchers.IO).launch {
-            // Ensure the database has any Actors, if none exist then create the default ones.
-            createIfMissing()
+        // Ensure the database has any Actors, if none exist then create the default ones.
+        createIfMissing()
 
-            coroutineScope {
-                launch {
-                    val credentialService: CredentialService by inject()
-                    credentialService.refreshActors()
-                }
+        coroutineScope {
+            launch {
+                val credentialService: CredentialService by inject()
+                credentialService.refreshActors()
+            }
 
-                launch {
-                    val rbacService: RbacService by inject()
-                    rbacService.refreshActors()
-                }
+            launch {
+                val rbacService: RbacService by inject()
+                rbacService.refreshActors()
             }
         }
     }
