@@ -2,8 +2,6 @@
  * Copyright (c) 2024-Present Perracodex. Use of this source code is governed by an MIT license.
  */
 
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     application // Required to enable packaging and running the Ktor server as an executable JAR.
     alias(libs.plugins.dokka) // Required for generating documentation.
@@ -56,6 +54,9 @@ allprojects {
     }
 }
 
+// Defined in 'gradle.properties' file.
+val disableOptimizations: Boolean = project.findProperty("disableOptimizations")?.toString().toBoolean()
+
 // Configuration block applied to all subprojects within the multi-project setup.
 subprojects {
 
@@ -78,13 +79,7 @@ subprojects {
         // https://github.com/Kotlin/KEEP/blob/master/proposals/explicit-api-mode.md
         // https://kotlinlang.org/docs/whatsnew14.html#explicit-api-mode-for-library-authors
         explicitApi()
-    }
 
-    // Defined in 'gradle.properties' file.
-    val disableOptimizations: Boolean = project.findProperty("disableOptimizations")?.toString().toBoolean()
-
-    // Targets 'KotlinCompile' tasks in each subproject to apply task-specific compiler options.
-    tasks.withType<KotlinCompile>().configureEach {
         compilerOptions {
             if (disableOptimizations) {
                 // Add '-Xdebug' flag to disable local variable optimizations when debugging.
@@ -101,7 +96,7 @@ subprojects {
     // Configure Detekt for static code analysis.
     detekt {
         buildUponDefaultConfig = true
-        allRules = false
+        allRules = true
         config.setFrom("$rootDir/config/detekt/detekt.yml")
     }
 
