@@ -15,6 +15,7 @@ import kcrud.database.schema.admin.rbac.type.RbacAccessLevel
 import kcrud.database.schema.admin.rbac.type.RbacScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -46,41 +47,36 @@ internal object DefaultActorFactory : KoinComponent {
      * so the caches are up-to-date and ready to handle requests.
      */
     fun refresh() {
+        tracer.info("Refreshing actors.")
+
         CoroutineScope(Dispatchers.IO).launch {
             // Ensure the database has any Actors, if none exist then create the default ones.
-            verify()
+            createIfMissing()
 
-            launch {
-                val credentialService: CredentialService by inject()
-                credentialService.refreshActors()
-            }
+            coroutineScope {
+                launch {
+                    val credentialService: CredentialService by inject()
+                    credentialService.refreshActors()
+                }
 
-            launch {
-                val rbacService: RbacService by inject()
-                rbacService.refreshActors()
+                launch {
+                    val rbacService: RbacService by inject()
+                    rbacService.refreshActors()
+                }
             }
         }
     }
 
     /**
-     * Creates default Actors with their respective roles
-     * if none are found in the database.
+     * Creates default Actors with their respective roles if none are found in the database.
      */
-    private suspend fun verify() {
+    private suspend fun createIfMissing() {
         val actorService: ActorService by inject()
-
-        if (!actorService.actorsExist()) {
-            tracer.info("No actors found. Creating default ones.")
-            createActors(actorService = actorService)
+        if (actorService.actorsExist()) {
+            return
         }
-    }
 
-    /**
-     * Creates default Actors with their respective roles.
-     *
-     * @param actorService The [ActorService] instance to create the Actors.
-     */
-    private suspend fun createActors(actorService: ActorService) {
+        tracer.info("No actors found. Creating default ones.")
         val rbacRoles: List<RbacRole> = getRoles()
 
         rbacRoles.forEach { role ->
