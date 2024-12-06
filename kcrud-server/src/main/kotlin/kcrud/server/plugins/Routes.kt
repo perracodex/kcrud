@@ -20,7 +20,6 @@ import kcrud.core.security.snowflake.snowflakeRoute
 import kcrud.core.settings.AppSettings
 import kcrud.domain.employee.api.employeeRoutes
 import kcrud.domain.employment.api.employmentRoutes
-import kcrud.scheduler.api.schedulerRoutes
 import kcrud.server.demo.api.demoRoutes
 import kcrud.server.health.healthCheckRoute
 
@@ -58,7 +57,6 @@ internal fun Application.configureRoutes() {
         healthCheckRoute()
         snowflakeRoute()
         rbacRoutes()
-        schedulerRoutes()
         sseRoutes()
 
         // Server root endpoint.

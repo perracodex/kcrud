@@ -26,7 +26,6 @@
     <logger name="io.netty" level="WARN"/>
     <logger name="io.swagger" level="ERROR"/>
     <logger name="com.github.jknack" level="OFF"/>
-    <logger name="org.quartz" level="INFO"/>
     <logger name="com.zaxxer.hikari" level="WARN"/>
     <logger name="io.ktor.server.plugins.callid" level="OFF"/>
 </configuration>

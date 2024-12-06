@@ -9,7 +9,6 @@ dependencies {
     implementation(project(":kcrud-system:core"))
     implementation(project(":kcrud-system:database"))
     implementation(project(":kcrud-system:access"))
-    implementation(project(":kcrud-system:scheduler"))
     implementation(project(":kcrud-domain:employee"))
     implementation(project(":kcrud-domain:employment"))
 

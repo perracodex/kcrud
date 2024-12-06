@@ -9,7 +9,6 @@ A [Ktor](https://ktor.io/) REST server.
 * [Database Connection Pooling](kcrud-system/database/src/main/kotlin/kcrud/database/service/DatabasePooling.kt) with [HikariCP ](https://github.com/brettwooldridge/HikariCP).
 * [Encryption](kcrud-system/database/src/main/kotlin/kcrud/database/schema/employment/EmploymentTable.kt) at field level example.
 * [Koin](./kcrud-server/src/main/kotlin/kcrud/server/plugins/Koin.kt) dependency injection.
-* [Quartz Scheduler](kcrud-system/scheduler) integration. A popular and [flexible](https://github.com/quartz-scheduler/quartz/blob/main/docs/introduction.adoc) job scheduling library.
 * [In-memory hashed passwords](./kcrud-system/access/src/main/kotlin/kcrud/access/credential/CredentialService.kt) storage lookup, with enhanced security.
 * [Pagination](https://github.com/perracodex/exposed-pagination) and filtering examples.
 * [JSON serialization](https://ktor.io/docs/serialization.html) with [Kotlinx](https://github.com/Kotlin/kotlinx.serialization/blob/master/docs/serialization-guide.md).

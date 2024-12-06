@@ -3,7 +3,6 @@
 [versions]
 
 commons-codec = "1.17.1"
-cron-descriptor = "1.2.10"
 database-h2 = "2.3.232"
 detekt = "1.23.7"
 dokka = "1.9.20"
@@ -24,7 +23,6 @@ logback = "1.5.12"
 micrometer-prometheus = "1.14.1"
 mockk = "1.13.13"
 mockito-kotlin = "5.4.0"
-quartz-scheduler = "2.5.0"
 typesafe-config = "1.4.3"
 
 
@@ -57,11 +55,6 @@ ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 
 
 [libraries]
-
-# Cron Descriptor.
-# https://github.com/voidburn/cron-expression-descriptor/releases
-# https://github.com/voidburn/cron-expression-descriptor
-cron-descriptor = { module = "it.burning:cron-expression-descriptor", version.ref = "cron-descriptor" }
 
 # H2 database.
 # https://github.com/h2database/h2database/releases
@@ -183,13 +176,6 @@ logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "lo
 # https://ktor.io/docs/server-metrics-micrometer.html
 micrometer-metrics = { module = "io.ktor:ktor-server-metrics-micrometer", version.ref = "ktor" }
 micrometer-metrics-prometheus = { module = "io.micrometer:micrometer-registry-prometheus", version.ref = "micrometer-prometheus" }
-
-# Quartz Scheduler.
-# https://github.com/quartz-scheduler/quartz/releases
-# https://github.com/quartz-scheduler/quartz
-# https://github.com/quartz-scheduler/quartz/blob/main/docs/index.adoc
-# https://www.marcogomiero.com/posts/2022/ktor-jobs-quartz
-quartz-scheduler = { module = "org.quartz-scheduler:quartz", version.ref = "quartz-scheduler" }
 
 # Shared.
 # https://github.com/apache/commons-codec/tags

@@ -78,8 +78,6 @@ public fun Application.configureApiSchema() {
             add(name = "Token", description = "JWT Token Management")
             add(name = "Events", description = "System Events")
             add(name = "System", description = "System Management")
-            add(name = "Scheduler", description = "Scheduler Management")
-            add(name = "Scheduler Admin", description = "Scheduler Maintenance")
             add(name = "Employee", description = "Employee Management")
             add(name = "Employment", description = "Employment Management")
             add(name = "Demo", description = "Demo related APIs")

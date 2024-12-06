@@ -27,7 +27,6 @@ internal object ApplicationsUtils {
             NetworkUtils.logEndpoints(reason = "Demo", endpoints = listOf("demo"))
             NetworkUtils.logEndpoints(reason = "Healthcheck", endpoints = listOf("admin/health"))
             NetworkUtils.logEndpoints(reason = "Snowflake", endpoints = listOf("admin/snowflake/${SnowflakeFactory.nextId()}"))
-            NetworkUtils.logEndpoints(reason = "Scheduler", endpoints = listOf("admin/scheduler/dashboard"))
             NetworkUtils.logEndpoints(reason = "Micrometer Metrics", endpoints = listOf("admin/metrics"))
 
             if (AppSettings.security.rbac.isEnabled) {

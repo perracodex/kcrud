@@ -9,7 +9,6 @@ import kcrud.core.env.HealthCheckApi
 import kcrud.core.util.RouteInfo
 import kcrud.core.util.collectRoutes
 import kcrud.database.service.DatabaseHealth
-import kcrud.scheduler.service.SchedulerHealth
 import kcrud.server.health.check.*
 import kotlinx.serialization.Serializable
 
@@ -20,7 +19,6 @@ import kotlinx.serialization.Serializable
  * @property application The [ApplicationHealth] check.
  * @property deployment The [DeploymentHealth] check.
  * @property runtime The [RuntimeHealth] check.
- * @property scheduler The [kcrud.scheduler.service.SchedulerHealth] check.
  * @property security The [SecurityHealth] check.
  * @property snowflake The [kcrud.server.health.check.SnowflakeHealth] check.
  * @property database The [DatabaseHealth] check.
@@ -28,12 +26,11 @@ import kotlinx.serialization.Serializable
  */
 @OptIn(HealthCheckApi::class)
 @Serializable
-public data class HealthCheck internal constructor(
+public data class HealthCheck private constructor(
     val health: MutableList<String>,
     val application: ApplicationHealth,
     val deployment: DeploymentHealth,
     val runtime: RuntimeHealth,
-    val scheduler: SchedulerHealth,
     val security: SecurityHealth,
     val snowflake: SnowflakeHealth,
     val database: DatabaseHealth,
@@ -43,7 +40,6 @@ public data class HealthCheck internal constructor(
         health.addAll(application.errors)
         health.addAll(deployment.errors)
         health.addAll(runtime.errors)
-        health.addAll(scheduler.errors)
         health.addAll(security.errors)
         health.addAll(snowflake.errors)
         health.addAll(database.errors)
@@ -67,7 +63,6 @@ public data class HealthCheck internal constructor(
                 application = ApplicationHealth(),
                 deployment = DeploymentHealth.Companion.create(call = call),
                 runtime = RuntimeHealth(call = call),
-                scheduler = SchedulerHealth.create(),
                 security = SecurityHealth(),
                 snowflake = SnowflakeHealth(),
                 database = DatabaseHealth.create(),

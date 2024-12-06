@@ -10,7 +10,6 @@ import kcrud.access.plugins.*
 import kcrud.core.plugins.*
 import kcrud.core.settings.AppSettings
 import kcrud.database.plugins.configureDatabase
-import kcrud.scheduler.plugin.configureTaskScheduler
 import kcrud.server.plugins.configureKoin
 import kcrud.server.plugins.configureRoutes
 import kcrud.server.util.ApplicationsUtils
@@ -88,8 +87,6 @@ internal fun Application.kcrudModule() {
     configureStatusPages()
 
     configureDoubleReceive()
-
-    configureTaskScheduler()
 
     configureThymeleaf()
 
