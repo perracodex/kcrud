@@ -17,7 +17,9 @@ internal val SchedulerPlugin: ApplicationPlugin<SchedulerPluginConfig> = createA
     SchedulerService.configure(application = application)
 
     if (pluginConfig.autoStart) {
-        SchedulerService.start()
+        application.monitor.subscribe(definition = ApplicationStarted) {
+            SchedulerService.start()
+        }
     }
 }
 
