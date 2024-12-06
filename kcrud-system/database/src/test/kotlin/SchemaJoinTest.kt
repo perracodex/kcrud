@@ -8,6 +8,7 @@ import kcrud.core.test.TestUtils
 import kcrud.database.test.DatabaseTestUtils
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.math.BigDecimal
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -97,14 +98,14 @@ class SchemaJoinTest {
 
 // PublicTable is defined in the public schema, note the name "public.user"
 private object PublicTable : Table(name = "public.user") {
-    val id = integer(name = "id").autoIncrement()
-    val name = varchar(name = "name", length = 50)
+    val id: Column<Int> = integer(name = "id").autoIncrement()
+    val name: Column<String> = varchar(name = "name", length = 50)
     override val primaryKey = PrimaryKey(id)
 }
 
 private object SchemaTable : Table(name = "schema_table") {
-    val id = integer(name = "id").autoIncrement()
-    val userId = integer(name = "user_id").references(PublicTable.id)
-    val amount = decimal(name = "amount", precision = 10, scale = 2)
+    val id: Column<Int> = integer(name = "id").autoIncrement()
+    val userId: Column<Int> = integer(name = "user_id").references(PublicTable.id)
+    val amount: Column<BigDecimal> = decimal(name = "amount", precision = 10, scale = 2)
     override val primaryKey = PrimaryKey(id)
 }

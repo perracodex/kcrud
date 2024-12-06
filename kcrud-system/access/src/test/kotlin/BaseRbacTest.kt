@@ -80,9 +80,9 @@ class BaseRbacTest {
             )
         )
 
-        assertNotNull(processed.nested)
-        assertNotNull(processed.nested.nested)
-        assertNotNull(processed.nested.nested.nested)
+        assertNotNull(actual = processed.nested)
+        assertNotNull(actual = processed.nested.nested)
+        assertNotNull(actual = processed.nested.nested.nested)
         assertEquals(expected = RbacFieldAnonymization.isAnonymized(processed.id), actual = true)
         assertEquals(expected = RbacFieldAnonymization.isAnonymized(processed.name), actual = true)
         assertEquals(expected = RbacFieldAnonymization.isAnonymized(processed.nested.id), actual = true)

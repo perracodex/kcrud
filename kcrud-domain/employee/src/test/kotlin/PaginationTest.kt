@@ -180,7 +180,7 @@ class PaginationTest : KoinComponent {
             }
 
             // 2 pages.
-            val halfPageCount = totalRecords / 2
+            val halfPageCount: Int = totalRecords / 2
             employeeService.findAll(pageable = Pageable(page = 1, size = halfPageCount)).also { page ->
                 assertEquals(
                     expected = 2,
@@ -545,7 +545,7 @@ class PaginationTest : KoinComponent {
                 )
 
                 // Sort createdEmployees for validation according to the same criteria
-                val sortedEmployees = when (sortField) {
+                val sortedEmployees: List<Employee> = when (sortField) {
                     "firstName", "lastName" -> {
                         if (sortOrder == Pageable.Direction.ASC) {
                             createdEmployees.sortedBy { it.getSortValue(sortField) as String }
@@ -575,7 +575,7 @@ class PaginationTest : KoinComponent {
 
                 employeeService.findAll(pageable = pageable).also { page ->
                     val expectedTotalPages: Int = (totalRecords + pageSize - 1) / pageSize
-                    val expectedRecordsForPage = sortedEmployees
+                    val expectedRecordsForPage: List<Employee> = sortedEmployees
                         .drop(n = pageIndex * pageSize)
                         .take(pageSize)
 
@@ -606,13 +606,13 @@ class PaginationTest : KoinComponent {
                     )
 
                     // Verify the actual records on the page are sorted and match the expected slice from sortedEmployees.
-                    val actualValues = page.content.map { it.getSortValue(sortField) }
-                    val expectedValues = expectedRecordsForPage.map { it.getSortValue(sortField) }
+                    val actualValues: List<Comparable<*>> = page.content.map { it.getSortValue(sortField) }
+                    val expectedValues: List<Comparable<*>> = expectedRecordsForPage.map { it.getSortValue(sortField) }
 
                     if (sortField == "dob") {
                         // Cast to LocalDate for comparison if the field is a date.
-                        val actualDates = actualValues as List<*>
-                        val expectedDates = expectedValues as List<*>
+                        val actualDates: List<*> = actualValues as List<*>
+                        val expectedDates: List<*> = expectedValues as List<*>
                         assertEquals(
                             expected = expectedDates,
                             actual = actualDates,
@@ -620,8 +620,8 @@ class PaginationTest : KoinComponent {
                         )
                     } else {
                         // For string comparisons, including enums.
-                        val actualStrings = actualValues.map { it.toString() }
-                        val expectedStrings = expectedValues.map { it.toString() }
+                        val actualStrings: List<String> = actualValues.map { it.toString() }
+                        val expectedStrings: List<String> = expectedValues.map { it.toString() }
                         assertEquals(
                             expected = expectedStrings,
                             actual = actualStrings,

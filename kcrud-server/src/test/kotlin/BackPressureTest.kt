@@ -58,14 +58,14 @@ class BackPressureTest : KoinComponent {
         for (currentLoad in startConcurrency..maxConcurrency step step) {
             println("Testing with concurrency level: $currentLoad")
 
-            val totalTimeMillis = measureTimeMillis {
+            val totalTimeMillis: Long = measureTimeMillis {
                 testSuspend {
                     repeat(currentLoad) { index ->
                         launch {
                             val operationType: String = operationMix[index % operationMix.size]
 
                             if (operationType == "write") {
-                                val employeeRequestJson = Json.encodeToString<EmployeeRequest>(
+                                val employeeRequestJson: String = Json.encodeToString<EmployeeRequest>(
                                     value = EmployeeTestUtils.newEmployeeRequest()
                                 )
 
@@ -91,8 +91,8 @@ class BackPressureTest : KoinComponent {
                                     }
                                     assertEquals(expected = HttpStatusCode.NotFound, actual = readResponse.status)
                                 } else {
-                                    val randomIndex = (0 until writtenEmployeeIds.size).random()
-                                    val employeeId = writtenEmployeeIds.elementAt(index = randomIndex)
+                                    val randomIndex: Int = (0 until writtenEmployeeIds.size).random()
+                                    val employeeId: String = writtenEmployeeIds.elementAt(index = randomIndex)
                                     val readResponse: HttpResponse = client.get(urlString = "/api/v1/employees/$employeeId") {
                                         header(key = HttpHeaders.Authorization, value = "Bearer $authToken")
                                     }
@@ -106,7 +106,7 @@ class BackPressureTest : KoinComponent {
                 }
             }
 
-            val averageResponseTime = totalTimeMillis.toDouble() / currentLoad
+            val averageResponseTime: Double = totalTimeMillis.toDouble() / currentLoad
             println("Average response time at $currentLoad concurrency: $averageResponseTime ms")
 
             totalAverageResponseTime += averageResponseTime
@@ -118,7 +118,7 @@ class BackPressureTest : KoinComponent {
             assertTrue(message = "Average response time should be below 500ms") { averageResponseTime < 500L }
         }
 
-        val overallAverageResponseTime = totalAverageResponseTime / ((maxConcurrency - startConcurrency) / step + 1)
+        val overallAverageResponseTime: Double = totalAverageResponseTime / ((maxConcurrency - startConcurrency) / step + 1)
         println("Overall average response time: $overallAverageResponseTime ms")
         println("Largest average response time: $largestAverageResponseTime ms")
     }
@@ -260,8 +260,8 @@ class BackPressureTest : KoinComponent {
                             }
                             assertEquals(expected = HttpStatusCode.NotFound, actual = readResponse.status)
                         } else {
-                            val randomIndex = (0 until writtenEmployeeIds.size).random()
-                            val employeeId = writtenEmployeeIds.elementAt(index = randomIndex)
+                            val randomIndex: Int = (0 until writtenEmployeeIds.size).random()
+                            val employeeId: String = writtenEmployeeIds.elementAt(index = randomIndex)
                             val readResponse: HttpResponse = client.get(urlString = "/api/v1/employees/$employeeId") {
                                 header(key = HttpHeaders.Authorization, value = "Bearer $authToken")
                             }

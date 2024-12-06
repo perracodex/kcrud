@@ -62,12 +62,12 @@ class StressTest : KoinComponent {
         val totalElements = 10000
 
         val jobs: List<Deferred<Employee>> = List(size = totalElements) { index ->
-            val randomYears = (20..65).random()
-            val randomMonths = (1..12).random()
-            val randomDays = (1..28).random()
-            val randomChars = List(size = 2) { "abc0123".random() }.joinToString(separator = "")
+            val randomYears: Int = (20..65).random()
+            val randomMonths: Int = (1..12).random()
+            val randomDays: Int = (1..28).random()
+            val randomChars: String = List(size = 2) { "abc0123".random() }.joinToString(separator = "")
 
-            val request = employeeRequest.copy(
+            val request: EmployeeRequest = employeeRequest.copy(
                 firstName = "${employeeRequest.firstName}_$index",
                 maritalStatus = MaritalStatus.entries.random(),
                 honorific = Honorific.entries.random(),
@@ -107,12 +107,12 @@ class StressTest : KoinComponent {
         val totalElements = 10000
 
         (1..totalElements).forEach { index ->
-            val randomYears = (20..65).random()
-            val randomMonths = (1..12).random()
-            val randomDays = (1..28).random()
-            val randomChars = List(size = 2) { "abc0123".random() }.joinToString(separator = "")
+            val randomYears: Int = (20..65).random()
+            val randomMonths: Int = (1..12).random()
+            val randomDays: Int = (1..28).random()
+            val randomChars: String = List(size = 2) { "abc0123".random() }.joinToString(separator = "")
 
-            val request = employeeRequest.copy(
+            val request: EmployeeRequest = employeeRequest.copy(
                 firstName = "${employeeRequest.firstName}_$index",
                 maritalStatus = MaritalStatus.entries.random(),
                 honorific = Honorific.entries.random(),
