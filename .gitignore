@@ -50,3 +50,4 @@ bin/
 .runtime/*
 /.database/*
 .idea/
+.kotlin/*
