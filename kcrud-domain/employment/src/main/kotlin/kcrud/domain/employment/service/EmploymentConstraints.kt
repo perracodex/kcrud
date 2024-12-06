@@ -6,6 +6,8 @@ package kcrud.domain.employment.service
 
 import kcrud.core.error.AppException
 import kcrud.core.error.CompositeAppException
+import kcrud.core.util.getPropertyName
+import kcrud.database.model.Period
 import kcrud.domain.employment.error.EmploymentError
 import kcrud.domain.employment.model.EmploymentRequest
 import kotlin.uuid.Uuid
@@ -40,7 +42,7 @@ internal object EmploymentConstraints {
                         employmentId = employmentId,
                         startDate = request.period.startDate,
                         endDate = endDate,
-                        field = "period.endDate",
+                        field = getPropertyName(root = EmploymentRequest::period, Period::endDate),
                         reason = reason
                     )
                 )
@@ -56,7 +58,7 @@ internal object EmploymentConstraints {
                         employmentId = employmentId,
                         startDate = request.period.startDate,
                         probationEndDate = probationEndDate,
-                        field = "probationEndDate",
+                        field = getPropertyName(root = EmploymentRequest::probationEndDate),
                         reason = reason
                     )
                 )

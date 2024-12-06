@@ -8,6 +8,7 @@ import kcrud.core.error.AppException
 import kcrud.core.error.CompositeAppException
 import kcrud.core.error.validator.EmailValidator
 import kcrud.core.error.validator.PhoneValidator
+import kcrud.core.util.getPropertyName
 import kcrud.domain.contact.model.ContactRequest
 import kcrud.domain.employee.error.EmployeeError
 import kcrud.domain.employee.model.EmployeeRequest
@@ -42,7 +43,7 @@ internal object EmployeeConstraints {
         // Check the work email.
         checkWorkEmail(
             employeeId = employeeId,
-            workEmail = request.workEmail,
+            request = request,
             reason = reason,
             repository = repository,
             errors = errors
@@ -69,25 +70,27 @@ internal object EmployeeConstraints {
      * Verifies the work email of the employee. Format and uniqueness are checked.
      *
      * @param employeeId The ID of the employee being verified. `null` if the employee is new.
-     * @param workEmail The work email to be verified.
+     * @param request The request details to be verified.
      * @param reason The reason for the verification. To be included in error messages.
      * @param repository The [EmployeeRepository] to check for uniqueness.
      * @param errors The list of errors to append to.
      */
     private fun checkWorkEmail(
         employeeId: Uuid?,
-        workEmail: String,
+        request: EmployeeRequest,
         reason: String,
         repository: IEmployeeRepository,
         errors: MutableList<AppException>
     ) {
+        val workEmail: String = request.workEmail
+
         // Check the work email format.
         EmailValidator.check(value = workEmail).onFailure { error ->
             errors.add(
                 EmployeeError.InvalidEmail(
                     employeeId = employeeId,
                     email = workEmail,
-                    field = "workEmail",
+                    field = getPropertyName(root = EmployeeRequest::workEmail),
                     reason = reason,
                     cause = error
                 )
@@ -95,13 +98,13 @@ internal object EmployeeConstraints {
         }
 
         // Check if the work email is already in use.
-        repository.findByWorkEmail(workEmail, excludeEmployeeId = employeeId)?.let { employee ->
+        repository.findByWorkEmail(workEmail = workEmail, excludeEmployeeId = employeeId)?.let { employee ->
             errors.add(
                 EmployeeError.WorkEmailInUse(
                     affectedEmployeeId = employeeId,
                     usedByEmployeeId = employee.id,
                     workEmail = workEmail,
-                    field = "workEmail",
+                    field = getPropertyName(root = EmployeeRequest::workEmail),
                     reason = reason,
                     cause = null
                 )
@@ -129,7 +132,7 @@ internal object EmployeeConstraints {
                 EmployeeError.InvalidEmail(
                     employeeId = employeeId,
                     email = contactRequest.email,
-                    field = "contact.email",
+                    field = getPropertyName(root = ContactRequest::email),
                     reason = reason,
                     cause = error
                 )
@@ -141,7 +144,7 @@ internal object EmployeeConstraints {
                 EmployeeError.InvalidPhoneNumber(
                     employeeId = employeeId,
                     phone = contactRequest.phone,
-                    field = "contact.phone",
+                    field = getPropertyName(root = ContactRequest::phone),
                     reason = reason,
                     cause = error
                 )
