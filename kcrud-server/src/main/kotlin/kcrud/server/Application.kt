@@ -90,5 +90,5 @@ internal fun Application.kcrudModule() {
 
     configureThymeleaf()
 
-    ApplicationsUtils.watchServer(application = this)
+    ApplicationsUtils.completeServerConfiguration(application = this)
 }

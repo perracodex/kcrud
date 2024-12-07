@@ -5,10 +5,12 @@
 package kcrud.server.util
 
 import io.ktor.server.application.*
+import kcrud.access.domain.actor.service.DefaultActorFactory
 import kcrud.core.env.Tracer
 import kcrud.core.security.snowflake.SnowflakeFactory
 import kcrud.core.settings.AppSettings
 import kcrud.core.util.NetworkUtils
+import kotlinx.coroutines.launch
 
 /**
  * Utility functions for the application server.
@@ -17,25 +19,41 @@ internal object ApplicationsUtils {
     private val tracer: Tracer = Tracer<ApplicationsUtils>()
 
     /**
+     * Perform any additional server configuration that is required for the application to run.
+     *
+     * @param application The Ktor application instance.
+     */
+    fun completeServerConfiguration(application: Application) {
+        // Refresh the default actors.
+        application.monitor.subscribe(definition = ApplicationStarted) {
+            application.launch {
+                DefaultActorFactory.refresh()
+            }
+        }
+
+        // Watch the server for readiness.
+        application.monitor.subscribe(definition = ServerReady) {
+            watchServer(application = application)
+        }
+    }
+
+    /**
      * Watches the server for readiness and logs the server's endpoints to the console.
      */
-    fun watchServer(application: Application) {
-        application.monitor.subscribe(definition = ServerReady) {
+    private fun watchServer(application: Application) {
+        // Dumps the server's endpoints to the console for easy access and testing.
+        // This does not include the actual API routes endpoints.
+        NetworkUtils.logEndpoints(reason = "Demo", endpoints = listOf("demo"))
+        NetworkUtils.logEndpoints(reason = "Healthcheck", endpoints = listOf("admin/health"))
+        NetworkUtils.logEndpoints(reason = "Snowflake", endpoints = listOf("admin/snowflake/${SnowflakeFactory.nextId()}"))
+        NetworkUtils.logEndpoints(reason = "Micrometer Metrics", endpoints = listOf("admin/metrics"))
 
-            // Dumps the server's endpoints to the console for easy access and testing.
-            // This does not include the actual API routes endpoints.
-            NetworkUtils.logEndpoints(reason = "Demo", endpoints = listOf("demo"))
-            NetworkUtils.logEndpoints(reason = "Healthcheck", endpoints = listOf("admin/health"))
-            NetworkUtils.logEndpoints(reason = "Snowflake", endpoints = listOf("admin/snowflake/${SnowflakeFactory.nextId()}"))
-            NetworkUtils.logEndpoints(reason = "Micrometer Metrics", endpoints = listOf("admin/metrics"))
-
-            if (AppSettings.security.rbac.isEnabled) {
-                NetworkUtils.logEndpoints(reason = "RBAC", endpoints = listOf("rbac/login"))
-            }
-
-            // Log the server readiness.
-            tracer.withSeverity("Development Mode Enabled: ${application.developmentMode}")
-            tracer.info("Server configured. Environment: ${AppSettings.runtime.environment}")
+        if (AppSettings.security.rbac.isEnabled) {
+            NetworkUtils.logEndpoints(reason = "RBAC", endpoints = listOf("rbac/login"))
         }
+
+        // Log the server readiness.
+        tracer.withSeverity("Development Mode Enabled: ${application.developmentMode}")
+        tracer.info("Server configured. Environment: ${AppSettings.runtime.environment}")
     }
 }

@@ -22,7 +22,7 @@ import org.koin.core.component.inject
  *
  * These are created only if no Actors at all are found in the database.
  */
-internal object DefaultActorFactory : KoinComponent {
+public object DefaultActorFactory : KoinComponent {
     private val tracer: Tracer = Tracer<DefaultActorFactory>()
 
     /**
@@ -31,7 +31,7 @@ internal object DefaultActorFactory : KoinComponent {
      * These are used to create default Actors and their respective roles,
      * when none are found in the database.
      */
-    enum class RoleName {
+    internal enum class RoleName {
         /** ADMIN actor role. Usually with full access. */
         ADMIN,
 
@@ -43,7 +43,7 @@ internal object DefaultActorFactory : KoinComponent {
      * Refresh the Credentials and RBAC services on application start,
      * so the caches are up-to-date and ready to handle requests.
      */
-    suspend fun refresh(): Unit = withContext(Dispatchers.IO) {
+    public suspend fun refresh(): Unit = withContext(Dispatchers.IO) {
         tracer.info("Refreshing actors.")
 
         // Ensure the database has any Actors, if none exist then create the default ones.
