@@ -13,9 +13,7 @@ import kcrud.access.domain.rbac.service.RbacService
 import kcrud.core.env.Tracer
 import kcrud.database.schema.admin.rbac.type.RbacAccessLevel
 import kcrud.database.schema.admin.rbac.type.RbacScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -51,15 +49,17 @@ internal object DefaultActorFactory : KoinComponent {
         // Ensure the database has any Actors, if none exist then create the default ones.
         createIfMissing()
 
-        launch {
+        val credentialJob: Job = launch {
             val credentialService: CredentialService by inject()
             credentialService.refreshActors()
         }
 
-        launch {
+        val rbacJob: Job = launch {
             val rbacService: RbacService by inject()
             rbacService.refreshActors()
         }
+
+        joinAll(credentialJob, rbacJob)
     }
 
     /**
