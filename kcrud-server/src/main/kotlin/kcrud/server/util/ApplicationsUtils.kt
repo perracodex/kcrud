@@ -33,14 +33,14 @@ internal object ApplicationsUtils {
 
         // Watch the server for readiness.
         application.monitor.subscribe(definition = ServerReady) {
-            watchServer(application = application)
+            outputState(application = application)
         }
     }
 
     /**
-     * Watches the server for readiness and logs the server's endpoints to the console.
+     * Output the server state to the console, including main endpoints and configuration.
      */
-    private fun watchServer(application: Application) {
+    private fun outputState(application: Application) {
         // Dumps the server's endpoints to the console for easy access and testing.
         // This does not include the actual API routes endpoints.
         NetworkUtils.logEndpoints(reason = "Demo", endpoints = listOf("demo"))
