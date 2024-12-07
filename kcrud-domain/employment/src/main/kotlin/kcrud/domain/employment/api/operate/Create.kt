@@ -54,7 +54,7 @@ internal fun Route.createEmploymentRoute() {
         response<Employment>(status = HttpStatusCode.Created) {
             description = "The employment created."
         }
-        response<AppException.Response>(status = EmploymentError.EmployeeNotFound.STATUS_CODE) {
+        response<AppException.ErrorResponse>(status = EmploymentError.EmployeeNotFound.STATUS_CODE) {
             description = "Employee not found. Code: ${EmploymentError.EmployeeNotFound.ERROR_CODE}"
         }
         bearerSecurity(name = "Authentication") {

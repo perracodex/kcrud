@@ -48,7 +48,7 @@ internal fun Route.findEmploymentByIdRoute() {
         response<Employment>(status = HttpStatusCode.OK) {
             description = "The employment found."
         }
-        response<AppException.Response>(status = EmploymentError.EmploymentNotFound.STATUS_CODE) {
+        response<AppException.ErrorResponse>(status = EmploymentError.EmploymentNotFound.STATUS_CODE) {
             description = "Employment not found. Code: ${EmploymentError.EmploymentNotFound.ERROR_CODE}"
         }
         bearerSecurity(name = "Authentication") {

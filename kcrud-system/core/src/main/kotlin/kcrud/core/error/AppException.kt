@@ -50,12 +50,12 @@ public abstract class AppException(
     }
 
     /**
-     * Converts this exception into a serializable [Response] instance,
+     * Converts this exception into a serializable [ErrorResponse] instance,
      * suitable for sending in an HTTP response.
-     * @return The [Response] instance representing this exception.
+     * @return The [ErrorResponse] instance representing this exception.
      */
-    public fun toResponse(): Response {
-        return Response(
+    public fun toResponse(): ErrorResponse {
+        return ErrorResponse(
             status = statusCode.value,
             context = context,
             code = errorCode,
@@ -81,7 +81,7 @@ public abstract class AppException(
      * @property cause The underlying cause of the error, if any.
      */
     @Serializable
-    public data class Response internal constructor(
+    public data class ErrorResponse internal constructor(
         val status: Int,
         val context: String,
         val code: String,

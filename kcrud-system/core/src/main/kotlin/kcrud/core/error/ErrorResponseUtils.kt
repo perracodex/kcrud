@@ -21,7 +21,7 @@ public suspend fun ApplicationCall.respondError(cause: AppException) {
     this.response.header(name = HttpHeaders.ETag, value = cause.errorCode)
 
     // Serialize the error response.
-    val json: String = Json.encodeToString<AppException.Response>(value = cause.toResponse())
+    val json: String = Json.encodeToString<AppException.ErrorResponse>(value = cause.toResponse())
 
     // Send the serialized error response.
     this.respondText(
@@ -43,7 +43,7 @@ public suspend fun ApplicationCall.respondError(cause: CompositeAppException) {
     val etagValue: String = cause.errors.joinToString(separator = ";") { it.errorCode }
     this.response.header(name = HttpHeaders.ETag, value = etagValue)
 
-    val responses: CompositeAppException.Responses = CompositeAppException.Responses(
+    val responses: CompositeAppException.ErrorResponses = CompositeAppException.ErrorResponses(
         errors = cause.errors.map { it.toResponse() }
     )
 

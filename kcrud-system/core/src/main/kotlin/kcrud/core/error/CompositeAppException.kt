@@ -27,14 +27,14 @@ public class CompositeAppException(
     }
 
     /**
-     * Data class representing a serializable list of [AppException.Response] instances,
+     * Data class representing a serializable list of [AppException.ErrorResponse] instances,
      * encapsulating the structured error information that can be sent in an HTTP response.
      *
-     * @property errors The list of [AppException.Response] instances that occurred.
+     * @property errors The list of [AppException.ErrorResponse] instances that occurred.
      */
     @Serializable
-    public data class Responses internal constructor(
-        val errors: List<AppException.Response>
+    public data class ErrorResponses internal constructor(
+        val errors: List<AppException.ErrorResponse>
     )
 
     private companion object {
