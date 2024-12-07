@@ -19,6 +19,7 @@ internal val DbPlugin: ApplicationPlugin<DbPluginConfig> = createApplicationPlug
 ) {
     DatabaseService.init(
         settings = AppSettings.database,
+        environment = AppSettings.runtime.environment,
         telemetryRegistry = pluginConfig.telemetryRegistry
     ) {
         pluginConfig.tables.forEach { table ->

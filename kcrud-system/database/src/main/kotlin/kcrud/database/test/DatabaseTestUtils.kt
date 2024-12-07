@@ -9,6 +9,7 @@ import kcrud.core.util.DateTimeUtils.current
 import kcrud.database.model.Period
 import kcrud.database.schema.contact.ContactTable
 import kcrud.database.schema.employee.EmployeeTable
+import kcrud.database.schema.employment.EmploymentTable
 import kcrud.database.service.DatabaseService
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
@@ -24,9 +25,13 @@ public object DatabaseTestUtils {
      * Sets up the database for testing.
      */
     public fun setupDatabase() {
-        DatabaseService.init(settings = AppSettings.database) {
+        DatabaseService.init(
+            settings = AppSettings.database,
+            environment = AppSettings.runtime.environment
+        ) {
             addTable(table = ContactTable)
             addTable(table = EmployeeTable)
+            addTable(table = EmploymentTable)
         }
     }
 
@@ -115,9 +120,9 @@ private object PhoneNumberGenerator {
         return synchronized(lock) {
             var phoneNumber: String
             do {
-                val areaCode = areaCodes.random(random) // Randomly select a valid area code
-                val exchangeCode = random.nextInt(200, 999) // Generate a valid exchange code
-                val subscriberNumber = random.nextInt(1000, 9999) // Generate a subscriber number
+                val areaCode: Int = areaCodes.random(random) // Randomly select a valid area code
+                val exchangeCode: Int = random.nextInt(200, 999) // Generate a valid exchange code
+                val subscriberNumber: Int = random.nextInt(1000, 9999) // Generate a subscriber number
                 phoneNumber = "+1$areaCode$exchangeCode$subscriberNumber"
             } while (usedNumbers.containsKey(phoneNumber))
             usedNumbers[phoneNumber] = true
