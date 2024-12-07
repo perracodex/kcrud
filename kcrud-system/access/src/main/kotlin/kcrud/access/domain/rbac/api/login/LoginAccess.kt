@@ -8,7 +8,7 @@ import io.github.perracodex.kopapi.dsl.operation.api
 import io.ktor.http.*
 import io.ktor.server.html.*
 import io.ktor.server.routing.*
-import kcrud.access.domain.rbac.plugin.annotation.RbacApi
+import kcrud.access.domain.rbac.annotation.RbacApi
 import kcrud.access.domain.rbac.view.RbacLoginView
 import kcrud.core.context.SessionContext
 import kcrud.core.context.clearContext

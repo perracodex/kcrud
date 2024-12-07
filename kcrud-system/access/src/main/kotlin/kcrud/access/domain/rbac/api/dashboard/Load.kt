@@ -9,7 +9,7 @@ import io.ktor.http.*
 import io.ktor.server.html.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kcrud.access.domain.rbac.plugin.annotation.RbacApi
+import kcrud.access.domain.rbac.annotation.RbacApi
 import kcrud.access.domain.rbac.service.RbacDashboardManager
 import kcrud.access.domain.rbac.view.RbacDashboardView
 import kcrud.access.domain.rbac.view.RbacLoginView

@@ -9,7 +9,7 @@ import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.sessions.*
 import kcrud.access.context.SessionContextFactory
-import kcrud.access.domain.rbac.plugin.annotation.RbacApi
+import kcrud.access.domain.rbac.annotation.RbacApi
 import kcrud.access.domain.rbac.view.RbacLoginView
 import kcrud.core.context.clearContext
 import kcrud.core.context.setContext

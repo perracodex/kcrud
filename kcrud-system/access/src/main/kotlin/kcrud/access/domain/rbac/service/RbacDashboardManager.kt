@@ -4,9 +4,9 @@
 
 package kcrud.access.domain.rbac.service
 
+import kcrud.access.domain.rbac.annotation.RbacApi
 import kcrud.access.domain.rbac.model.role.RbacRole
 import kcrud.access.domain.rbac.model.scope.RbacScopeRuleRequest
-import kcrud.access.domain.rbac.plugin.annotation.RbacApi
 import kcrud.access.domain.rbac.view.RbacDashboardView
 import kcrud.core.context.SessionContext
 import kcrud.database.schema.admin.rbac.type.RbacAccessLevel

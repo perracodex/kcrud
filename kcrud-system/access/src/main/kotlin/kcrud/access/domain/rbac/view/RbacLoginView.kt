@@ -5,7 +5,7 @@
 package kcrud.access.domain.rbac.view
 
 import kcrud.access.credential.CredentialService
-import kcrud.access.domain.rbac.plugin.annotation.RbacApi
+import kcrud.access.domain.rbac.annotation.RbacApi
 import kotlinx.html.*
 
 /**

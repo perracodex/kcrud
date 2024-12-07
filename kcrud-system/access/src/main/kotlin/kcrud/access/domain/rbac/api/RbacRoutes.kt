@@ -7,12 +7,12 @@ package kcrud.access.domain.rbac.api
 import io.ktor.server.http.content.*
 import io.ktor.server.plugins.ratelimit.*
 import io.ktor.server.routing.*
+import kcrud.access.domain.rbac.annotation.RbacApi
 import kcrud.access.domain.rbac.api.dashboard.rbacDashboardLoadRoute
 import kcrud.access.domain.rbac.api.dashboard.rbacDashboardUpdateRoute
 import kcrud.access.domain.rbac.api.login.rbacLoginAccessRoute
 import kcrud.access.domain.rbac.api.login.rbacLoginSubmissionRoute
 import kcrud.access.domain.rbac.api.login.rbacLogoutRoute
-import kcrud.access.domain.rbac.plugin.annotation.RbacApi
 import kcrud.access.domain.rbac.plugin.withRbac
 import kcrud.core.plugins.RateLimitScope
 import kcrud.database.schema.admin.rbac.type.RbacAccessLevel

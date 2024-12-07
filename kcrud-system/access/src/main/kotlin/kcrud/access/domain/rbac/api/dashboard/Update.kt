@@ -11,7 +11,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import kcrud.access.domain.rbac.plugin.annotation.RbacApi
+import kcrud.access.domain.rbac.annotation.RbacApi
 import kcrud.access.domain.rbac.service.RbacDashboardManager
 import kcrud.access.domain.rbac.view.RbacDashboardView
 import kcrud.access.domain.rbac.view.RbacLoginView
