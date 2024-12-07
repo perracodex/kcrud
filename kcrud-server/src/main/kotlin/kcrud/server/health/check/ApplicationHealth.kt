@@ -18,7 +18,7 @@ import kotlinx.serialization.Serializable
  */
 @HealthCheckApi
 @Serializable
-public data class ApplicationHealth(
+public data class ApplicationHealth private constructor(
     val errors: MutableList<String>,
     val apiSchemaEnabled: Boolean
 ) {

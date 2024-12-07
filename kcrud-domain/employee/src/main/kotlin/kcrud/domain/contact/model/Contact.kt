@@ -20,7 +20,7 @@ import org.jetbrains.exposed.sql.ResultRow
  * @property meta The metadata of the record.
  */
 @Serializable
-public data class Contact(
+public data class Contact internal constructor(
     val id: Uuid,
     val email: String,
     val phone: String,

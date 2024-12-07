@@ -14,7 +14,7 @@ import java.security.SecureRandom
  * @property salt The binary representation of the salt.
  * @property length The specified length of the salt, in bytes.
  */
-public data class SecureSalt(val salt: ByteArray, val length: Int) {
+public data class SecureSalt private constructor(val salt: ByteArray, val length: Int) {
 
     /**
      * Converts the binary salt into a hexadecimal String representation.

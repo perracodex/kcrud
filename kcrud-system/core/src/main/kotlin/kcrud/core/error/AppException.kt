@@ -81,7 +81,7 @@ public abstract class AppException(
      * @property cause The underlying cause of the error, if any.
      */
     @Serializable
-    public data class Response(
+    public data class Response internal constructor(
         val status: Int,
         val context: String,
         val code: String,

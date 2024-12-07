@@ -15,7 +15,7 @@ import kcrud.core.env.EnvironmentType
  * @property swaggerEndpoint The endpoint to the Swagger UI.
  * @property redocEndpoint The endpoint path to the Redoc UI.
  */
-public data class ApiSchemaSettings(
+public data class ApiSchemaSettings internal constructor(
     val environments: List<EnvironmentType>,
     val schemaRoot: String,
     val openApiEndpoint: String,

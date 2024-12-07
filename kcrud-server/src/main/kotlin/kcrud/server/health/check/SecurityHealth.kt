@@ -21,7 +21,7 @@ import kotlinx.serialization.Serializable
  */
 @HealthCheckApi
 @Serializable
-public data class SecurityHealth(
+public data class SecurityHealth private constructor(
     val errors: MutableList<String>,
     val isEnabled: Boolean,
     val useSecureConnection: Boolean,

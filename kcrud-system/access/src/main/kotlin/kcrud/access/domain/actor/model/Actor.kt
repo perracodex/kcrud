@@ -25,7 +25,7 @@ import kotlin.uuid.Uuid
  *
  * @see [ActorCredentials]
  */
-internal data class Actor(
+internal data class Actor private constructor(
     var id: Uuid,
     val username: String,
     val role: RbacRole,

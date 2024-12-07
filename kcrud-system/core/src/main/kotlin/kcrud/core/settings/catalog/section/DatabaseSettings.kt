@@ -25,7 +25,7 @@ import kcrud.core.env.EnvironmentType
  * @property username Optional database username.
  * @property password Optional database password.
  */
-public data class DatabaseSettings(
+public data class DatabaseSettings internal constructor(
     val name: String,
     val path: String,
     val isLocalFile: Boolean,

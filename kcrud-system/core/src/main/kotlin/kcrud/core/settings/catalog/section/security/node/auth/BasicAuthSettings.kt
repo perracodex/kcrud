@@ -10,7 +10,7 @@ package kcrud.core.settings.catalog.section.security.node.auth
  * @property providerName Name of the authentication provider.
  * @property realm Security realm for the HTTP authentication, used to differentiate between protection spaces.
  */
-public data class BasicAuthSettings(
+public data class BasicAuthSettings internal constructor(
     val providerName: String,
     val realm: String,
 )

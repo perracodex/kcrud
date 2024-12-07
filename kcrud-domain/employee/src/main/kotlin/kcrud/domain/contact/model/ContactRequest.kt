@@ -21,7 +21,7 @@ import kotlinx.serialization.Serializable
  * @property phone The contact's phone number.
  */
 @Serializable
-public data class ContactRequest(
+public data class ContactRequest internal constructor(
     val email: String,
     val phone: String
 )

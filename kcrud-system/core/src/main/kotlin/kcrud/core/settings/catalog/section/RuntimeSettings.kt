@@ -14,7 +14,7 @@ import kcrud.core.env.EnvironmentType
  * @property doubleReceiveEnvironments The list of environments where the double receive plugin is enabled.
  * @property workingDir The working directory where files are stored.
  */
-public data class RuntimeSettings(
+public data class RuntimeSettings internal constructor(
     val machineId: Int,
     val environment: EnvironmentType,
     val doubleReceiveEnvironments: List<EnvironmentType>,

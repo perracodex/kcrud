@@ -16,7 +16,7 @@ import kotlinx.serialization.Serializable
  * @property accessLevel The field [RbacAccessLevel].
  */
 @Serializable
-public data class RbacFieldRuleRequest(
+public data class RbacFieldRuleRequest internal constructor(
     val fieldName: String,
     val accessLevel: RbacAccessLevel
 )

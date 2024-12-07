@@ -22,7 +22,7 @@ import kotlinx.serialization.Serializable
  * @property local Same as [utc], but converted to the local time zone.
  */
 @Serializable
-public data class SnowflakeData(
+public data class SnowflakeData internal constructor(
     val machineId: Int,
     val sequence: Long,
     val utc: LocalDateTime,

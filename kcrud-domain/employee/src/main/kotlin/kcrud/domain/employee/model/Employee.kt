@@ -33,7 +33,7 @@ import org.jetbrains.exposed.sql.ResultRow
  * @property meta The metadata of the record.
  */
 @Serializable
-public data class Employee(
+public data class Employee internal constructor(
     val id: Uuid,
     val firstName: String,
     val lastName: String,

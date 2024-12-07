@@ -25,7 +25,7 @@ import org.jetbrains.exposed.sql.ResultRow
  * @property meta The metadata of the record.
  */
 @Serializable
-public data class RbacRole(
+public data class RbacRole private constructor(
     val id: Uuid,
     val roleName: String,
     val description: String?,

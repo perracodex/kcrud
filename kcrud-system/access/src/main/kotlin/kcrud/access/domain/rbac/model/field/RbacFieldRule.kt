@@ -22,7 +22,7 @@ import org.jetbrains.exposed.sql.ResultRow
  * @property meta The metadata of the record.
  */
 @Serializable
-public data class RbacFieldRule(
+public data class RbacFieldRule private constructor(
     val id: Uuid,
     val scopeRuleId: Uuid,
     val fieldName: String,

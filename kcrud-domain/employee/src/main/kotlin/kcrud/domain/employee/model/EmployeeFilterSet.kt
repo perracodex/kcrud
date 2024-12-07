@@ -22,7 +22,7 @@ import kotlinx.serialization.Serializable
  * @property maritalStatus A list of [MaritalStatus] choices to filter the employees.
  */
 @Serializable
-public data class EmployeeFilterSet(
+public data class EmployeeFilterSet private constructor(
     val firstName: String? = null,
     val lastName: String? = null,
     val workEmail: String? = null,

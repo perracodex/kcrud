@@ -33,7 +33,7 @@ public class CompositeAppException(
      * @property errors The list of [AppException.Response] instances that occurred.
      */
     @Serializable
-    public data class Responses(
+    public data class Responses internal constructor(
         val errors: List<AppException.Response>
     )
 

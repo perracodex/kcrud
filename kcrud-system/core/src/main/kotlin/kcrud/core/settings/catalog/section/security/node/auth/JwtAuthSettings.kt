@@ -16,7 +16,7 @@ import kcrud.core.settings.catalog.section.security.SecuritySettings
  * @property realm Security realm for the JWT authentication.
  * @property secretKey Secret key for signing the JWT.
  */
-public data class JwtAuthSettings(
+public data class JwtAuthSettings internal constructor(
     val providerName: String,
     val tokenLifetimeSec: Long,
     val audience: String,

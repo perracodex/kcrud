@@ -15,7 +15,7 @@ package kcrud.core.settings.catalog.section.security.node.auth
  * @property clientSecret client secret parameter. Provided by OAuth server vendor.
  * @property defaultScopes List of OAuth scopes used by default. Provided by OAuth server vendor.
  */
-public data class OAuthSettings(
+public data class OAuthSettings internal constructor(
     val providerName: String,
     val redirectCallbackUrl: String,
     val authorizeUrl: String,

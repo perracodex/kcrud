@@ -20,7 +20,7 @@ import kotlinx.serialization.Serializable
  * @property sensitiveData Optional sensitive data. Demonstrates encrypted columns.
  */
 @Serializable
-public data class EmploymentRequest(
+public data class EmploymentRequest public constructor(
     val period: Period,
     val status: EmploymentStatus,
     val probationEndDate: LocalDate? = null,

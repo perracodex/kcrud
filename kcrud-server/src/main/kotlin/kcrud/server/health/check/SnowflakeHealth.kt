@@ -20,13 +20,21 @@ import kotlinx.serialization.Serializable
  */
 @HealthCheckApi
 @Serializable
-public data class SnowflakeHealth(
-    val errors: MutableList<String> = mutableListOf(),
-    var testId: String? = null,
-    var testResult: SnowflakeData? = null,
-    val timestampEpoch: Long = SnowflakeFactory.timestampEpoch,
-    val nanoTimeStart: Long = SnowflakeFactory.nanoTimeStart,
+public data class SnowflakeHealth private constructor(
+    val errors: MutableList<String>,
+    var testId: String?,
+    var testResult: SnowflakeData?,
+    val timestampEpoch: Long,
+    val nanoTimeStart: Long,
 ) {
+    internal constructor() : this(
+        errors = mutableListOf(),
+        testId = null,
+        testResult = null,
+        timestampEpoch = SnowflakeFactory.timestampEpoch,
+        nanoTimeStart = SnowflakeFactory.nanoTimeStart
+    )
+
     init {
         // Attempt to generate testId and handle any exceptions.
         try {

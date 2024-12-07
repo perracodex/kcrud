@@ -45,7 +45,10 @@ public fun Application.collectRoutes(): List<RouteInfo> {
  * @property method The HTTP method of the route.
  */
 @Serializable
-public data class RouteInfo(val path: String, val method: String)
+public data class RouteInfo internal constructor(
+    val path: String,
+    val method: String
+)
 
 /**
  * Constructs the full path of a route by aggregating path segments from the current route up to the root,

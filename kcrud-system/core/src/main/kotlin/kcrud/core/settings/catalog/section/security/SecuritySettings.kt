@@ -23,7 +23,7 @@ import kcrud.core.settings.catalog.section.security.node.auth.OAuthSettings
  * @property oAuth Settings related to OAuth authentication, such as the client id and secret.
  * @property rbac Settings related to RBAC authentication.
  */
-public data class SecuritySettings(
+public data class SecuritySettings internal constructor(
     val isEnabled: Boolean,
     val useSecureConnection: Boolean,
     val encryption: EncryptionSettings,

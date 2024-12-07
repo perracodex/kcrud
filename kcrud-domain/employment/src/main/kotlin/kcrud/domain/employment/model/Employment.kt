@@ -29,7 +29,7 @@ import org.jetbrains.exposed.sql.ResultRow
  * @property meta The metadata of the record.
  */
 @Serializable
-public data class Employment(
+public data class Employment internal constructor(
     val id: Uuid,
     val period: Period,
     val status: EmploymentStatus,

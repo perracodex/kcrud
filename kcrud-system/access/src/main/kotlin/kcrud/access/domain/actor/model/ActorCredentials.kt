@@ -23,7 +23,7 @@ import kotlin.uuid.Uuid
  * @see [Actor]
  * @see [CredentialService]
  */
-internal data class ActorCredentials(
+internal data class ActorCredentials private constructor(
     var id: Uuid,
     val username: String,
     val password: String,

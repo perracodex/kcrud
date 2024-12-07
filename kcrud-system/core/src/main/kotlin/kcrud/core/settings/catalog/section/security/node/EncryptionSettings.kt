@@ -12,7 +12,7 @@ import kcrud.core.settings.catalog.section.security.SecuritySettings
  * @property atRest Settings related to encryption at rest.
  * @property atTransit Settings related to encryption in transit.
  */
-public data class EncryptionSettings(
+public data class EncryptionSettings internal constructor(
     val atRest: Spec,
     val atTransit: Spec
 ) {
@@ -25,7 +25,7 @@ public data class EncryptionSettings(
      * @property key Secret key for encrypting/decrypting data.
      * @property sign Signature key to sign the encrypted data.
      */
-    public data class Spec(
+    public data class Spec internal constructor(
         val algorithm: String,
         val salt: String,
         val key: String,

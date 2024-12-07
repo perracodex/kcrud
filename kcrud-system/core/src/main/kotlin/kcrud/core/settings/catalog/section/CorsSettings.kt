@@ -22,7 +22,7 @@ package kcrud.core.settings.catalog.section
  *
  * @property allowedHosts The list of allowed hosts used in CORS.
  */
-public data class CorsSettings(
+public data class CorsSettings internal constructor(
     val allowedHosts: List<String>
 ) {
     /**
@@ -32,7 +32,7 @@ public data class CorsSettings(
      * @property schemes The allowed schemes in the host, such as "http" and/or "https".
      * @property subDomains The allowed subdomains, such as "api","admin", etc.
      */
-    public data class HostConfig(
+    public data class HostConfig internal constructor(
         val host: String,
         val schemes: List<String>,
         val subDomains: List<String>

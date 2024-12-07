@@ -34,7 +34,7 @@ import kotlinx.serialization.Serializable
  * @see [EmployeeError]
  */
 @Serializable
-public data class EmployeeRequest(
+public data class EmployeeRequest internal constructor(
     val firstName: NoBlankString,
     val lastName: NoBlankString,
     val workEmail: NoBlankString,
