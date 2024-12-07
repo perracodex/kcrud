@@ -39,6 +39,8 @@ internal object ApplicationsUtils {
 
     /**
      * Output the server state to the console, including main endpoints and configuration.
+     *
+     * @param application The Ktor application instance.
      */
     private fun outputState(application: Application) {
         // Dumps the server's endpoints to the console for easy access and testing.
