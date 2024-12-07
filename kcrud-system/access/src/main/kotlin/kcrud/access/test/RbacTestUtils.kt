@@ -7,7 +7,7 @@ package kcrud.access.test
 import kcrud.access.domain.actor.model.Actor
 import kcrud.access.domain.actor.model.ActorRequest
 import kcrud.access.domain.actor.service.ActorService
-import kcrud.access.domain.actor.service.DefaultActorFactory
+import kcrud.access.domain.actor.service.ActorSyncService
 import kcrud.access.domain.rbac.model.role.RbacRole
 import kcrud.access.domain.rbac.model.role.RbacRoleRequest
 import kcrud.access.domain.rbac.model.scope.RbacScopeRuleRequest
@@ -34,7 +34,7 @@ public object RbacTestUtils {
     @OptIn(TokenApi::class)
     public suspend fun newAuthenticationToken(): String {
         val actorService: ActorService = getKoin().get()
-        val username: String = DefaultActorFactory.RoleName.ADMIN.name.lowercase()
+        val username: String = ActorSyncService.RoleName.ADMIN.name.lowercase()
         val actor: Actor? = actorService.findByUsername(username = username)
         assertNotNull(actual = actor)
 

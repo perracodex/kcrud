@@ -18,12 +18,14 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 /**
- * Singleton object to create default Actors with their respective roles.
+ * Singleton service responsible for synchronizing Actors and refreshing related services.
  *
- * These are created only if no Actors at all are found in the database.
+ * It ensures that the database has actors, creating default ones if none are found.
+ * Additionally, it refreshes the Credential and RBAC services to maintain up-to-date
+ * caches and configurations.
  */
-public object DefaultActorFactory : KoinComponent {
-    private val tracer: Tracer = Tracer<DefaultActorFactory>()
+public object ActorSyncService : KoinComponent {
+    private val tracer: Tracer = Tracer<ActorSyncService>()
 
     /**
      * The default role names.
@@ -40,8 +42,8 @@ public object DefaultActorFactory : KoinComponent {
     }
 
     /**
-     * Refresh the Credentials and RBAC services on application start,
-     * so the caches are up-to-date and ready to handle requests.
+     * Refreshes the Credential and RBAC services to ensure caches are up-to-date,
+     * and provisions default Actors and roles if none exist.
      */
     public suspend fun refresh(): Unit = withContext(Dispatchers.IO) {
         tracer.info("Refreshing actors.")

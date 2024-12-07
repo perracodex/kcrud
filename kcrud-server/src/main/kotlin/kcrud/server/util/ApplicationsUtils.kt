@@ -5,7 +5,7 @@
 package kcrud.server.util
 
 import io.ktor.server.application.*
-import kcrud.access.domain.actor.service.DefaultActorFactory
+import kcrud.access.domain.actor.service.ActorSyncService
 import kcrud.core.env.Tracer
 import kcrud.core.security.snowflake.SnowflakeFactory
 import kcrud.core.settings.AppSettings
@@ -24,10 +24,10 @@ internal object ApplicationsUtils {
      * @param application The Ktor application instance.
      */
     fun completeServerConfiguration(application: Application) {
-        // Refresh the default actors.
+        // Add a hook to refresh the Credentials and RBAC services when the application starts.
         application.monitor.subscribe(definition = ApplicationStarted) {
             application.launch {
-                DefaultActorFactory.refresh()
+                ActorSyncService.refresh()
             }
         }
 
