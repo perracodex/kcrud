@@ -16,7 +16,7 @@ import kotlinx.serialization.Serializable
  * Used to check the deployment configuration of the application.
  *
  * @property errors List of errors found during the health check.
- * @property configured The [Configured] deployment settings.
+ * @property configured The [ConfiguredDeployment] settings.
  * @property serverSpec The [ServerSpec] configuration of the server.
  * @property connectors The connectors used by the application.
  */
@@ -24,7 +24,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 public data class DeploymentHealth private constructor(
     val errors: MutableList<String>,
-    val configured: Configured,
+    val configured: ConfiguredDeployment,
     val serverSpec: ServerSpec,
     val connectors: MutableMap<String, List<String>>,
 ) {
@@ -40,7 +40,7 @@ public data class DeploymentHealth private constructor(
 
             return DeploymentHealth(
                 errors = mutableListOf(),
-                configured = Configured(),
+                configured = ConfiguredDeployment(),
                 serverSpec = ServerSpec(request = call.request),
                 connectors = connectors
             )
@@ -57,7 +57,7 @@ public data class DeploymentHealth private constructor(
      * @property allowedHosts The list of allowed hosts configured in CORS.
      */
     @Serializable
-    public data class Configured(
+    public data class ConfiguredDeployment internal constructor(
         val protocol: String = NetworkUtils.getProtocol().name,
         val port: Int = AppSettings.deployment.port,
         val sslPort: Int = AppSettings.deployment.sslPort,
@@ -79,7 +79,7 @@ public data class DeploymentHealth private constructor(
      * @property scheme The scheme of the request, for example, "http" or "https".
      */
     @Serializable
-    public data class ServerSpec(
+    public data class ServerSpec private constructor(
         val serverHost: String?,
         val serverPort: Int?,
         val localHost: String?,

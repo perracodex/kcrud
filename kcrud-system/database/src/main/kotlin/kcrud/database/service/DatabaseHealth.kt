@@ -7,7 +7,7 @@ package kcrud.database.service
 import com.zaxxer.hikari.HikariDataSource
 import kcrud.core.env.HealthCheckApi
 import kcrud.core.env.Tracer
-import kcrud.core.settings.AppSettings
+import kcrud.core.settings.catalog.section.DatabaseSettings
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.name
@@ -22,30 +22,31 @@ import org.jetbrains.exposed.sql.vendors.currentDialect
  * @property isAlive True if the database is alive, false otherwise.
  * @property datasource The [Datasource] information.
  * @property connectionTest The [ConnectionTest] information.
- * @property configuration The database [Configuration].
+ * @property configuration The [DatabaseConfiguration] settings.
  * @property tables The list of tables in the database.
  */
 @HealthCheckApi
 @Serializable
-public data class DatabaseHealth(
+public data class DatabaseHealth private constructor(
     val errors: MutableList<String>,
     val isAlive: Boolean,
     val datasource: Datasource?,
     val connectionTest: ConnectionTest?,
-    val configuration: Configuration,
+    val configuration: DatabaseConfiguration,
     val tables: List<String>
 ) {
-    internal constructor(
+    private constructor(
         isAlive: Boolean,
         connectionTest: ConnectionTest?,
         datasource: Datasource?,
+        configuration: DatabaseConfiguration,
         tables: List<String>
     ) : this(
         errors = mutableListOf(),
         isAlive = isAlive,
         connectionTest = connectionTest,
         datasource = datasource,
-        configuration = Configuration(),
+        configuration = configuration,
         tables = tables
     )
 
@@ -89,7 +90,7 @@ public data class DatabaseHealth(
      * @property catalog The name of the connection's catalog.
      */
     @Serializable
-    public data class ConnectionTest(
+    public data class ConnectionTest private constructor(
         val established: Boolean,
         val isReadOnly: Boolean,
         val name: String,
@@ -102,9 +103,9 @@ public data class DatabaseHealth(
     ) {
         internal companion object {
             /**
-             * Builds a [ConnectionTest] object from a [org.jetbrains.exposed.sql.Database] object.
+             * Builds a [ConnectionTest] object from a [Database] object.
              *
-             * @param database The source [org.jetbrains.exposed.sql.Database] object to test.
+             * @param database The source [Database] object to test.
              * @return A [Result] containing the [ConnectionTest] instance, or an exception if the test failed.
              */
             fun build(database: Database?): Result<ConnectionTest> {
@@ -148,7 +149,7 @@ public data class DatabaseHealth(
      * @property maxPoolSize Maximum number of connections kept in the pool, including both idle and in-use connections.
      */
     @Serializable
-    public data class Datasource(
+    public data class Datasource private constructor(
         val isPoolRunning: Boolean,
         val totalConnections: Int,
         val activeConnections: Int,
@@ -161,9 +162,9 @@ public data class DatabaseHealth(
     ) {
         internal companion object {
             /**
-             * Builds a [Datasource] instance from a [com.zaxxer.hikari.HikariDataSource] source.
+             * Builds a [Datasource] instance from a [HikariDataSource] source.
              *
-             * @param datasource The source [com.zaxxer.hikari.HikariDataSource] to build from.
+             * @param datasource The source [HikariDataSource] to build from.
              * @return The build [Datasource] instance.
              */
             fun build(datasource: HikariDataSource?): Datasource? {
@@ -195,32 +196,55 @@ public data class DatabaseHealth(
      * @property jdbcUrl The JDBC url database connection.
      */
     @Serializable
-    public data class Configuration(
-        val poolSize: Int = AppSettings.database.connectionPoolSize,
-        val connectionTimeout: Long = AppSettings.database.connectionPoolTimeoutMs,
-        val transactionRetryAttempts: Int = AppSettings.database.transactionMaxAttempts,
-        val warnLongQueriesDurationMs: Long = AppSettings.database.warnLongQueriesDurationMs,
-        val jdbcDriver: String = AppSettings.database.jdbcDriver,
-        val jdbcUrl: String = AppSettings.database.jdbcUrl,
-    )
+    public data class DatabaseConfiguration private constructor(
+        val poolSize: Int,
+        val connectionTimeout: Long,
+        val transactionRetryAttempts: Int,
+        val warnLongQueriesDurationMs: Long,
+        val jdbcDriver: String,
+        val jdbcUrl: String
+    ) {
+        internal companion object {
+            /**
+             * Builds a [DatabaseConfiguration] instance from the given [settings].
+             *
+             * @param settings The [DatabaseSettings] configuration to build from.
+             * @return The build [DatabaseConfiguration] instance.
+             */
+            fun build(settings: DatabaseSettings): DatabaseConfiguration {
+                return DatabaseConfiguration(
+                    poolSize = settings.connectionPoolSize,
+                    connectionTimeout = settings.connectionPoolTimeoutMs,
+                    transactionRetryAttempts = settings.transactionMaxAttempts,
+                    warnLongQueriesDurationMs = settings.warnLongQueriesDurationMs,
+                    jdbcDriver = settings.jdbcDriver,
+                    jdbcUrl = settings.jdbcUrl
+                )
+            }
+        }
+    }
 
     public companion object {
         /**
          * Retrieves the database health check.
+         *
+         * @param settings The [DatabaseSettings] configuration to use for the health check.
          */
-        public fun create(): DatabaseHealth {
+        public fun create(settings: DatabaseSettings): DatabaseHealth {
             return runCatching {
                 val databaseTest: Result<ConnectionTest> = ConnectionTest.build(database = DatabaseService.database)
 
                 val isAlive: Boolean = DatabaseService.ping()
                 val connectionTest: ConnectionTest? = databaseTest.getOrNull()
                 val datasource: Datasource? = Datasource.build(datasource = DatabaseService.hikariDataSource)
+                val configuration: DatabaseConfiguration = DatabaseConfiguration.build(settings = settings)
                 val tables: List<String> = DatabaseService.dumpTables()
 
                 val databaseHealth = DatabaseHealth(
                     isAlive = isAlive,
                     connectionTest = connectionTest,
                     datasource = datasource,
+                    configuration = configuration,
                     tables = tables
                 )
 
@@ -235,6 +259,7 @@ public data class DatabaseHealth(
                     isAlive = false,
                     connectionTest = null,
                     datasource = null,
+                    configuration = DatabaseConfiguration.build(settings = settings),
                     tables = emptyList(),
                 ).apply {
                     errors.add("Failed to retrieve database health check. ${error.message}")

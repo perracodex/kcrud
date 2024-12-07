@@ -6,6 +6,7 @@ package kcrud.server.health
 
 import io.ktor.server.application.*
 import kcrud.core.env.HealthCheckApi
+import kcrud.core.settings.AppSettings
 import kcrud.core.util.RouteInfo
 import kcrud.core.util.collectRoutes
 import kcrud.database.service.DatabaseHealth
@@ -62,10 +63,10 @@ public data class HealthCheck private constructor(
                 health = mutableListOf(),
                 application = ApplicationHealth(),
                 deployment = DeploymentHealth.Companion.create(call = call),
-                runtime = RuntimeHealth(call = call),
+                runtime = RuntimeHealth(call = call, settings = AppSettings.runtime),
                 security = SecurityHealth(),
                 snowflake = SnowflakeHealth(),
-                database = DatabaseHealth.create(),
+                database = DatabaseHealth.create(settings = AppSettings.database),
                 endpoints = call.application.collectRoutes(),
             )
         }
