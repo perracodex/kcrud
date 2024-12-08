@@ -536,18 +536,18 @@ class PaginationTest : KoinComponent {
                 val pageSize: Int = Random.nextInt(from = 1, until = 50)
                 val pageIndex: Int = Random.nextInt(from = 0, until = (totalRecords / pageSize))
                 val sortField: String = sortFields.random()
-                val sortOrder: Pageable.Direction = Pageable.Direction.entries.random()
+                val sortOrder: Pageable.PageDirection = Pageable.PageDirection.entries.random()
 
                 val pageable = Pageable(
                     page = pageIndex,
                     size = pageSize,
-                    sort = listOf(Pageable.Sort(field = sortField, direction = sortOrder))
+                    sort = listOf(Pageable.PageSort(field = sortField, direction = sortOrder))
                 )
 
                 // Sort createdEmployees for validation according to the same criteria
                 val sortedEmployees: List<Employee> = when (sortField) {
                     "firstName", "lastName" -> {
-                        if (sortOrder == Pageable.Direction.ASC) {
+                        if (sortOrder == Pageable.PageDirection.ASC) {
                             createdEmployees.sortedBy { it.getSortValue(sortField) as String }
                         } else {
                             createdEmployees.sortedByDescending { it.getSortValue(sortField) as String }
@@ -555,7 +555,7 @@ class PaginationTest : KoinComponent {
                     }
 
                     "honorific", "maritalStatus" -> {
-                        if (sortOrder == Pageable.Direction.ASC) {
+                        if (sortOrder == Pageable.PageDirection.ASC) {
                             createdEmployees.sortedBy { (it.getSortValue(sortField) as Enum<*>).name }
                         } else {
                             createdEmployees.sortedByDescending { (it.getSortValue(sortField) as Enum<*>).name }
@@ -563,7 +563,7 @@ class PaginationTest : KoinComponent {
                     }
 
                     "dob" -> {
-                        if (sortOrder == Pageable.Direction.ASC) {
+                        if (sortOrder == Pageable.PageDirection.ASC) {
                             createdEmployees.sortedBy { it.getSortValue(sortField) as LocalDate }
                         } else {
                             createdEmployees.sortedByDescending { it.getSortValue(sortField) as LocalDate }
