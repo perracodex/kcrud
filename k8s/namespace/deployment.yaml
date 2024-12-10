@@ -2,21 +2,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kcrud-deployment
-  namespace: kcrud-project
+  name: krud-deployment
+  namespace: krud-project
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: kcrud
+      app: krud
   template:
     metadata:
       labels:
-        app: kcrud
+        app: krud
     spec:
       containers:
-        - name: kcrud
-          image: kcrud-image:latest
+        - name: krud
+          image: krud-image:latest
           ports:
             - containerPort: 8080
             - containerPort: 8443
@@ -24,5 +24,5 @@ spec:
           env:
             - name: JAVA_OPTS
               value: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
-            - name: KCRUD_KTOR_SECURITY_SSL_KEY_STORE
+            - name: KRUD_KTOR_SECURITY_SSL_KEY_STORE
               value: "/app/keystore.p12"

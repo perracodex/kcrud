@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: kcrud-service
-  namespace: kcrud-project
+  name: krud-service
+  namespace: krud-project
 spec:
   selector:
-    app: kcrud
+    app: krud
   ports:
     - protocol: TCP
       port: 8080

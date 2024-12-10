@@ -11,7 +11,7 @@ plugins {
     alias(libs.plugins.detekt) // Required for static code analysis.
 }
 
-group = "kcrud"
+group = "krud"
 version = "1.0.0"
 
 // Ktor plugin configuration for creating a fat JAR.
@@ -28,7 +28,7 @@ application {
     // Specify the fully qualified name of the main class for the application.
     // This setting is used to define the entry point for the executable JAR generated
     // by Gradle, which is essential for running the application with 'java -jar' command.
-    mainClass.set("kcrud.server.ApplicationKt")
+    mainClass.set("krud.server.ApplicationKt")
 
     // Configure detailed coroutine debug logging.
     // https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-debug/
@@ -111,7 +111,7 @@ subprojects {
 }
 
 dependencies {
-    implementation(project(":kcrud-server"))
+    implementation(project(":krud-server"))
 }
 
 /** Part of the fat JAR workflow: Task to copy the SSL keystore file for secure deployment. */

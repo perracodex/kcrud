@@ -1,0 +1,31 @@
+<configuration debug="false">
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener"/>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{YYYY-MM-dd HH:mm:ss.SSS} | [%thread] | %-5level | %X{id} | %logger | %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Root Logger -->
+    <root level="TRACE">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+    <!-- Specific Configurations -->
+    <logger name="Application" level="INFO"/>
+    <logger name="krud" level="DEBUG"/>
+    <logger name="krud.core.event" level="WARNING" additivity="false"/>
+
+    <!-- Ktor Configurations -->
+    <logger name="io.ktor.server.auth" level="DEBUG"/>
+    <logger name="io.ktor.server.plugins" level="DEBUG"/>
+    <logger name="io.ktor.server.routing" level="DEBUG"/>
+    <logger name="io.ktor.server.sessions" level="DEBUG"/>
+
+    <!-- Other Configurations -->
+    <logger name="io.netty" level="WARN"/>
+    <logger name="io.swagger" level="ERROR"/>
+    <logger name="com.github.jknack" level="OFF"/>
+    <logger name="com.zaxxer.hikari" level="WARN"/>
+    <logger name="io.ktor.server.plugins.callid" level="OFF"/>
+</configuration>

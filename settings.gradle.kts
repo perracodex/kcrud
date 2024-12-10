@@ -11,14 +11,14 @@ plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
 }
 
-rootProject.name = "Kcrud"
+rootProject.name = "Krud"
 
-include("kcrud-system:core")
-include("kcrud-system:database")
-include("kcrud-system:access")
-include("kcrud-domain:employee")
-include("kcrud-domain:employment")
-include("kcrud-server")
+include("krud-system:core")
+include("krud-system:database")
+include("krud-system:access")
+include("krud-domain:employee")
+include("krud-domain:employment")
+include("krud-server")
 
 // includeBuild("../Kopapi") {
 //    dependencySubstitution {

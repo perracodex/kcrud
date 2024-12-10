@@ -43,10 +43,10 @@ bin/
 
 ### Swagger ###
 /docs/*
-/kcrud-server/docs/*
+/krud-server/docs/*
 
 ### Custom ###
-/kcrud-server/.runtime/database/*
+/krud-server/.runtime/database/*
 .runtime/*
 /.database/*
 .idea/
