@@ -2,6 +2,15 @@
 
 A fully functional CRUD REST server implemented using [Ktor](https://ktor.io/),
 
+**Krud** serves as a comprehensive example of a Ktor server, showcasing a variety of features and best practices.
+
+The code intentionally contains redundancies and some inconsistencies to illustrate different approaches and strategies to achieve
+similar results. For example, different authentication methods (JWT, OAuth, and Basic, despite Basic being discouraged);
+different approaches to exception handling and validations across layers. The project also examines data persistence,
+illustrating custom columns, field level encryption, etc.
+
+---
+
 ### Characteristics:
 
 * [Multi-project](.wiki/01.project-structure.md) setup.
@@ -36,17 +45,6 @@ A fully functional CRUD REST server implemented using [Ktor](https://ktor.io/),
 ---
 
 For convenience, it is included a *[Postman Collection](./.postman/krud.postman_collection.json)* with all the available REST endpoints.
-
----
-
-### Preface
-
-[Krud](https://github.com/perracodex/Krud) serves as a comprehensive example of a Ktor server, showcasing a variety of features and best practices.
-
-The code intentionally contains redundancies and inconsistencies to illustrate different approaches and strategies to achieve
-similar results. For example, different authentication methods (JWT, OAuth, and Basic, despite Basic being discouraged);
-different approaches to exception handling and validations across layers. The project also examines data persistence,
-illustrating custom columns with validation, field level encryption, different ways to store enums in a database, etc.
 
 ---
 
