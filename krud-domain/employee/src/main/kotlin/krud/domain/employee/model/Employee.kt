@@ -14,7 +14,9 @@ import krud.database.schema.contact.ContactTable
 import krud.database.schema.employee.EmployeeTable
 import krud.database.schema.employee.type.Honorific
 import krud.database.schema.employee.type.MaritalStatus
+import krud.database.schema.employment.EmploymentTable
 import krud.domain.contact.model.Contact
+import krud.domain.employment.model.Employment
 import org.jetbrains.exposed.sql.ResultRow
 
 /**
@@ -29,7 +31,8 @@ import org.jetbrains.exposed.sql.ResultRow
  * @property age The age of the employee, computed from [dob].
  * @property maritalStatus The [MaritalStatus] of the employee.
  * @property honorific The [Honorific] or title of the employee.
- * @property contact Optional [Contact] details of the employee.
+ * @property contact Optional list of [Contact] details of the employee.
+ * @property employments Optional list of [Employment] entries for the employee.
  * @property meta The metadata of the record.
  */
 @Serializable
@@ -43,15 +46,12 @@ public data class Employee internal constructor(
     val age: Int,
     val maritalStatus: MaritalStatus,
     val honorific: Honorific,
-    val contact: Contact?,
+    val contact: List<Contact>?,
+    val employments: List<Employment>?,
     val meta: Meta
 ) {
-    public companion object : MapModel<Employee> {
-        public override fun from(row: ResultRow): Employee {
-            val contact: Contact? = row.getOrNull(ContactTable.id)?.let {
-                Contact.from(row = row)
-            }
-
+    internal companion object : MapModel<Employee> {
+        override fun from(row: ResultRow): Employee {
             val dob: LocalDate = row[EmployeeTable.dob]
             val firstName: String = row[EmployeeTable.firstName]
             val lastName: String = row[EmployeeTable.lastName]
@@ -66,8 +66,45 @@ public data class Employee internal constructor(
                 age = dob.age(),
                 maritalStatus = row[EmployeeTable.maritalStatus],
                 honorific = row[EmployeeTable.honorific],
-                contact = contact,
+                contact = null,
+                employments = null,
                 meta = Meta.from(row = row, table = EmployeeTable)
+            )
+        }
+
+        override fun from(rows: List<ResultRow>): Employee? {
+            if (rows.isEmpty()) {
+                return null
+            }
+
+            // As we are handling a 1 -> N relationship,
+            // we only need the first row to extract the top-level record.
+            val topLevelRecord: ResultRow = rows.first()
+            val employee: Employee = from(row = topLevelRecord)
+
+            // Extract Contacts.
+            val contact: List<Contact> = rows.distinctBy { row ->
+                // Ensure no deduplicates due to 1 -> N relationship.
+                row[ContactTable.id]
+            }.mapNotNull { row ->
+                row.getOrNull(ContactTable.id)?.let {
+                    Contact.from(row = row)
+                }
+            }
+
+            // Extract Employments.
+            val employments: List<Employment> = rows.distinctBy { row ->
+                // Ensure no deduplicates due to 1 -> N relationship.
+                row[EmploymentTable.id]
+            }.mapNotNull { row ->
+                row.getOrNull(EmploymentTable.id)?.let {
+                    Employment.from(row = row)
+                }
+            }
+
+            return employee.copy(
+                contact = contact.takeIf { it.isNotEmpty() },
+                employments = employments.takeIf { it.isNotEmpty() }
             )
         }
     }

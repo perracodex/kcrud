@@ -9,7 +9,6 @@ import io.perracodex.exposed.pagination.Pageable
 import io.perracodex.exposed.pagination.paginate
 import krud.core.context.SessionContext
 import krud.database.extensions.exists
-import krud.database.schema.contact.ContactTable
 import krud.database.schema.employee.EmployeeTable
 import krud.database.schema.employment.EmploymentTable
 import krud.database.util.transaction
@@ -31,8 +30,6 @@ internal class EmploymentRepository(
     override fun findAll(pageable: Pageable?): Page<Employment> {
         return transaction(sessionContext = sessionContext) {
             EmploymentTable
-                .innerJoin(EmployeeTable)
-                .leftJoin(ContactTable)
                 .selectAll()
                 .paginate(pageable = pageable, map = Employment)
         }
@@ -41,8 +38,6 @@ internal class EmploymentRepository(
     override fun findById(employeeId: Uuid, employmentId: Uuid): Employment? {
         return transaction(sessionContext = sessionContext) {
             EmploymentTable
-                .innerJoin(EmployeeTable)
-                .leftJoin(ContactTable)
                 .selectAll().where {
                     (EmploymentTable.id eq employmentId) and
                             (EmploymentTable.employeeId eq employeeId)
@@ -55,8 +50,6 @@ internal class EmploymentRepository(
     override fun findByEmployeeId(employeeId: Uuid): List<Employment> {
         return transaction(sessionContext = sessionContext) {
             EmploymentTable
-                .innerJoin(EmployeeTable)
-                .leftJoin(ContactTable)
                 .selectAll().where {
                     EmploymentTable.employeeId eq employeeId
                 }.map { resultRow ->
@@ -67,9 +60,10 @@ internal class EmploymentRepository(
 
     override fun create(employeeId: Uuid, request: EmploymentRequest): Employment? {
         return transaction(sessionContext = sessionContext) {
-            if (!employeeExists(employeeId)) {
-                return@transaction null
-            }
+            val employeeExists: Boolean = EmployeeTable.selectAll().where {
+                EmployeeTable.id eq employeeId
+            }.exists()
+            require(employeeExists) { "Employee with ID: $employeeId does not exist" }
 
             val employmentId: Uuid = EmploymentTable.insert { statement ->
                 statement.toStatement(employeeId = employeeId, request = request)
@@ -125,12 +119,6 @@ internal class EmploymentRepository(
                     where { EmploymentTable.employeeId eq employeeId }
                 }
             }.count().toInt()
-        }
-    }
-
-    override fun employeeExists(employeeId: Uuid): Boolean {
-        return transaction(sessionContext = sessionContext) {
-            EmployeeTable.selectAll().where { EmployeeTable.id eq employeeId }.exists()
         }
     }
 

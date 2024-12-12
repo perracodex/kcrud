@@ -32,8 +32,8 @@ internal class RbacRoleRepository(
     override fun findById(roleId: Uuid): RbacRole? {
         return transaction {
             RbacRoleTable
-                .leftJoin(RbacScopeRuleTable)
-                .leftJoin(RbacFieldRuleTable)
+                .leftJoin(otherTable = RbacScopeRuleTable)
+                .leftJoin(otherTable = RbacFieldRuleTable)
                 .selectAll()
                 .where { RbacRoleTable.id eq roleId }
                 .groupBy { it[RbacRoleTable.id] }
@@ -53,9 +53,9 @@ internal class RbacRoleRepository(
             ).flatten()
 
             RbacRoleTable
-                .innerJoin(ActorTable)
-                .leftJoin(RbacScopeRuleTable)
-                .leftJoin(RbacFieldRuleTable)
+                .innerJoin(otherTable = ActorTable)
+                .leftJoin(otherTable = RbacScopeRuleTable)
+                .leftJoin(otherTable = RbacFieldRuleTable)
                 .select(columns = columns)
                 .where { ActorTable.id eq actorId }
                 .groupBy { it[RbacRoleTable.id] }
@@ -68,8 +68,8 @@ internal class RbacRoleRepository(
     override fun findAll(): List<RbacRole> {
         return transaction {
             RbacRoleTable
-                .leftJoin(RbacScopeRuleTable)
-                .leftJoin(RbacFieldRuleTable)
+                .leftJoin(otherTable = RbacScopeRuleTable)
+                .leftJoin(otherTable = RbacFieldRuleTable)
                 .selectAll()
                 .groupBy { it[RbacRoleTable.id] }
                 .map { (roleId, rows) ->

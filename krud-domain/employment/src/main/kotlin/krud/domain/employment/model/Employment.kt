@@ -13,7 +13,6 @@ import krud.database.model.Period
 import krud.database.schema.employment.EmploymentTable
 import krud.database.schema.employment.type.EmploymentStatus
 import krud.database.schema.employment.type.WorkModality
-import krud.domain.employee.model.Employee
 import org.jetbrains.exposed.sql.ResultRow
 
 /**
@@ -25,7 +24,6 @@ import org.jetbrains.exposed.sql.ResultRow
  * @property probationEndDate Optional employment's probation end date.
  * @property workModality The employment's [WorkModality].
  * @property sensitiveData Optional sensitive data. Demonstrates encrypted columns.
- * @property employee The employment's [Employee].
  * @property meta The metadata of the record.
  */
 @Serializable
@@ -36,10 +34,9 @@ public data class Employment internal constructor(
     val probationEndDate: LocalDate?,
     val workModality: WorkModality,
     val sensitiveData: String?,
-    val employee: Employee,
     val meta: Meta
 ) {
-    internal companion object : MapModel<Employment> {
+    public companion object : MapModel<Employment> {
         override fun from(row: ResultRow): Employment {
             return Employment(
                 id = row[EmploymentTable.id],
@@ -48,7 +45,6 @@ public data class Employment internal constructor(
                 probationEndDate = row[EmploymentTable.probationEndDate],
                 workModality = row[EmploymentTable.workModality],
                 sensitiveData = row[EmploymentTable.sensitiveData],
-                employee = Employee.from(row = row),
                 meta = Meta.from(row = row, table = EmploymentTable)
             )
         }

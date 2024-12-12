@@ -82,12 +82,4 @@ internal interface IEmploymentRepository {
      * @return The total count of existing records.
      */
     fun count(employeeId: Uuid? = null): Int
-
-    /**
-     * Checks if an employee exists.
-     *
-     * @param employeeId The employee ID to check.
-     * @return True if the employee exists, false otherwise.
-     */
-    fun employeeExists(employeeId: Uuid): Boolean
 }

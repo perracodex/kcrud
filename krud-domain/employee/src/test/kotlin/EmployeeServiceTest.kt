@@ -74,15 +74,18 @@ class EmployeeServiceTest : KoinComponent {
                     age = dob.age(),
                     honorific = honorific,
                     maritalStatus = maritalStatus,
-                    contact = Contact(
-                        id = Uuid.random(),
-                        email = "$firstName.$lastName@public.com",
-                        phone = "+34-611-222-333",
-                        meta = Meta(
-                            createdAt = timestamp,
-                            updatedAt = timestamp
+                    contact = listOf(
+                        Contact(
+                            id = Uuid.random(),
+                            email = "$firstName.$lastName@public.com",
+                            phone = "+34-611-222-333",
+                            meta = Meta(
+                                createdAt = timestamp,
+                                updatedAt = timestamp
+                            )
                         )
                     ),
+                    employments = null,
                     meta = Meta(
                         createdAt = timestamp,
                         updatedAt = timestamp

@@ -9,7 +9,6 @@ dependencies {
     implementation(project(":krud-system:core"))
     implementation(project(":krud-system:database"))
     implementation(project(":krud-system:access"))
-    implementation(project(":krud-domain:employee"))
 
     detektPlugins(libs.detekt.formatting)
 

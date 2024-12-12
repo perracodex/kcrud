@@ -162,17 +162,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const fragment = document.createDocumentFragment();
         let startIndex = page.details.pageIndex * page.details.elementsPerPage;
 
-        page.content.forEach((employment) => {
-            const employee = employment.employee;
+        page.content.forEach((employee) => {
+            // Extract the first employment for this employee.
+            const firstEmployment = employee.employments?.[0];
+
             const dob = new Date(employee.dob).toISOString().slice(0, 10);
             const workEmail = employee.workEmail ? employee.workEmail : 'N/A';
-            const contact_phone = employee.contact ? employee.contact.phone : 'N/A';
+            const contact_phone = employee.contact ? employee.contact[0].phone : 'N/A';
+
+            const employmentStatus = firstEmployment?.status || 'N/A';
+            const workModality = firstEmployment?.workModality || 'N/A';
 
             const row = document.createElement('div');
             row.className = 'table-row';
 
             // Store the entire employment object as a JSON string in a data attribute.
-            row.setAttribute('data-employment', JSON.stringify(employment));
+            row.setAttribute('data-employment', JSON.stringify(employee));
 
             // Set the inner HTML of the row with employee data
             row.innerHTML =
@@ -184,8 +189,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 `<div>${capitalize(employee.maritalStatus)}</div>` +
                 `<div>${workEmail}</div>` +
                 `<div>${contact_phone}</div>` +
-                `<div>${capitalize(employment.status)}</div>` +
-                `<div>${capitalize(employment.workModality).replace("_", " ")}</div>`;
+                `<div>${capitalize(employmentStatus)}</div>` +
+                `<div>${capitalize(workModality).replace("_", " ")}</div>`;
 
             // Create the avatar element.
             const avatarDiv = document.createElement('div');

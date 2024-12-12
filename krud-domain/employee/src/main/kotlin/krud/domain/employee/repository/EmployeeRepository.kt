@@ -10,6 +10,7 @@ import io.perracodex.exposed.pagination.paginate
 import krud.core.context.SessionContext
 import krud.database.schema.contact.ContactTable
 import krud.database.schema.employee.EmployeeTable
+import krud.database.schema.employment.EmploymentTable
 import krud.database.util.transaction
 import krud.domain.contact.repository.IContactRepository
 import krud.domain.employee.model.Employee
@@ -31,40 +32,39 @@ internal class EmployeeRepository(
 
     override fun findById(employeeId: Uuid): Employee? {
         return transaction(sessionContext = sessionContext) {
-            EmployeeTable.join(
-                otherTable = ContactTable,
-                joinType = JoinType.LEFT,
-                onColumn = EmployeeTable.id,
-                otherColumn = ContactTable.employeeId
-            ).selectAll().where {
-                EmployeeTable.id eq employeeId
-            }.singleOrNull()?.let { resultRow ->
-                Employee.from(row = resultRow)
-            }
+            val records: List<ResultRow> = EmployeeTable
+                .leftJoin(otherTable = ContactTable)
+                .leftJoin(otherTable = EmploymentTable)
+                .selectAll().where {
+                    EmployeeTable.id eq employeeId
+                }.toList()
+
+            Employee.from(rows = records)
         }
     }
 
     override fun findAll(pageable: Pageable?): Page<Employee> {
         return transaction(sessionContext = sessionContext) {
-            EmployeeTable.join(
-                otherTable = ContactTable,
-                joinType = JoinType.LEFT,
-                onColumn = EmployeeTable.id,
-                otherColumn = ContactTable.employeeId
-            ).selectAll().paginate(pageable = pageable, map = Employee)
+            EmployeeTable
+                .leftJoin(otherTable = ContactTable)
+                .leftJoin(otherTable = EmploymentTable)
+                .selectAll()
+                .paginate(
+                    pageable = pageable,
+                    map = Employee,
+                    groupBy = EmployeeTable.id
+                )
         }
     }
 
     override fun findByWorkEmail(workEmail: String, excludeEmployeeId: Uuid?): Employee? {
         return transaction(sessionContext = sessionContext) {
-            val query: Query = EmployeeTable.join(
-                otherTable = ContactTable,
-                joinType = JoinType.LEFT,
-                onColumn = EmployeeTable.id,
-                otherColumn = ContactTable.employeeId
-            ).selectAll().where {
-                EmployeeTable.workEmail eq workEmail
-            }
+            val query: Query = EmployeeTable
+                .leftJoin(otherTable = ContactTable)
+                .leftJoin(otherTable = EmploymentTable)
+                .selectAll().where {
+                    EmployeeTable.workEmail eq workEmail
+                }
 
             excludeEmployeeId?.let { employeeId ->
                 query.andWhere {
@@ -72,55 +72,56 @@ internal class EmployeeRepository(
                 }
             }
 
-            query.singleOrNull()?.let { resultRow ->
-                Employee.from(row = resultRow)
-            }
+            val records: List<ResultRow> = query.toList()
+            Employee.from(rows = records)
         }
     }
 
     override fun filter(filterSet: EmployeeFilterSet, pageable: Pageable?): Page<Employee> {
         return transaction(sessionContext = sessionContext) {
-            EmployeeTable.join(
-                otherTable = ContactTable,
-                joinType = JoinType.LEFT,
-                onColumn = EmployeeTable.id,
-                otherColumn = ContactTable.employeeId
-            ).selectAll().apply {
-                // Apply filters dynamically based on the presence of criteria in filterSet.
-                // Using lowerCase() to make the search case-insensitive.
-                // This could be removed if the database is configured to use a case-insensitive collation.
+            EmployeeTable
+                .leftJoin(otherTable = ContactTable)
+                .leftJoin(otherTable = EmploymentTable)
+                .selectAll().apply {
+                    // Apply filters dynamically based on the presence of criteria in filterSet.
+                    // Using lowerCase() to make the search case-insensitive.
+                    // This could be removed if the database is configured to use a case-insensitive collation.
 
-                if (!filterSet.firstName.isNullOrBlank()) {
-                    andWhere {
-                        EmployeeTable.firstName.lowerCase() like "%${filterSet.firstName.trim().lowercase()}%"
+                    if (!filterSet.firstName.isNullOrBlank()) {
+                        andWhere {
+                            EmployeeTable.firstName.lowerCase() like "%${filterSet.firstName.trim().lowercase()}%"
+                        }
                     }
-                }
-                if (!filterSet.lastName.isNullOrBlank()) {
-                    andWhere {
-                        EmployeeTable.lastName.lowerCase() like "%${filterSet.lastName.trim().lowercase()}%"
+                    if (!filterSet.lastName.isNullOrBlank()) {
+                        andWhere {
+                            EmployeeTable.lastName.lowerCase() like "%${filterSet.lastName.trim().lowercase()}%"
+                        }
                     }
-                }
-                if (!filterSet.workEmail.isNullOrBlank()) {
-                    andWhere {
-                        EmployeeTable.workEmail.lowerCase() like "%${filterSet.workEmail.trim().lowercase()}%"
+                    if (!filterSet.workEmail.isNullOrBlank()) {
+                        andWhere {
+                            EmployeeTable.workEmail.lowerCase() like "%${filterSet.workEmail.trim().lowercase()}%"
+                        }
                     }
-                }
-                if (!filterSet.contactEmail.isNullOrBlank()) {
-                    andWhere {
-                        ContactTable.email.lowerCase() like "%${filterSet.contactEmail.trim().lowercase()}%"
+                    if (!filterSet.contactEmail.isNullOrBlank()) {
+                        andWhere {
+                            ContactTable.email.lowerCase() like "%${filterSet.contactEmail.trim().lowercase()}%"
+                        }
                     }
-                }
-                if (!filterSet.honorific.isNullOrEmpty()) {
-                    andWhere {
-                        EmployeeTable.honorific inList filterSet.honorific
+                    if (!filterSet.honorific.isNullOrEmpty()) {
+                        andWhere {
+                            EmployeeTable.honorific inList filterSet.honorific
+                        }
                     }
-                }
-                if (!filterSet.maritalStatus.isNullOrEmpty()) {
-                    andWhere {
-                        EmployeeTable.maritalStatus inList filterSet.maritalStatus
+                    if (!filterSet.maritalStatus.isNullOrEmpty()) {
+                        andWhere {
+                            EmployeeTable.maritalStatus inList filterSet.maritalStatus
+                        }
                     }
-                }
-            }.paginate(pageable = pageable, map = Employee)
+                }.paginate(
+                    pageable = pageable,
+                    map = Employee,
+                    groupBy = EmployeeTable.id
+                )
         }
     }
 
@@ -138,6 +139,11 @@ internal class EmployeeRepository(
                 joinType = JoinType.LEFT,
                 onColumn = EmployeeTable.id,
                 otherColumn = ContactTable.employeeId
+            ).join(
+                otherTable = EmploymentTable,
+                joinType = JoinType.LEFT,
+                onColumn = EmployeeTable.id,
+                otherColumn = EmploymentTable.employeeId
             ).selectAll().where {
                 // Search in first name.
                 (EmployeeTable.firstName.lowerCase() like "%$searchTerm%")
@@ -164,7 +170,8 @@ internal class EmployeeRepository(
                 (ContactTable.email.lowerCase() like "%$searchTerm")
             }.paginate(
                 pageable = pageable,
-                map = Employee
+                map = Employee,
+                groupBy = EmployeeTable.id
             )
         }
     }

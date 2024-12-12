@@ -83,7 +83,7 @@ class SchemaJoinTest {
                 // The result should be the data from PublicTable and from
                 // SchemaTable in the current schema only.
                 val joinResult: List<Pair<String, Int>> = PublicTable
-                    .innerJoin(SchemaTable)
+                    .innerJoin(otherTable = SchemaTable)
                     .selectAll().map { row ->
                         row[PublicTable.name] to row[SchemaTable.amount].toInt()
                     }
