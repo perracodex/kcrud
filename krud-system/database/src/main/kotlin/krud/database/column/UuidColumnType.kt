@@ -31,24 +31,31 @@ internal class UuidColumnType : ColumnType<Uuid>() {
     override fun valueFromDB(value: Any): Uuid = when {
         value is Uuid -> value
         value is UUID -> value.toKotlinUuid()
-        value is ByteArray -> Uuid.fromByteArray(value)
-        value is String && value.matches(uuidRegexp) -> Uuid.parse(value)
-        value is String -> Uuid.fromByteArray(value.toByteArray())
+        value is ByteArray -> Uuid.fromByteArray(byteArray = value)
+        value is String && value.matches(regex = uuidRegexp) -> Uuid.parse(value)
+        value is String -> Uuid.fromByteArray(byteArray = value.toByteArray())
         else -> error("Unexpected value of type Uuid: $value of ${value::class.qualifiedName}")
     }
 
-    override fun notNullValueToDB(value: Uuid): Any = currentDialect.dataTypeProvider.uuidToDB(value.toJavaUuid())
+    override fun notNullValueToDB(value: Uuid): Any {
+        return currentDialect.dataTypeProvider.uuidToDB(value.toJavaUuid())
+    }
 
     override fun nonNullValueToString(value: Uuid): String = "'$value'"
 
-    override fun readObject(rs: ResultSet, index: Int): Any? = when (currentDialect) {
-        is MariaDBDialect -> rs.getBytes(index)
-        else -> super.readObject(rs, index)
+    override fun readObject(rs: ResultSet, index: Int): Any? {
+        return when (currentDialect) {
+            is MariaDBDialect -> rs.getBytes(index)
+            else -> super.readObject(rs = rs, index = index)
+        }
     }
 
     companion object {
         private val uuidRegexp =
-            Regex("[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}", RegexOption.IGNORE_CASE)
+            Regex(
+                pattern = "[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}",
+                option = RegexOption.IGNORE_CASE
+            )
     }
 }
 
@@ -56,7 +63,9 @@ internal class UuidColumnType : ColumnType<Uuid>() {
  * Extension function for defining a column with a Kotlin [Uuid] type in an Exposed table.
  * Named `kotlinUuid` to avoid conflicts with Exposed `uuid` built-in function.
  */
-internal fun Table.kotlinUuid(name: String): Column<Uuid> = registerColumn(name, UuidColumnType())
+internal fun Table.kotlinUuid(name: String): Column<Uuid> {
+    return registerColumn(name = name, type = UuidColumnType())
+}
 
 /**
  * Extension function to enable auto-generation of Kotlin [Uuid] values for a column.
