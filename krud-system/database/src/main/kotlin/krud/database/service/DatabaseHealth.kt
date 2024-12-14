@@ -28,28 +28,13 @@ import org.jetbrains.exposed.sql.vendors.currentDialect
 @HealthCheckApi
 @Serializable
 public data class DatabaseHealth private constructor(
-    val errors: MutableList<String>,
+    val errors: MutableList<String> = mutableListOf(),
     val isAlive: Boolean,
     val datasource: Datasource?,
     val connectionTest: ConnectionTest?,
     val configuration: DatabaseConfiguration,
     val tables: List<String>
 ) {
-    private constructor(
-        isAlive: Boolean,
-        connectionTest: ConnectionTest?,
-        datasource: Datasource?,
-        configuration: DatabaseConfiguration,
-        tables: List<String>
-    ) : this(
-        errors = mutableListOf(),
-        isAlive = isAlive,
-        connectionTest = connectionTest,
-        datasource = datasource,
-        configuration = configuration,
-        tables = tables
-    )
-
     init {
         val className: String? = this::class.simpleName
 
