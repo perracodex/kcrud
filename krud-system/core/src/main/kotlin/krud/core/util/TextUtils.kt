@@ -11,7 +11,7 @@ package krud.core.util
  * @return The trimmed string if not blank, or `null` if the original string is `null` or blank after trimming.
  */
 public fun String?.trimOrNull(): String? {
-    return this?.trim().takeIf { it?.isNotBlank() == true }
+    return this?.trim()?.takeIf { it.isNotBlank() == true }
 }
 
 /**
