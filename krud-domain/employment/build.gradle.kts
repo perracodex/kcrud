@@ -6,9 +6,7 @@ group = "krud.employment"
 version = "1.0.0"
 
 dependencies {
-    implementation(project(":krud-core:base"))
-    implementation(project(":krud-core:database"))
-    implementation(project(":krud-core:access"))
+    implementation(project(":krud-core"))
 
     detektPlugins(libs.detekt.formatting)
 

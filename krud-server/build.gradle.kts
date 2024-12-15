@@ -6,11 +6,8 @@ group = "krud.server"
 version = "1.0.0"
 
 dependencies {
-    implementation(project(":krud-core:base"))
-    implementation(project(":krud-core:database"))
-    implementation(project(":krud-core:access"))
-    implementation(project(":krud-domain:employee"))
-    implementation(project(":krud-domain:employment"))
+    implementation(project(":krud-core"))
+    implementation(project(":krud-domain"))
 
     detektPlugins(libs.detekt.formatting)
 

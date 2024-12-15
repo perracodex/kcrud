@@ -16,8 +16,10 @@ rootProject.name = "Krud"
 include("krud-core:base")
 include("krud-core:database")
 include("krud-core:access")
+include("krud-core")
 include("krud-domain:employee")
 include("krud-domain:employment")
+include("krud-domain")
 include("krud-server")
 
 // includeBuild("../Kopapi") {
