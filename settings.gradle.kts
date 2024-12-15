@@ -28,11 +28,11 @@ include("krud-server")
 //    }
 // }
 
- includeBuild("../ExposedPagination") {
-    dependencySubstitution {
-        substitute(module("io.github.perracodex:exposed-pagination")).using(project(":"))
-    }
- }
+// includeBuild("../ExposedPagination") {
+//    dependencySubstitution {
+//        substitute(module("io.github.perracodex:exposed-pagination")).using(project(":"))
+//    }
+// }
 
 // includeBuild("../KtorConfig") {
 //    dependencySubstitution {
