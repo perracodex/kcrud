@@ -6,7 +6,7 @@ package krud.domain.employment.error
 
 import io.ktor.http.*
 import kotlinx.datetime.LocalDate
-import krud.core.error.AppException
+import krud.base.error.AppException
 import kotlin.uuid.Uuid
 
 /**

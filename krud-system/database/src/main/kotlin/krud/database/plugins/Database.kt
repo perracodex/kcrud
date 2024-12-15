@@ -5,7 +5,7 @@
 package krud.database.plugins
 
 import io.ktor.server.application.*
-import krud.core.env.Telemetry
+import krud.base.env.Telemetry
 import krud.database.schema.admin.actor.ActorTable
 import krud.database.schema.admin.rbac.RbacFieldRuleTable
 import krud.database.schema.admin.rbac.RbacRoleTable

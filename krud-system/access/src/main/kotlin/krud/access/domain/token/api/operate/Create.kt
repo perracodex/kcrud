@@ -12,10 +12,10 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import krud.access.domain.token.annotation.TokenApi
 import krud.access.domain.token.service.TokenService
-import krud.core.context.SessionContext
-import krud.core.context.getContext
-import krud.core.plugins.RateLimitScope
-import krud.core.settings.AppSettings
+import krud.base.context.SessionContext
+import krud.base.context.getContext
+import krud.base.plugins.RateLimitScope
+import krud.base.settings.AppSettings
 
 /**
  * Generates a new JWT token using Basic Authentication.

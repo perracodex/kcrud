@@ -8,10 +8,10 @@ import io.ktor.server.application.*
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
-import krud.core.env.EnvironmentType
-import krud.core.env.HealthCheckApi
-import krud.core.settings.catalog.section.RuntimeSettings
-import krud.core.util.DateTimeUtils.current
+import krud.base.env.EnvironmentType
+import krud.base.env.HealthCheckApi
+import krud.base.settings.catalog.section.RuntimeSettings
+import krud.base.util.DateTimeUtils.current
 
 /**
  * Used to check the runtime configuration of the application.

@@ -10,8 +10,8 @@ import io.ktor.server.html.*
 import io.ktor.server.routing.*
 import krud.access.domain.rbac.annotation.RbacApi
 import krud.access.domain.rbac.view.RbacLoginView
-import krud.core.context.SessionContext
-import krud.core.context.clearContext
+import krud.base.context.SessionContext
+import krud.base.context.clearContext
 
 /**
  * Manages access to the RBAC login page. If a valid [SessionContext] is already exists, the actor

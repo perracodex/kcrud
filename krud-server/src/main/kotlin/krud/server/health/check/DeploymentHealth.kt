@@ -7,10 +7,10 @@ package krud.server.health.check
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import kotlinx.serialization.Serializable
-import krud.core.env.EnvironmentType
-import krud.core.env.HealthCheckApi
-import krud.core.settings.AppSettings
-import krud.core.util.NetworkUtils
+import krud.base.env.EnvironmentType
+import krud.base.env.HealthCheckApi
+import krud.base.settings.AppSettings
+import krud.base.util.NetworkUtils
 
 /**
  * Used to check the deployment configuration of the application.

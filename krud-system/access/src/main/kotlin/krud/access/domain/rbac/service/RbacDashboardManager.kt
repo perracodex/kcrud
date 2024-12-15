@@ -9,7 +9,7 @@ import krud.access.domain.rbac.annotation.RbacApi
 import krud.access.domain.rbac.model.role.RbacRole
 import krud.access.domain.rbac.model.scope.RbacScopeRuleRequest
 import krud.access.domain.rbac.view.RbacDashboardView
-import krud.core.context.SessionContext
+import krud.base.context.SessionContext
 import krud.database.schema.admin.rbac.type.RbacAccessLevel
 import krud.database.schema.admin.rbac.type.RbacScope
 import org.koin.core.component.KoinComponent

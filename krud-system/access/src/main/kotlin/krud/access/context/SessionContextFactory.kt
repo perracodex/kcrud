@@ -20,11 +20,11 @@ import krud.access.domain.token.service.TokenService
 import krud.access.plugins.configureBasicAuthentication
 import krud.access.plugins.configureJwtAuthentication
 import krud.access.plugins.configureOAuthAuthentication
-import krud.core.context.SessionContext
-import krud.core.env.Tracer
-import krud.core.plugins.Uuid
-import krud.core.settings.AppSettings
-import krud.core.util.toUuid
+import krud.base.context.SessionContext
+import krud.base.env.Tracer
+import krud.base.plugins.Uuid
+import krud.base.settings.AppSettings
+import krud.base.util.toUuid
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

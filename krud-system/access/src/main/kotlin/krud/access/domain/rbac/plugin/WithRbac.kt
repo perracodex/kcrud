@@ -6,7 +6,7 @@ package krud.access.domain.rbac.plugin
 
 import io.ktor.server.routing.*
 import krud.access.domain.rbac.annotation.RbacApi
-import krud.core.settings.AppSettings
+import krud.base.settings.AppSettings
 import krud.database.schema.admin.rbac.type.RbacAccessLevel
 import krud.database.schema.admin.rbac.type.RbacScope
 

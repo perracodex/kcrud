@@ -33,7 +33,7 @@ ENV KRUD_KTOR_DEPLOYMENT_HOST="0.0.0.0"
 ENV KRUD_KTOR_SECURITY_SSL_KEY_STORE="/app/keystore.p12"
 
 # To override more configuration settings at image level add them here.
-# For more settings see the existing 'conf' files in the Core module, under the resources folder.
+# For more settings see the existing 'conf' files in the Base module, under the resources folder.
 
 #-------------------------------------------------------------------------------------------------
 # Execution entrypoint.

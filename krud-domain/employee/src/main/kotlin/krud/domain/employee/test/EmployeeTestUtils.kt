@@ -4,7 +4,7 @@
 
 package krud.domain.employee.test
 
-import krud.core.security.snowflake.SnowflakeFactory
+import krud.base.security.snowflake.SnowflakeFactory
 import krud.database.schema.employee.type.Honorific
 import krud.database.schema.employee.type.MaritalStatus
 import krud.database.test.DatabaseTestUtils

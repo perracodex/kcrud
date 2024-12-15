@@ -7,7 +7,7 @@ package krud.domain.contact.repository
 import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.Pageable
 import io.perracodex.exposed.pagination.paginate
-import krud.core.context.SessionContext
+import krud.base.context.SessionContext
 import krud.database.schema.contact.ContactTable
 import krud.database.util.transaction
 import krud.domain.contact.model.Contact

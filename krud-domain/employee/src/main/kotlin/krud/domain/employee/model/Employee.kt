@@ -7,8 +7,8 @@ package krud.domain.employee.model
 import io.perracodex.exposed.pagination.MapModel
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
-import krud.core.plugins.Uuid
-import krud.core.util.DateTimeUtils.age
+import krud.base.plugins.Uuid
+import krud.base.util.DateTimeUtils.age
 import krud.database.model.Meta
 import krud.database.schema.contact.ContactTable
 import krud.database.schema.employee.EmployeeTable

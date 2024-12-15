@@ -7,7 +7,7 @@ package krud.domain.employment.model
 import io.perracodex.exposed.pagination.MapModel
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
-import krud.core.plugins.Uuid
+import krud.base.plugins.Uuid
 import krud.database.model.Meta
 import krud.database.model.Period
 import krud.database.schema.employment.EmploymentTable

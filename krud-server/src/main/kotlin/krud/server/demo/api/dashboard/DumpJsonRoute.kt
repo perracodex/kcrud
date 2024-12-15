@@ -10,7 +10,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.getPageable
-import krud.core.context.getContext
+import krud.base.context.getContext
 import krud.domain.employee.model.Employee
 import krud.domain.employee.service.EmployeeService
 import krud.server.demo.DemoApi

@@ -6,10 +6,10 @@ package krud.server.health
 
 import io.ktor.server.application.*
 import kotlinx.serialization.Serializable
-import krud.core.env.HealthCheckApi
-import krud.core.settings.AppSettings
-import krud.core.util.RouteInfo
-import krud.core.util.collectRoutes
+import krud.base.env.HealthCheckApi
+import krud.base.settings.AppSettings
+import krud.base.util.RouteInfo
+import krud.base.util.collectRoutes
 import krud.database.service.DatabaseHealth
 import krud.server.health.check.*
 

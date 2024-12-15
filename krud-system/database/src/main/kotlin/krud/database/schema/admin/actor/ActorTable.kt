@@ -4,7 +4,7 @@
 
 package krud.database.schema.admin.actor
 
-import krud.core.security.util.EncryptionUtils
+import krud.base.security.util.EncryptionUtils
 import krud.database.column.autoGenerate
 import krud.database.column.kotlinUuid
 import krud.database.schema.admin.rbac.RbacRoleTable

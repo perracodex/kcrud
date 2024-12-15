@@ -6,9 +6,9 @@ package krud.database.service
 
 import com.zaxxer.hikari.HikariDataSource
 import kotlinx.serialization.Serializable
-import krud.core.env.HealthCheckApi
-import krud.core.env.Tracer
-import krud.core.settings.catalog.section.DatabaseSettings
+import krud.base.env.HealthCheckApi
+import krud.base.env.Tracer
+import krud.base.settings.catalog.section.DatabaseSettings
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.name
 import org.jetbrains.exposed.sql.statements.api.ExposedConnection

@@ -6,8 +6,8 @@ package krud.database.test
 
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
-import krud.core.settings.AppSettings
-import krud.core.util.DateTimeUtils.current
+import krud.base.settings.AppSettings
+import krud.base.util.DateTimeUtils.current
 import krud.database.model.Period
 import krud.database.schema.contact.ContactTable
 import krud.database.schema.employee.EmployeeTable

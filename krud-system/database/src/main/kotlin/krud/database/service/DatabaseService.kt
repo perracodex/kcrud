@@ -6,9 +6,9 @@ package krud.database.service
 
 import com.zaxxer.hikari.HikariDataSource
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
-import krud.core.env.EnvironmentType
-import krud.core.env.Tracer
-import krud.core.settings.catalog.section.DatabaseSettings
+import krud.base.env.EnvironmentType
+import krud.base.env.Tracer
+import krud.base.settings.catalog.section.DatabaseSettings
 import krud.database.util.IsolationLevel
 import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database

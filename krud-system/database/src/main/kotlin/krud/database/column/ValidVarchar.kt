@@ -4,7 +4,7 @@
 
 package krud.database.column
 
-import krud.core.error.validator.base.IValidator
+import krud.base.error.validator.base.IValidator
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
 

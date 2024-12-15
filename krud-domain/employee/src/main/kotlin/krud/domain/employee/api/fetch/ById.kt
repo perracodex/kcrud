@@ -10,9 +10,9 @@ import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import krud.core.context.getContext
-import krud.core.error.AppException
-import krud.core.util.toUuid
+import krud.base.context.getContext
+import krud.base.error.AppException
+import krud.base.util.toUuid
 import krud.domain.employee.api.EmployeeRouteApi
 import krud.domain.employee.error.EmployeeError
 import krud.domain.employee.model.Employee

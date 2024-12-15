@@ -4,9 +4,9 @@
 
 package krud.domain.employment.service
 
-import krud.core.error.AppException
-import krud.core.error.CompositeAppException
-import krud.core.util.getPropertyName
+import krud.base.error.AppException
+import krud.base.error.CompositeAppException
+import krud.base.util.getPropertyName
 import krud.database.model.Period
 import krud.domain.employment.error.EmploymentError
 import krud.domain.employment.model.EmploymentRequest

@@ -7,8 +7,8 @@ package krud.server
 import io.ktor.server.application.*
 import io.ktor.server.netty.*
 import krud.access.plugins.*
-import krud.core.plugins.*
-import krud.core.settings.AppSettings
+import krud.base.plugins.*
+import krud.base.settings.AppSettings
 import krud.database.plugins.configureDatabase
 import krud.server.plugins.configureKoin
 import krud.server.plugins.configureRoutes

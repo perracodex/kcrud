@@ -5,9 +5,9 @@
 package krud.server.health.check
 
 import kotlinx.serialization.Serializable
-import krud.core.env.HealthCheckApi
-import krud.core.security.snowflake.SnowflakeData
-import krud.core.security.snowflake.SnowflakeFactory
+import krud.base.env.HealthCheckApi
+import krud.base.security.snowflake.SnowflakeData
+import krud.base.security.snowflake.SnowflakeFactory
 
 /**
  * A health check that generates a snowflake id and parses it.

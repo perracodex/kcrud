@@ -5,7 +5,7 @@
 package krud.access.domain.rbac.model.field
 
 import kotlinx.serialization.Serializable
-import krud.core.plugins.Uuid
+import krud.base.plugins.Uuid
 import krud.database.model.Meta
 import krud.database.schema.admin.rbac.RbacFieldRuleTable
 import krud.database.schema.admin.rbac.type.RbacAccessLevel

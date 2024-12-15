@@ -4,8 +4,8 @@
 
 package krud.database.schema.contact
 
-import krud.core.error.validator.EmailValidator
-import krud.core.error.validator.PhoneValidator
+import krud.base.error.validator.EmailValidator
+import krud.base.error.validator.PhoneValidator
 import krud.database.column.autoGenerate
 import krud.database.column.kotlinUuid
 import krud.database.column.validVarchar

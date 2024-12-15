@@ -4,7 +4,7 @@
 
 @file:Suppress("ExposedReference")
 
-import krud.core.test.TestUtils
+import krud.base.test.TestUtils
 import krud.database.test.DatabaseTestUtils
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction

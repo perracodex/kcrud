@@ -5,7 +5,7 @@
 package krud.access.error
 
 import io.ktor.http.*
-import krud.core.error.AppException
+import krud.base.error.AppException
 import kotlin.uuid.Uuid
 
 /**

@@ -10,8 +10,8 @@ import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
-import krud.core.context.SessionContext
-import krud.core.context.getContext
+import krud.base.context.SessionContext
+import krud.base.context.getContext
 import krud.domain.employee.service.EmployeeService
 import krud.domain.employment.service.EmploymentService
 import krud.server.demo.DemoApi

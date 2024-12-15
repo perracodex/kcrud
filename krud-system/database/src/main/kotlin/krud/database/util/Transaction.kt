@@ -4,7 +4,7 @@
 
 package krud.database.util
 
-import krud.core.context.SessionContext
+import krud.base.context.SessionContext
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.Schema
 import org.jetbrains.exposed.sql.SchemaUtils

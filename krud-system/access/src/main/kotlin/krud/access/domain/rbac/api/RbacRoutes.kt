@@ -14,7 +14,7 @@ import krud.access.domain.rbac.api.login.rbacLoginAccessRoute
 import krud.access.domain.rbac.api.login.rbacLoginSubmissionRoute
 import krud.access.domain.rbac.api.login.rbacLogoutRoute
 import krud.access.domain.rbac.plugin.withRbac
-import krud.core.plugins.RateLimitScope
+import krud.base.plugins.RateLimitScope
 import krud.database.schema.admin.rbac.type.RbacAccessLevel
 import krud.database.schema.admin.rbac.type.RbacScope
 

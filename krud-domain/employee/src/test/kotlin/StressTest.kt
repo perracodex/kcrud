@@ -11,8 +11,8 @@ import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.minus
 import krud.access.domain.actor.di.ActorDomainInjection
 import krud.access.domain.rbac.di.RbacDomainInjection
-import krud.core.context.SessionContext
-import krud.core.test.TestUtils
+import krud.base.context.SessionContext
+import krud.base.test.TestUtils
 import krud.database.schema.employee.type.Honorific
 import krud.database.schema.employee.type.MaritalStatus
 import krud.database.test.DatabaseTestUtils

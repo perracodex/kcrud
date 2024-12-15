@@ -15,8 +15,8 @@ import krud.access.domain.rbac.model.role.RbacRoleRequest
 import krud.access.domain.rbac.model.scope.RbacScopeRuleRequest
 import krud.access.domain.rbac.repository.role.IRbacRoleRepository
 import krud.access.domain.rbac.repository.scope.IRbacScopeRuleRepository
-import krud.core.context.SessionContext
-import krud.core.env.Tracer
+import krud.base.context.SessionContext
+import krud.base.env.Tracer
 import krud.database.schema.admin.rbac.type.RbacAccessLevel
 import krud.database.schema.admin.rbac.type.RbacScope
 import java.util.concurrent.ConcurrentHashMap

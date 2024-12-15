@@ -12,7 +12,7 @@ import kotlinx.coroutines.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.*
 import krud.access.test.RbacTestUtils
-import krud.core.test.TestUtils
+import krud.base.test.TestUtils
 import krud.database.test.DatabaseTestUtils
 import krud.domain.employee.model.EmployeeRequest
 import krud.domain.employee.test.EmployeeTestUtils

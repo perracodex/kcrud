@@ -6,7 +6,7 @@ package krud.database.plugins
 
 import io.ktor.server.application.*
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
-import krud.core.settings.AppSettings
+import krud.base.settings.AppSettings
 import krud.database.service.DatabaseService
 import org.jetbrains.exposed.sql.Table
 

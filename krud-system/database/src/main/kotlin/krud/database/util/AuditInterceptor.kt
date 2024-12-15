@@ -4,7 +4,7 @@
 
 package krud.database.util
 
-import krud.core.context.SessionContext
+import krud.base.context.SessionContext
 import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.statements.StatementContext
 import org.jetbrains.exposed.sql.statements.StatementInterceptor

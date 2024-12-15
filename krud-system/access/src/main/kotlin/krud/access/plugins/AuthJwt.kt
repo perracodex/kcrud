@@ -13,10 +13,10 @@ import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import krud.access.context.SessionContextFactory
 import krud.access.domain.token.annotation.TokenApi
-import krud.core.context.clearContext
-import krud.core.context.setContext
-import krud.core.env.Tracer
-import krud.core.settings.AppSettings
+import krud.base.context.clearContext
+import krud.base.context.setContext
+import krud.base.env.Tracer
+import krud.base.settings.AppSettings
 
 /**
  * Configures JWT-based authentication.

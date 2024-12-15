@@ -8,7 +8,7 @@ import io.github.perracodex.kopapi.dsl.operation.api
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import krud.core.context.getContext
+import krud.base.context.getContext
 import krud.domain.employee.service.EmployeeService
 import krud.server.demo.DemoApi
 import org.koin.core.parameter.parametersOf

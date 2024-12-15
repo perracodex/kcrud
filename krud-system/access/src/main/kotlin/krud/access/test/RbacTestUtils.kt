@@ -14,7 +14,7 @@ import krud.access.domain.rbac.model.scope.RbacScopeRuleRequest
 import krud.access.domain.rbac.service.RbacService
 import krud.access.domain.token.annotation.TokenApi
 import krud.access.domain.token.service.TokenService
-import krud.core.context.SessionContext
+import krud.base.context.SessionContext
 import krud.database.schema.admin.rbac.type.RbacAccessLevel
 import krud.database.schema.admin.rbac.type.RbacScope
 import org.koin.java.KoinJavaComponent.getKoin

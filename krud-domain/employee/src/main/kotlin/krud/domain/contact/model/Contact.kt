@@ -6,7 +6,7 @@ package krud.domain.contact.model
 
 import io.perracodex.exposed.pagination.MapModel
 import kotlinx.serialization.Serializable
-import krud.core.plugins.Uuid
+import krud.base.plugins.Uuid
 import krud.database.model.Meta
 import krud.database.schema.contact.ContactTable
 import org.jetbrains.exposed.sql.ResultRow

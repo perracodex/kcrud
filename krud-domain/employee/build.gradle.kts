@@ -6,7 +6,7 @@ group = "krud.employee"
 version = "1.0.0"
 
 dependencies {
-    implementation(project(":krud-system:core"))
+    implementation(project(":krud-system:base"))
     implementation(project(":krud-system:database"))
     implementation(project(":krud-system:access"))
     implementation(project(":krud-domain:employment"))

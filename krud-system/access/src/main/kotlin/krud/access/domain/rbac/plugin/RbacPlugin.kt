@@ -12,9 +12,9 @@ import io.ktor.server.sessions.*
 import krud.access.context.SessionContextFactory
 import krud.access.domain.rbac.annotation.RbacApi
 import krud.access.domain.rbac.service.RbacService
-import krud.core.context.SessionContext
-import krud.core.context.getContextOrNull
-import krud.core.context.setContext
+import krud.base.context.SessionContext
+import krud.base.context.getContextOrNull
+import krud.base.context.setContext
 import krud.database.schema.admin.rbac.type.RbacAccessLevel
 import krud.database.schema.admin.rbac.type.RbacScope
 import org.koin.ktor.ext.inject

@@ -13,7 +13,7 @@ import krud.access.domain.actor.model.ActorRequest
 import krud.access.domain.actor.repository.IActorRepository
 import krud.access.domain.rbac.repository.role.IRbacRoleRepository
 import krud.access.domain.rbac.service.RbacService
-import krud.core.env.Tracer
+import krud.base.env.Tracer
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.uuid.Uuid

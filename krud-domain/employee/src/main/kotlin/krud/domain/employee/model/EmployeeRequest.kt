@@ -6,7 +6,7 @@ package krud.domain.employee.model
 
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
-import krud.core.serializer.NoBlankString
+import krud.base.serializer.NoBlankString
 import krud.database.schema.employee.type.Honorific
 import krud.database.schema.employee.type.MaritalStatus
 import krud.domain.contact.model.ContactRequest

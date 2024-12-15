@@ -7,7 +7,7 @@ package krud.domain.employee.repository
 import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.Pageable
 import io.perracodex.exposed.pagination.paginate
-import krud.core.context.SessionContext
+import krud.base.context.SessionContext
 import krud.database.schema.contact.ContactTable
 import krud.database.schema.employee.EmployeeTable
 import krud.database.schema.employment.EmploymentTable

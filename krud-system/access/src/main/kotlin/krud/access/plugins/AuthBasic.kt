@@ -7,9 +7,9 @@ package krud.access.plugins
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import krud.access.context.SessionContextFactory
-import krud.core.context.clearContext
-import krud.core.context.setContext
-import krud.core.settings.AppSettings
+import krud.base.context.clearContext
+import krud.base.context.setContext
+import krud.base.settings.AppSettings
 
 /**
  * Configures the Basic authentication.

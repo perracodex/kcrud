@@ -12,9 +12,9 @@ import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import krud.access.context.SessionContextFactory
-import krud.core.context.clearContext
-import krud.core.context.setContext
-import krud.core.settings.AppSettings
+import krud.base.context.clearContext
+import krud.base.context.setContext
+import krud.base.settings.AppSettings
 
 /**
  * Configures OAuth authentication.

@@ -5,9 +5,9 @@
 package krud.server.health.check
 
 import kotlinx.serialization.Serializable
-import krud.core.env.EnvironmentType
-import krud.core.env.HealthCheckApi
-import krud.core.settings.AppSettings
+import krud.base.env.EnvironmentType
+import krud.base.env.HealthCheckApi
+import krud.base.settings.AppSettings
 
 /**
  * Used to check general application's health checks

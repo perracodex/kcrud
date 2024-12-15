@@ -9,7 +9,7 @@ import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import krud.core.context.getContext
+import krud.base.context.getContext
 import krud.domain.employee.api.EmployeeRouteApi
 import krud.domain.employee.model.Employee
 import krud.domain.employee.model.EmployeeRequest

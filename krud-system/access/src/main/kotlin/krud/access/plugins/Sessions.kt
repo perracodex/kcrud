@@ -6,11 +6,11 @@ package krud.access.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.sessions.*
-import krud.core.context.SessionContext
-import krud.core.plugins.Uuid
-import krud.core.security.util.EncryptionUtils.toByteKey
-import krud.core.settings.AppSettings
-import krud.core.settings.catalog.section.security.node.EncryptionSettings
+import krud.base.context.SessionContext
+import krud.base.plugins.Uuid
+import krud.base.security.util.EncryptionUtils.toByteKey
+import krud.base.settings.AppSettings
+import krud.base.settings.catalog.section.security.node.EncryptionSettings
 
 /**
  * Configure the [Sessions] plugin.

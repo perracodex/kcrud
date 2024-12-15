@@ -9,9 +9,9 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import krud.access.domain.actor.model.ActorCredentials
 import krud.access.domain.actor.service.ActorService
-import krud.core.env.Tracer
-import krud.core.security.hash.SecureHash
-import krud.core.security.hash.SecureSalt
+import krud.base.env.Tracer
+import krud.base.security.hash.SecureHash
+import krud.base.security.hash.SecureSalt
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.util.concurrent.ConcurrentHashMap

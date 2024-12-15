@@ -5,7 +5,7 @@
 package krud.domain.contact.model
 
 import kotlinx.serialization.Serializable
-import krud.core.serializer.EmailString
+import krud.base.serializer.EmailString
 
 /**
  * Represents the request to create/update an employee's contact details.

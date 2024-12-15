@@ -11,8 +11,8 @@ import io.mockk.mockk
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import krud.access.test.RbacTestUtils
-import krud.core.context.SessionContext
-import krud.core.test.TestUtils
+import krud.base.context.SessionContext
+import krud.base.test.TestUtils
 import krud.database.schema.admin.rbac.type.RbacAccessLevel
 import krud.database.test.DatabaseTestUtils
 import krud.domain.employee.model.Employee

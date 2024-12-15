@@ -8,8 +8,8 @@ import io.perracodex.exposed.pagination.Page
 import io.perracodex.exposed.pagination.Pageable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import krud.core.context.SessionContext
-import krud.core.env.Tracer
+import krud.base.context.SessionContext
+import krud.base.env.Tracer
 import krud.domain.employment.model.Employment
 import krud.domain.employment.model.EmploymentRequest
 import krud.domain.employment.repository.IEmploymentRepository

@@ -5,7 +5,7 @@
 package krud.database.schema.employee
 
 import kotlinx.datetime.LocalDate
-import krud.core.error.validator.EmailValidator
+import krud.base.error.validator.EmailValidator
 import krud.database.column.autoGenerate
 import krud.database.column.enumerationById
 import krud.database.column.kotlinUuid

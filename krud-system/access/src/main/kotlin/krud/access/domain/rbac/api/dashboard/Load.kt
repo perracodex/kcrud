@@ -13,10 +13,10 @@ import krud.access.domain.rbac.annotation.RbacApi
 import krud.access.domain.rbac.service.RbacDashboardManager
 import krud.access.domain.rbac.view.RbacDashboardView
 import krud.access.domain.rbac.view.RbacLoginView
-import krud.core.context.SessionContext
-import krud.core.context.clearContext
-import krud.core.context.getContext
-import krud.core.util.toUuidOrNull
+import krud.base.context.SessionContext
+import krud.base.context.clearContext
+import krud.base.context.getContext
+import krud.base.util.toUuidOrNull
 
 /**
  * Retrieves the current [SessionContext] and renders the RBAC dashboard based

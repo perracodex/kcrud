@@ -11,7 +11,7 @@ import krud.access.domain.rbac.model.role.RbacRole
 import krud.access.domain.rbac.model.role.RbacRoleRequest
 import krud.access.domain.rbac.model.scope.RbacScopeRuleRequest
 import krud.access.domain.rbac.service.RbacService
-import krud.core.env.Tracer
+import krud.base.env.Tracer
 import krud.database.schema.admin.rbac.type.RbacAccessLevel
 import krud.database.schema.admin.rbac.type.RbacScope
 import org.koin.core.component.KoinComponent

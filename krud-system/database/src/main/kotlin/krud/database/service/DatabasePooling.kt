@@ -7,7 +7,7 @@ package krud.database.service
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
-import krud.core.settings.catalog.section.DatabaseSettings
+import krud.base.settings.catalog.section.DatabaseSettings
 import krud.database.util.IsolationLevel
 
 internal object DatabasePooling {

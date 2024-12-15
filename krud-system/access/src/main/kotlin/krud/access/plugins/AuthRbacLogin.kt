@@ -11,8 +11,8 @@ import io.ktor.server.sessions.*
 import krud.access.context.SessionContextFactory
 import krud.access.domain.rbac.annotation.RbacApi
 import krud.access.domain.rbac.view.RbacLoginView
-import krud.core.context.clearContext
-import krud.core.context.setContext
+import krud.base.context.clearContext
+import krud.base.context.setContext
 
 /**
  * Refreshes the default actors, and configures the RBAC form login authentication.

@@ -5,8 +5,8 @@
 import io.ktor.test.dispatcher.*
 import io.mockk.mockk
 import kotlinx.datetime.Instant
-import krud.core.context.SessionContext
-import krud.core.test.TestUtils
+import krud.base.context.SessionContext
+import krud.base.test.TestUtils
 import krud.database.test.DatabaseTestUtils
 import krud.domain.employee.di.EmployeeDomainInjection
 import krud.domain.employee.model.Employee

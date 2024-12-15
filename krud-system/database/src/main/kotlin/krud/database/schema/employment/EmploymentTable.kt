@@ -5,7 +5,7 @@
 package krud.database.schema.employment
 
 import kotlinx.datetime.LocalDate
-import krud.core.security.util.EncryptionUtils
+import krud.base.security.util.EncryptionUtils
 import krud.database.column.autoGenerate
 import krud.database.column.enumerationById
 import krud.database.column.kotlinUuid

@@ -13,7 +13,7 @@ import krud.access.domain.rbac.model.role.RbacRole
 import krud.access.domain.rbac.model.role.RbacRoleRequest
 import krud.access.domain.rbac.model.scope.RbacScopeRuleRequest
 import krud.access.domain.rbac.service.RbacService
-import krud.core.test.TestUtils
+import krud.base.test.TestUtils
 import krud.database.schema.admin.rbac.type.RbacAccessLevel
 import krud.database.schema.admin.rbac.type.RbacScope
 import krud.database.test.DatabaseTestUtils

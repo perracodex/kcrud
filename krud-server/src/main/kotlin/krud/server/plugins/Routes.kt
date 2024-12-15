@@ -13,11 +13,11 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import krud.access.domain.rbac.api.rbacRoutes
 import krud.access.domain.token.api.accessTokenRoutes
-import krud.core.context.getContextOrNull
-import krud.core.event.sseRoutes
-import krud.core.plugins.RateLimitScope
-import krud.core.security.snowflake.snowflakeRoute
-import krud.core.settings.AppSettings
+import krud.base.context.getContextOrNull
+import krud.base.event.sseRoutes
+import krud.base.plugins.RateLimitScope
+import krud.base.security.snowflake.snowflakeRoute
+import krud.base.settings.AppSettings
 import krud.domain.employee.api.employeeRoutes
 import krud.domain.employment.api.employmentRoutes
 import krud.server.demo.api.demoRoutes

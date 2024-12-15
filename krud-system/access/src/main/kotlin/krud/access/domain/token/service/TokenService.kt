@@ -13,10 +13,10 @@ import io.ktor.http.*
 import io.ktor.http.auth.*
 import krud.access.context.SessionContextFactory
 import krud.access.domain.token.annotation.TokenApi
-import krud.core.context.SessionContext
-import krud.core.env.Tracer
-import krud.core.settings.AppSettings
-import krud.core.settings.catalog.section.security.node.auth.JwtAuthSettings
+import krud.base.context.SessionContext
+import krud.base.env.Tracer
+import krud.base.settings.AppSettings
+import krud.base.settings.catalog.section.security.node.auth.JwtAuthSettings
 import java.util.*
 import kotlin.time.Duration.Companion.seconds
 

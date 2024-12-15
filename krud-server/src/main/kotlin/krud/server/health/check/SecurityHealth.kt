@@ -5,9 +5,9 @@
 package krud.server.health.check
 
 import kotlinx.serialization.Serializable
-import krud.core.env.HealthCheckApi
-import krud.core.settings.AppSettings
-import krud.core.settings.catalog.section.security.node.ConstraintsSettings.LimitSpec
+import krud.base.env.HealthCheckApi
+import krud.base.settings.AppSettings
+import krud.base.settings.catalog.section.security.node.ConstraintsSettings.LimitSpec
 
 /**
  * Used to check the security configuration of the application.
