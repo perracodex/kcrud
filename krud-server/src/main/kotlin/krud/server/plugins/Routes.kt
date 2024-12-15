@@ -61,9 +61,10 @@ internal fun Application.configureRoutes() {
 
         // Server root endpoint.
         get("/") {
-            call.getContextOrNull()?.let {
-                call.respondText(text = "Hello World. Welcome ${it.username}!")
-            } ?: call.respondText(text = "Hello World.")
+            val greeting: String = call.getContextOrNull()?.let { sessionContext ->
+                "Hello World. Welcome ${sessionContext.username}!"
+            } ?: "Hello World."
+            call.respondText(text = greeting)
         } api {
             tags = setOf("Root")
             summary = "Root endpoint."
