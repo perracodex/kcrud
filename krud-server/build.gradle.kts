@@ -6,9 +6,9 @@ group = "krud.server"
 version = "1.0.0"
 
 dependencies {
-    implementation(project(":krud-system:base"))
-    implementation(project(":krud-system:database"))
-    implementation(project(":krud-system:access"))
+    implementation(project(":krud-core:base"))
+    implementation(project(":krud-core:database"))
+    implementation(project(":krud-core:access"))
     implementation(project(":krud-domain:employee"))
     implementation(project(":krud-domain:employment"))
 

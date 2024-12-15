@@ -6,8 +6,8 @@ group = "krud.access"
 version = "1.0.0"
 
 dependencies {
-    implementation(project(":krud-system:base"))
-    implementation(project(":krud-system:database"))
+    implementation(project(":krud-core:base"))
+    implementation(project(":krud-core:database"))
 
     detektPlugins(libs.detekt.formatting)
 

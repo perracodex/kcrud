@@ -7,7 +7,7 @@
 !gradlew
 !gradlew.bat
 !keystore.p12
+!krud-core/**
 !krud-domain/**
 !krud-server/**
-!krud-system/**
 !build/libs/**

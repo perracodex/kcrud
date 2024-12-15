@@ -13,9 +13,9 @@ plugins {
 
 rootProject.name = "Krud"
 
-include("krud-system:base")
-include("krud-system:database")
-include("krud-system:access")
+include("krud-core:base")
+include("krud-core:database")
+include("krud-core:access")
 include("krud-domain:employee")
 include("krud-domain:employment")
 include("krud-server")
