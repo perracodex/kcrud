@@ -94,7 +94,7 @@ class RbacActorTest : KoinComponent {
 
         val actorCredentials: ActorCredentials? = actorService.findCredentials(actorId = actorId)
         assertNotNull(actual = actorCredentials, message = "The actor credentials was not found in the database after it was created.")
-        assertEquals(expected = password, actual = actorCredentials.username)
+        assertEquals(expected = username, actual = actorCredentials.username)
         assertEquals(expected = password, actual = actorCredentials.password)
 
         // Try to create the same actor again.
