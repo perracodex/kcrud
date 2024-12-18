@@ -40,7 +40,7 @@ internal fun Table.validEncryptedVarchar(
     ).transform(
         wrap = { it },
         unwrap = { value ->
-            validator.check(value = value).getOrThrow()
+            validator.verify(value = value).getOrThrow()
         }
     )
 }

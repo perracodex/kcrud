@@ -60,7 +60,7 @@ public object EmailValidator : IValidator<String> {
     private const val DOMAIN_SEPARATOR: String = "@"
     private val EMAIL_REGEX: Regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}$".toRegex()
 
-    public override fun check(value: String): Result<String> {
+    public override fun verify(value: String): Result<String> {
         // Check for the maximum length of the entire email address (254 characters).
         if (value.length > MAX_EMAIL_LENGTH) {
             return Result.failure(

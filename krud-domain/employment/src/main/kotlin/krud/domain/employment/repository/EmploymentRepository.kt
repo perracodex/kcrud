@@ -63,7 +63,7 @@ internal class EmploymentRepository(
             val employeeExists: Boolean = EmployeeTable.selectAll().where {
                 EmployeeTable.id eq employeeId
             }.exists()
-            require(employeeExists) { "Employee with ID: $employeeId does not exist" }
+            check(employeeExists) { "Employee with ID: $employeeId does not exist" }
 
             val employmentId: Uuid = EmploymentTable.insert { statement ->
                 statement.toStatement(employeeId = employeeId, request = request)

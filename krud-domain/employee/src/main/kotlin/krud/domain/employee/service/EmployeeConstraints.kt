@@ -32,7 +32,7 @@ internal object EmployeeConstraints {
      * @param repository The [EmployeeRepository] to perform additional checks.
      * @return A [Result] with verification state.
      */
-    fun check(
+    fun verify(
         employeeId: Uuid?,
         request: EmployeeRequest,
         reason: String,
@@ -85,7 +85,7 @@ internal object EmployeeConstraints {
         val workEmail: String = request.workEmail
 
         // Check the work email format.
-        EmailValidator.check(value = workEmail).onFailure { error ->
+        EmailValidator.verify(value = workEmail).onFailure { error ->
             errors.add(
                 EmployeeError.InvalidEmail(
                     employeeId = employeeId,
@@ -127,7 +127,7 @@ internal object EmployeeConstraints {
         errors: MutableList<AppException>
     ) {
         // Check the contact's personal email and phone.
-        EmailValidator.check(value = contactRequest.email).onFailure { error ->
+        EmailValidator.verify(value = contactRequest.email).onFailure { error ->
             errors.add(
                 EmployeeError.InvalidEmail(
                     employeeId = employeeId,
@@ -139,7 +139,7 @@ internal object EmployeeConstraints {
             )
         }
 
-        PhoneValidator.check(value = contactRequest.phone).onFailure { error ->
+        PhoneValidator.verify(value = contactRequest.phone).onFailure { error ->
             errors.add(
                 EmployeeError.InvalidPhoneNumber(
                     employeeId = employeeId,

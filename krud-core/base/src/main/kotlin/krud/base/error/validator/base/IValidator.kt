@@ -27,5 +27,5 @@ public interface IValidator<T> {
      * @return A [Result] object containing original [value] if the validation is successful,
      * or a failure with a relevant [ValidationException] if the validation fails.
      */
-    public fun check(value: T): Result<T>
+    public fun verify(value: T): Result<T>
 }

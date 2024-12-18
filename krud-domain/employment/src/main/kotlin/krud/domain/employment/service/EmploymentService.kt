@@ -68,7 +68,7 @@ public class EmploymentService internal constructor(
     ): Result<Employment?> {
         tracer.debug("Creating employment for employee with ID: $employeeId")
 
-        return EmploymentConstraints.check(
+        return EmploymentConstraints.verify(
             employeeId = employeeId,
             employmentId = null,
             request = request,
@@ -106,7 +106,7 @@ public class EmploymentService internal constructor(
     ): Result<Employment?> {
         tracer.debug("Updating employment with ID: $employmentId")
 
-        return EmploymentConstraints.check(
+        return EmploymentConstraints.verify(
             employeeId = employeeId,
             employmentId = employmentId,
             request = request,

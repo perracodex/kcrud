@@ -67,7 +67,7 @@ public fun getPropertyName(
 
     for (property in allProperties) {
         // Ensure the property belongs to the current class.
-        val declaringClass = property.parameters.firstOrNull()?.type?.classifier as? KClass<*>
+        val declaringClass: KClass<out Any>? = property.parameters.firstOrNull()?.type?.classifier as? KClass<*>
             ?: property.returnType.classifier as? KClass<*>
 
         require(declaringClass == currentClass) {

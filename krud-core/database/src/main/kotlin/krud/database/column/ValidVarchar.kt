@@ -25,7 +25,7 @@ internal fun Table.validVarchar(name: String, length: Int, validator: IValidator
     return varchar(name = name, length = length).transform(
         wrap = { it },
         unwrap = { value ->
-            validator.check(value = value).getOrThrow()
+            validator.verify(value = value).getOrThrow()
         }
     )
 }

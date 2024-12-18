@@ -22,7 +22,7 @@ public object PhoneValidator : IValidator<String> {
     /** The maximum length of a phone number. */
     public const val MAX_PHONE_LENGTH: Int = 15
 
-    public override fun check(value: String): Result<String> {
+    public override fun verify(value: String): Result<String> {
         return runCatching {
             // Check for the maximum length of the phone number.
             if (value.length > MAX_PHONE_LENGTH) {

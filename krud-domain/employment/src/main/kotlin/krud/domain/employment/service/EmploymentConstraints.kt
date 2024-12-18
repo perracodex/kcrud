@@ -25,7 +25,7 @@ internal object EmploymentConstraints {
      * @param reason The reason for the verification. To be included in the error messages.
      * @return A [Result] with verification state.
      */
-    fun check(
+    fun verify(
         employeeId: Uuid,
         employmentId: Uuid?,
         request: EmploymentRequest,

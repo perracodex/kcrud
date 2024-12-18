@@ -24,7 +24,7 @@ internal object EmailSerializer : KSerializer<String> {
     )
 
     override fun serialize(encoder: Encoder, value: String) {
-        EmailValidator.check(value = value).fold(
+        EmailValidator.verify(value = value).fold(
             onSuccess = { encoder.encodeString(value = value) },
             onFailure = { error -> throw SerializationException(error.message) }
         )
@@ -32,7 +32,7 @@ internal object EmailSerializer : KSerializer<String> {
 
     override fun deserialize(decoder: Decoder): String {
         val string: String = decoder.decodeString()
-        EmailValidator.check(value = string).fold(
+        EmailValidator.verify(value = string).fold(
             onSuccess = { return string },
             onFailure = { error -> throw SerializationException(error.message) }
         )
