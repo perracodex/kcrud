@@ -69,3 +69,9 @@ For convenience, it is included a *[Postman Collection](./.postman/krud.postman_
 * ### [Handling Security](./.wiki/09.security.md)
 
 * ### [Micrometer Metrics](./.wiki/10.micrometer-metrics.md)
+
+---
+
+### License
+
+This project is licensed under an MIT License - see the [LICENSE](LICENSE) file for details.
